@@ -1,7 +1,5 @@
 {
   "name": "ASP.NET",
   "private": true,
-  "dependencies": {
-    "bootstrap": "3.3.6"
-  }
+  "dependencies": {}
 }
