@@ -15,5 +15,11 @@ namespace AgroApp.Controllers
         {
             return View();
         }
+
+        // GET: /admin/planning
+        public IActionResult Planning()
+        {
+            return View();
+        }
     }
 }
