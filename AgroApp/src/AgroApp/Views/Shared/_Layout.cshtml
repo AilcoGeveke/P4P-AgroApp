@@ -6,20 +6,27 @@
 
     <title>@ViewData["Title"] - AgroApp</title>
 
-    <link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
+    <link rel="stylesheet" href="/lib/angular-material/angular-material.css">
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--load the angularJS script first for cloaking functions-->
+    <script src="/lib/angular/angular.js"></script>
 </head>
 <body ng-app="AgroApp">
+
     @RenderBody()
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script src="/lib/angular-aria/angular-aria.js"></script>
+    <script src="/lib/angular-animate/angular-animate.js"></script>
+    <script src="/lib/angular-material/angular-material.js"></script>
+    <script>
+        // Include app dependency on ngMaterial
+        angular.module('AgroApp', ['ngMaterial']);
+    </script>
+
     @RenderSection("scripts", required: false)
-
-    <script src="/node_modules/angular/angular.js"></script>
-    <script src="/node_modules/angular-aria/angular-aria.js"></script>
-    <script src="/node_modules/angular-animate/angular-animate.js"></script>
-    <script src="/node_modules/angular-material/angular-material.js"></script>
-
 </body>
 </html>

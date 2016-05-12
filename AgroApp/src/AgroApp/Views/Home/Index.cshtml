@@ -1,4 +1,38 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<md-content layout layout-align="center center" class="loginFull" ng-controller="loginController" ng-cloak layout-fill>
+    <div class="md-whiteframe-5dp login-content ng-cloak">
+        <md-toolbar class="header-background md-tall">
+            <h2 class="md-toolbar-tools">
+                Nagtegaal Ameland
+            </h2>
+        </md-toolbar>
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h6 class="md-flex">Werknemer Login</h6>
+            </div>
+        </md-toolbar>
+        <form name="loginForm">
+            <md-input-container class="md-block">
+                <label>Gebruikersnaam</label>
+                <input ng-model="loginName">
+            </md-input-container>
 
+            <md-input-container class="md-block">
+                <label>Wachtwoord</label>
+                <input ng-model="loginPassword">
+            </md-input-container>
+            <section layout="row" layout-align="center center" layout-wrap>
+                <md-checkbox layout layout-align="center center">
+                    Ingelogd blijven?
+                </md-checkbox>
+                <md-button class="md-raised md-primary" ng-click="goLogin()">Login</md-button>
+            </section>
+        </form>
+        <md-progress-linear ng-show="showloading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+</md-content>
+
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/loginview.js"></script>
+}
