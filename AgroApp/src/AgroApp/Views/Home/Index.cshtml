@@ -13,15 +13,15 @@
         <form name="loginForm">
             <md-input-container class="md-block">
                 <label>Gebruikersnaam</label>
-                <input ng-model="loginName">
+                <input ng-model="loginName" input type="email">
             </md-input-container>
 
             <md-input-container class="md-block">
                 <label>Wachtwoord</label>
-                <input ng-model="loginPassword">
+                <input ng-model="loginPassword" input type="password">
             </md-input-container>
             <section layout="row" layout-align="center center" layout-wrap>
-                <md-checkbox layout layout-align="center center">
+                <md-checkbox class="blue" layout layout-align="center center">
                     Ingelogd blijven?
                 </md-checkbox>
                 <md-button class="md-raised md-primary" ng-click="goLogin()">Login</md-button>
