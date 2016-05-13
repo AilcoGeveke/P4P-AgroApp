@@ -10,7 +10,7 @@ namespace AgroApp.Controllers
 {
     public class LoginController : Controller
     {
-        // GET: /<controller>/
+        // GET: /home/index
         public IActionResult Index()
         {
             return View();

@@ -9,7 +9,7 @@
                 <h6>
                     <span style="font-weight: 100">Ingelogd als {{gebruiker}}</span>
                 </h6>
-                <md-button>
+                <md-button ng-click="changeView('Home/index')">
                     log uit
                 </md-button>
             </div>
@@ -23,30 +23,30 @@
                         <p>Planning</p>
                     </md-list-item>
 
-                    <md-list-item ng-click="hoi()">
+                    <md-list-item ng-click="changeView('admin/opdracht')">
                         <md-icon class="notopmargin">note</md-icon>
                         <p>Opdracht Aanmaken</p>
                     </md-list-item>
 
                     <md-subheader class="md-no-sticky">Werkbonnen</md-subheader>
-                    <md-list-item ng-click="hoi()">
+                    <md-list-item ng-click="changeView('admin/Werkbonadd')">
                         <md-icon class="notopmargin">work</md-icon>
                         <p>Werkbon Toevoegen</p>
                     </md-list-item>
 
-                    <md-list-item ng-click="hoi()">
+                    <md-list-item ng-click="changeView('admin/WerkbonCheck')">
                         <md-icon class="notopmargin">edit</md-icon>
                         <p>Werkbon Controleren</p>
                     </md-list-item>
                 </md-list>
                 <md-list flex-gt-xs="50">
                     <md-subheader class="md-no-sticky">Beheer</md-subheader>
-                    <md-list-item ng-click="hoi()">
+                    <md-list-item ng-click="changeView('admin/werknemer')">
                         <md-icon class="notopmargin">assignment ind</md-icon>
                         <p>Gebruiker Beheer</p>
                     </md-list-item>
 
-                    <md-list-item ng-click="hoi()">
+                    <md-list-item ng-click="changeView('admin/machine')">
                         <md-icon class="notopmargin">build</md-icon>
                         <p>Machine Beheer</p>
                     </md-list-item>
