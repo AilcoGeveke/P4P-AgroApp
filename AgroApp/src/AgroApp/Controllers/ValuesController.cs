@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using MySql.Data.MySqlClient;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,7 +16,22 @@ namespace AgroApp.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            using (MySqlConnection con = DatabaseConnection.GetConnection())
+            {
+                con.Open();
+
+                string query = "show tables";
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
+                {
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    List<string> data = new List<string>();
+                    while (reader.Read())
+                        data.Add(reader.GetString(0));
+
+                    return data;
+                }
+            }
         }
 
         // GET api/values/5
