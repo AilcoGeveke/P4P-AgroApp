@@ -1,4 +1,119 @@
 ﻿@{  Layout = "_Admin"; }
 
+<md-content layout-align="top center" layout-fill layout="column" ng-cloak ng-style="{margin-top: '10px'}">
+    <div class="md-whiteframe-5dp layout-content">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Werkbon Invullen</span>
+                </h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <div ng-controller="Navigation">
+            <div layout-gt-xs="row">
+                <md-list flex-gt-xs="40">
+                    <md-subheader class="md-no-sticky">Gegevens Werknemer</md-subheader>
+                    <md-input-container class="md-block">
+                        <label>Werknemer</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Opdrachtgever</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Werklocatie</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>van</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>tot</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Man</label>
+                        <md-select ng-model="user.state">
+                            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+                                {{state.abbrev}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block">
+                        <label>n</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+                    <md-chips ng-model="ctrl.tags"
+                              md-separator-keys="ctrl.keys"
+                              placeholder="Voer een voertuig in"
+                              secondary-placeholder="Voeruigen gescheiden door een komma">
+                    </md-chips>
+
+                </md-list>
+            </div>
+            <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>
+
+<script>
+    angular
+      .module('inputBasicDemo', ['ngMaterial', 'ngMessages'])
+      .controller('DemoCtrl', function ($scope) {
+          $scope.user = {
+              title: 'Developer',
+              email: 'ipsum@lorem.com',
+              firstName: '',
+              lastName: '',
+              company: 'Google',
+              address: '1600 Amphitheatre Pkwy',
+              city: 'Mountain View',
+              state: 'CA',
+              biography: 'Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!',
+              postalCode: '94043'
+          };
+          $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
+          'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
+          'WY').split(' ').map(function (state) {
+              return { abbrev: state };
+          })
+      })
+      .config(function ($mdThemingProvider) {
+          // Configure a dark theme with primary foreground yellow
+          $mdThemingProvider.theme('docs-dark', 'default')
+            .primaryPalette('yellow')
+            .dark();
+      });
+</script>
+
 
 
