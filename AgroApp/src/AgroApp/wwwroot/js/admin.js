@@ -1,7 +1,7 @@
 ﻿var agroApp = angular.module('AgroApp');
 
 agroApp.controller('LoginView', function ($scope) {
-    $scope.gebruiker = "Richard Boomsma";
+    $scope.gebruiker = "Agroapp bouwers";
 });
 
 agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {

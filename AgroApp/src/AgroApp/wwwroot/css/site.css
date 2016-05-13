@@ -5,6 +5,24 @@
     z-index: 2;
 }
 
+.body-halfbackground {
+    height: 40%;
+    position: fixed;
+    top: 0; 
+    width: 100%;
+    background-color: #90CAF9;
+}
+
+.header-background {
+    background: url("http://www.nagtegaalameland.nl/uploads/images/site/header.jpg") center no-repeat;
+}
+
+.md-tall h2 {
+    background-color: RGBA(0,0,0,0.5);
+}
+
+
+/*LogIN*/
 .login-content {
     max-width: 700px;
     width: 100%;
@@ -20,31 +38,18 @@
     z-index: 1;
 }
 
-.body-halfbackground {
-    height: 40%;
-    position: fixed;
-    top: 0; 
-    width: 100%;
-    background-color: #90CAF9;
-}
-
-md-checkbox {
-    margin-bottom: 0;
-}
-
-.header-background {
-    background: url("http://www.nagtegaalameland.nl/uploads/images/site/header.jpg") center no-repeat;
-}
-
-.md-tall h2 {
-    background-color: RGBA(0,0,0,0.5);
-}
 
 /*Override md-icon inside md-list-item for correct centering of icons and text*/
 md-list-item > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item > md-icon:first-child:not(.md-avatar-icon), md-list-item > md-icon.md-secondary:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-primary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > div.md-secondary > md-icon:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon:first-child:not(.md-avatar-icon), md-list-item .md-list-item-inner > md-icon.md-secondary:not(.md-avatar-icon) {
     margin-bottom: 16px;
     margin-right: 20px;
     margin-left: 8px;
+}
+
+
+/*Checkbox*/
+md-checkbox {
+    margin-bottom: 0;
 }
 
 md-checkbox.md-checked.blue .md-icon {

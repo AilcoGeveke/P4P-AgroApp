@@ -23,7 +23,6 @@
                 </md-toolbar>
                 <md-content ng-controller="LeftCtrl">
                     <div hide-sm show-gt-md>
-                        ...content...
                     </div>
                 </md-content>
             </md-sidenav>
@@ -32,6 +31,9 @@
                     <div class="md-toolbar-tools">
                         <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()" hide-gt-md>
                             <md-icon> menu </md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="Home" ng-click="changeView('admin/main')">
+                            <md-icon> home </md-icon>
                         </md-button>
                     </div>
                 </md-toolbar>

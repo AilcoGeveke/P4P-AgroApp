@@ -21,5 +21,36 @@ namespace AgroApp.Controllers
         {
             return View();
         }
+
+        // GET: /admin/werknemer
+        public IActionResult werknemer()
+        {
+            return View();
+        }
+
+        // GET: /admin/machine
+        public IActionResult Machine()
+        {
+            return View();
+        }
+
+        // GET: /admin/opdracht
+        public IActionResult Opdracht()
+        {
+            return View();
+        }
+
+        // GET: /admin/werkboncheck
+        public IActionResult WerkbonCheck()
+        {
+            return View();
+        }
+
+        // GET: /admin/werkbonadd
+        public IActionResult Werkbonadd()
+        {
+            return View();
+        }
+
     }
 }
