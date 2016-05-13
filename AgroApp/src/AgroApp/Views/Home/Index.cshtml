@@ -5,26 +5,42 @@
                 Nagtegaal Ameland
             </h2>
         </md-toolbar>
-        <md-toolbar class="md-warn">
+        <md-toolbar class="md-primary md-hue-2">
             <div class="md-toolbar-tools">
                 <h6 class="md-flex">Werknemer Login</h6>
             </div>
         </md-toolbar>
-        <form name="loginForm">
+        <md-toolbar class="md-warn" ng-show="showError">
+            <div class="md-toolbar-tools">
+                <h6 class="md-flex">{{errorMessage}}</h6>
+            </div>
+        </md-toolbar>
+        <form name="loginForm" ng-submit="goLogin()">
             <md-input-container class="md-block">
-                <label>Gebruikersnaam</label>
-                <input ng-model="loginName" input type="email">
+                <label>E-mail</label>
+                <input required type="email" name="userEmail" ng-model="userDetails.email" minlength="6" maxlength="100">
+                <div ng-messages="loginForm.userEmail.$error" role="alert">
+                    <div ng-message-exp="['required', 'minlength', 'maxlength']">
+                        Voer een correcte email adres in.
+                    </div>
+                </div>
             </md-input-container>
 
             <md-input-container class="md-block">
                 <label>Wachtwoord</label>
-                <input ng-model="loginPassword" input type="password">
+                <input required type="password" name="userPass" ng-model="userDetails.password" minlength="6" maxlength="100">
+                <div ng-messages="loginForm.userPass.$error" role="alert">
+                    <div ng-message-exp="['required', 'minlength', 'maxlength']">
+                        U moet een wachtwoord van minimaal 6 tekens opgeven om in te kunnen loggen.
+                    </div>
+                </div>
             </md-input-container>
+
             <section layout="row" layout-align="center center" layout-wrap>
                 <md-checkbox class="blue" layout layout-align="center center">
                     Ingelogd blijven?
                 </md-checkbox>
-                <md-button class="md-raised md-primary" ng-click="goLogin()">Login</md-button>
+                <md-button class="md-raised md-primary" type="submit">Login</md-button>
             </section>
         </form>
         <md-progress-linear ng-show="showloading" md-mode="indeterminate"></md-progress-linear>

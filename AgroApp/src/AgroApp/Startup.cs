@@ -7,6 +7,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNet.Http;
 
 namespace AgroApp
 {
@@ -45,6 +46,15 @@ namespace AgroApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCookieAuthentication(options =>
+            {
+                options.AuthenticationScheme = "AgroAppCookie";
+                options.LoginPath = new PathString("/");
+                options.AccessDeniedPath = new PathString("/");
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
+            });
 
             app.UseIISPlatformHandler();
 
