@@ -26,5 +26,13 @@ namespace AgroApp.Controllers.Api
             }
             return "false";
         }
+
+        // GET: api/values
+        [HttpGet("logout")]
+        public async Task<string> Logout(string username, string password)
+        {
+            await HttpContext.Authentication.SignOutAsync("AgroAppCookie");
+            return "succes";
+        }
     }
 }

@@ -11,6 +11,12 @@ agroApp.controller('LoginView', function ($scope, $http) {
     }).success(function (data) {
         $scope.gebruiker = data;
     })
+    
+    var originatorEv;   
+    $scope.openMenu = function ($mdOpenMenu, ev) {
+        originatorEv = ev;
+        $mdOpenMenu(ev);
+    };
 });
 
 agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {

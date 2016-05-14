@@ -11,7 +11,7 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
 
         $http({
             method: 'GET',
-            url: '/api/login/' +  $scope.userDetails.email + '/' + $scope.userDetails.password,
+            url: '/api/login/' + $scope.userDetails.email + '/' + $scope.userDetails.password,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
