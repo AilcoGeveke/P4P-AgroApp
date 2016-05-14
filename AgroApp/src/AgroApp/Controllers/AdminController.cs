@@ -22,8 +22,8 @@ namespace AgroApp.Controllers
             return View();
         }
 
-        // GET: /admin/werknemer
-        public IActionResult werknemer()
+        // GET: /admin/gebruikerbeheer
+        public IActionResult GebruikerBeheer()
         {
             return View();
         }

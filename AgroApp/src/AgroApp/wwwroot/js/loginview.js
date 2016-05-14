@@ -17,7 +17,7 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == "true")
-                window.location.href = '/admin/main/' + $scope.userDetails.email;
+                window.location.href = '/admin/main';
             else {
                 $scope.showloading = false;
                 $scope.showError = true;

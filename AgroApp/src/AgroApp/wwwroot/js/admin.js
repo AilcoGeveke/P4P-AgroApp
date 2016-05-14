@@ -1,7 +1,16 @@
 ﻿var agroApp = angular.module('AgroApp');
 
-agroApp.controller('LoginView', function ($scope) {
-    $scope.gebruiker = "Agroapp bouwers";
+agroApp.controller('LoginView', function ($scope, $http) {
+    $scope.gebruiker = "";
+
+    $http({
+        method: 'GET',
+        url: '/api/account/me',
+        params: 'limit=10, sort_by=created:desc',
+        headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+    }).success(function (data) {
+        $scope.gebruiker = data;
+    })
 });
 
 agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
@@ -54,4 +63,17 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
               $log.debug("close LEFT is done");
           });
     };
+});
+
+agroApp.controller('UserView', function ($scope, $http) {
+    $scope.gebruikers = [];
+
+    $http({
+        method: 'GET',
+        url: '/api/account/getfulllist',
+        params: 'limit=10, sort_by=created:desc',
+        headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+    }).success(function (data) {
+        $scope.gebruikers = data;
+    })
 });

@@ -1,4 +1,5 @@
 ﻿using AgroApp.Account;
+using AgroApp.Models;
 using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ namespace AgroApp.Controllers.Api
             if (await UserManager.IsValid(username, password))
             {
                 List<Claim> claimCollection = new List<Claim> {
+                    new Claim(ClaimTypes.Name, (await UserManager.GetUser(username))?.Name ?? ""),
                     new Claim(ClaimTypes.Email, username),
                     new Claim(ClaimTypes.Role, "Admin") };
 
