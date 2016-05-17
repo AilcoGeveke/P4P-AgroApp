@@ -1,6 +1,4 @@
-﻿@{  Layout = "_Admin"; }
-
-<md-content layout-align="top center" layout-fill layout="column" ng-cloak ng-style="{margin-top: '10px'}">
+﻿@*<md-content layout-align="top center" layout-fill layout="column" ng-cloak ng-style="{margin-top: '10px'}">
     <div class="md-whiteframe-5dp layout-content">
         <md-toolbar class="md-warn">
             <div class="md-toolbar-tools">
@@ -83,37 +81,59 @@
             <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
         </div>
     </div>
+</md-content>*@
+
+<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation">
+    <div class="md-whiteframe-5dp layout-content form-content">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Nieuwe gebruiker</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <div class="content" ng-controller="UserEdit">
+            <form name="gebruikerform" layout-padding layout="column" ng-submit="">
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>E-mail</label>
+                    <input required type="email" name="userEmail" ng-model="userDetails.email" minlength="6" maxlength="100">
+                </md-input-container>
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>Wachtwoord</label>
+                    <input required type="password" name="userPass" ng-model="userDetails.password" minlength="6" maxlength="100">
+                </md-input-container>
+
+                <md-input-container class="inputnomargin">
+                    <label>Machine</label>
+                    <md-select required ng-model="ctrl.userState">
+                        <md-option ng-repeat="n in machines">
+                            {{n}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div layout-align="row">
+                    <span flex></span>
+                    <md-button type="submit">Creëer gebruiker</md-button>
+                </div>
+
+            </form>
+        </div>
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
 </md-content>
 
-<script>
-    angular
-      .module('inputBasicDemo', ['ngMaterial', 'ngMessages'])
-      .controller('DemoCtrl', function ($scope) {
-          $scope.user = {
-              title: 'Developer',
-              email: 'ipsum@lorem.com',
-              firstName: '',
-              lastName: '',
-              company: 'Google',
-              address: '1600 Amphitheatre Pkwy',
-              city: 'Mountain View',
-              state: 'CA',
-              biography: 'Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!',
-              postalCode: '94043'
-          };
-          $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-          'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-          'WY').split(' ').map(function (state) {
-              return { abbrev: state };
-          })
-      })
-      .config(function ($mdThemingProvider) {
-          // Configure a dark theme with primary foreground yellow
-          $mdThemingProvider.theme('docs-dark', 'default')
-            .primaryPalette('yellow')
-            .dark();
-      });
-</script>
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/admin.js"></script>
+    <script src="~/js/loginview.js"></script>
+}
+
 
 
 
