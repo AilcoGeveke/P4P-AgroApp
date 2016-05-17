@@ -78,3 +78,13 @@ md-checkbox {
     flex-direction: column;
 }
 
+.table-text-width {
+    min-width: 200px;
+    width: 100%;
+}
+
+.table-time {
+    padding: 0 !important;
+    width: 100%;
+    min-width: 50px;
+}

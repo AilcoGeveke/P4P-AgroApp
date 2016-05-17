@@ -61,7 +61,6 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
 
 agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     $scope.gebruikers = [];
-
     $scope.getAllUserData = function () {
         $rootScope.showLoading = true;
         $http({
@@ -73,6 +72,15 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
             $scope.gebruikers = data;
             $rootScope.showLoading = false;
         })
+    }
+
+    $scope.tijden = [];
+    $scope.setTijdenRange = function () {
+        for (uur = 6; uur < 20; uur++)
+        {
+            $scope.tijden.push(uur + ":00");
+            $scope.tijden.push(uur + ":30");
+        }
     }
 });
 
