@@ -1,4 +1,12 @@
-﻿.layout-content {
+﻿html body{
+    z-index: -1;
+}
+
+.transparent{
+    background-color: transparent;
+}
+
+.layout-content {
     max-width: 864px;
     width: 100%;
     background-color: white;
@@ -8,13 +16,16 @@
 .form-content {
     max-width: 600px;
 }
-
+.full-width{
+    width:100%;
+}
 .body-halfbackground {
     height: 40%;
     position: fixed;
     top: 0;
     width: 100%;
     background-color: #90CAF9;
+    z-index: -1;
 }
 
 .header-background {

@@ -111,3 +111,51 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         });
     };
 });
+
+agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
+    $scope.manKeuze = [];
+    $rootScope.showloading = false;
+
+    $scope.getManKeuzeData = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getmankeuze',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.man = data;
+        });
+    };
+
+    $scope.machineKeuze = [];
+    $scope.getMachineKeuzeData = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getmachinekeuze',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.machine = data;
+        });
+    };
+
+    $scope.gebruikers = [];
+    $scope.getAllUserData = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/account/getfulllist',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.gebruikers = data;
+            $rootScope.showLoading = false;
+        })
+    }
+});
