@@ -1,0 +1,50 @@
+﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation">
+    <div class="md-whiteframe-5dp layout-content form-content">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Nieuwe gebruiker</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/gebruikers')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <div class="content" ng-controller="loginController">
+            <form name="gebruikerform" layout-padding layout="column" ng-submit="goRegister()">
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>E-mail</label>
+                    <input required type="email" name="userEmail" ng-model="userDetails.email" minlength="6" maxlength="100">
+                </md-input-container>
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>Wachtwoord</label>
+                    <input required type="password" name="userPass" ng-model="userDetails.password" minlength="6" maxlength="100">
+                </md-input-container>
+
+                <md-input-container class="inputnomargin">
+                    <label>Rol</label>
+                    <md-select required ng-model="ctrl.userState">
+                        <md-option ng-repeat="n in rollen" value="{{rollen[0]}}">
+                            {{n}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div layout-align="row">
+                    <span flex></span>
+                    <md-button type="submit">Creëer gebruiker</md-button>
+                </div>
+
+            </form>
+        </div>
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+</md-content>
+
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/admin.js"></script>
+    <script src="~/js/loginview.js"></script>
+}

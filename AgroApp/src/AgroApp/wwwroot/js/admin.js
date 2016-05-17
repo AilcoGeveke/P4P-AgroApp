@@ -1,17 +1,6 @@
 ﻿var agroApp = angular.module('AgroApp');
 
-agroApp.controller('LoginView', function ($scope, $http) {
-    $scope.gebruiker = "";
-
-    $http({
-        method: 'GET',
-        url: '/api/account/me',
-        params: 'limit=10, sort_by=created:desc',
-        headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-    }).success(function (data) {
-        $scope.gebruiker = data;
-    })
-    
+agroApp.controller('LoginView', function ($scope, $http) {    
     var originatorEv;   
     $scope.openMenu = function ($mdOpenMenu, ev) {
         originatorEv = ev;
@@ -61,7 +50,6 @@ agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     }
 });
 
-
 agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('left').close()
@@ -71,15 +59,55 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     };
 });
 
-agroApp.controller('UserView', function ($scope, $http) {
+agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     $scope.gebruikers = [];
 
-    $http({
-        method: 'GET',
-        url: '/api/account/getfulllist',
-        params: 'limit=10, sort_by=created:desc',
-        headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-    }).success(function (data) {
-        $scope.gebruikers = data;
-    })
+    $scope.getAllUserData = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/account/getfulllist',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.gebruikers = data;
+            $rootScope.showLoading = false;
+        })
+    }
+});
+
+agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.rollen = ['Gebruiker', 'Admin'];
+
+    $scope.showConfirmChangePasswordDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Als u doorgaat zal het wachtwoord van deze gebruiker gereset worden!')
+              .textContent('Het nieuwe wachtwoord zal op het scherm getoond worden. Geef deze aan de medewerker door!')
+              .targetEvent(ev)
+              .ok('Reset')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            $rootScope.showLoading = false;
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
+    $scope.showConfirmChangesDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Wijzigingen Toepassen?')
+              .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
+              .targetEvent(ev)
+              .ok('Wijzigingen Toepassen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            $rootScope.changeView('admin/gebruikers');
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
 });

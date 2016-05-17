@@ -2,6 +2,7 @@
 
 agroApp.controller('loginController', function ($scope, $location, $http) {
     $scope.userDetails = {};
+    $scope.rollen = ['Gebruiker', 'Admin'];
 
     $scope.showloading = false;
     $scope.showError = false;

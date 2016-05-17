@@ -16,8 +16,9 @@ namespace AgroApp.Controllers.Api
         {
             if (await UserManager.IsValid(username, password))
             {
+                string name = (await UserManager.GetUser(username))?.Name ?? "";
                 List<Claim> claimCollection = new List<Claim> {
-                    new Claim(ClaimTypes.Name, (await UserManager.GetUser(username))?.Name ?? ""),
+                    new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
                     new Claim(ClaimTypes.Role, "Admin") };
 

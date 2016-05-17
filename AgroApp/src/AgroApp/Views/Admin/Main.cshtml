@@ -12,9 +12,9 @@
                     </md-button>
                     <md-menu-content width="5">
                         <md-menu-item>
-                            <md-button ng-click="changeView('admin/gebruikerbeheer')">
+                            <md-button ng-click="changeView('admin/gebruikers')">
                                 <div layout="row">
-                                    <p flex>{{gebruiker}}</p>
+                                    <p flex>@ViewData["volledigenaam"]</p>
                                     <md-icon md-menu-align-target style="margin: auto 3px auto 0;">settings</md-icon>
                                 </div>
                             </md-button>
@@ -59,7 +59,7 @@
                 </md-list>
                 <md-list flex-gt-xs="50">
                     <md-subheader class="md-no-sticky">Beheer</md-subheader>
-                    <md-list-item ng-click="changeView('admin/gebruikerbeheer')">
+                    <md-list-item ng-click="changeView('admin/gebruikers')">
                         <md-icon class="notopmargin">assignment ind</md-icon>
                         <p>Gebruiker Beheer</p>
                     </md-list-item>

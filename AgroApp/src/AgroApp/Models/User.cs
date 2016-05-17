@@ -7,18 +7,29 @@ namespace AgroApp.Models
 {
     public class User
     {
+        public int IdWerknemer { private set; get; }
         public string Name { private set; get; }
         public string Email { private set; get; }
+        public UserRol Rol { private set; get; }
 
-        public User(string name, string email)
+        public User(int idWerknemer, string name, string email, string rol)
         {
+            IdWerknemer = idWerknemer;
             Name = name;
             Email = email;
+            UserRol finalRol = UserRol.Gebruiker;
+            Enum.TryParse<User.UserRol>(rol, true, out finalRol);
+            Rol = finalRol;
         }
 
         public override string ToString()
         {
             return Name;
+        }
+
+        public enum UserRol
+        {
+            Gebruiker, Admin
         }
     }
 }
