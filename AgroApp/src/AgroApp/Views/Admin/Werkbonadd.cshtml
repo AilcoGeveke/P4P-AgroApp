@@ -1,119 +1,139 @@
-﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
-    <div class="md-whiteframe-5dp layout-content form-content">
-        <md-toolbar ng-controller="LoginView">
+﻿@*<md-content layout-align="top center" layout-fill layout="column" ng-cloak ng-style="{margin-top: '10px'}">
+    <div class="md-whiteframe-5dp layout-content">
+        <md-toolbar class="md-warn">
             <div class="md-toolbar-tools">
                 <h2>
-                    <span>Werkbon toevoegen</span>
+                    <span>Werkbon Invullen</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>home</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div class="content" ng-controller="WerkbonEdit">
-            <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
+        <div ng-controller="Navigation">
             <div layout-gt-xs="row">
-                <md-list flex-gt-xs="50">
-                    <md-input-container class="md-block inputnomargin">
+                <md-list flex-gt-xs="40">
+                    <md-subheader class="md-no-sticky">Gegevens Werknemer</md-subheader>
+                    <md-input-container class="md-block">
                         <label>Werknemer</label>
                         <input input type="text">
                     </md-input-container>
 
-                    <md-input-container class="md-block inputnomargin">
+                    <md-input-container class="md-block">
+                        <label>Opdrachtgever</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
                         <label>Werklocatie</label>
                         <input input type="text">
                     </md-input-container>
 
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
-                        <label>Collega</label>
-                        <md-select ng-model="userKeuze">
-                            <md-option ng-repeat="n in gebruikers">
-                                {{n.Name}}
-                            </md-option>
-                        </md-select>
-
-                    </md-input-container><md-datepicker ng-model="myDate" md-placeholder="Datum">
-                    </md-datepicker>
-                </md-list>
-
-                <md-list flex-gt-xs="50">
-
-                    <md-input-container class="md-block inputnomargin">
-                        <label>Opdrachtgever </label>
+                    <md-input-container class="md-block">
+                        <label>van</label>
                         <input input type="text">
                     </md-input-container>
 
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
+                    <md-input-container class="md-block">
+                        <label>tot</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
                         <label>Man</label>
-                        <md-select ng-model="manKeuze">
-                            <md-option ng-repeat="n in man">
-                                {{n}}
+                        <md-select ng-model="user.state">
+                            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+                                {{state.abbrev}}
                             </md-option>
                         </md-select>
                     </md-input-container>
 
-                    <md-input-container class="md-block inputnomargin">
-                        <label>2</label>
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block">
+                        <label>n</label>
                         <input input type="text">
                     </md-input-container>
 
-                    <md-input-container class="md-block inputnomargin">
-                        <label>3</label>
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
                         <input input type="text">
                     </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Aantal uren</label>
+                        <input input type="text">
+                    </md-input-container>
+                    <md-chips ng-model="ctrl.tags"
+                              md-separator-keys="ctrl.keys"
+                              placeholder="Voer een voertuig in"
+                              secondary-placeholder="Voeruigen gescheiden door een komma">
+                    </md-chips>
+
                 </md-list>
             </div>
+            <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>*@
 
+<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation">
+    <div class="md-whiteframe-5dp layout-content form-content">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Nieuwe gebruiker</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <div class="content" ng-controller="UserEdit">
+            <form name="gebruikerform" layout-padding layout="column" ng-submit="">
 
-            <md-subheader class="md-no-sticky">Machines</md-subheader>
-            <div flex-gt-xs="100">
-                <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getMachineKeuzeData()">
+                <md-input-container class="md-block inputnomargin">
+                    <label>E-mail</label>
+                    <input required type="email" name="userEmail" ng-model="userDetails.email" minlength="6" maxlength="100">
+                </md-input-container>
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>Wachtwoord</label>
+                    <input required type="password" name="userPass" ng-model="userDetails.password" minlength="6" maxlength="100">
+                </md-input-container>
+
+                <md-input-container class="inputnomargin">
                     <label>Machine</label>
-                    <md-select ng-model="machineKeuze">
-                        <md-option ng-repeat="n in machine">
-                            {{n.Nummer, n.Naam}}
+                    <md-select required ng-model="ctrl.userState">
+                        <md-option ng-repeat="n in machines">
+                            {{n}}
                         </md-option>
                     </md-select>
                 </md-input-container>
 
-                <md-button class="md-icon-button" ng-click=""><md-icon ng-style="{color: 'blue'}">add_circle</md-icon></md-button>
+                <div layout-align="row">
+                    <span flex></span>
+                    <md-button type="submit">Creëer gebruiker</md-button>
+                </div>
 
-            </div>
-
-            <md-subheader class="md-no-sticky">Uren</md-subheader>
-            <div layout="row">
-                <md-input-container class="full-width md-block inputnomargin">
-                    <label>Van</label>
-                    <input input type="time">
-                </md-input-container>
-
-                <md-input-container class="full-width md-block inputnomargin">
-                    <label>Tot</label>
-                    <input input type="time">
-                </md-input-container>
-
-                <md-input-container class="full-width md-block inputnomargin">
-                    <label>Aantal uren</label>
-                    <input input type="time">
-                </md-input-container>
-            </div>
-
-
-            <div>
-                <md-subheader class="md">Omschrijving</md-subheader>
-                <md-input-container class="md-block inputnomargin">
-                    <label>Omschrijving</label>
-                    <textarea ng-model="userOmschrijving" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-            </div>
-
+            </form>
         </div>
-
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
-    <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
 </md-content>
 
 <div class="body-halfbackground"></div>
 
 @section scripts{
     <script src="~/js/admin.js"></script>
+    <script src="~/js/loginview.js"></script>
 }
+
+
+
+
