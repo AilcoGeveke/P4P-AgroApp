@@ -57,7 +57,7 @@ md-content {
     top: 0;
     width: 100%;
     background-color: #90CAF9;
-    z-index: -1;
+    z-index: 0;
 }
 
 .header-background {
