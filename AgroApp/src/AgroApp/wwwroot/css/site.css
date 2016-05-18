@@ -2,10 +2,41 @@
     z-index: -1;
 }
 
-.transparent{
+.md-tall h2 {
+    background-color: RGBA(0,0,0,0.5);
+}
+
+.inputnomargin {
+    margin-top: 14px !important;
+    margin-bottom: 0px;
+    height: 40px;
+}
+
+.layout-content .content {
+    padding: 10px;
+}
+
+.page-container {
+    background-color: #f1f1f1;
+    padding: 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/*Background*/
+md-content {
     background-color: transparent;
 }
 
+.non-transparent{
+    background-color: white;
+}
+
+
+
+/*content*/
 .layout-content {
     max-width: 864px;
     width: 100%;
@@ -19,6 +50,7 @@
 .full-width{
     width:100%;
 }
+
 .body-halfbackground {
     height: 40%;
     position: fixed;
@@ -30,10 +62,6 @@
 
 .header-background {
     background: url("http://www.nagtegaalameland.nl/uploads/images/site/header.jpg") center no-repeat;
-}
-
-.md-tall h2 {
-    background-color: RGBA(0,0,0,0.5);
 }
 
 
@@ -71,24 +99,8 @@ md-checkbox {
         background-color: rgb(63, 81, 181);
     }
 
-.inputnomargin {
-    margin-top: 14px !important;
-    margin-bottom: 0px;
-    height: 40px;
-}
 
-.layout-content .content {
-    padding: 10px;
-}
-
-.page-container {
-    background-color: #f1f1f1;
-    padding: 32px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
+/*Table*/
 .table-text-width {
     min-width: 200px;
     width: 100%;

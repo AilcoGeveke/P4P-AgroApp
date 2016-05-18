@@ -1,4 +1,4 @@
-﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
+﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation">
     <div class="md-whiteframe-5dp layout-content form-content">
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
@@ -61,12 +61,12 @@
                     <label>Machine</label>
                     <md-select ng-model="machineKeuze">
                         <md-option ng-repeat="n in machine">
-                            {{n.Nummer, n.Naam}}
+                            {{n}}
                         </md-option>
                     </md-select>
                 </md-input-container>
 
-                <md-button class="md-icon-button" ng-click=""><md-icon ng-style="{color: 'blue'}">add_circle</md-icon></md-button>
+                <md-button class="md-icon-button" layout ="center" ng-click=""><md-icon ng-style="{color: 'blue'}">add_circle</md-icon></md-button>
 
             </div>
 
@@ -97,9 +97,9 @@
                 </md-input-container>
             </div>
         </div>
-
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
-    <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+
 </md-content>
 <div class="body-halfbackground"></div>
 

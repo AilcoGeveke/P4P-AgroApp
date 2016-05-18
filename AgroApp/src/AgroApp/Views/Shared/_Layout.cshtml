@@ -15,19 +15,19 @@
     <script src="/lib/angular/angular.js"></script>
 </head>
 <body ng-app="AgroApp">
-    <div class="body-halfbackground"></div>
-    @RenderBody()
+    
+        @RenderBody()
 
-    <script src="/lib/angular-aria/angular-aria.js"></script>
-    <script src="/lib/angular-animate/angular-animate.js"></script>
-    <script src="/lib/angular-material/angular-material.js"></script>
-    <script src="/lib/angular-messages/angular-messages.js"></script>
-    <script src="/lib/angular-material-data-table/dist/md-data-table.js"></script>
-    <script>
-        angular.module('AgroApp', ['ngMaterial', 'ngMessages', 'md.data.table']);
-    </script>
-    <script src="~/js/site.js"></script>
-
+        <script src="/lib/angular-aria/angular-aria.js"></script>
+        <script src="/lib/angular-animate/angular-animate.js"></script>
+        <script src="/lib/angular-material/angular-material.js"></script>
+        <script src="/lib/angular-messages/angular-messages.js"></script>
+        <script src="/lib/angular-material-data-table/dist/md-data-table.js"></script>
+        <script>
+            angular.module('AgroApp', ['ngMaterial', 'ngMessages', 'md.data.table']);
+        </script>
+        <script src="~/js/site.js"></script>
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -38,7 +38,7 @@ namespace AgroApp.Controllers.Api
             using (MySqlConnection con = DatabaseConnection.GetConnection())
             {
                 con.Open();
-                string query = "SELECT nummer, naam FROM Machine";
+                string query = "SELECT nummer,naam FROM Machine";
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
                     List<string[]> data = new List<string[]>();
