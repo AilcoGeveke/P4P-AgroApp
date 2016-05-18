@@ -13,8 +13,8 @@ namespace AgroApp.Models
         public string Naam { private set; get; }
         public string Kenteken { private set; get; }
         public string Status { private set; get; }
-
-        public Machine(int idMachine, string type, int nummer, string naam, string kenteken, string status)
+        
+        public Machine(int idMachine = -1, string type = "", int nummer = 0, string naam="", string kenteken="", string status="")
         {
             IdMachine = idMachine;
             Type = type;
@@ -23,6 +23,5 @@ namespace AgroApp.Models
             Kenteken = kenteken;
             Status = status;
         }
-
     }
 }

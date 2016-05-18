@@ -26,15 +26,9 @@
 
 
 /*Background*/
-md-content {
+.transparent{
     background-color: transparent;
 }
-
-.non-transparent{
-    background-color: white;
-}
-
-
 
 /*content*/
 .layout-content {
