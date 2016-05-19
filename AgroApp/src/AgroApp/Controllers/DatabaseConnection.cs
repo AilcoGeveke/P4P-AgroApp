@@ -8,10 +8,12 @@ namespace AgroApp.Controllers
 {
     public static class DatabaseConnection
     {
-        public static MySqlConnection GetConnection()
+        public static async Task<MySqlConnection> GetConnection()
         {
             string connectionString = "Database=acsm_c2056a9f0688b3b;Data Source=eu-cdbr-azure-west-d.cloudapp.net;User Id=bbe0ad93c4b224;Password=3b9d7513";
-            return new MySqlConnection(connectionString);
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            await conn.OpenAsync();
+            return conn;
         }
     }
 }
