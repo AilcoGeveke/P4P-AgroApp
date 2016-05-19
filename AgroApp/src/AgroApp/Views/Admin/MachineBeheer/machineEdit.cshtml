@@ -1,1 +1,49 @@
-﻿
+﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
+    <div class="md-whiteframe-5dp layout-content form-content">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Wijzigt momenteel @ViewData["naam"]</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <div class="content" ng-controller="VehicleEdit">
+            <div layout-padding>
+                <md-input-container class="md-block inputnomargin">
+                    <label>Volledige naam</label>
+                    <input value="@ViewData["naam"]">
+                </md-input-container>
+                <md-input-container class="md-block inputnomargin">
+                    <label>Email adres</label>
+                    <input value=@ViewData["machinenummer"]>
+                </md-input-container>
+                <md-input-container class="md-block inputnomargin">
+                    <label>Kenteken</label>
+                    <input value=@ViewData["kenteken"]>
+                </md-input-container>
+                <md-input-container class="inputnomargin">
+                    <label>Rol</label>
+                    <md-select required ng-model="ctrl.userState">
+                        <md-option ng-repeat="n in rollen">
+                            {{n}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout-align="row">
+                <span flex></span>
+                <md-button ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
+                <md-button disabled ng-style="{color: 'red'}" ng-click="showConfirmDeleteDialog()">Verwijder Machine</md-button>
+            </div>
+        </div>
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+</md-content>
+
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/admin.js"></script>
+}

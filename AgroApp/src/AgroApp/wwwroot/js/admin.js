@@ -137,6 +137,44 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     };
 });
 
+
+agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.rollen = ['Gebruiker', 'Admin'];
+
+    $scope.showConfirmChangesDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Wijzigingen Toepassen?')
+              .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
+              .targetEvent(ev)
+              .ok('Wijzigingen Toepassen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            $rootScope.changeView('admin/machinebeheer');
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
+    $scope.showConfirmDeleteDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Machine Verwijderen')
+              .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
+              .targetEvent(ev)
+              .ok('Machine Verwijderen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            $rootScope.changeView('admin/machinebeheer');
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+   
+});
+
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.manKeuze = [];
     $rootScope.showloading = false;

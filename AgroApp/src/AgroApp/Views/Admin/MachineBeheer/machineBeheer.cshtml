@@ -12,11 +12,12 @@
         </md-toolbar>
         <div ng-controller="VehicleView" ng-init="getMachines()">
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="n in vehicles" ng-click="aa()">
+                <md-list-item class="md-3-line" ng-repeat="n in vehicles" ng-click="changeView('admin/machinebeheer/wijzigen/' + n.IdMachine)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ n.Naam }}</h3>
                         <p>{{ n.Nummer }}</p>
+                        <p>De id is:{{ n.IdMachine}}</p>
                     </div>
                     <span flex></span>
                     <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
