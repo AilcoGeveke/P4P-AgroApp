@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using AgroApp.Models;
 using AgroApp.Managers;
+using AgroApp.Controllers.Api;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +23,7 @@ namespace AgroApp.Controllers
         [HttpGet("admin/gebruikers/wijzigen/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
-            User user = await UserManager.GetUser(id);
+            User user = await UserController.GetUser(id);
             ViewData["naam"] = user.Name;
             ViewData["email"] = user.Email;
             return View("../admin/gebruikerbeheer/gebruikeredit");

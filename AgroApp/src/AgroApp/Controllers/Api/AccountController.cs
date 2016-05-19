@@ -26,7 +26,7 @@ namespace AgroApp.Controllers.Api
         [HttpGet("getfulllist")]
         public async Task<string> GetAllUsers()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(await UserManager.GetAllUsers());
+            return Newtonsoft.Json.JsonConvert.SerializeObject(await UserController.GetAllUsers());
         }
     }
 }
