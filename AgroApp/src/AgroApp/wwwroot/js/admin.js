@@ -84,23 +84,6 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     }
 });
 
-agroApp.controller('VehicleView', function ($scope, $http, $rootScope) {
-    $scope.vehicles = [];
-    $scope.getMachines = function () {
-        $rootScope.showLoading = true;
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getmachines',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            $scope.vehicles = data;
-            $rootScope.showLoading = false;
-        })
-    }
-});
-
-
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 
@@ -155,20 +138,27 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-    $scope.machineKeuze = [];
-    $scope.getMachineKeuzeData = function () {
+    $scope.selectedMachines = [];
+    $scope.machines = [];
+    $scope.getMachines = function () {
         $scope.showloading = true;
 
         $http({
             method: 'GET',
-            url: '/api/werkbon/getmachinekeuze',
+            url: '/api/werkbon/getmachines',
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
-            $scope.machine = data;
+            $scope.machines = data;
         });
     };
+    $scope.increaseSelectedMachineList = function () {
+        $scope.selectedMachines.push($scope.machines[0]);
+    }
+    $scope.decreaseSelectedMachineList = function () {
+        $scope.selectedMachines.pop();
+    }
 
     $scope.gebruikers = [];
     $scope.getAllUserData = function () {
@@ -182,5 +172,9 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             $scope.gebruikers = data;
             $rootScope.showLoading = false;
         })
+    }
+
+    $scope.submitWerkbonAdd = function () {
+        console.log($scope.selectedMachines);
     }
 });

@@ -10,9 +10,9 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="VehicleView" ng-init="getMachines()">
+        <div ng-controller="WerkbonEdit" ng-init="getMachines()">
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="n in vehicles" ng-click="aa()">
+                <md-list-item class="md-3-line" ng-repeat="n in machines" ng-click="aa()">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ n.Naam }}</h3>
