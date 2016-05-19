@@ -84,6 +84,23 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     }
 });
 
+agroApp.controller('VehicleView', function ($scope, $http, $rootScope) {
+    $scope.vehicles = [];
+    $scope.getMachines = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getmachines',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.vehicles = data;
+            $rootScope.showLoading = false;
+        })
+    }
+});
+
+
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 

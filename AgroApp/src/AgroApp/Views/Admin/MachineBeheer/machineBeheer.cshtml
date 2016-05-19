@@ -1,4 +1,4 @@
-﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation">
+﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
     <div class="md-whiteframe-5dp layout-content">
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
@@ -10,13 +10,13 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="UserView" ng-init="getAllUserData()">
+        <div ng-controller="VehicleView" ng-init="getMachines()">
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="gebruiker in gebruikers" ng-click="changeView('admin/gebruikers/wijzigen/' + gebruiker.IdWerknemer)">
-                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">face</md-icon>
+                <md-list-item class="md-3-line" ng-repeat="n in vehicles" ng-click="aa()">
+                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ gebruiker.Name }}</h3>
-                        <p>{{ gebruiker.Email }}</p>
+                        <h3>{{ n.Naam }}</h3>
+                        <p>{{ n.Nummer }}</p>
                     </div>
                     <span flex></span>
                     <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
