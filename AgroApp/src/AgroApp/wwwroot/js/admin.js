@@ -274,7 +274,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         $scope.selectedMachines.push($scope.machines[0]);
     }
     $scope.decreaseSelectedMachineList = function () {
-        $scope.selectedMachines.pop($scope.machines[0]);
+        $scope.selectedMachines.pop();
     }
 
     $scope.selectedHulpstukken = [];

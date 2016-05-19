@@ -1,11 +1,9 @@
-﻿using AgroApp.Managers;
-using AgroApp.Models;
+﻿using AgroApp.Models;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,18 +20,19 @@ namespace AgroApp.Controllers.Api
         public async Task<string> Login(string username, string password)
         {
             password = GetEncodedHash(password, "123");
-            if (await IsValid(username, password))
-            {
-                string name = (await GetUser(username))?.Name ?? "error with loading name";
-                List<Claim> claimCollection = new List<Claim> {
+
+            if (!await IsValid(username, password))
+                return "false";
+
+            string name = (await GetUser(username))?.Name ?? "error with loading name";
+            List<Claim> claimCollection = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
                     new Claim(ClaimTypes.Role, "Admin") };
 
-                await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
-                return "true"; // auth succeed 
-            }
-            return "false";
+            await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
+            return "true"; // auth succeed 
+
         }
 
         // GET: api/values
@@ -48,43 +47,32 @@ namespace AgroApp.Controllers.Api
         public static async Task<bool> IsValid(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-                return false;
+                throw new ArgumentException();
 
-            using (MySqlConnection con = DatabaseConnection.GetConnection())
+            string query = "SELECT COUNT(*) FROM werknemer WHERE gebruikersnaam=@0 AND wachtwoord=@1;";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", username),
+                new MySqlParameter("@1", password)))
             {
-                con.Open();
-                string query = "SELECT COUNT(*) FROM werknemer WHERE gebruikersnaam=@0 AND wachtwoord=@1;";
-                using (MySqlCommand cmd = new MySqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@0", username);
-                    cmd.Parameters.AddWithValue("@1", password);
-
-                    DbDataReader reader = await cmd.ExecuteReaderAsync();
-                    reader.Read();
-                    return reader.GetInt32(0) == 1;
-                }
+                await reader.ReadAsync();
+                return reader.GetInt32(0) == 1;
             }
         }
 
         public static async Task<User> GetUser(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
-                return null;
+                throw new ArgumentException();
 
-            using (MySqlConnection con = DatabaseConnection.GetConnection())
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer WHERE gebruikersnaam=@0";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", email)))
             {
-                con.Open();
-                string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer WHERE gebruikersnaam=@0";
-                using (MySqlCommand cmd = new MySqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@0", email);
-                    DbDataReader reader = await cmd.ExecuteReaderAsync();
-                    while (reader.Read())
-                        return new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
-                }
+                await reader.ReadAsync();
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
             }
-
-            return null;
         }
 
         public static async Task<User> GetUser(int id)
@@ -92,20 +80,14 @@ namespace AgroApp.Controllers.Api
             if (id < 0)
                 return null;
 
-            using (MySqlConnection con = DatabaseConnection.GetConnection())
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer WHERE idWerknemer=@0";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", id)))
             {
-                con.Open();
-                string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer WHERE idWerknemer=@0";
-                using (MySqlCommand cmd = new MySqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@0", id);
-                    DbDataReader reader = await cmd.ExecuteReaderAsync();
-                    while (reader.Read())
-                        return new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
-                }
+                await reader.ReadAsync();
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
             }
-
-            return null;
         }
 
         [HttpGet("register/{username}/{password}/{fullname}/{rol}")]
@@ -117,41 +99,33 @@ namespace AgroApp.Controllers.Api
             password = GetEncodedHash(password, "123");
             if (await IsValid(username, password))//GAAT NIET WERKEN, ALS NAAM OF WACHTWOORD MAAR IETS ANDERS IS RETURNED IE FALSE
                 return "Gebruiker bestaat al";
-            
-            using (MySqlConnection con = DatabaseConnection.GetConnection())
-            {
-                con.Open();
-                string query = "INSERT INTO werknemer (`naam`, `gebruikersnaam`, `wachtwoord`, `rol`) VALUES (@0, @1, @2, @3);";
-                using (MySqlCommand cmd = new MySqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@0", fullname);
-                    cmd.Parameters.AddWithValue("@1", username);
-                    cmd.Parameters.AddWithValue("@2", password);
-                    cmd.Parameters.AddWithValue("@3", rol);
 
-                    try { await cmd.ExecuteNonQueryAsync(); return "true"; }
-                    catch { return "Er is iets misgegaan!"; }
+            string query = "INSERT INTO werknemer (`naam`, `gebruikersnaam`, `wachtwoord`, `rol`) VALUES (@0, @1, @2, @3);";
+            try
+            {
+                using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+                {
+                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                      new MySqlParameter("@0", fullname),
+                      new MySqlParameter("@1", username),
+                      new MySqlParameter("@2", password),
+                      new MySqlParameter("@3", rol));
+                    return "true";
                 }
             }
+            catch { return "Er is iets misgegaan!"; }
         }
 
         //[Authorize("Admin")]
         public static async Task<IEnumerable<User>> GetAllUsers()
         {
-            using (MySqlConnection con = DatabaseConnection.GetConnection())
-            {
-                con.Open();
-                string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer";
-                using (MySqlCommand cmd = new MySqlCommand(query, con))
-                {
-                    var reader = await cmd.ExecuteReaderAsync();
-
-                    List<User> users = new List<User>();
-                    while (reader.Read())
-                        users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
-                    return users;
-                }
-            }
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer";
+            List<User> users = new List<User>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
+                while (await reader.ReadAsync())
+                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
+            return users;
         }
 
         static string GetEncodedHash(string password, string salt)

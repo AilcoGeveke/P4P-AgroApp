@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Authorization;
-using AgroApp.Managers;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,7 +23,7 @@ namespace AgroApp.Controllers.Api
         [HttpGet("getfulllist")]
         public async Task<string> GetAllUsers()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(await UserController.GetAllUsers());
+            return JsonConvert.SerializeObject(await UserController.GetAllUsers());
         }
     }
 }

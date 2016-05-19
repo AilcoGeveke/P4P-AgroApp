@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+﻿using AgroApp.Controllers.Api;
 using AgroApp.Models;
-using AgroApp.Managers;
-using AgroApp.Controllers.Api;
+using Microsoft.AspNet.Mvc;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
