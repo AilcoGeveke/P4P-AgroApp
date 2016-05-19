@@ -122,7 +122,10 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
 
 agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.rollen = ['Gebruiker', 'Admin'];
+    $scope.types = ['Kranen', 'Shovels', 'Trekkers', 'Dumpers', 'Wagens', 'Tanks', 'Ladewagens',
+        'Strandreinigen', 'Gladheid', 'Auto s', 'Apparaten', 'Trilplaten',
+        'Meetapparatuur', 'Aanhangers', 'Hulpstukken', 'Overige'];
+
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
