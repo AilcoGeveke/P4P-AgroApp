@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using System.Data.Common;
 using AgroApp.Models;
 using AgroApp.Managers;
+using AgroApp.Controllers.Api;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,22 +28,14 @@ namespace AgroApp.Controllers.Admin
             return View("../admin/machinebeheer/machineadd");
         }
 
-        [HttpGet("admin/machinebeheer/wijzigen")]
-        public IActionResult MachineAanpassen()
-        {
-            return View("../admin/machinebeheer/machineEdit");
-        }
-
         [HttpGet("admin/machinebeheer/wijzigen/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
-            Machine machine = await MachineManager.GetMachine(id);
+            Machine machine = await WerkbonController.GetMachine(id);
             ViewData["naam"] = machine.Naam;
             ViewData["machinenummer"] = machine.Nummer;
             ViewData["kenteken"] = machine.Kenteken;
             return View("../admin/machinebeheer/machineedit");
         }
-
-
     }
 }

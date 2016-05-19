@@ -9,28 +9,33 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div class="content" ng-controller="loginController">
-            <form name="gebruikerform" layout-padding layout="column" ng-submit="goRegister()">
+        <md-toolbar class="md-warn" ng-show="showError">
+            <div class="md-toolbar-tools">
+                <h6 class="md-flex">{{errorMessage}}</h6>
+            </div>
+        </md-toolbar>
+        <div class="content" ng-controller="VehicleEdit">
+            <form name="gebruikerform" layout-padding layout="column" ng-submit="AddMachine()">
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine naam</label>
-                    <input required type="text" name="machineName" minlength="2" maxlength="40">
+                    <input required type="text" name="machineName"ng-model="machineDetails.naam" minlength="2" maxlength="40">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine nummer</label>
-                    <input required type="text" name="machineNum" minlength="3" maxlength="10">
+                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" minlength="3" maxlength="10">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Kenteken</label>
-                    <input input type="text" name="machineKenteken">
+                    <input input type="text" ng-model="machineDetails.kenteken" value="" name="machineKenteken">
                 </md-input-container>
 
                 <md-input-container class="inputnomargin">
                     <label>Categorie</label>
-                    <md-select required ng-model="ctrl.userState">
-                        <md-option ng-repeat="n in rollen">
+                    <md-select required ng-model="machineDetails.type">
+                        <md-option ng-repeat="n in types" ng-selected="$first">
                             {{n}}
                         </md-option>
                     </md-select>

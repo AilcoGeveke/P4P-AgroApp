@@ -15,6 +15,7 @@ namespace AgroApp.Controllers.Api
     public class AccountController : Controller
     {
         // GET: api/account
+        [Authorize]
         [HttpGet("me")]
         public string GetMe()
         {
