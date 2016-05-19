@@ -7,16 +7,16 @@ namespace AgroApp.Models
 {
     public class Machine { 
 
-        public int IdMachine { private set; get; }
+        public int IdMachines { private set; get; }
         public string Type { private set; get; }
         public int Nummer { private set; get; }
         public string Naam { private set; get; }
         public string Kenteken { private set; get; }
         public string Status { private set; get; }
 
-        public Machine(int idMachine, string type, int nummer, string naam, string kenteken, string status)
+        public Machine(int idMachines, string type, int nummer, string naam, string kenteken, string status)
         {
-            IdMachine = idMachine;
+            IdMachines = idMachines;
             Type = type;
             Nummer = nummer;
             Naam = naam;
