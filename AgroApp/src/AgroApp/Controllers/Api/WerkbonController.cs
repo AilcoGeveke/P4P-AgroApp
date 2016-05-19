@@ -60,14 +60,14 @@ namespace AgroApp.Controllers.Api
         }
 
         [HttpGet("addmachine/{naam}/{nummer}/{kenteken}/{type}")]
-        public async Task<bool> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
+        public async Task<string> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
                 string query = "SELECT * FROM Machine WHERE nummer=@0";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
                     if (reader.HasRows)
-                        return false;
+                        return "false";
 
                 query = "INSERT INTO Machine (naam, nummer, kenteken, type, status) VALUES (@0, @1, @2, @3, @4)";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -76,20 +76,25 @@ namespace AgroApp.Controllers.Api
                     new MySqlParameter("@2", kenteken),
                     new MySqlParameter("@3", type),
                     new MySqlParameter("@4", "")))
-                    return reader.RecordsAffected == 1;
+                    return "true";
             }
         }
 
-        [HttpGet("updatemachine")]//WERKT NIET AILCO, WAAR ZIJN DE PARAMETERS
-        public async Task<bool> UpdateMachine(int id)
+        [HttpGet("updatemachine")]
+        public async Task<string> UpdateMachine(int id, string naam, string type, int nummer = 0, string kenteken = "")
         {
             if (GetMachine(id) == null)
-                throw new ArgumentException();
+                return "error";
 
             string query = "UPDATE Machine SET naam=@0, nummer=@1, kenteken=@2, type=@3) WHERE idMachines=@4";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
-                return reader.RecordsAffected > 0;
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", naam),
+                new MySqlParameter("@1", nummer),
+                new MySqlParameter("@2", kenteken),
+                new MySqlParameter("@3", type),
+                new MySqlParameter("@4", id)))
+                return "true";
         }
 
         [HttpGet("gethulpstukken")]
@@ -103,5 +108,23 @@ namespace AgroApp.Controllers.Api
                     data.Add(reader.GetString(2));
             return data;
         }
+
+        //[HttpGet("getcollegakeuze")]
+        //public async Task<IEnumerable<string>> GetCollegaKeuze()
+        //{
+        //    using (MySqlConnection con = DatabaseConnection.GetConnection())
+        //    {
+        //        con.Open();
+        //        string query = "SELECT naam FROM Werknemer";
+        //        using (MySqlCommand cmd = new MySqlCommand(query, con))
+        //        {
+        //            List<string> data = new List<string>();
+        //            DbDataReader reader = await cmd.ExecuteReaderAsync();
+        //            while (reader.Read())
+        //                data.Add(reader.GetString(0));
+        //            return data;
+        //        }
+        //    }
+        //}
     }
 }
