@@ -3,40 +3,46 @@
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
                 <h2>
-                    <span>Wijzigt momenteel @ViewData["naam"]</span>
+                    <span>Wijzigt momenteel: @ViewData["naam"]</span>
                 </h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
         <div class="content" ng-controller="VehicleEdit">
-            <div layout-padding>
+            <form name="gebruikerform" layout-padding layout="column" ng-submit="EditMachine()">
                 <md-input-container class="md-block inputnomargin">
-                    <label>Volledige naam</label>
-                    <input value="@ViewData["naam"]">
+                    <p value=@ViewData["id"] ng-model="machineDetails.id" ng-style="{display: none}"></p>
+                    <label>Machine naam</label>
+                    <input required type="text" name="machineName" value="@ViewData["naam"]" minlength="2" maxlength="40">
                 </md-input-container>
+
                 <md-input-container class="md-block inputnomargin">
-                    <label>Email adres</label>
-                    <input value=@ViewData["machinenummer"]>
+                    <label>Machine nummer</label>
+                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" value=@ViewData["kenteken"] minlength="2" maxlength="10">
                 </md-input-container>
+
                 <md-input-container class="md-block inputnomargin">
                     <label>Kenteken</label>
-                    <input value=@ViewData["kenteken"]>
+                    <input input type="text" name="machineKenteken" ng-model="machineDetails.kenteken" value=@ViewData["machinenummer"]>
                 </md-input-container>
+
                 <md-input-container class="inputnomargin">
-                    <label>Rol</label>
-                    <md-select required ng-model="ctrl.userState">
-                        <md-option ng-repeat="n in types">
+                    <label>Categorie</label>
+                    <md-select required ng-model="machineDetails.type">
+                        <md-option ng-repeat="n in types" ng-selected="$first">
                             {{n}}
                         </md-option>
                     </md-select>
                 </md-input-container>
-            </div>
+                <p>Huidige categorie: @ViewData["type"]</p>
+            
             <div layout-align="row">
                 <span flex></span>
                 <md-button ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
                 <md-button disabled ng-style="{color: 'red'}" ng-click="showConfirmDeleteDialog()">Verwijder Machine</md-button>
             </div>
+          </form>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>

@@ -32,9 +32,11 @@ namespace AgroApp.Controllers.Admin
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
             Machine machine = await WerkbonController.GetMachine(id);
+            ViewData["id"] = id;
             ViewData["naam"] = machine.Naam;
             ViewData["machinenummer"] = machine.Nummer;
             ViewData["kenteken"] = machine.Kenteken;
+            ViewData["type"] = machine.Type;
             return View("../admin/machinebeheer/machineedit");
         }
     }

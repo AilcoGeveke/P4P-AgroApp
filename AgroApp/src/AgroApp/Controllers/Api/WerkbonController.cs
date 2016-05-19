@@ -77,7 +77,7 @@ namespace AgroApp.Controllers.Api
         }
 
         [HttpGet("addmachine/{naam}/{nummer}/{kenteken}/{type}")]
-        public async Task<bool> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
+        public async Task<string> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
         {
             using (MySqlConnection con = DatabaseConnection.GetConnection())
             {
@@ -89,7 +89,7 @@ namespace AgroApp.Controllers.Api
                     DbDataReader reader = await cmd.ExecuteReaderAsync();
                     reader.Read();
                     if (reader.HasRows)
-                        return false;
+                        return "false";
                     reader.Close();
                 }
                 
@@ -104,13 +104,13 @@ namespace AgroApp.Controllers.Api
                     cmd.Parameters.AddWithValue("@4", "");
                     DbDataReader reader = await cmd.ExecuteReaderAsync();
                     reader.Read();
-                    return true;
+                    return "true";
                 }
             }
         }
 
-        [HttpGet("updatemachine")]
-        public async Task<string> UpdateMachine(int id)
+        [HttpGet("updatemachine/{id}/{naam}/{nummer}/{kenteken}/{type}")]
+        public async Task<string> UpdateMachine(int id, string naam, string type, int nummer = 0, string kenteken = "")
         {
             if (GetMachine(id) == null)
                 return "error";
@@ -122,11 +122,14 @@ namespace AgroApp.Controllers.Api
                                 + "WHERE idMachines=@4";
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 {
-                    List<Machine> data = new List<Machine>();
+                    cmd.Parameters.AddWithValue("@0", naam);
+                    cmd.Parameters.AddWithValue("@1", nummer);
+                    cmd.Parameters.AddWithValue("@2", kenteken);
+                    cmd.Parameters.AddWithValue("@3", type);
+                    cmd.Parameters.AddWithValue("@4", id);
                     DbDataReader reader = await cmd.ExecuteReaderAsync();
-                    while (reader.Read())
-                        data.Add(new Machine(idMachine: reader.GetInt32(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
-                    return Newtonsoft.Json.JsonConvert.SerializeObject(data);
+                    reader.Read();
+                    return "true";
                 }
             }
         }
