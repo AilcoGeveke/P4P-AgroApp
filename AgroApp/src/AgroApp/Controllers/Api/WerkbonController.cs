@@ -60,14 +60,15 @@ namespace AgroApp.Controllers.Api
         }
 
         [HttpGet("addmachine/{naam}/{nummer}/{kenteken}/{type}")]
-        public async Task<string> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
+        public async Task<bool> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
                 string query = "SELECT * FROM Machine WHERE nummer=@0";
-                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
+                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                    new MySqlParameter("@0", type)))
                     if (reader.HasRows)
-                        return "false";
+                        return false;
 
                 query = "INSERT INTO Machine (naam, nummer, kenteken, type, status) VALUES (@0, @1, @2, @3, @4)";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -76,7 +77,7 @@ namespace AgroApp.Controllers.Api
                     new MySqlParameter("@2", kenteken),
                     new MySqlParameter("@3", type),
                     new MySqlParameter("@4", "")))
-                    return "true";
+                    return reader.RecordsAffected == 1;
             }
         }
 

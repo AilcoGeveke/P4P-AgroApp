@@ -171,7 +171,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
-            if (data == "true")
+            if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
                 $scope.showloading = false;
@@ -185,29 +185,6 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         });
     };
 
-    $scope.AddMachine = function () {
-        $scope.showloading = true;
-
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/addmachine/' + $scope.machineDetails.naam + '/' + $scope.machineDetails.nummer + '/' + $scope.machineDetails.kenteken + '/' + $scope.machineDetails.type,
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
-            if (data == "true")
-                $rootScope.changeView('admin/machinebeheer');
-            else {
-                $scope.showloading = false;
-                $scope.showError = true;
-                $scope.errorMessage = "Het machinenummer is al geregistreerd";
-            }
-        }).error(function () {
-            $scope.showloading = false;
-            $scope.showError = true;
-            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
-        });
-    };
 
     $scope.EditMachine = function () {
         $scope.showloading = true;
