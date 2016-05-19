@@ -126,6 +126,8 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         'Strandreinigen', 'Gladheid', 'Auto s', 'Apparaten', 'Trilplaten',
         'Meetapparatuur', 'Aanhangers', 'Hulpstukken', 'Overige'];
 
+    $scope.showloading = false;
+    $scope.showError = false;
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
@@ -156,6 +158,30 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             $rootScope.changeView('admin/machinebeheer');
         }, function () {
             $rootScope.showLoading = false;
+        });
+    };
+
+    $scope.AddMachine = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/addmachine/' + $scope.machineDetails.naam + '/' + $scope.machineDetails.nummer + '/' + $scope.machineDetails.kenteken + '/' + $scope.machineDetails.type,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == "true")
+                window.location.href = '/admin/machinebeheer/machinebeheer';
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Het machinenummer is al geregistreerd";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
    
