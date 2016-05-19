@@ -191,12 +191,30 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             $scope.machines = data;
         });
     };
+
+
     $scope.increaseSelectedMachineList = function () {
         $scope.selectedMachines.push($scope.machines[0]);
     }
     $scope.decreaseSelectedMachineList = function () {
-        $scope.selectedMachines.pop();
+        $scope.selectedMachines.pop($scope.machines[0]);
     }
+
+    $scope.selectedHulpstukken = [];
+    $scope.hulpstukken = [];
+    $scope.getHulpstukken = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/gethulpstukken',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.hulpstukken = data;
+        });
+    };
 
     $scope.gebruikers = [];
     $scope.getAllUserData = function () {
@@ -214,5 +232,31 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);
+    }
+
+    $scope.onUrenChange = function ($isAantal) {
+        if($isAantal)
+        {
+            $scope.tijd.van = new Date( 1970, 1, 1, 0, 0, 0, 0);
+            $scope.tijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
+        }
+        else
+        {
+            var millDiff = $scope.tijd.tot - $scope.tijd.van;
+            var sec = millDiff / 1000;
+            var min = sec / 60;
+            var hours = min / 60;
+            $scope.tijd.aantal = new Date( 1970, 1, 1, hours % 24, min % 60, 0, 0 );
+        }
+    }
+
+    $scope.onGewichtChange = function ($isNetto) {
+        if ($isNetto) {
+            $scope.gewicht.vol = new Number(0);
+            $scope.gewicht.leeg = new Number(0);            
+        }
+        else {
+            $scope.gewicht.netto =($scope.gewicht.vol - $scope.gewicht.leeg);
+        }
     }
 });

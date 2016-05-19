@@ -51,6 +51,24 @@ namespace AgroApp.Controllers.Api
             }
         }
 
+        [HttpGet("gethulpstukken")]
+        public async Task<IEnumerable<string>> GetHulpstukken()
+        {
+            using (MySqlConnection con = DatabaseConnection.GetConnection())
+            {
+                con.Open();
+                string query = "SELECT idHulpstuk, nummer, naam FROM Hulpstuk";
+                using (MySqlCommand cmd = new MySqlCommand(query, con))
+                {
+                    List<string> data = new List<string>();
+                    DbDataReader reader = await cmd.ExecuteReaderAsync();
+                    while (reader.Read())
+                        data.Add(reader.GetString(2));
+                    return data;
+                }
+            }
+        }
+
         [HttpGet("getcollegakeuze")]
         public async Task<IEnumerable<string>> GetCollegaKeuze()
         {
@@ -70,5 +88,17 @@ namespace AgroApp.Controllers.Api
         }
     }
 
+    internal class Hulpstuk : Machine
+    {
+        private int idHulpstuk;
+        private string naam;
+        private int nummer;
 
+        public Hulpstuk(int idHulpstuk, int nummer, string naam)
+        {
+            this.idHulpstuk = idHulpstuk;
+            this.nummer = nummer;
+            this.naam = naam;
+        }
+    }
 }
