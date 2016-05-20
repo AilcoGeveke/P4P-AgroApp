@@ -147,7 +147,8 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $rootScope.showLoading = true;
         var confirm = $mdDialog.confirm()
               .title('Machine Verwijderen')
-              .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
+              .textContent('Als u doorgaat zal de machine definitief verwijderd worden! ' 
+              + 'LET OP: Als u deze machine eerder heeft gebruikt in een werbon, zal de data van deze werkbonnen corrupt worden')
               .targetEvent(ev)
               .ok('Machine Verwijderen')
               .cancel('Annuleer');
@@ -222,7 +223,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
-                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+                $scope.errorMessage = "Er is geen machine geselecteerd!";
             }
         }).error(function () {
             $scope.showloading = false;

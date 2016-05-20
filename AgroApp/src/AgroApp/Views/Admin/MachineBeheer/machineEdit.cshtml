@@ -11,20 +11,20 @@
         </md-toolbar>
         <div class="content" ng-controller="VehicleEdit">
             <form name="gebruikerform" layout-padding layout="column" ng-submit="EditMachine()">
+                <p hidden ng-model="machineDetails.id" ng-init="machineDetails.id = '@ViewData["id"]'"></p>
                 <md-input-container class="md-block inputnomargin">
-                    <p ng-model="machineDetails.id" ng-init="machineDetails.id = '@ViewData["id"]'"></p>
                     <label>Machine naam</label>
-                    <input required type="text" name="machineName" value="@ViewData["naam"]" minlength="2" maxlength="40">
+                    <input required type="text" name="machineName" ng-model="machineDetails.naam" ng-init="machineDetails.naam = '@ViewData["naam"]'" minlength="2" maxlength="40">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine nummer</label>
-                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" ng-init="machineDetails.nummer = @ViewData["machinenummer"]" minlength="2" maxlength="10">
+                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" ng-init="machineDetails.nummer = '@ViewData["machinenummer"]'" minlength="2" maxlength="10">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Kenteken</label>
-                    <input input type="text" name="machineKenteken" ng-model="machineDetails.kenteken">
+                    <input input type="text" name="machineKenteken" ng-model="machineDetails.kenteken" ng-init="machineDetails.kenteken = '@ViewData["kenteken"]'">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
@@ -35,7 +35,6 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-            
             <div layout-align="row">
                 <span flex></span>
                 <md-button ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
