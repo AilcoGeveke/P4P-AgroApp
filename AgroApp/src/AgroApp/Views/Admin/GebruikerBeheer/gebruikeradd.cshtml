@@ -9,9 +9,8 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/gebruikers')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div class="content" ng-controller="loginController">
-            <form name="gebruikerform" layout="column" ng-submit="goRegister()">
-
+        <form name="gebruikerform" layout="column" ng-controller="loginController" ng-submit="goRegister()">
+            <div class="content">
                 <md-input-container class="md-block inputnomargin">
                     <label>Volledige Naam</label>
                     <input required type="text" name="userFullName" ng-model="userDetails.fullname" minlength="3" maxlength="100">
@@ -35,13 +34,13 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-            </form>
-        </div>
+            </div>
 
-        <md-divider></md-divider>
-        <div layout="row" layout-align="end center" class="content-actions">
-            <md-button type="submit" class="md-primary md-raised">Gebruiker Toevoegen</md-button>
-        </div>
+            <md-divider></md-divider>
+            <div layout="row" layout-align="end center" class="content-actions">
+                <md-button type="submit" class="md-primary md-raised">Gebruiker Toevoegen</md-button>
+            </div>
+        </form>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
 </md-content>
