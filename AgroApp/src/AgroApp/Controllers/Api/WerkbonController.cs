@@ -110,6 +110,8 @@ namespace AgroApp.Controllers.Api
             return data;
         }
 
+
+
         //[HttpGet("getcollegakeuze")]
         //public async Task<IEnumerable<string>> GetCollegaKeuze()
         //{

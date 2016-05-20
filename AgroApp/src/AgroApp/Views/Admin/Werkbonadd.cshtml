@@ -64,9 +64,9 @@
 
 
                 <div ng-init="getHulpstukken()">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedSelectedMachines track by $index">
+                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
                         <label>Hulpstuk</label>
-                        <md-select ng-model="selectedMachines[$index]">
+                        <md-select ng-model="selectedHulpstukken[$index]">
                             <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
                                 {{n.Nummer}}: {{n.Naam}}
                             </md-option>
