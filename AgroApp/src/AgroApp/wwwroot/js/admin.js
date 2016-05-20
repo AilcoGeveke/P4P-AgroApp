@@ -126,9 +126,6 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         'Strandreinigen', 'Gladheid', 'Auto s', 'Apparaten', 'Trilplaten',
         'Meetapparatuur', 'Aanhangers', 'Hulpstukken', 'Overige'];
 
-    $scope.showloading = false;
-    $scope.showError = false;
-
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
@@ -209,7 +206,36 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
+
+    $scope.DeleteMachine = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/deletemachine/' + $scope.machineDetails.id,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == "true")
+                $rootScope.changeView('admin/machinebeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
    
+    $scope.test = function ($val) {
+        $scope.machineDetails.cato = $val;
+        console.log($scope.machineDetails.cato);
+        console.log($scope.machineDetails.nummer);
+    }
 });
 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
