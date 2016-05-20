@@ -1,4 +1,53 @@
-﻿@{  Layout = "_Admin"; }
+﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
+    <div class="md-whiteframe-5dp layout-content form-content">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Opdracht</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>home</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <form class="content" ng-controller="opdrachtEdit" ng-submit="submitWerkbonAdd()">
+            <div layout-gt-xs="row">
+            <md-list flex-gt-xs="50">
+                <md-input-container class="md-block inputnomargin">
+                    <label>Klant</label>
+                    <input input type="text">
+                </md-input-container>
+                <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
+                    <label>Werknemer</label>
+                    <md-select ng-model="userKeuze">
+                        <md-option ng-repeat="n in gebruikers">
+                            {{n.Name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </md-list>
+            <md-list flex-gt-xs="50">
+                <md-input-container class="md-block inputnomargin">
+                    <label>Adres</label>
+                    <input input type="text">
+                </md-input-container>
+                <md-datepicker ng-model="myDate" md-placeholder="Datum">
+                </md-datepicker>
+            </md-list>
+            </div>
+            <md-input-container class="md-block inputnomargin">
+                <label>Beschrijving</label>
+                <textarea ng-model="opdrachtOmschrijving" md-maxlength="200" rows="15" md-select-on-focus></textarea>
+            </md-input-container>
+            <md-button class="md-raised md-primary" type="submit">Verzenden</md-button>
+            <md-button class="md-raised md-primary" type="submit">Opslaan</md-button>
 
+        </form>
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
 
+</md-content>
+<div class="body-halfbackground"></div>
 
+@section scripts{
+    <script src="~/js/admin.js"></script>
+}
