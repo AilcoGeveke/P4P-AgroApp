@@ -12,14 +12,14 @@
         <div class="content" ng-controller="VehicleEdit">
             <form name="gebruikerform" layout-padding layout="column" ng-submit="EditMachine()">
                 <md-input-container class="md-block inputnomargin">
-                    <p value=@ViewData["id"] ng-model="machineDetails.id" ng-style="{display: none}"></p>
+                    <p value="@ViewData["id"]" ng-model="machineDetails.id" ng-style="{display: none}"></p>
                     <label>Machine naam</label>
                     <input required type="text" name="machineName" value="@ViewData["naam"]" minlength="2" maxlength="40">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine nummer</label>
-                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" value=@ViewData["kenteken"] minlength="2" maxlength="10">
+                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" value="@ViewData["kenteken"]" minlength="2" maxlength="10">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
