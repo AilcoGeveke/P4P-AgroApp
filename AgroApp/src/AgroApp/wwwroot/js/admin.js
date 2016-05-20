@@ -126,9 +126,6 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         'Strandreinigen', 'Gladheid', 'Auto s', 'Apparaten', 'Trilplaten',
         'Meetapparatuur', 'Aanhangers', 'Hulpstukken', 'Overige'];
 
-    $scope.showloading = false;
-    $scope.showError = false;
-
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
@@ -210,124 +207,136 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         });
     };
 
+    $scope.DeleteMachine = function () {
+        $scope.showloading = true;
 
-   
-});
-agroApp.controller('opdrachtEdit', function ($scope, $rootScope, $http) {
-        $scope.gebruikers = [];
-        $scope.getAllUserData = function () {
-            $rootScope.showLoading = true;
-            $http({
-                method: 'GET',
-                url: '/api/account/getfulllist',
-                params: 'limit=10, sort_by=created:desc',
-                headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-            }).success(function (data) {
-                $scope.gebruikers = data;
-                $rootScope.showLoading = false;
-            })
-        }
-    });
-
-    agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
-        $scope.manKeuze = [];
-        $rootScope.showloading = false;
-
-        $scope.getManKeuzeData = function () {
-            $scope.showloading = true;
-
-            $http({
-                method: 'GET',
-                url: '/api/werkbon/getmankeuze',
-                params: 'limit=10, sort_by=created:desc',
-                headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-            }).success(function (data) {
-                // With the data succesfully returned, call our callback
-                $scope.man = data;
-            });
-        };
-
-        $scope.selectedMachines = [];
-        $scope.machines = [];
-        $scope.getMachines = function () {
-            $scope.showloading = true;
-
-            $http({
-                method: 'GET',
-                url: '/api/werkbon/getmachines',
-                params: 'limit=10, sort_by=created:desc',
-                headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-            }).success(function (data) {
-                // With the data succesfully returned, call our callback
-                $scope.machines = data;
-            });
-        };
-
-
-        $scope.increaseSelectedMachineList = function () {
-            $scope.selectedMachines.push($scope.machines[0]);
-        }
-        $scope.decreaseSelectedMachineList = function () {
-            $scope.selectedMachines.pop();
-        }
-
-        $scope.selectedHulpstukken = [];
-        $scope.hulpstukken = [];
-        $scope.getHulpstukken = function () {
-            $scope.showloading = true;
-
-            $http({
-                method: 'GET',
-                url: '/api/werkbon/gethulpstukken',
-                params: 'limit=10, sort_by=created:desc',
-                headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-            }).success(function (data) {
-                // With the data succesfully returned, call our callback
-                $scope.hulpstukken = data;
-            });
-        };
-
-        $scope.gebruikers = [];
-        $scope.getAllUserData = function () {
-            $rootScope.showLoading = true;
-            $http({
-                method: 'GET',
-                url: '/api/account/getfulllist',
-                params: 'limit=10, sort_by=created:desc',
-                headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-            }).success(function (data) {
-                $scope.gebruikers = data;
-                $rootScope.showLoading = false;
-            })
-        }
-
-        $scope.submitWerkbonAdd = function () {
-            console.log($scope.selectedMachines);
-        }
-
-        $scope.onUrenChange = function ($isAantal) {
-            if($isAantal)
-            {
-                $scope.tijd.van = new Date( 1970, 1, 1, 0, 0, 0, 0);
-                $scope.tijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
-            }
-            else
-            {
-                var millDiff = $scope.tijd.tot - $scope.tijd.van;
-                var sec = millDiff / 1000;
-                var min = sec / 60;
-                var hours = min / 60;
-                $scope.tijd.aantal = new Date( 1970, 1, 1, hours % 24, min % 60, 0, 0 );
-            }
-        }
-
-        $scope.onGewichtChange = function ($isNetto) {
-            if ($isNetto) {
-                $scope.gewicht.vol = new Number(0);
-                $scope.gewicht.leeg = new Number(0);            
-            }
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/deletemachine/' + $scope.machineDetails.id,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == "true")
+                $rootScope.changeView('admin/machinebeheer');
             else {
-                $scope.gewicht.netto =($scope.gewicht.vol - $scope.gewicht.leeg);
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+   
+    $scope.test = function ($val) {
+        $scope.machineDetails.cato = $val;
+        console.log($scope.machineDetails.cato);
+        console.log($scope.machineDetails.nummer);
+    }
+});
+
+agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
+    $scope.manKeuze = [];
+    $rootScope.showloading = false;
+
+    $scope.getManKeuzeData = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getmankeuze',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.man = data;
+        });
+    };
+
+    $scope.selectedMachines = [];
+    $scope.machines = [];
+    $scope.getMachines = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getmachines',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.machines = data;
+        });
+    };
+
+
+    $scope.increaseSelectedMachineList = function () {
+        $scope.selectedMachines.push($scope.machines[0]);
+    }
+    $scope.decreaseSelectedMachineList = function () {
+        $scope.selectedMachines.pop();
+    }
+
+    $scope.selectedHulpstukken = [];
+    $scope.hulpstukken = [];
+    $scope.getHulpstukken = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/gethulpstukken',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.hulpstukken = data;
+        });
+    };
+
+    $scope.gebruikers = [];
+    $scope.getAllUserData = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/account/getfulllist',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.gebruikers = data;
+            $rootScope.showLoading = false;
+        })
+    }
+
+    $scope.submitWerkbonAdd = function () {
+        console.log($scope.selectedMachines);
+    }
+
+    $scope.onUrenChange = function ($isAantal) {
+        if($isAantal)
+        {
+            $scope.tijd.van = new Date( 1970, 1, 1, 0, 0, 0, 0);
+            $scope.tijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
         }
-    });
+        else
+        {
+            var millDiff = $scope.tijd.tot - $scope.tijd.van;
+            var sec = millDiff / 1000;
+            var min = sec / 60;
+            var hours = min / 60;
+            $scope.tijd.aantal = new Date( 1970, 1, 1, hours % 24, min % 60, 0, 0 );
+        }
+    }
+
+    $scope.onGewichtChange = function ($isNetto) {
+        if ($isNetto) {
+            $scope.gewicht.vol = new Number(0);
+            $scope.gewicht.leeg = new Number(0);            
+        }
+        else {
+            $scope.gewicht.netto =($scope.gewicht.vol - $scope.gewicht.leeg);
+        }
+    }
+});

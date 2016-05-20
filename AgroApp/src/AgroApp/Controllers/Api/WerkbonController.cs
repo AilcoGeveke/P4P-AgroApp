@@ -50,12 +50,12 @@ namespace AgroApp.Controllers.Api
         [HttpGet("getmachines")]
         public async Task<string> GetMachines()
         {
-            string query = "SELECT naam, nummer, idMachines FROM Machine";
+            string query = "SELECT naam, nummer, kenteken, idMachines FROM Machine";
             List<Machine> data = new List<Machine>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
                 while (reader.Read())
-                    data.Add(new Machine(idMachine: reader.GetInt32(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
+                    data.Add(new Machine(idMachine: reader.GetInt32(3),kenteken: reader.GetString(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
             return JsonConvert.SerializeObject(data);
         }
 
@@ -82,10 +82,10 @@ namespace AgroApp.Controllers.Api
         }
 
         [HttpGet("updatemachine")]
-        public async Task<string> UpdateMachine(int id, string naam, string type, int nummer = 0, string kenteken = "")
+        public async Task<bool> UpdateMachine(int id, string naam, string type, int nummer = 0, string kenteken = "")
         {
             if (GetMachine(id) == null)
-                return "error";
+                return false;
 
             string query = "UPDATE Machine SET naam=@0, nummer=@1, kenteken=@2, type=@3) WHERE idMachines=@4";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
@@ -95,8 +95,22 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@2", kenteken),
                 new MySqlParameter("@3", type),
                 new MySqlParameter("@4", id)))
-                return "true";
+                return reader.RecordsAffected == 1;
         }
+
+        [HttpGet("deletemachine/{id}")]
+        public async Task<bool> DeleteMachine(int id)
+        {
+            if (GetMachine(id) == null)
+                return false;
+
+            string query = "DELETE FROM Machine WHERE idMachines=@4";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", id)))
+                return reader.RecordsAffected == 1;;
+        }
+
 
         [HttpGet("gethulpstukken")]
         public async Task<IEnumerable<string>> GetHulpstukken()

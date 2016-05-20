@@ -12,30 +12,29 @@
         <div class="content" ng-controller="VehicleEdit">
             <form name="gebruikerform" layout-padding layout="column" ng-submit="EditMachine()">
                 <md-input-container class="md-block inputnomargin">
-                    <p value="@ViewData["id"]" ng-model="machineDetails.id" ng-style="{display: none}"></p>
+                    <p ng-model="machineDetails.id" ng-init="machineDetails.id = '@ViewData["id"]'"></p>
                     <label>Machine naam</label>
                     <input required type="text" name="machineName" value="@ViewData["naam"]" minlength="2" maxlength="40">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine nummer</label>
-                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" value="@ViewData["kenteken"]" minlength="2" maxlength="10">
+                    <input required type="text" name="machineNum" ng-model="machineDetails.nummer" ng-init="machineDetails.nummer = @ViewData["machinenummer"]" minlength="2" maxlength="10">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Kenteken</label>
-                    <input input type="text" name="machineKenteken" ng-model="machineDetails.kenteken" value=@ViewData["machinenummer"]>
+                    <input input type="text" name="machineKenteken" ng-model="machineDetails.kenteken">
                 </md-input-container>
 
-                <md-input-container class="inputnomargin">
+                <md-input-container class="md-block inputnomargin">
                     <label>Categorie</label>
-                    <md-select required ng-model="machineDetails.type">
-                        <md-option ng-repeat="n in types" ng-selected="$first">
+                    <md-select required ng-model="machineDetails.cato" ng-init="machineDetails.cato = '@ViewData["type"]'">
+                        <md-option ng-repeat="n in types">
                             {{n}}
                         </md-option>
                     </md-select>
                 </md-input-container>
-                <p>Huidige categorie: @ViewData["type"]</p>
             
             <div layout-align="row">
                 <span flex></span>
