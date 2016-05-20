@@ -10,29 +10,27 @@
             </div>
         </md-toolbar>
         <div class="content" ng-controller="UserEdit">
-            <div layout-padding>
-                <md-input-container class="md-block inputnomargin">
-                    <label>Volledige naam</label>
-                    <input value="@ViewData["naam"]">
-                </md-input-container>
-                <md-input-container class="md-block inputnomargin">
-                    <label>Email adres</label>
-                    <input value=@ViewData["email"]>
-                </md-input-container>
-                <md-input-container class="inputnomargin">
-                    <label>Rol</label>
-                    <md-select required ng-model="ctrl.userState">
-                        <md-option ng-repeat="n in rollen" value="@ViewData["rol"]">
-                            {{n}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-            </div>
-            <div layout-align="row">
-                <span flex></span>
-                <md-button ng-click="showConfirmChangePasswordDialog()">Reset Wachtwoord</md-button>
-                <md-button ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
-            </div>
+            <md-input-container class="md-block inputnomargin">
+                <label>Volledige naam</label>
+                <input value="@ViewData["naam"]">
+            </md-input-container>
+            <md-input-container class="md-block inputnomargin">
+                <label>Email adres</label>
+                <input value=@ViewData["email"]>
+            </md-input-container>
+            <md-input-container class="md-block inputnomargin">
+                <label>Rol</label>
+                <md-select required ng-model="ctrl.userState">
+                    <md-option ng-repeat="n in rollen" value="@ViewData["rol"]">
+                        {{n}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <md-divider></md-divider>
+        <div layout="row" layout-align="end center" class="content-actions">
+            <md-button ng-click="showConfirmChangePasswordDialog()">Reset Wachtwoord</md-button>
+            <md-button class="md-primary md-raised" ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>

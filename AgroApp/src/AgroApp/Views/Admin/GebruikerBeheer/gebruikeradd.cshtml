@@ -10,7 +10,7 @@
             </div>
         </md-toolbar>
         <div class="content" ng-controller="loginController">
-            <form name="gebruikerform" layout-padding layout="column" ng-submit="goRegister()">
+            <form name="gebruikerform" layout="column" ng-submit="goRegister()">
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Volledige Naam</label>
@@ -27,7 +27,7 @@
                     <input required type="password" name="userPass" ng-model="userDetails.password" minlength="6" maxlength="100">
                 </md-input-container>
 
-                <md-input-container class="inputnomargin">
+                <md-input-container class="md-block inputnomargin">
                     <label>Rol</label>
                     <md-select required ng-model="userDetails.rol">
                         <md-option ng-repeat="n in ['Gebruiker', 'Admin']">
@@ -35,13 +35,12 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-
-                <div layout-align="row">
-                    <span flex></span>
-                    <md-button type="submit">Gebruiker Toevoegen</md-button>
-                </div>
-
             </form>
+        </div>
+
+        <md-divider></md-divider>
+        <div layout="row" layout-align="end center" class="content-actions">
+            <md-button type="submit" class="md-primary md-raised">Gebruiker Toevoegen</md-button>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
