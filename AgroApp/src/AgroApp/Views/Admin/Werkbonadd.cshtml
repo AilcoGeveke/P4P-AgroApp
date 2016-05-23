@@ -51,6 +51,7 @@
                 </md-list>
             </div>
             <md-subheader class="md-no-sticky">Machines en hulpstukken</md-subheader>
+            <div layout="row">
                 <div ng-init="getMachines()">
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
                         <label>Machine</label>
@@ -61,17 +62,18 @@
                         </md-select>
                     </md-input-container>
                 </div>
-
+                
 
                 <div ng-init="getHulpstukken()">
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
                         <label>Hulpstuk</label>
                         <md-select ng-model="selectedHulpstukken[$index]">
                             <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
-                                {{n.Nummer}}: {{n.Naam}}
+                                {{n}}
                             </md-option>
                         </md-select>
                     </md-input-container>
+                </div>
                 </div>
             <div layout="row">
                 <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>

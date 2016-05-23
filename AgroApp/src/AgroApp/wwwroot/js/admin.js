@@ -122,9 +122,9 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
 
 agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.types = ['Kranen', 'Shovels', 'Trekkers', 'Dumpers', 'Wagens', 'Tanks', 'Ladewagens',
-        'Strandreinigen', 'Gladheid', 'Auto s', 'Apparaten', 'Trilplaten',
-        'Meetapparatuur', 'Aanhangers', 'Hulpstukken', 'Overige'];
+    $scope.types = ['Kraan', 'Shovel', 'Trekker', 'Dumper', 'Wagen', 'Tank', 'Ladewagen',
+        'Strandreiniging', 'Gladheid', 'Auto', 'Apparaat', 'Trilplaat',
+        'Meetapparatuur', 'Aanhanger', 'Hulpstuk', 'Overige'];
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
@@ -136,7 +136,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
               .ok('Wijzigingen Toepassen')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.changeView('admin/machinebeheer');
+            EditMachine();
         }, function () {
             $rootScope.showLoading = false;
         });
@@ -147,13 +147,13 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $rootScope.showLoading = true;
         var confirm = $mdDialog.confirm()
               .title('Machine Verwijderen')
-              .textContent('Als u doorgaat zal de machine definitief verwijderd worden! ' 
-              + 'LET OP: Als u deze machine eerder heeft gebruikt in een werbon, zal de data van deze werkbonnen corrupt worden')
+              .textContent('Als u doorgaat zal de machine definitief verwijderd worden!' 
+              + '\nLET OP: Als u deze machine eerder heeft gebruikt in een werbon, zal de data van deze werkbonnen corrupt worden')
               .targetEvent(ev)
               .ok('Machine Verwijderen')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.changeView('admin/machinebeheer');
+            DeleteMachine();
         }, function () {
             $rootScope.showLoading = false;
         });
@@ -184,17 +184,17 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
     };
 
 
-    $scope.EditMachine = function () {
+    var EditMachine = function () {
         $scope.showloading = true;
 
         $http({
             method: 'GET',
-            url: '/api/werkbon/editmachine/' + $scope.machineDetails.id + '/' + $scope.machineDetails.naam + '/' + $scope.machineDetails.nummer + '/' + $scope.machineDetails.kenteken + '/' + $scope.machineDetails.type,
+            url: '/api/werkbon/editmachine/' + $scope.machineDetails.id + '/' + $scope.machineDetails.naam + '/' + $scope.machineDetails.nummer + '/' + $scope.machineDetails.kenteken + '/' + $scope.machineDetails.cato,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
-            if (data == "true")
+            if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
                 $scope.showloading = false;
@@ -208,7 +208,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         });
     };
 
-    $scope.DeleteMachine = function () {
+    var DeleteMachine = function () {
         $scope.showloading = true;
 
         $http({
@@ -218,7 +218,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
-            if (data == "true")
+            if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
                 $scope.showloading = false;

@@ -81,13 +81,13 @@ namespace AgroApp.Controllers.Api
             }
         }
 
-        [HttpGet("updatemachine")]
-        public async Task<bool> UpdateMachine(int id, string naam, string type, int nummer = 0, string kenteken = "")
+        [HttpGet("editmachine/{id}/{naam}/{nummer}/{kenteken}/{type}")]
+        public async Task<bool> EditMachine(int id, string naam, string type = "Kranen", int nummer = 0, string kenteken = "")
         {
             if (GetMachine(id) == null)
                 return false;
 
-            string query = "UPDATE Machine SET naam=@0, nummer=@1, kenteken=@2, type=@3) WHERE idMachines=@4";
+            string query = "UPDATE Machine SET naam=@0, nummer=@1, kenteken=@2, type=@3 WHERE idMachines=@4";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", naam),
@@ -104,7 +104,7 @@ namespace AgroApp.Controllers.Api
             if (GetMachine(id) == null)
                 return false;
 
-            string query = "DELETE FROM Machine WHERE idMachines=@4";
+            string query = "DELETE FROM Machine WHERE idMachines=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
