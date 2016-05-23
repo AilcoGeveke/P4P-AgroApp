@@ -116,13 +116,46 @@ namespace AgroApp.Controllers.Api
             catch { return "Er is iets misgegaan!"; }
         }
 
+        [HttpGet("wijzigen/{id}/{naam}/{gebruikersnaam}/{rol}")]
+        public async Task<bool> EditUser(int id, string naam, string gebruikersnaam, string rol)
+        {
+            if (GetUser(id) == null)
+                return false;
+
+            string query = "UPDATE Werknemer SET naam=@0, gebruikersnaam=@1, rol=@2 WHERE idWerknemer=@3";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", naam),
+                new MySqlParameter("@1", gebruikersnaam),
+                new MySqlParameter("@2", rol),
+                new MySqlParameter("@3", id)))
+                return reader.RecordsAffected == 1;
+        }
+
+        [HttpGet("verwijderen/{id}")]
+        public async Task<bool> DeleteKlant(int id)
+        {
+            bool isDeleted = true;
+            if (GetUser(id) == null)
+                return false;
+
+            string query = "UPDATE Werknemer SET isDeleted=@0 WHERE idWerknemer=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", isDeleted),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1; ;
+        }
+
         //[Authorize("Admin")]
         public static async Task<IEnumerable<User>> GetAllUsers()
         {
-            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer";
+            //string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM Werknemer WHERE isDeleted=@0";
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM Werknemer";
             List<User> users = new List<User>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false)))
                 while (await reader.ReadAsync())
                     users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
             return users;

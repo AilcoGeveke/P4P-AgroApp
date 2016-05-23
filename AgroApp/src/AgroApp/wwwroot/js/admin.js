@@ -114,7 +114,6 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
               .ok('Wijzigingen Toepassen')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.changeView('admin/gebruikers');
         }, function () {
             $rootScope.showLoading = false;
         });
@@ -125,7 +124,29 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
         $http({
             method: 'GET',
-            url: '/admin/gebruikers/wijzigen/' + $scope.machineDetails.id + '/' + $scope.machineDetails.naam + '/' + $scope.machineDetails.nummer + '/' + $scope.machineDetails.kenteken + '/' + $scope.machineDetails.cato,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+    var DeleteUser = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/admin/gebruikers/verwijderen/' + $scope.userDetails.id,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
