@@ -114,6 +114,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
               .ok('Wijzigingen Toepassen')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
+            EditUser();
         }, function () {
             $rootScope.showLoading = false;
         });
@@ -124,11 +125,13 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
         $http({
             method: 'GET',
+            url: '/api/user/wijzigen/' + $scope.userDetails.id + '/' + $scope.userDetails.naam + '/' + $scope.userDetails.email + '/' + $scope.userDetails.rol,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == true)
+                $rootScope.changeView('admin/klantbeheer');
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
