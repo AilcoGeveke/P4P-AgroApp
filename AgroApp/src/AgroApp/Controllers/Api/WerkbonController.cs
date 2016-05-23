@@ -104,7 +104,7 @@ namespace AgroApp.Controllers.Api
             if (GetMachine(id) == null)
                 return false;
 
-            string query = "DELETE FROM Machine WHERE idMachines=@4";
+            string query = "DELETE FROM Machine WHERE idMachines=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
