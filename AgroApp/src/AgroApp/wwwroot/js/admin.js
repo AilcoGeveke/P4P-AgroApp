@@ -84,6 +84,7 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     }
 });
 
+
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 
@@ -118,6 +119,30 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             $rootScope.showLoading = false;
         });
     };
+
+    var EditUser = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/admin/gebruikers/wijzigen/' + $scope.machineDetails.id + '/' + $scope.machineDetails.naam + '/' + $scope.machineDetails.nummer + '/' + $scope.machineDetails.kenteken + '/' + $scope.machineDetails.cato,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/machinebeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
 });
 
 
@@ -147,8 +172,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $rootScope.showLoading = true;
         var confirm = $mdDialog.confirm()
               .title('Machine Verwijderen')
-              .textContent('Als u doorgaat zal de machine definitief verwijderd worden!' 
-              + '\nLET OP: Als u deze machine eerder heeft gebruikt in een werbon, zal de data van deze werkbonnen corrupt worden')
+              .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
               .targetEvent(ev)
               .ok('Machine Verwijderen')
               .cancel('Annuleer');
@@ -231,13 +255,118 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
-   
-    $scope.test = function ($val) {
-        $scope.machineDetails.cato = $val;
-        console.log($scope.machineDetails.cato);
-        console.log($scope.machineDetails.nummer);
-    }
 });
+
+
+agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) {
+   
+
+    $scope.showConfirmChangesDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Wijzigingen Toepassen?')
+              .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
+              .targetEvent(ev)
+              .ok('Wijzigingen Toepassen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            EditKlant();
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
+    $scope.showConfirmDeleteDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Klant Verwijderen')
+              .textContent('Als u doorgaat zal deze klant verwijderd worden!')
+              .targetEvent(ev)
+              .ok('Klant Verwijderen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            DeleteKlant();
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
+    $scope.AddKlant = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/addklant/' + $scope.klantDetails.naam + '/' + $scope.klantDetails.adres,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/klantbeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Deze klant is al geregistreerd!";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+
+    var EditKlant = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/editklant/' + $scope.klantDetails.id + '/' + $scope.klantDetails.naam + '/' + $scope.klantDetails.adres,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/klantbeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+    var DeleteKlant = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/deleteklant/' + $scope.klantDetails.id,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/klantbeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is geen klant geselecteerd!";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+});
+
 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.manKeuze = [];
@@ -270,6 +399,22 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             $scope.machines = data;
+        });
+    };
+
+    $scope.selectedKlanten = [];
+    $scope.klanten = [];
+    $scope.getKlanten = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getklanten',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.klanten = data;
         });
     };
 

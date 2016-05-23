@@ -9,18 +9,18 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        
-        <div class="content">
-            <md-toolbar class="md-warn" ng-show="showError">
-                <div class="md-toolbar-tools">
-                    <h6 class="md-flex">{{errorMessage}}</h6>
-                </div>
-            </md-toolbar>
-            <form name="gebruikerform" layout="column" ng-submit="AddMachine()">
+        <form name="gebruikerform" layout="column" ng-submit="AddMachine()">
+            <div class="content">
+                <md-toolbar class="md-warn" ng-show="showError">
+                    <div class="md-toolbar-tools">
+                        <h6 class="md-flex">{{errorMessage}}</h6>
+                    </div>
+                </md-toolbar>
+
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine naam</label>
-                    <input required type="text" md-maxlength="45" name="machineName"ng-model="machineDetails.naam" minlength="2" maxlength="40">
+                    <input required type="text" md-maxlength="45" name="machineName" ng-model="machineDetails.naam" minlength="2" maxlength="40">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
@@ -41,16 +41,16 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-            </form>
-        </div>
 
-        <md-divider></md-divider>
-        <div layout="row" layout-align="end center" class="content-actions">
-            <md-button type="submit" class="md-primary md-raised">
-                <md-icon ng-style="{color: 'white'}"> build </md-icon> Voeg machine toe
-            </md-button>
-        </div>
+            </div>
 
+            <md-divider></md-divider>
+            <div layout="row" layout-align="end center" class="content-actions">
+                <md-button type="submit" class="md-primary md-raised">
+                    <md-icon ng-style="{color: 'white'}"> build </md-icon> Voeg machine toe
+                </md-button>
+            </div>
+        </form>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
 </md-content>

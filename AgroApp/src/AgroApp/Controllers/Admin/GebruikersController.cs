@@ -20,8 +20,10 @@ namespace AgroApp.Controllers
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
             User user = await UserController.GetUser(id);
+            ViewData["id"] = user.IdWerknemer;
             ViewData["naam"] = user.Name;
             ViewData["email"] = user.Email;
+            ViewData["rol"] = user.Rol;
             return View("../admin/gebruikerbeheer/gebruikeredit");
         }
 
