@@ -146,6 +146,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 });
 
 
+
 agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.types = ['Kraan', 'Shovel', 'Trekker', 'Dumper', 'Wagen', 'Tank', 'Ladewagen',
         'Strandreiniging', 'Gladheid', 'Auto', 'Apparaat', 'Trilplaat',
@@ -257,7 +258,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
     };
 });
 
-
+   
 agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) {
    
 
@@ -358,7 +359,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
                 $scope.showloading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen klant geselecteerd!";
-            }
+    }
         }).error(function () {
             $scope.showloading = false;
             $scope.showError = true;
@@ -369,6 +370,9 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
+    'use strict';
+    var self = this;
+
     $scope.manKeuze = [];
     $rootScope.showloading = false;
 
@@ -387,6 +391,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     };
 
     $scope.selectedMachines = [];
+    $scope.selectedUsers = [];
     $scope.machines = [];
     $scope.getMachines = function () {
         $scope.showloading = true;
@@ -426,6 +431,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         $scope.selectedMachines.pop();
     }
 
+    $scope.increaseSelectedUserList = function () {
+        $scope.selectedUsers.push($scope.gebruikers[0]);
+    }
+    $scope.decreaseSelectedUsersList = function () {
+        $scope.selectedUsers.pop();
+    }
+
     $scope.selectedHulpstukken = [];
     $scope.hulpstukken = [];
     $scope.getHulpstukken = function () {
@@ -451,10 +463,11 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
-            $scope.gebruikers = data;
+            self.gebruikers = data;
             $rootScope.showLoading = false;
         })
     }
+    self.gebruikers = self.getAllUserData();
 
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);
@@ -484,5 +497,21 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         else {
             $scope.gewicht.netto =($scope.gewicht.vol - $scope.gewicht.leeg);
         }
+    }
+
+    self.selectedUser = "";
+    self.userSearchText = "";
+    self.userSelectie = [];
+    self.querySearch = querySearch;
+
+    function querySearch(criteria) {
+        return criteria ? self.gebruikers.filter(createFilterFor(criteria)) : [];
+    };
+
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+        return function filterFn(state) {
+            return (state.Name.toLowerCase().indexOf(lowercaseQuery) === 0);
+        };
     }
 });

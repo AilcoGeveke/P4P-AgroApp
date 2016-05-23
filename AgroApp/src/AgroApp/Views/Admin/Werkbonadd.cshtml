@@ -6,7 +6,7 @@
                     <span>Werkbon toevoegen</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>home</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
         <form class="content" ng-controller="WerkbonEdit" ng-submit="submitWerkbonAdd()">
@@ -14,21 +14,19 @@
             <div layout-gt-xs="row">
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
-                        <label>Werknemer</label>
-                        <input input type="text">
-                    </md-input-container>
-                    <md-input-container class="md-block inputnomargin">
                         <label>Werklocatie</label>
                         <input input type="text">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
-                        <label>Collega</label>
+                        <label>Werknemer</label>
                         <md-select ng-model="userKeuze">
                             <md-option ng-repeat="n in gebruikers">
                                 {{n.Name}}
                             </md-option>
                         </md-select>
                     </md-input-container>
+                    <md-datepicker ng-model="myDate" md-placeholder="Datum">
+                    </md-datepicker>
                 </md-list>
 
                 <md-list flex-gt-xs="50">
@@ -45,36 +43,37 @@
                         </md-select>
                     </md-input-container>
 
-                    <md-datepicker ng-model="myDate" md-placeholder="Datum">
-                    </md-datepicker>
+     
 
                 </md-list>
             </div>
             <md-subheader class="md-no-sticky">Machines en hulpstukken</md-subheader>
             <div layout="row">
-                <div ng-init="getMachines()">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                        <label>Machine</label>
-                        <md-select ng-model="selectedMachines[$index]">
-                            <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
-                                {{n.Nummer}}: {{n.Naam}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-                
-
-                <div ng-init="getHulpstukken()">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                        <label>Hulpstuk</label>
-                        <md-select ng-model="selectedHulpstukken[$index]">
-                            <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
-                                {{n}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-                </div>
+                <md-list flex-gt-xs="50">
+                    <div ng-init="getMachines()">
+                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
+                            <label>Machine</label>
+                            <md-select ng-model="selectedMachines[$index]">
+                                <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
+                                    {{n.Nummer}}: {{n.Naam}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-list>
+                <md-list flex-gt-xs="50">
+                    <div ng-init="getHulpstukken()">
+                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
+                            <label>Hulpstuk</label>
+                            <md-select ng-model="selectedHulpstukken[$index]">
+                                <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
+                                    {{n}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-list>
+            </div>
             <div layout="row">
                 <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
                 <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
