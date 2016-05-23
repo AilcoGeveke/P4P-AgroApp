@@ -1,5 +1,5 @@
 ﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
-    <div class="md-whiteframe-5dp layout-content form-content">
+    <div class="md-whiteframe-5dp layout-content form-content" ng-controller="VehicleEdit">
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
                 <h2>
@@ -9,12 +9,12 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div class="content" ng-controller="VehicleEdit">
-            <form name="gebruikerform" layout-padding layout="column" ng-submit="EditMachine()">
+        <div class="content">
+            <form name="gebruikerform" layout="column" ng-submit="EditMachine()">
                 <p hidden ng-model="machineDetails.id" ng-init="machineDetails.id = '@ViewData["id"]'"></p>
                 <md-input-container class="md-block inputnomargin">
                     <label>Machine naam</label>
-                    <input required type="text" name="machineName" ng-model="machineDetails.naam" ng-init="machineDetails.naam = '@ViewData["naam"]'" minlength="2" maxlength="40">
+                    <input required type="text" md-maxlength="45" name="machineName" ng-model="machineDetails.naam" ng-init="machineDetails.naam = '@ViewData["naam"]'">
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
@@ -35,13 +35,15 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-            <div layout-align="row">
-                <span flex></span>
-                <md-button ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
-                <md-button disabled ng-style="{color: 'red'}" ng-click="showConfirmDeleteDialog()">Verwijder Machine</md-button>
-            </div>
-          </form>
+            </form>
         </div>
+
+        <md-divider></md-divider>
+        <div layout="row" layout-align="end center" class="content-actions">
+            <md-button ng-style="{color: 'red'}" ng-click="showConfirmDeleteDialog()">Verwijder Machine</md-button>
+            <md-button class="md-primary md-raised" ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
+        </div>
+
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>
 </md-content>
