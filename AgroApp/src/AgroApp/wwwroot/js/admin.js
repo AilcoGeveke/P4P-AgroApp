@@ -507,6 +507,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         })
     }
     self.gebruikers = $scope.getAllUserData();
+    self.machines = $scope.getMachines();
 
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);
@@ -543,8 +544,14 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     self.userSelectie = [];
     self.querySearch = querySearch;
 
+    self.machineSelectie = [];
+    self.selectedMachine = "";
+
     function querySearch(criteria) {
         return criteria ? self.gebruikers.filter(createFilterFor(criteria)) : [];
+    };
+    function querySearch(criteria) {
+        return criteria ? self.machines.filter(createFilterFor(criteria)) : [];
     };
 
     function createFilterFor(query) {
@@ -553,4 +560,23 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             return (state.Name.toLowerCase().indexOf(lowercaseQuery) === 0);
         };
     }
+});
+
+
+agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.showConfirmChangePasswordDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Als u doorgaat zal het wachtwoord worden veranderd.')
+              .targetEvent(ev)
+              .ok('Wijzig')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            $rootScope.showLoading = false;
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
 });

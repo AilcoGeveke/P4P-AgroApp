@@ -24,14 +24,15 @@ namespace AgroApp.Controllers.Api
             if (!await IsValid(username, password))
                 return "false";
 
-            string name = (await GetUser(username))?.Name ?? "error with loading name";
+            User user = await GetUser(username);
+            string name = user?.Name ?? "error with loading name";
             List<Claim> claimCollection = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
                     new Claim(ClaimTypes.Role, "Admin") };
 
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
-            return "true"; // auth succeed 
+            return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "werknemer/menu"; // auth succeed 
 
         }
 

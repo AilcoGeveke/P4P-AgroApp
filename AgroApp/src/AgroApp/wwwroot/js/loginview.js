@@ -16,8 +16,8 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
-            if (data == "true")
-                window.location.href = '/admin/main';
+            if (data)
+                window.location.href = data;
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
