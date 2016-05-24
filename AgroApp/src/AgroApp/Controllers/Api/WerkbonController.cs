@@ -159,8 +159,8 @@ namespace AgroApp.Controllers.Api
 
         }
 
-        [HttpGet("getverwijderdeklanten")]
-        public async Task<string> GetVerwijderdeKlanten()
+        [HttpGet("getarchiefklanten")]
+        public async Task<string> GetArchiefKlanten()
         {
             string query = "SELECT * FROM Klant WHERE isDeleted=@0";
             List<Klant> data = new List<Klant>();
@@ -223,7 +223,7 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1; ;
         }
 
-        [HttpGet("klant/verwijderenongedaan/{id}")]
+        [HttpGet("klant/terughalen/{id}")]
         public async Task<bool> ReAddKlant(int id)
         {
             if (GetKlant(id) == null)

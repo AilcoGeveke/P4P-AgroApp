@@ -33,5 +33,11 @@ namespace AgroApp.Controllers.Admin
             ViewData["type"] = machine.Type;
             return View("../admin/machinebeheer/machineedit");
         }
+
+        [HttpGet("admin/gebruikers/verwijderd")]
+        public IActionResult MachineTerugHalen()
+        {
+            return View("../admin/machinebeheer/machineReAdd");
+        }
     }
 }

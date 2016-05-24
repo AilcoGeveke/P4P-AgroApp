@@ -32,5 +32,11 @@ namespace AgroApp.Controllers
         {
             return View("../admin/gebruikerbeheer/gebruikeradd");
         }
+
+        [HttpGet("admin/gebruikers/verwijderd")]
+        public IActionResult GebruikerTerugHalen()
+        {
+            return View("../admin/gebruikerbeheer/gebruikerReAdd");
+        }
     }
 }
