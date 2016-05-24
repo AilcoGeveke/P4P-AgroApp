@@ -13,7 +13,6 @@ namespace AgroApp.Controllers
         // GET: /user/main
         public IActionResult Main()
         {
-            ViewData["volledigenaam"] = HttpContext.User.Identity.Name;
             return View();
         }
     }

@@ -9,7 +9,7 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/klantbeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="WerkbonEdit" ng-init="getVerwijderdeKlanten()">
+        <div ng-controller="KlantEdit" ng-init="getVerwijderdeKlanten()">
             <div class="content">
                 <md-input-container class="md-block inputnomargin">
                     <label>Zoek Klant</label>
@@ -19,13 +19,13 @@
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="klant in VerwijderdeKlanten | filter:searchterm" ng-click="changeView()">
+                <md-list-item class="md-3-line" ng-repeat="klant in VerwijderdeKlanten | filter:searchterm" ng-click="ConfirmReAdd(klant.IdKlant)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">person</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ klant.Naam }}</h3>
                         <p>{{ klant.Adres }}</p>
                     </div>
-                    <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
+                    <md-icon ng-style="{color: '#3F51B5'}">add</md-icon>
                 </md-list-item>
             </md-list>
             <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
