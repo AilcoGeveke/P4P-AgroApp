@@ -22,6 +22,12 @@ namespace AgroApp.Controllers.Admin
             return View("../admin/klantbeheer/klantadd");
         }
 
+        [HttpGet("admin/klantbeheer/verwijderd")]
+        public IActionResult KlantTerugHalen()
+        {
+            return View("../admin/klantbeheer/klantverwijderd");
+        }
+
         [HttpGet("admin/klantbeheer/wijzigen/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {

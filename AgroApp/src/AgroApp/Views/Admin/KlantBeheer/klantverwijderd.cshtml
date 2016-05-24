@@ -3,15 +3,13 @@
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
                 <h2>
-                    <span>Klanten beheer</span>
+                    <span>Verwijderde Klanten</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/klantbeheer/verwijderd')"><md-icon>delete_sweep</md-icon></md-button>
-                <md-button class="md-icon-button" ng-click="changeView('admin/klantbeheer/toevoegen')"><md-icon>person_add</md-icon></md-button>
-                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/klantbeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="WerkbonEdit" ng-init="getKlanten()">
+        <div ng-controller="WerkbonEdit" ng-init="getVerwijderdeKlanten()">
             <div class="content">
                 <md-input-container class="md-block inputnomargin">
                     <label>Zoek Klant</label>
@@ -21,7 +19,7 @@
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="klant in klanten | filter:searchterm" ng-click="changeView('admin/klantbeheer/wijzigen/' + klant.IdKlant)">
+                <md-list-item class="md-3-line" ng-repeat="klant in VerwijderdeKlanten | filter:searchterm" ng-click="changeView()">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">person</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ klant.Naam }}</h3>
@@ -40,6 +38,3 @@
 @section scripts{
     <script src="~/js/admin.js"></script>
 }
-
-
-

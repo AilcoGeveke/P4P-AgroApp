@@ -170,7 +170,6 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 });
 
 
-
 agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.types = ['Kraan', 'Shovel', 'Trekker', 'Dumper', 'Wagen', 'Tank', 'Ladewagen',
         'Strandreiniging', 'Gladheid', 'Auto', 'Apparaat', 'Trilplaat',
@@ -448,6 +447,22 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     };
 
 
+    $scope.VerwijderdeKlanten = [];
+    $scope.getVerwijderdeKlanten = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getverwijderdeklanten',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.VerwijderdeKlanten = data;
+        });
+    };
+
+
     $scope.increaseSelectedMachineList = function () {
         $scope.selectedMachines.push($scope.machines[0]);
     }
@@ -491,7 +506,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             $rootScope.showLoading = false;
         })
     }
-    self.gebruikers = self.getAllUserData();
+    //self.gebruikers = self.getAllUserData();
 
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);

@@ -159,6 +159,20 @@ namespace AgroApp.Controllers.Api
 
         }
 
+        [HttpGet("getverwijderdeklanten")]
+        public async Task<string> GetVerwijderdeKlanten()
+        {
+            string query = "SELECT * FROM Klant WHERE isDeleted=@0";
+            List<Klant> data = new List<Klant>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (reader.Read())
+                    data.Add(new Klant(idKlant: reader.GetInt32(0), naam: reader.GetString(1), adres: reader.GetString(2)));
+            return JsonConvert.SerializeObject(data);
+
+        }
+
         [HttpGet("addklant/{naam}/{adres}")]
         public async Task<bool> AddKlant(string naam, string adres)
         {
