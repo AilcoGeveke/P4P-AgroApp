@@ -506,7 +506,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             $rootScope.showLoading = false;
         })
     }
-    //self.gebruikers = self.getAllUserData();
+    self.gebruikers = $scope.getAllUserData();
 
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);
