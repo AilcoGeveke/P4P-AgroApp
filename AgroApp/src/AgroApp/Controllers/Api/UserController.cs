@@ -29,7 +29,7 @@ namespace AgroApp.Controllers.Api
             List<Claim> claimCollection = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
-                    new Claim(ClaimTypes.Role, "Admin") };
+                    new Claim(ClaimTypes.Role, "Admin")};
 
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
             return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "werknemer/menu"; // auth succeed 
@@ -50,11 +50,12 @@ namespace AgroApp.Controllers.Api
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException();
 
-            string query = "SELECT COUNT(*) FROM werknemer WHERE gebruikersnaam=@0 AND wachtwoord=@1;";
+            string query = "SELECT COUNT(*) FROM werknemer WHERE gebruikersnaam=@0 AND wachtwoord=@1 AND isDeleted=@2;";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", username),
-                new MySqlParameter("@1", password)))
+                new MySqlParameter("@1", password),
+                new MySqlParameter("@2", false)))
             {
                 await reader.ReadAsync();
                 return reader.GetInt32(0) == 1;
@@ -66,13 +67,13 @@ namespace AgroApp.Controllers.Api
             if (string.IsNullOrWhiteSpace(email))
                 throw new ArgumentException();
 
-            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer WHERE gebruikersnaam=@0";
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol, isDeleted FROM werknemer WHERE gebruikersnaam=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", email)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean (4)) : null;
             }
         }
 
@@ -87,7 +88,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)) : null;
             }
         }
 
@@ -133,17 +134,16 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1;
         }
 
-        [HttpGet("verwijderen/{id}")]
-        public async Task<bool> DeleteUser(int id)
+        [HttpGet("archiveren/{id}")]
+        public async Task<bool> ArchiveUser(int id)
         {
-            bool isDeleted = true;
             if (GetUser(id) == null)
                 return false;
 
             string query = "UPDATE Werknemer SET isDeleted=@0 WHERE idWerknemer=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", isDeleted),
+                new MySqlParameter("@0", true),
                 new MySqlParameter("@1", id)))
                 return reader.RecordsAffected == 1; ;
         }
@@ -151,15 +151,40 @@ namespace AgroApp.Controllers.Api
         //[Authorize("Admin")]
         public static async Task<IEnumerable<User>> GetAllUsers()
         {
-            //string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM Werknemer WHERE isDeleted=@0";
-            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM Werknemer";
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol, isDeleted FROM Werknemer WHERE isDeleted=@0";
             List<User> users = new List<User>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (await reader.ReadAsync())
-                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
+                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)));
             return users;
+        }
+
+        public static async Task<IEnumerable<User>> GetArchivedUsers()
+        {
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol, isDeleted FROM Werknemer WHERE isDeleted=@0";
+            List<User> users = new List<User>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (await reader.ReadAsync())
+                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)));
+            return users;
+        }
+
+        [HttpGet("gebruikers/terughalen/{id}")]
+        public async Task<bool> ReAddKlant(int id)
+        {
+            if (GetUser(id) == null)
+                return false;
+
+            string query = "UPDATE Werknemer SET isDeleted=@0 WHERE idWerknemer=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
         }
 
         static string GetEncodedHash(string password, string salt)

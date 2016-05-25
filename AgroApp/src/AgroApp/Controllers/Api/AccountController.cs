@@ -25,5 +25,11 @@ namespace AgroApp.Controllers.Api
         {
             return JsonConvert.SerializeObject(await UserController.GetAllUsers());
         }
+
+        [HttpGet("getarchiefusers")]
+        public async Task<string> GetArchivedUsers()
+        {
+            return JsonConvert.SerializeObject(await UserController.GetArchivedUsers());
+        }
     }
 }
