@@ -82,7 +82,7 @@ namespace AgroApp.Controllers.Api
             if (id < 0)
                 return null;
 
-            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol FROM werknemer WHERE idWerknemer=@0";
+            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol, isDeleted FROM werknemer WHERE idWerknemer=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
