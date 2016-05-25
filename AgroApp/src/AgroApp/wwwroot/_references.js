@@ -3,6 +3,7 @@
 /// <reference path="js/admin.js" />
 /// <reference path="js/loginview.js" />
 /// <reference path="js/site.js" />
+/// <reference path="js/user.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />
 /// <reference path="lib/angular-aria/angular-aria.js" />

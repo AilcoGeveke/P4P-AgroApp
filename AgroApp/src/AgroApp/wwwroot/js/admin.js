@@ -592,7 +592,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     self.querySearch = querySearch;
 
     function querySearch(criteria) {
-        return criteria ? self.gebruikers.filter(createFilterFor(criteria)) : [];
+        return criteria ? self.gebruikers.filter(createFilterFor(criteria)) : self.gebruikers;
     };
 
     function createFilterFor(query) {

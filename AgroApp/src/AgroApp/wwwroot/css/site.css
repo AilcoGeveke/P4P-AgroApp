@@ -6,14 +6,14 @@
     background-color: RGBA(0,0,0,0.5);
 }
 
-.inputnomargin {
-    margin-top: 14px !important;
-    margin-bottom: 0px;
-    height: 40px;
+.content {
+    padding: 16px;
 }
 
-.content {
-    padding: 15px;
+.inputnomargin {
+    margin-top: 20px !important;
+    margin-bottom: 0px;
+    height: 40px;
 }
 
 .content-actions {
@@ -116,4 +116,44 @@ md-checkbox {
     padding: 0 !important;
     width: 100%;
     min-width: 50px;
+}
+
+/*Datepicker*/
+md-datepicker {
+    background-color: transparent;
+    padding-top: 16px;
+    padding-right: 18px !important;
+}
+
+/*Custom list in autocomplete*/
+.item-title, .item-metadata {
+  display: block;
+  line-height: 2; }
+.item-title md-icon {
+  font-size: 22px; }
+
+.chiplist li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  white-space: normal; }
+.chiplist li:last-child {
+  border-bottom-width: 0; }
+
+md-autocomplete[md-floating-label] > md-autocomplete-wrap > md-input-container {
+    margin-top: 20px !important;
+    margin-bottom: 21px;
+    /*height: 40px;*/
+    padding: 0;
+}
+
+md-autocomplete[md-floating-label] {
+    margin-bottom: -32px;
+}
+
+h2.md-title {
+    margin: 4px;
+    margin-top: 8px;
+    font-weight: 100;
 }

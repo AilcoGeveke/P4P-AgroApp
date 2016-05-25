@@ -133,7 +133,7 @@ namespace AgroApp.Controllers.Api
         }
 
         [HttpGet("verwijderen/{id}")]
-        public async Task<bool> DeleteKlant(int id)
+        public async Task<bool> DeleteUser(int id)
         {
             bool isDeleted = true;
             if (GetUser(id) == null)

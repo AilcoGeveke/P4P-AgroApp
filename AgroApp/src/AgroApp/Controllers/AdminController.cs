@@ -30,9 +30,10 @@ namespace AgroApp.Controllers
         }
 
         // GET: /admin/opdracht
+        [HttpGet("admin/opdrachttoevoegen")]
         public IActionResult Opdracht()
         {
-            return View();
+            return View("../admin/opdrachtadd");
         }
 
         // GET: /admin/werkboncheck

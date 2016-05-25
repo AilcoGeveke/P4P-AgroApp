@@ -1,0 +1,92 @@
+﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
+    <div class="md-whiteframe-5dp layout-content form-content">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Nieuwe Opdracht</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <form ng-controller="WerkbonEdit as ctrl" ng-submit="submitWerkbonAdd()">
+            <div class="md-padding">
+
+                <h2 class="md-title">Algemeen</h2>
+                <div layout-gt-xs="row">
+                    <md-autocomplete flex required class=""
+                                     md-selected-item="ctrl.selectedItem"
+                                     md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                     md-search-text="ctrl.searchText"
+                                     md-input-class="inputnomargin"
+                                     md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                     md-item-text="item.Name"
+                                     md-autoselect="true"
+                                     md-min-length="0"
+                                     md-floating-label="Opdrachtgever">
+                        <md-item-template>
+                            <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.Name}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            Klant "{{ctrl.searchText}}" kon niet gevonden worden.
+                            <a ng-click="ctrl.newState(ctrl.searchText)">Voeg deze klant toe?</a>
+                        </md-not-found>
+                    </md-autocomplete>
+                    <md-datepicker required ng-model="user.submissionDate" md-placeholder="Startdatum">
+                    </md-datepicker>
+                </div>
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>Locatie</label>
+                    <input type="text" ng-model="opdracht.adres" md-select-on-focus>
+                </md-input-container>
+
+                <md-input-container class="md-block inputnomargin">
+                    <label>Beschrijving</label>
+                    <textarea ng-model="opdracht.omschrijving" md-maxlength="200" rows="15" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <h2 class="md-title">Werknemers</h2>
+                <md-chips ng-init="getAllUserData()" ng-model="ctrl.userSelectie" md-autocomplete-snap
+                          md-require-match="true">
+                    <md-autocomplete md-autoselect="true"
+                                     md-no-cache="true"
+                                     md-selected-item="ctrl.selectedUser"
+                                     md-items="item in ctrl.querySearch(ctrl.userSearchText)"
+                                     md-item-text="item.Name"
+                                     md-search-text="ctrl.userSearchText"
+                                     placeholder="+Werknemer"
+                                     md-menu-class="chiplist">
+                        <span md-highlight-text="we.userSearchText">{{item.Name}}</span>
+                        <md-item-template>
+                            <span class="item-title">
+                                <md-icon>person</md-icon>
+                                <span> {{item.Name}} </span>
+                            </span>
+                            <span class="item-metadata">
+                                <span class="item-metastat">
+                                    <small>{{item.Email}}</small>
+                                </span>
+                            </span>
+                        </md-item-template>
+                    </md-autocomplete>
+                    <md-chip-template>
+                        {{$chip.Name}}
+                    </md-chip-template>
+                </md-chips>
+            </div>
+
+            <md-divider></md-divider>
+            <div layout="row" layout-align="end center" class="content-actions">
+                <md-button class="md-raised md-primary" type="submit">Opslaan</md-button>
+            </div>
+        </form>
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+
+</md-content>
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/admin.js"></script>
+}
