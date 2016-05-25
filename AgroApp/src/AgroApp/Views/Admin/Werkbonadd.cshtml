@@ -32,7 +32,7 @@
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Opdrachtgever </label>
-                        <input input type="text">
+                        <input ng-model="user.title" type="text">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
                         <label>Man</label>
@@ -42,9 +42,6 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-
-     
-
                 </md-list>
             </div>
             <md-subheader class="md-no-sticky">Machines en hulpstukken</md-subheader>

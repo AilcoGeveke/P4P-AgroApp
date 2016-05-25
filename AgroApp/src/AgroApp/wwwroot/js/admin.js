@@ -8,7 +8,6 @@ agroApp.controller('LoginView', function ($scope, $http) {
     };
 });
 
-
 agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.toggleLeft = buildDelayedToggler('left');
     /**
@@ -51,7 +50,6 @@ agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     }
 });
 
-
 agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('left').close()
@@ -60,7 +58,6 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
           });
     };
 });
-
 
 agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     $scope.gebruikers = [];
@@ -85,8 +82,7 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
         }
     }
 });
-
-
+                                               
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 
@@ -215,7 +211,6 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     };
 });
 
-
 agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.types = ['Kraan', 'Shovel', 'Trekker', 'Dumper', 'Wagen', 'Tank', 'Ladewagen',
         'Strandreiniging', 'Gladheid', 'Auto', 'Apparaat', 'Trilplaat',
@@ -327,7 +322,6 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
     };
 });
 
-
 agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
 
@@ -365,12 +359,11 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
 
     $scope.klantid = 0;
-    $scope.ConfirmReAdd = function (klantid)
-    {
+    $scope.ConfirmReAdd = function (klantid) {
         $scope.klantid = klantid;
         $scope.showConfirmReAddDialog();
     }
-    
+
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
@@ -517,14 +510,15 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
     };
 });
 
-
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
     var self = this;
 
     $scope.manKeuze = [];
     $rootScope.showloading = false;
-
+    $scope.user = {
+        title: 'Nagtegaal'
+    }
     $scope.getManKeuzeData = function () {
         $scope.showloading = true;
 
@@ -647,8 +641,8 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             return (state.Name.toLowerCase().indexOf(lowercaseQuery) === 0);
         };
     }
-});
 
+});
 
 agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.showConfirmChangePasswordDialog = function (ev) {
