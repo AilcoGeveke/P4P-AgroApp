@@ -34,10 +34,10 @@ namespace AgroApp.Controllers.Admin
             return View("../admin/machinebeheer/machineedit");
         }
 
-        [HttpGet("admin/gebruikers/verwijderd")]
+        [HttpGet("admin/machinebeheer/archief")]
         public IActionResult MachineTerugHalen()
         {
-            return View("../admin/machinebeheer/machineReAdd");
+            return View("../admin/machinebeheer/machinearchief");
         }
     }
 }

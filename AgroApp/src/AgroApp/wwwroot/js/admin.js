@@ -86,6 +86,22 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 
+    $scope.showConfirmArchiveDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Gebruiker Verwijderen')
+              .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
+              .targetEvent(ev)
+              .ok('Gebruiker Verwijderen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            ArchiveUser();
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
     $scope.showConfirmChangePasswordDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
@@ -118,9 +134,23 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         });
     };
 
+    $scope.ArchiefGebruikers = [];
+    $scope.getArchiefUserData = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/account/getarchiefusers',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.ArchiefGebruikers = data;
+            $rootScope.showLoading = false;
+        })
+    }
+
     $scope.gebruikerid = 0;
     $scope.ConfirmReAdd = function (gebruikerid) {
-        $scope.klantid = gebruikerid;
+        $scope.gebruikerid = gebruikerid;
         $scope.showConfirmReAddDialog();
     }
 
@@ -128,10 +158,10 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
         var confirm = $mdDialog.confirm()
-              .title('Gebruiker opnieuw toevoegen')
-              .textContent('Als u doorgaat zal deze gebruiker opnieuw toegevoegd worden!')
+              .title('Gebruiker dearchiveren')
+              .textContent('Als u doorgaat zal deze gebruiker gedearchiveerd worden!')
               .targetEvent(ev)
-              .ok('Opnieuw Toevoegen')
+              .ok('Dearchiveren')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
             ReAddKUser();
@@ -164,18 +194,18 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         });
     };
 
-    var DeleteUser = function () {
+    var ArchiveUser = function () {
         $scope.showloading = true;
 
         $http({
             method: 'GET',
-            url: '/admin/gebruikers/verwijderen/' + $scope.userDetails.id,
+            url: '/api/user/archiveren/' + $scope.userDetails.id,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == true)
-                $rootScope.changeView('admin/machinebeheer');
+                $rootScope.changeView('admin/gebruikers');
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
@@ -191,7 +221,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     var ReAddUser = function () {
         $http({
             method: 'GET',
-            url: '/admin/gebruikers/terughalen/' + $scope.Gebruikerid,
+            url: '/admin/gebruikers/terughalen/' + $scope.gebruikerid,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
@@ -248,6 +278,42 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         });
     };
 
+    $scope.ArchiefMachines = [];
+    $scope.getArchiefMachines = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getarchiefmachine',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.ArchiefMachines = data;
+            $rootScope.showLoading = false;
+        })
+    }
+
+    $scope.machineid = 0;
+    $scope.ConfirmReAdd = function (machineid) {
+        $scope.machineid = machineid;
+        $scope.showConfirmReAddDialog();
+    }
+
+    $scope.showConfirmReAddDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Machine dearchiveren')
+              .textContent('Als u doorgaat zal deze machine gedearchiveerd worden!')
+              .targetEvent(ev)
+              .ok('Dearchiveren')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            ReAddMachine();
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
     $scope.AddMachine = function () {
         $scope.showloading = true;
 
@@ -271,7 +337,6 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
-
 
     var EditMachine = function () {
         $scope.showloading = true;
@@ -320,6 +385,30 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
+
+    var ReAddMachine = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/machine/terughalen/' + $scope.machineid,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/machinebeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is geen machine geselecteerd!";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    }
 });
 
 agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) {

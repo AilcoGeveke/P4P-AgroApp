@@ -61,6 +61,19 @@ namespace AgroApp.Controllers.Api
             return JsonConvert.SerializeObject(data);
         }
 
+        [HttpGet("getarchiefmachine")]
+        public async Task<string> GetArchiefMachines()
+        {
+            string query = "SELECT naam, nummer, kenteken, idMachines FROM Machine WHERE isDeleted=@0";
+            List<Machine> data = new List<Machine>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (reader.Read())
+                    data.Add(new Machine(idMachine: reader.GetInt32(3), kenteken: reader.GetString(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
+            return JsonConvert.SerializeObject(data);
+        }
+
         [HttpGet("addmachine/{naam}/{nummer}/{kenteken}/{type}")]
         public async Task<bool> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
         {
@@ -114,6 +127,19 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1;;
         }
 
+        [HttpGet("machine/terughalen/{id}")]
+        public async Task<bool> ReAddMachine(int id)
+        {
+            if (GetMachine(id) == null)
+                return false;
+
+            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachines=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1; ;
+        }
 
         //Hulpstuk
         [HttpGet("gethulpstukken")]
