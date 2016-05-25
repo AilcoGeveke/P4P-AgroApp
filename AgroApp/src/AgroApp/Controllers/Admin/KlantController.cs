@@ -22,10 +22,10 @@ namespace AgroApp.Controllers.Admin
             return View("../admin/klantbeheer/klantadd");
         }
 
-        [HttpGet("admin/klantbeheer/verwijderd")]
+        [HttpGet("admin/klantbeheer/archief")]
         public IActionResult KlantTerugHalen()
         {
-            return View("../admin/klantbeheer/klantverwijderd");
+            return View("../admin/klantbeheer/klantarchief");
         }
 
         [HttpGet("admin/klantbeheer/wijzigen/{id}")]
