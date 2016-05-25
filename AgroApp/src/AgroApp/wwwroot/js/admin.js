@@ -155,7 +155,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == true)
-                $rootScope.changeView('admin/gebruikerbeheer');
+                $rootScope.changeView('admin/gebruikers');
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
