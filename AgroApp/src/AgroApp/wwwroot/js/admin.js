@@ -587,7 +587,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-    $scope.gebruikers = [];
+    self.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading = true;
         $http({
@@ -600,7 +600,6 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             $rootScope.showLoading = false;
         })
     }
-    self.machines = $scope.getMachines();
 
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);
@@ -640,9 +639,6 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
     function querySearch(criteria) {
         return criteria ? self.gebruikers.filter(createFilterFor(criteria)) : self.gebruikers;
-    };
-    function querySearch(criteria) {
-        return criteria ? self.machines.filter(createFilterFor(criteria)) : [];
     };
 
     function createFilterFor(query) {
