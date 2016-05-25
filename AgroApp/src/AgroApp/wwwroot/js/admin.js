@@ -122,6 +122,28 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         });
     };
 
+    $scope.gebruikerid = 0;
+    $scope.ConfirmReAdd = function (gebruikerid) {
+        $scope.klantid = gebruikerid;
+        $scope.showConfirmReAddDialog();
+    }
+
+    $scope.showConfirmReAddDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Gebruiker opnieuw toevoegen')
+              .textContent('Als u doorgaat zal deze gebruiker opnieuw toegevoegd worden!')
+              .targetEvent(ev)
+              .ok('Opnieuw Toevoegen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            ReAddKUser();
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
     var EditUser = function () {
         $scope.showloading = true;
 
@@ -152,6 +174,28 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $http({
             method: 'GET',
             url: '/admin/gebruikers/verwijderen/' + $scope.userDetails.id,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/machinebeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+    var ReAddUser = function () {
+        $http({
+            method: 'GET',
+            url: '/admin/gebruikers/terughalen/' + $scope.Gebruikerid,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
@@ -307,10 +351,10 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
         var confirm = $mdDialog.confirm()
-              .title('Klant Verwijderen')
-              .textContent('Als u doorgaat zal deze klant verwijderd worden!')
+              .title('Klant Archiveren')
+              .textContent('Als u doorgaat zal deze klant gearchiveerd worden!')
               .targetEvent(ev)
-              .ok('Klant Verwijderen')
+              .ok('Klant Archiveren')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
             DeleteKlant();
@@ -331,10 +375,10 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading = true;
         var confirm = $mdDialog.confirm()
-              .title('Klant opnieuw toevoegen')
-              .textContent('Als u doorgaat zal deze klant opnieuw toegevoegd worden!')
+              .title('Klant Dearchiveren')
+              .textContent('Als u doorgaat zal deze klant gedearchiveerd worden')
               .targetEvent(ev)
-              .ok('Opnieuw Toevoegen')
+              .ok('Dearchiveren')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
             ReAddKlant();
@@ -372,7 +416,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
         $http({
             method: 'GET',
-            url: '/api/werkbon/klant/verwijderenongedaan/' + $scope.klantid,
+            url: '/api/werkbon/klant/terughalen/' + $scope.klantid,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
@@ -408,18 +452,18 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
     };
 
 
-    $scope.VerwijderdeKlanten = [];
-    $scope.getVerwijderdeKlanten = function () {
+    $scope.ArchiefKlanten = [];
+    $scope.getArchiefKlanten = function () {
         $scope.showloading = true;
 
         $http({
             method: 'GET',
-            url: '/api/werkbon/getverwijderdeklanten',
+            url: '/api/werkbon/getarchiefklanten',
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
-            $scope.VerwijderdeKlanten = data;
+            $scope.ArchiefKlanten = data;
         });
     };
 
