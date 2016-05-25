@@ -223,6 +223,20 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1; ;
         }
 
+        [HttpGet("klant/verwijderenongedaan/{id}")]
+        public async Task<bool> ReAddKlant(int id)
+        {
+            if (GetKlant(id) == null)
+                return false;
+
+            string query = "UPDATE Klant SET isDeleted=@0 WHERE idKlant=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
+
         //Opdracht
         [HttpGet("addopdracht")]
         public async Task<bool> AddOpdracht()

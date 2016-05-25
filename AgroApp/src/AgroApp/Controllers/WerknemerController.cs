@@ -1,6 +1,7 @@
 ﻿using AgroApp.Controllers.Api;
 using AgroApp.Models;
 using Microsoft.AspNet.Mvc;
+using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -34,6 +35,8 @@ namespace AgroApp.Controllers
         {
             return View("../werknemer/Assignment");
         }
+
+
 
     }
 

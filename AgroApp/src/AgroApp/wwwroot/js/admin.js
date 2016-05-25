@@ -1,12 +1,13 @@
 ﻿var agroApp = angular.module('AgroApp');
 
-agroApp.controller('LoginView', function ($scope, $http) {    
-    var originatorEv;   
+agroApp.controller('LoginView', function ($scope, $http) {
+    var originatorEv;
     $scope.openMenu = function ($mdOpenMenu, ev) {
         originatorEv = ev;
         $mdOpenMenu(ev);
     };
 });
+
 
 agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -50,6 +51,7 @@ agroApp.controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     }
 });
 
+
 agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('left').close()
@@ -58,6 +60,7 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
           });
     };
 });
+
 
 agroApp.controller('UserView', function ($scope, $http, $rootScope) {
     $scope.gebruikers = [];
@@ -76,8 +79,7 @@ agroApp.controller('UserView', function ($scope, $http, $rootScope) {
 
     $scope.tijden = [];
     $scope.setTijdenRange = function () {
-        for (uur = 6; uur < 20; uur++)
-        {
+        for (uur = 6; uur < 20; uur++) {
             $scope.tijden.push(uur + ":00");
             $scope.tijden.push(uur + ":30");
         }
@@ -281,9 +283,9 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
     };
 });
 
-   
+
 agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) {
-   
+
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
@@ -317,6 +319,30 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         });
     };
 
+
+    $scope.klantid = 0;
+    $scope.ConfirmReAdd = function (klantid)
+    {
+        $scope.klantid = klantid;
+        $scope.showConfirmReAddDialog();
+    }
+    
+    $scope.showConfirmReAddDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading = true;
+        var confirm = $mdDialog.confirm()
+              .title('Klant opnieuw toevoegen')
+              .textContent('Als u doorgaat zal deze klant opnieuw toegevoegd worden!')
+              .targetEvent(ev)
+              .ok('Opnieuw Toevoegen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            ReAddKlant();
+        }, function () {
+            $rootScope.showLoading = false;
+        });
+    };
+
     $scope.AddKlant = function () {
         $scope.showloading = true;
 
@@ -338,6 +364,62 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             $scope.showloading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+    var ReAddKlant = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/klant/verwijderenongedaan/' + $scope.klantid,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/klantbeheer');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is geen klant geselecteerd!";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    }
+
+    $scope.selectedKlanten = [];
+    $scope.klanten = [];
+    $scope.getKlanten = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getklanten',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.klanten = data;
+        });
+    };
+
+
+    $scope.VerwijderdeKlanten = [];
+    $scope.getVerwijderdeKlanten = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getverwijderdeklanten',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.VerwijderdeKlanten = data;
         });
     };
 
@@ -382,7 +464,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
                 $scope.showloading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen klant geselecteerd!";
-    }
+            }
         }).error(function () {
             $scope.showloading = false;
             $scope.showError = true;
@@ -427,38 +509,6 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             $scope.machines = data;
-        });
-    };
-
-    $scope.selectedKlanten = [];
-    $scope.klanten = [];
-    $scope.getKlanten = function () {
-        $scope.showloading = true;
-
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getklanten',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
-            $scope.klanten = data;
-        });
-    };
-
-
-    $scope.VerwijderdeKlanten = [];
-    $scope.getVerwijderdeKlanten = function () {
-        $scope.showloading = true;
-
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getverwijderdeklanten',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
-            $scope.VerwijderdeKlanten = data;
         });
     };
 
@@ -514,28 +564,26 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     }
 
     $scope.onUrenChange = function ($isAantal) {
-        if($isAantal)
-        {
-            $scope.tijd.van = new Date( 1970, 1, 1, 0, 0, 0, 0);
+        if ($isAantal) {
+            $scope.tijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
             $scope.tijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
         }
-        else
-        {
+        else {
             var millDiff = $scope.tijd.tot - $scope.tijd.van;
             var sec = millDiff / 1000;
             var min = sec / 60;
             var hours = min / 60;
-            $scope.tijd.aantal = new Date( 1970, 1, 1, hours % 24, min % 60, 0, 0 );
+            $scope.tijd.aantal = new Date(1970, 1, 1, hours % 24, min % 60, 0, 0);
         }
     }
 
     $scope.onGewichtChange = function ($isNetto) {
         if ($isNetto) {
             $scope.gewicht.vol = new Number(0);
-            $scope.gewicht.leeg = new Number(0);            
+            $scope.gewicht.leeg = new Number(0);
         }
         else {
-            $scope.gewicht.netto =($scope.gewicht.vol - $scope.gewicht.leeg);
+            $scope.gewicht.netto = ($scope.gewicht.vol - $scope.gewicht.leeg);
         }
     }
 
