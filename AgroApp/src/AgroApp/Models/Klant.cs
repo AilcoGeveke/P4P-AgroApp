@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Klant
+    public class Customer
     {
+        public int IdCustomer { private set; get; }
+        public string Name { private set; get; }
+        public string Adress { private set; get; }
 
-        public int IdKlant { private set; get; }
-        public string Naam { private set; get; }
-        public string Adres { private set; get; }
-
-        public Klant(int idKlant = -1, string naam = "", string adres = "")
+        public Customer(int IdCustomer = -1, string Name = "", string Adress = "")
         {
-            IdKlant = idKlant;
-            Naam = naam;
-            Adres = adres;
+            this.IdCustomer = IdCustomer;
+            this.Name = Name;
+            this.Adress = Adress;
         }
     }
 }

@@ -130,7 +130,7 @@ namespace AgroApp.Controllers.Api
 
 
         //Klanten
-        public static async Task<Klant> GetKlant(int id)
+        public static async Task<Customer> GetKlant(int id)
         {
             if (id < 0)
                 return null;
@@ -141,7 +141,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new Klant(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)) : null;
+                return reader.HasRows ? new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)) : null;
             }
         }
 
@@ -149,12 +149,12 @@ namespace AgroApp.Controllers.Api
         public async Task<string> GetKlanten()
         {
             string query = "SELECT * FROM Klant WHERE isDeleted=@0";
-            List<Klant> data = new List<Klant>();
+            List<Customer> data = new List<Customer>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (reader.Read())
-                    data.Add(new Klant(idKlant: reader.GetInt32(0), naam: reader.GetString(1), adres: reader.GetString(2)));
+                    data.Add(new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)));
             return JsonConvert.SerializeObject(data);
 
         }
@@ -163,12 +163,12 @@ namespace AgroApp.Controllers.Api
         public async Task<string> GetArchiefKlanten()
         {
             string query = "SELECT * FROM Klant WHERE isDeleted=@0";
-            List<Klant> data = new List<Klant>();
+            List<Customer> data = new List<Customer>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true)))
                 while (reader.Read())
-                    data.Add(new Klant(idKlant: reader.GetInt32(0), naam: reader.GetString(1), adres: reader.GetString(2)));
+                    data.Add(new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)));
             return JsonConvert.SerializeObject(data);
 
         }

@@ -31,10 +31,10 @@ namespace AgroApp.Controllers.Admin
         [HttpGet("admin/klantbeheer/wijzigen/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
-            Klant klant = await WerkbonController.GetKlant(id);
+            Customer klant = await WerkbonController.GetKlant(id);
             ViewData["idKlant"] = id;
-            ViewData["naamKlant"] = klant.Naam;
-            ViewData["adresKlant"] = klant.Adres;
+            ViewData["naamKlant"] = klant.Name;
+            ViewData["adresKlant"] = klant.Adress;
             return View("../admin/klantbeheer/klantedit");
         }
     }

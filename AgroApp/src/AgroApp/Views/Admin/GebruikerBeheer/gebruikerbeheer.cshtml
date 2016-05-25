@@ -6,7 +6,7 @@
                     <span>Gebruiker beheer</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/gebruikers/toevoegen')"><md-icon>add_circle</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/gebruikerbeheer/toevoegen')"><md-icon>add_circle</md-icon></md-button>
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
@@ -20,7 +20,7 @@
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="gebruiker in gebruikers | filter:searchterm" ng-click="changeView('admin/gebruikers/wijzigen/' + gebruiker.IdWerknemer)">
+                <md-list-item class="md-3-line" ng-repeat="gebruiker in gebruikers | filter:searchterm" ng-click="changeView('admin/gebruikerbeheer/wijzigen/' + gebruiker.IdWerknemer)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">face</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ gebruiker.Name }}</h3>

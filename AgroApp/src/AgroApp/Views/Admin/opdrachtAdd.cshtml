@@ -9,35 +9,43 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <form ng-controller="WerkbonEdit as ctrl" ng-submit="submitWerkbonAdd()">
+        <form ng-controller="WerkbonEdit as ctrl" ng-submit="submitOpdracht()" name="opdrachtForm">
             <div class="md-padding">
 
                 <h2 class="md-title">Algemeen</h2>
-                <div layout-gt-xs="row">
-                    <md-autocomplete flex required class=""
-                                     md-selected-item="ctrl.selectedItem"
-                                     md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                                     md-search-text="ctrl.searchText"
+                <div layout-gt-xs="row" ng-init="getKlanten()">
+                    <md-autocomplete flex required
+                                     md-search-text="klantZoekText"
                                      md-input-class="inputnomargin"
-                                     md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                     md-selected-item="ctrl.selectedKlant"
+                                     md-items="item in ctrl.querySearch(klantZoekText, ctrl.klanten)"
                                      md-item-text="item.Name"
                                      md-autoselect="true"
-                                     md-floating-label="Opdrachtgever">
+                                     md-floating-label="Opdrachtgever"
+                                     md-menu-class="chiplist">
                         <md-item-template>
-                            <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.Name}}</span>
+                            <span class="item-title">
+                                <md-icon>person</md-icon>
+                                <span> {{item.Name}} </span>
+                            </span>
+                            <span class="item-metadata">
+                                <span class="item-metastat">
+                                    <small>{{item.Adress}}</small>
+                                </span>
+                            </span>
                         </md-item-template>
                         <md-not-found>
-                            Klant "{{ctrl.searchText}}" kon niet gevonden worden.
-                            <a ng-click="ctrl.newState(ctrl.searchText)">Voeg deze klant toe?</a>
+                            Klant "{{klantZoekText}}" kon niet gevonden worden.
+                            <a ng-click="gg()">Voeg deze klant toe?</a>
                         </md-not-found>
                     </md-autocomplete>
-                    <md-datepicker required ng-model="user.submissionDate" md-placeholder="Startdatum">
+                    <md-datepicker ng-model="opdracht.datum" md-placeholder="Startdatum">
                     </md-datepicker>
                 </div>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Locatie</label>
-                    <input type="text" ng-model="opdracht.adres" md-select-on-focus>
+                    <input required type="text" ng-model="opdracht.adres" md-select-on-focus>
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
@@ -46,14 +54,12 @@
                 </md-input-container>
 
                 <h2 class="md-title">Werknemers</h2>
-                <md-chips ng-init="getAllUserData()" ng-model="ctrl.userSelectie" md-autocomplete-snap
+                <md-chips ng-init="getAllUserData()" ng-model="ctrl.selectedGebruikers" md-autocomplete-snap
                           md-require-match="true">
                     <md-autocomplete md-autoselect="true"
-                                     md-no-cache="true"
-                                     md-selected-item="ctrl.selectedUser"
-                                     md-items="item in ctrl.querySearch(ctrl.userSearchText)"
+                                     md-items="item in ctrl.querySearch(gebruikerZoekText, ctrl.gebruikers)"
                                      md-item-text="item.Name"
-                                     md-search-text="ctrl.userSearchText"
+                                     md-search-text="gebruikerZoekText"
                                      placeholder="+Werknemer"
                                      md-menu-class="chiplist">
                         <span md-highlight-text="we.userSearchText">{{item.Name}}</span>

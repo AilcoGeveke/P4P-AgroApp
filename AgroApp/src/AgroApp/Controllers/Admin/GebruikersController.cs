@@ -10,13 +10,13 @@ namespace AgroApp.Controllers
     public class GebruikersController : Controller
     {
         // GET: /<controller>/
-        [HttpGet("admin/gebruikers")]
+        [HttpGet("admin/gebruikerbeheer")]
         public IActionResult Index()
         {
             return View("../admin/gebruikerbeheer/gebruikerbeheer");
         }
 
-        [HttpGet("admin/gebruikers/wijzigen/{id}")]
+        [HttpGet("admin/gebruikerbeheer/wijzigen/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
             User user = await UserController.GetUser(id);
@@ -27,13 +27,13 @@ namespace AgroApp.Controllers
             return View("../admin/gebruikerbeheer/gebruikeredit");
         }
 
-        [HttpGet("admin/gebruikers/toevoegen")]
+        [HttpGet("admin/gebruikerbeheer/toevoegen")]
         public IActionResult GebruikerToevoegen()
         {
             return View("../admin/gebruikerbeheer/gebruikeradd");
         }
 
-        [HttpGet("admin/gebruikers/verwijderd")]
+        [HttpGet("admin/gebruikerbeheer/verwijderd")]
         public IActionResult GebruikerTerugHalen()
         {
             return View("../admin/gebruikerbeheer/gebruikerReAdd");

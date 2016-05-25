@@ -513,9 +513,9 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
     var self = this;
+    $rootScope.showloading = false;
 
     $scope.manKeuze = [];
-    $rootScope.showloading = false;
     $scope.user = {
         title: 'Nagtegaal'
     }
@@ -581,6 +581,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
+    self.selectedGebruikers = [];
     self.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading = true;
@@ -595,8 +596,43 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         })
     }
 
+    self.selectedKlant = "";
+    self.klanten = [];
+    $scope.getKlanten = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getklanten',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            self.klanten = data;
+        });
+    };
+
     $scope.submitWerkbonAdd = function () {
         console.log($scope.selectedMachines);
+    }
+
+    $scope.submitOpdracht = function () {
+        $rootScope.showLoading = true;
+        var sendData = JSON.stringify({
+            selectedKlant: self.selectedKlant,
+            selectedGebruikers: self.selectedGebruikers,
+            locatie: $scope.opdracht.adres,
+            beschrijving: $scope.opdracht.omschrijving,
+            datum: $scope.opdracht.datum
+        });
+
+        var config = { headers: { 'Content-Type': 'application/json' } }
+
+        $http.post('/api/opdracht/toevoegen', sendData)
+        .success(function (data, status, headers, config) {
+            $rootScope.showLoading = false;
+            $rootScope.changeView('admin/planning');
+        })
     }
 
     $scope.onUrenChange = function ($isAantal) {
@@ -623,16 +659,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }
     }
 
-    self.selectedUser = "";
-    self.userSearchText = "";
-    self.userSelectie = [];
     self.querySearch = querySearch;
 
     self.machineSelectie = [];
     self.selectedMachine = "";
 
-    function querySearch(criteria) {
-        return criteria ? self.gebruikers.filter(createFilterFor(criteria)) : self.gebruikers;
+    function querySearch(criteria, targetArray) {
+        return criteria ? targetArray.filter(createFilterFor(criteria)) : targetArray;
     };
 
     function createFilterFor(query) {
