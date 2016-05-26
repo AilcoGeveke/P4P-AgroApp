@@ -14,15 +14,15 @@ namespace AgroApp.Models
         public string beschrijving;
         public DateTime datum;
         public int idOpdracht;
-        private int idKlant;
+        public int idKlant;
 
         public Opdracht(int idOpdracht, string locatie, string beschrijving, int idKlant, DateTime datum)
         {
-            this.idOpdracht = idOpdracht;
-            this.locatie = locatie;
-            this.beschrijving = beschrijving;
-            this.idKlant = idKlant;
-            this.datum = datum;
+            this.idOpdracht = NullCheck.CastDBValue<int>(idOpdracht);
+            this.locatie = NullCheck.CastDBValue<string>(locatie);
+            this.beschrijving = NullCheck.CastDBValue<string>(beschrijving);
+            this.idKlant = NullCheck.CastDBValue<int>(idKlant);
+            this.datum = NullCheck.CastDBValue<DateTime>(datum);
         }
     }
 }
