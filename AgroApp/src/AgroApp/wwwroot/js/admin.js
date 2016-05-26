@@ -813,3 +813,19 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
     };
 
 });
+
+agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.opdrachten = [];
+    $scope.getOpdrachten = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/werknemer/getopdrachten',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.opdrachten = data;
+            $rootScope.showLoading = false;
+        })
+    }
+});

@@ -2,42 +2,59 @@
 using AgroApp.Models;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AgroApp.Controllers
 {
+    [Route("[controller]")]
     public class WerknemerController : Controller
     {
         // GET: /user/usermain
-        [HttpGet("werknemer/menu")]
+        [HttpGet("menu")]
         public IActionResult Index()
         {
             ViewData["volledigenaam"] = HttpContext.User.Identity.Name;
             return View("../werknemer/main");
         }
 
-        [HttpGet("werknemer/werkbontoevoegen")]
+        [HttpGet("werkbontoevoegen")]
         public IActionResult werkbontoevoegen()
         {
             return View("../admin/werkbonadd");
         }
 
-        [HttpGet("werknemer/gebruikerbeheer")]
+        [HttpGet("gebruikerbeheer")]
         public IActionResult Accountbeheren()
         {
             return View("../werknemer/Manage");
         }
 
-        [HttpGet("werknemer/opdrachten")]
+        [HttpGet("opdrachten")]
         public IActionResult Opdrachten()
         {
             return View("../werknemer/Assignment");
         }
 
+        [HttpGet("getopdrachten")]
+        public async Task<IEnumerable<Opdracht>> GetOpdrachten()
+        {
+            string query = "SELECT * FROM Opdracht";
+            List<Opdracht> opdrachten = new List<Opdracht>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", 1)))
+                while (await reader.ReadAsync())       
+                    opdrachten.Add(new Opdracht(idOpdracht: reader.GetInt32(0), locatie: reader.GetString(1), beschrijving: reader.GetString(2), idKlant: reader.GetInt32(3), datum: reader.GetDateTime(4)));
 
-
+            System.Diagnostics.Debug.WriteLine("-------------------------------------------");
+            System.Diagnostics.Debug.WriteLine("Debug value of opdrachten:");
+            System.Diagnostics.Debug.WriteLine(opdrachten);
+            System.Diagnostics.Debug.WriteLine("-------------------------------------------");
+            return opdrachten;
+        }
     }
 
 }
