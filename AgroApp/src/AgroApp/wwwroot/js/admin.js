@@ -705,6 +705,36 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         console.log($scope.selectedMachines);
     }
 
+    $scope.submitWerkbon = function () {
+        $rootScope.showLoading = true;
+        var sendData = JSON.stringify({
+            selectedGebruikers: self.selectedGebruikers,
+            werklocatie: $scope.opdracht.locatie,
+            opdrachtgever: $scope.klant.naam,
+            manKeuze: self.manKeuze,
+            datum: $scope.opdracht.datum,
+            selectedMachine: self.selectedMachine,
+            selectedHulpstukken: self.selectedHulpstukken,
+            urenvan: $scope.werktijd.van,
+            urentot: $scope.werktijd.tot,
+            urentotaal: $scope.werktijd.urenTotaal,
+            gewichtenrichting: $scope.gewicht.richting,
+            gewichtensoort: $scope.gewicht.type,
+            gewichtvol: $scope.gewicht.volGewicht,
+            gewichtleeg: $scope.gewicht.leegGewicht,
+            gewichtnetto: $scope.gewicht.nettoGewicht,
+            rijplateningaandgroot: $scope.rijplaten.groot,
+            rijplateningaandklein: $scope.rijplaten.klein,
+            rijplateningaandkunststof: $scope.rijplaten.kunststof,
+            rijplatenuitgaandgroot: $scope.rijplaten.groot,
+            rijplatenuitgaandklein: $scope.rijplaten.klein,
+            rijplatenuitgaandkunststof: $scope.rijplaten.kunststof,
+            lossemachines: $scope.machine.naam,
+            verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
+            opmerking: $scope.werktijd.opmerking
+        })
+    }
+
     $scope.submitOpdracht = function () {
         $rootScope.showLoading = true;
         var sendData = JSON.stringify({
