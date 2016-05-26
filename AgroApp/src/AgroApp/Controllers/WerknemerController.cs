@@ -39,6 +39,12 @@ namespace AgroApp.Controllers
             return View("../werknemer/Assignment");
         }
 
+        [HttpGet("assignmentedit/{id}")]
+        public IActionResult OpdrachtEdit()
+        {
+            return View("../werknemer/assignmentedit");
+        }
+
         [HttpGet("getopdrachten")]
         public async Task<IEnumerable<Opdracht>> GetOpdrachten()
         {
@@ -61,6 +67,41 @@ namespace AgroApp.Controllers
             System.Diagnostics.Debug.WriteLine("-------------------------------------------");
             return opdrachten;
         }
+
+
+        [HttpGet("getopdracht")]
+        private async Task<Opdracht> _GetOpdracht(int id)
+        {
+            return await _GetOpdracht(id);
+        }
+
+        public static async Task<Opdracht> GetOpdracht(int id)
+        {
+            if (id < 0)
+                return null;
+
+            string query = "SELECT idOpdracht, locatie, beschrijving,  datum FROM Opdracht WHERE idOpdracht=@0";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", id)))
+            {
+                await reader.ReadAsync();
+                return reader.HasRows ? new Opdracht(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), reader.GetDateTime(4)) : null;
+            }
+        }
+
+        [HttpGet("werknemer/assignmentedit/{id}")]
+        public async Task<IActionResult> GebruikerWijzigen(int id)
+        {
+            Opdracht opdracht = await GetOpdracht(id);
+            ViewData["id"] = id;
+            ViewData["idOpdracht"] = opdracht.idOpdracht;
+            ViewData["locatie"] = opdracht.locatie;
+            ViewData["beschrijving"] = opdracht.beschrijving;
+            ViewData["datum"] = opdracht.datum;
+            return View("..werknemer/assignmentedit/");
+        }
+
     }
 
 }

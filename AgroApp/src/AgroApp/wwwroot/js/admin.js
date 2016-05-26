@@ -814,7 +814,7 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 
 });
 
-agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
+agroApp.controller('OpdrachtEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.opdrachten = [];
     $scope.getOpdrachten = function () {
         $rootScope.showLoading = true;
@@ -828,4 +828,28 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
             $rootScope.showLoading = false;
         })
     }
+
+    var EditAssignment = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werknemers/assignmentedit/' + $scope.assignmentDetails.locatie + '/' + $scope.assignmentDetails.beschrijving,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('werknemer/');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
 });

@@ -284,6 +284,12 @@ namespace AgroApp.Controllers.Api
             throw new NotImplementedException();
         }
 
+        // GET: /admin/werkboncheck
+        [HttpGet("admin/werkbon/controleren")]
+        public IActionResult Opdracht()
+        {
+            return View("../admin/werkbonCheck");
+        }
 
 
 
