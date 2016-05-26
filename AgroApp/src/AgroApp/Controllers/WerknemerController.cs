@@ -2,6 +2,7 @@
 using AgroApp.Models;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -47,7 +48,12 @@ namespace AgroApp.Controllers
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", 1)))
                 while (await reader.ReadAsync())       
-                    opdrachten.Add(new Opdracht(idOpdracht: reader.GetInt32(0), locatie: reader.GetString(1), beschrijving: reader.GetString(2), idKlant: reader.GetInt32(3), datum: reader.GetDateTime(4)));
+                    opdrachten.Add(new Opdracht(
+                        idOpdracht: reader["idOpdracht"] as int? ?? -1, 
+                        locatie: reader["locatie"] as string, 
+                        beschrijving: reader["beschrijving"] as string, 
+                        idKlant: reader["idKlant"] as int? ?? -1, 
+                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
 
             System.Diagnostics.Debug.WriteLine("-------------------------------------------");
             System.Diagnostics.Debug.WriteLine("Debug value of opdrachten:");
