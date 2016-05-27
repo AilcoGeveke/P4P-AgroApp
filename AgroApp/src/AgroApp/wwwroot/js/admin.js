@@ -58,30 +58,6 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
           });
     };
 });
-
-agroApp.controller('UserView', function ($scope, $http, $rootScope) {
-    $scope.gebruikers = [];
-    $scope.getAllUserData = function () {
-        $rootScope.showLoading = true;
-        $http({
-            method: 'GET',
-            url: '/api/account/getfulllist',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            $scope.gebruikers = data;
-            $rootScope.showLoading = false;
-        })
-    }
-
-    $scope.tijden = [];
-    $scope.setTijdenRange = function () {
-        for (uur = 6; uur < 20; uur++) {
-            $scope.tijden.push(uur + ":00");
-            $scope.tijden.push(uur + ":30");
-        }
-    }
-});
                                                
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
@@ -829,3 +805,35 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
         })
     }
 });
+
+agroApp.controller('PlanningView', function ($scope, $http, $rootScope) {
+    $scope.gebruikerTijden = [];
+    $scope.geselecteerdeDagDatum = new Date();
+    $scope.geselecteerdeWeekDatum = new Date();
+
+    $scope.updateGebruikersDag = function () {
+        $rootScope.showLoading = true;
+        $http.get('/api/planning/getGebruikersWerktijden/' + $scope.geselecteerdeDagDatum.getTime())
+        .success(function (response) { $scope.gebruikerTijden = response; $rootScope.showLoading = false; })
+        .error(function (response) { console.log(response) });
+    }
+
+    $scope.updateGebruikersWeek = function () {
+        $scope.weekNummer = $scope.geselecteerdeWeekDatum.getWeek();
+    }
+
+    $scope.tijden = [];
+    $scope.setTijdenRange = function () {
+        $scope.tijden = [];
+        for (uur = 6; uur <= 20; uur++) {
+            $scope.tijden.push(uur + ":00");
+            if (uur != 20)
+                $scope.tijden.push(uur + ":30");
+        }
+    }
+})
+
+Date.prototype.getWeek = function () {
+    var onejan = new Date(this.getFullYear(), 0, 1);
+    return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+}

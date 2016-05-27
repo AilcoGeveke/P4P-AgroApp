@@ -1,65 +1,67 @@
-﻿<md-content layout-fill layout="column" ng-cloak ng-controller="Navigation" >
-    <md-toolbar class="md-menu-toolbar">
-        <div layout="row">
-            <md-toolbar-filler layout layout-align="center center">
-                <md-icon>chat</md-icon>
-            </md-toolbar-filler>
-            <div>
-                <h2 class="md-toolbar-tools">Planning Week 20</h2>
-                <md-menu-bar>
-                    <md-menu>
-                        <button ng-click="$mdOpenMenu()">
-                            Weergave
-                        </button>
-                        <md-menu-content>
-                            <md-menu-item>
-                                <md-button>
-                                    Jaar Weergave
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    Maand Weergave
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    Week Weergave
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                    <button ng-click="changeView('admin/main')">
-                        Terug naar hoofdpagina
-                    </button>
-                </md-menu-bar>
-            </div>
+﻿<md-content layout-fill layout="column" ng-controller="Navigation">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Planning</span>
+            </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
         </div>
     </md-toolbar>
-    <md-toolbar class="md-tall md-warn md-hue-3">
-        <span flex></span>
-        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-            <span class="md-flex">Toolbar: tall with actions pin to the bottom (md-warn md-hue-3)</span>
-        </h2>
-    </md-toolbar>
-    <div class="page-container" ng-controller="UserView" ng-init="getAllUserData()">
+    <div class="page-container" ng-controller="PlanningView">
         <md-content>
-            <md-table-container ng-init="setTijdenRange()">
-                <table md-table>
-                    <thead md-head>
-                        <tr md-row>
-                            <th md-column class="table-text-width">Werknemer</th>
-                            <th md-column class="table-time" ng-repeat="tijd in tijden">{{tijd}}</th>
-                        </tr>
-                    </thead>
-                    <tbody md-body>
-                        <tr md-row ng-repeat="gebruiker in gebruikers">
-                            <td md-cell>{{gebruiker.Name}}</td>
-                            <td md-cell class="table-time" ng-repeat="tijd in tijden">a</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </md-table-container>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Werknemers">
+
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="Dag" md-on-select="updateGebruikersDag(); setTijdenRange()">
+                            <md-content class="md-padding">
+                                <md-datepicker ng-model="geselecteerdeDagDatum" ng-change="updateGebruikersDag()" md-placeholder="Datum"></md-datepicker>
+                            </md-content>
+                            <md-content>
+                                <md-table-container>
+                                    <table md-table>
+                                        <thead md-head>
+                                            <tr md-row>
+                                                <th md-column class="table-text-width">Werknemer</th>
+                                                <th md-column class="table-time" ng-repeat="tijd in tijden">{{tijd}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody md-body>
+                                            <tr md-row ng-repeat="gebruiker in gebruikerTijden">
+                                                <td md-cell>{{gebruiker.naam}}</td>
+                                                <td md-cell class="table-time" ng-repeat="tijd in tijden" style="background-color: RGB(200, 200, 200)"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </md-table-container>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Week" md-on-select="updateGebruikersWeek()">
+                            <md-content class="md-padding">
+                                <div layout="row">
+                                    <md-datepicker ng-model="geselecteerdeWeekDatum" ng-change="updateGebruikersWeek()" md-placeholder="Datum" md-date-filter="alleenWeekenden"></md-datepicker>
+                                    <md-input-container class="md-block inputnomargin">
+                                        <label>Week Nummer</label>
+                                        <input required type="text" ng-model="weekNummer" md-select-on-focus>
+                                    </md-input-container>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Maand">
+
+                        </md-tab>
+                        <md-tab label="Jaar">
+
+                        </md-tab>
+                    </md-tabs>
+                </md-tab>
+                <md-tab label="Opdrachten">
+
+                </md-tab>
+            </md-tabs>
+
+            <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
         </md-content>
     </div>
 </md-content>
