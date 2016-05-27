@@ -41,5 +41,21 @@ namespace AgroApp.Controllers.Api
                 return true;
             }
         }
+
+        public static async Task<IEnumerable<Opdracht>> GetAllOpdrachten()
+        {
+            string query = "SELECT locatie, beschrijving, datum FROM Opdracht";
+            List<Opdracht> opdrachten = new List<Opdracht>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false)))
+                while (await reader.ReadAsync())
+                {
+                    opdrachten.Add(new Opdracht(locatie: reader.GetString(0), beschrijving: reader.GetString(1), datum: reader.GetDateTime(2)));
+                    opdrachten.Add(new Customer(locatie: reader.GetString(0), beschrijving: reader.GetString(1), datum: reader.GetDateTime(2)));
+                }
+                    
+            return opdrachten;
+        }
     }
 }

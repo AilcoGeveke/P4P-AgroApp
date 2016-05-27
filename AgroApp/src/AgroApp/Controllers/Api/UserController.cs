@@ -173,7 +173,7 @@ namespace AgroApp.Controllers.Api
             return users;
         }
 
-        [HttpGet("gebruikers/terughalen/{id}")]
+        [HttpGet("gebruikerbeheer/terughalen/{id}")]
         public async Task<bool> ReAddKlant(int id)
         {
             if (GetUser(id) == null)

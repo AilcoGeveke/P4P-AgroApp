@@ -284,6 +284,29 @@ namespace AgroApp.Controllers.Api
             throw new NotImplementedException();
         }
 
+<<<<<<< HEAD
+        // GET: /admin/werkboncheck
+        [HttpGet("admin/werkbon/controleren")]
+        public IActionResult Opdracht()
+        {
+            return View("../admin/werkbonCheck");
+        }
+=======
+        [HttpGet("getdata")]
+        public async Task<string> GetData()
+        {
+            string query = "SELECT Opdracht.locatie, Klant.naam FROM Opdracht JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht JOIN Klant ON Opdracht.idKlant = Klant.idKlant";
+            List<Customer> data = new List<Customer>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false)))
+                while (reader.Read())
+                    data.Add(new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)));
+            return JsonConvert.SerializeObject(data);
+
+        }
+
+>>>>>>> origin/master
 
 
 

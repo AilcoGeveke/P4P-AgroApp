@@ -58,7 +58,7 @@ agroApp.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
           });
     };
 });
-                                               
+
 agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 
@@ -69,7 +69,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
               .title('Gebruiker Verwijderen')
               .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
               .targetEvent(ev)
-              .ok('Gebruiker Verwijderen')
+              .ok('Gebruiker Archiveren')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
             ArchiveUser();
@@ -140,7 +140,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
               .ok('Dearchiveren')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            ReAddKUser();
+            ReAddUser();
         }, function () {
             $rootScope.showLoading = false;
         });
@@ -181,7 +181,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == true)
-                $rootScope.changeView('admin/gebruikers');
+                $rootScope.changeView('admin/gebruikerbeheer');
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
@@ -197,13 +197,13 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     var ReAddUser = function () {
         $http({
             method: 'GET',
-            url: '/admin/gebruikers/terughalen/' + $scope.gebruikerid,
+            url: '/api/user/gebruikerbeheer/terughalen/' + $scope.gebruikerid,
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == true)
-                $rootScope.changeView('admin/machinebeheer');
+                $rootScope.changeView('admin/gebruikerbeheer');
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
@@ -790,7 +790,27 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 
 });
 
+<<<<<<< HEAD
+agroApp.controller('OpdrachtEdit', function ($scope, $http, $rootScope, $mdDialog) {
+=======
+agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.print = [];
+    $scope.getArchiefMachines = function () {
+        $rootScope.showLoading = true;
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getdata',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            $scope.print = data;
+            $rootScope.showLoading = false;
+        })
+    }
+
+});
 agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
+>>>>>>> origin/master
     $scope.opdrachten = [];
     $scope.getOpdrachten = function () {
         $rootScope.showLoading = true;
@@ -804,6 +824,30 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
             $rootScope.showLoading = false;
         })
     }
+
+    var EditAssignment = function () {
+        $scope.showloading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werknemers/assignmentedit/' + $scope.assignmentDetails.locatie + '/' + $scope.assignmentDetails.beschrijving,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('werknemer/');
+            else {
+                $scope.showloading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $scope.showloading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
 });
 
 agroApp.controller('PlanningView', function ($scope, $http, $rootScope) {

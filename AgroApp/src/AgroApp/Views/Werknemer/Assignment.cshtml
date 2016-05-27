@@ -10,12 +10,12 @@
             </div>
         </md-toolbar>
   
-        <div ng-controller="OpdrachtView" ng-init="getOpdrachten()">
+        <div ng-controller="OpdrachtEdit" ng-init="getOpdrachten()">
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="opdracht in opdrachten" ng-click="changeView('gebruiker/opdracht/' + opdracht.idOpdracht)">
+                <md-list-item class="md-3-line" ng-repeat="opdracht in opdrachten" ng-click="changeView('werknemer/assignmentedit/' + opdracht.idOpdracht)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">content_paste</md-icon>
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ opdracht.beschrijving }}</h3>
+                        <h3>{{ opdracht.idKlant }}</h3>
                         <p>{{ opdracht.locatie }}</p>
                     </div>
                     <span flex></span>
