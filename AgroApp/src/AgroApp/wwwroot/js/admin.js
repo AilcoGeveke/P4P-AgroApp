@@ -790,9 +790,6 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 
 });
 
-<<<<<<< HEAD
-agroApp.controller('OpdrachtEdit', function ($scope, $http, $rootScope, $mdDialog) {
-=======
 agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.print = [];
     $scope.getArchiefMachines = function () {
@@ -810,7 +807,6 @@ agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
 
 });
 agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
->>>>>>> origin/master
     $scope.opdrachten = [];
     $scope.getOpdrachten = function () {
         $rootScope.showLoading = true;

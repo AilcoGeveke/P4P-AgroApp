@@ -283,15 +283,14 @@ namespace AgroApp.Controllers.Api
             }
             throw new NotImplementedException();
         }
-
-<<<<<<< HEAD
+        
         // GET: /admin/werkboncheck
         [HttpGet("admin/werkbon/controleren")]
         public IActionResult Opdracht()
         {
             return View("../admin/werkbonCheck");
         }
-=======
+
         [HttpGet("getdata")]
         public async Task<string> GetData()
         {
@@ -306,7 +305,6 @@ namespace AgroApp.Controllers.Api
 
         }
 
->>>>>>> origin/master
 
 
 
