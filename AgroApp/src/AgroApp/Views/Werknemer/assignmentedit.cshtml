@@ -1,12 +1,12 @@
 ﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
-    <div class="md-whiteframe-5dp layout-content form-content" ng-controller="OpdrachtEdit">
+    <div class="md-whiteframe-5dp layout-content form-content" ng-controller="OpdrachtView">
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
                 <h2>
                     <span>Opdrachtgever: @ViewData["idKlant"]</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('werknemer/menu')"><md-icon>arrow_back</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('werknemer/opdrachten')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
         <div class="content">

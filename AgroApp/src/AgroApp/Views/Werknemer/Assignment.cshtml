@@ -9,10 +9,10 @@
                 <md-button class="md-icon-button" ng-click="changeView('werknemer/menu')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-  
-        <div ng-controller="OpdrachtEdit" ng-init="getOpdrachten()">
+
+        <div ng-controller="OpdrachtView" ng-init="getOpdrachten()">
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="opdracht in opdrachten" ng-click="changeView('werknemer/assignmentedit/' + opdracht.idOpdracht)">
+                <md-list-item class="md-3-line" ng-repeat="opdracht in opdrachten | limitTo: 7" ng-click="changeView('werknemer/assignmentedit/' + opdracht.idOpdracht)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">content_paste</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ opdracht.idKlant }}</h3>
@@ -24,7 +24,7 @@
             </md-list>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
-        </div>
+    </div>
 </md-content>
 
 <div class="body-halfbackground"></div>

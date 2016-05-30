@@ -819,6 +819,8 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
             $scope.opdrachten = data;
             $rootScope.showLoading = false;
         })
+
+
     }
 
     var EditAssignment = function () {
