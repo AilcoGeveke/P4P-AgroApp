@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using AgroApp.Models;
 using Newtonsoft.Json;
+using AgroApp.Controllers.Admin;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,7 +26,7 @@ namespace AgroApp.Controllers.Api
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                     new MySqlParameter("@0", opdracht.locatie),
                     new MySqlParameter("@1", opdracht.beschrijving),
-                    new MySqlParameter("@2", opdracht.selectedKlant.IdCustomer),
+                    new MySqlParameter("@2", opdracht.klant.IdCustomer),
                     new MySqlParameter("@3", opdracht.datum)))
                 {
                     await reader.ReadAsync();
@@ -33,7 +34,7 @@ namespace AgroApp.Controllers.Api
                 }
 
                 query = "INSERT INTO OpdrachtWerknemer (idWerknemer, idOpdracht) VALUES (@0, @1)";
-                foreach (User user in opdracht.selectedGebruikers)
+                foreach (User user in opdracht.gebruikers)
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@1", opdrachtId),
                         new MySqlParameter("@0", user.IdWerknemer));
@@ -42,5 +43,23 @@ namespace AgroApp.Controllers.Api
             }
         }
 
+        [HttpGet("alle/{archive}")]
+        public async Task<IEnumerable<Opdracht>> GetOpdrachten(bool archived)
+        {
+            string query = "SELECT Opdracht.*, COUNT(OpdrachtWerknemer.idOpdrachtWerknemer) as count FROM Opdracht LEFT JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht GROUP BY Opdracht.idOpdracht";
+            List<Opdracht> opdrachten = new List<Opdracht>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", 1)))
+                while (await reader.ReadAsync())
+                    opdrachten.Add(new Opdracht(
+                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
+                        locatie: reader["locatie"] as string,
+                        beschrijving: reader["beschrijving"] as string,
+                        datum: reader["datum"] as DateTime? ?? null)
+                    { klant = await WerkbonController.GetKlant(reader["idKlant"] as int? ?? -1),
+                        gebruikerCount = reader["count"] as int? ?? 0 });
+            return opdrachten;
+        }
     }
 }

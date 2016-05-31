@@ -39,28 +39,6 @@ namespace AgroApp.Controllers
             return View("../werknemer/Assignment");
         }
 
-        [HttpGet("getopdrachten")]
-        public async Task<IEnumerable<Opdracht>> GetOpdrachten()
-        {
-            string query = "SELECT * FROM Opdracht";
-            List<Opdracht> opdrachten = new List<Opdracht>();
-            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", 1)))
-                while (await reader.ReadAsync())       
-                    opdrachten.Add(new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1, 
-                        locatie: reader["locatie"] as string, 
-                        beschrijving: reader["beschrijving"] as string, 
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
-
-            System.Diagnostics.Debug.WriteLine("-------------------------------------------");
-            System.Diagnostics.Debug.WriteLine("Debug value of opdrachten:");
-            System.Diagnostics.Debug.WriteLine(opdrachten);
-            System.Diagnostics.Debug.WriteLine("-------------------------------------------");
-            return opdrachten;
-        }
-
 
         [HttpGet("getopdracht")]
         private async Task<Opdracht> _GetOpdracht(int id)
