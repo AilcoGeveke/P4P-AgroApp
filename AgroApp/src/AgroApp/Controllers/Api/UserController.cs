@@ -1,5 +1,6 @@
 ﻿using AgroApp.Models;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using System;
@@ -29,9 +30,9 @@ namespace AgroApp.Controllers.Api
             List<Claim> claimCollection = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
-                    new Claim(ClaimTypes.Role, "Admin"),
-                    new Claim(ClaimTypes.NameIdentifier, user.IdWerknemer.ToString())};
+                    new Claim(ClaimTypes.Role, "Admin")};
 
+            HttpContext.Session.SetInt32("idUser", user.IdWerknemer);
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
             return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "werknemer/menu"; // auth succeed 
 
