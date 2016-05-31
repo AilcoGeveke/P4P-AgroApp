@@ -57,8 +57,10 @@ namespace AgroApp.Controllers.Api
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
                         datum: reader["datum"] as DateTime? ?? null)
-                    { klant = await WerkbonController.GetKlant(reader["idKlant"] as int? ?? -1),
-                        gebruikerCount = reader["count"] as int? ?? 0 });
+                    {
+                        klant = await WerkbonController.GetKlant(reader["idKlant"] as int? ?? -1),
+                        gebruikerCount = (int)(reader["count"] as long? ?? (long)0) 
+                    });
             return opdrachten;
         }
     }

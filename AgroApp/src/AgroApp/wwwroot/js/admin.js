@@ -727,7 +727,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         $rootScope.showLoading = true;
         var sendData = JSON.stringify({
             klant: self.selectedKlant,
-            gebruikers: self.selectedGebruikers,
+            gebruikers: self.selectedGebruiker,
             locatie: $scope.opdracht.adres,
             beschrijving: $scope.opdracht.omschrijving,
             datum: $scope.opdracht.datum
@@ -738,7 +738,9 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         $http.post('/api/opdracht/toevoegen', sendData)
         .success(function (data, status, headers, config) {
             $rootScope.showLoading = false;
-            $rootScope.changeView('admin/planning');
+            $scope.showMessage = true;
+            $scope.message = "Opdracht succesvol toegevoegd!";
+            //$rootScope.changeView('admin/planning');
         })
     }
 
@@ -903,6 +905,26 @@ agroApp.controller('PlanningView', function ($scope, $http, $rootScope) {
             $rootScope.showLoading = false;
         })
     }
+
+    $scope.opdrachtGeenDatumFilter = function (item) {
+        return item.datum === null;
+    }
+
+    $scope.opdrachtGeenWerknemersFilter = function (item) {
+        return item.gebruikerCount === 0;
+    }
+
+    $scope.opdrachtLopendFilter = function (item) {
+        var date = new Date(item.datum);
+        return item.datum != null && item.gebruikerCount != 0 && date.getTime() <= new Date().getTime();
+    }
+
+    $scope.opdrachtGeplandFilter = function (item) {
+        var date = new Date(item.datum);
+        return item.datum != null && item.gebruikerCount != 0 && date.getTime() > new Date().getTime();
+    }
+
+
 })
 
 Date.prototype.getWeek = function () {
