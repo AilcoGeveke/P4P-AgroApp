@@ -23,7 +23,7 @@ namespace AgroApp.Models
             this.locatie = locatie;
             this.beschrijving = beschrijving;
             this.datum = datum;
-            this.selectedKlant = selectedKlant;
+            this.klant = selectedKlant;
         }
     }
 }
