@@ -69,7 +69,7 @@ namespace AgroApp.Controllers
             List<Opdracht> opdrachten = new List<Opdracht>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", HttpContext.Session.GetInt32("idUser"))))
+                new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
                 while (await reader.ReadAsync())
                     opdrachten.Add(new Opdracht(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
