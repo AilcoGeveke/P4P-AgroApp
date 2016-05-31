@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -68,7 +69,7 @@ namespace AgroApp.Controllers
             List<Opdracht> opdrachten = new List<Opdracht>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", 0)))
+                new MySqlParameter("@0", HttpContext.Session.GetInt32("idUser"))))
                 while (await reader.ReadAsync())
                     opdrachten.Add(new Opdracht(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
