@@ -32,7 +32,7 @@ namespace AgroApp.Controllers.Api
                     new Claim(ClaimTypes.Email, username),
                     new Claim(ClaimTypes.Role, "Admin")};
 
-            HttpContext.Session.SetInt32("idUser", user.IdWerknemer);
+            HttpContext.Response.Cookies.Append("idUser", user.IdWerknemer.ToString());
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
             return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "werknemer/menu"; // auth succeed 
 
