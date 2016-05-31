@@ -579,10 +579,6 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
     var self = this;
     $rootScope.showloading = false;
-
-    $scope.user = {
-        title: 'Nagtegaal'
-    }
     $scope.getManKeuzeData = function () {
         $scope.showloading = true;
 
@@ -596,6 +592,15 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             $scope.man = data;
         });
     };
+
+
+    $scope.checkRole = function () {
+        if (User.IsInRole("Administrator"))
+            changeView("admin/main");
+        else
+            changeView("werknemer/menu");
+    }
+
 
     $scope.selectedMachines = [];
     $scope.selectedUsers = [];
@@ -814,12 +819,24 @@ agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
 });
 
 agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.opdrachten = [];
+    $scope.WerknemerOpdrachten = [];
     $scope.getGebruikerOpdrachten = function () {
         $rootScope.showLoading = true;
         $http.get(
             '/werknemer/getgebruikeropdrachten'
         ).success(function (data) {
+            console.log(data);
+            $scope.WerknemerOpdrachten = data;
+            $rootScope.showLoading = false;
+        })
+    }
+    $scope.werknemeropdrachten = [];
+    $scope.getOpdrachtWerknemer = function () {
+        $rootScope.showLoading = true;
+        $http.get(
+            '/werknemer/getopdrachtwerknemer/'
+        ).success(function (data) {
+            console.log(data);
             $scope.opdrachten = data;
             $rootScope.showLoading = false;
         })

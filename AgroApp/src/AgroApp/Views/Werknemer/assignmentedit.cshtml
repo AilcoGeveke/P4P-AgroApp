@@ -9,20 +9,17 @@
                 <md-button class="md-icon-button" ng-click="changeView('werknemer/opdrachten')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div class="content">
-            <md-input-container class="md-block inputnomargin">
-                <label>Locatie</label>
-                <input ng-model="assignmentDetails.locatie" ng-init="assignmentDetails.locatie = '@ViewData["locatie"]'">
-            </md-input-container>
+        <div class="content" >
+                <h5>Locatie</h5>
+                <p   ng-init="assignmentDetails.locatie = '@ViewData["locatie"]'">{{assignmentDetails.locatie}}</p>
 
-            <md-input-container class="md-block inputnomargin">
-                <label>Beschrijving</label>
-                <input ng-model="assignmentDetails.beschrijving" ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">                
-            </md-input-container>
-        </div>
-        <md-divider></md-divider>
-        <div layout="row" layout-align="end center" class="content-actions">
-            <md-button class="md-primary md-raised" ng-click="changeView('werknemer/werkboninvullen')">Werkboninvullen</md-button>
+                <h5>Beschrijving</h5>
+                @*<input readonly ng-model="assignmentDetails.beschrijving" ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">  *@
+                <p ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">{{assignmentDetails.beschrijving}}</p>
+
+            <div layout="row" layout-align="end center" class="content-actions">
+                <md-button class="md-primary md-raised" ng-click="changeView('werknemer/werkboninvullen')">Werkboninvullen</md-button>
+            </div>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>

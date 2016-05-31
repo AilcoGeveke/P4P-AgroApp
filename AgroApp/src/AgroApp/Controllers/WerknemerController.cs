@@ -27,6 +27,7 @@ namespace AgroApp.Controllers
         public IActionResult werkbontoevoegen()
         {
             return View("../admin/werkbonadd");
+
         }
 
 
@@ -60,26 +61,52 @@ namespace AgroApp.Controllers
         }
 
         [HttpGet("GetGebruikerOpdrachten")]
-        public async Task<IEnumerable<Opdracht>> GetGebruikerOpdrachten()
+        public async Task<IEnumerable<OpdrachtWerknemer>> GetGebruikerOpdrachten()
         {
-
-            string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres" +
+            string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres, OpdrachtWerknemer.idOpdrachtWerknemer" +
                 " FROM Opdracht JOIN Klant ON Klant.idKlant = Opdracht.idKlant JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
                 "WHERE OpdrachtWerknemer.idWerknemer = @0";
-            List<Opdracht> opdrachten = new List<Opdracht>();
+            List<OpdrachtWerknemer> OpdrachtWerknemer = new List<OpdrachtWerknemer>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
                 while (await reader.ReadAsync())
-                    opdrachten.Add(new Opdracht(
+                    OpdrachtWerknemer.Add(new OpdrachtWerknemer()
+                    {
+                        Opdracht = new Opdracht(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
                         selectedKlant: new Customer(Name: reader["naam"] as string, Adress: reader["adres"] as string),
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
-            return opdrachten;
+                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        idOpdrachtWerknemer = reader ["idOpdrachtWerknemer"] as int? ?? -1
+                    });
+            return OpdrachtWerknemer;
         }
 
+        [HttpGet("getOpdrachtWerknemer/{id}")]
+        public async Task<OpdrachtWerknemer> GetOpdrachtWerknemer(int id)
+        {
+            string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres, OpdrachtWerknemer.idWerknemer" +
+                " FROM Opdracht LEFT JOIN Klant ON Klant.idKlant = Opdracht.idKlant LEFT JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
+                "WHERE OpdrachtWerknemer.idOpdrachtWerknemer = @0";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", id)))
+                while (await reader.ReadAsync())
+                    return new OpdrachtWerknemer()
+                    {
+                        Opdracht = new Opdracht(
+                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
+                        selectedKlant: new Customer(Name: reader["naam"] as string, Adress: reader["adres"] as string),
+                        locatie: reader["locatie"] as string,
+                        beschrijving: reader["beschrijving"] as string,
+                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        Werknemer = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1 },
+                        idOpdrachtWerknemer = id as int? ?? -1
+                    };
+            return null;
+        }
 
         [HttpGet("getopdracht")]
         private async Task<Opdracht> _GetOpdracht(int id)

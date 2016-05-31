@@ -1,15 +1,15 @@
 ﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent content-padding">
-    <div class="md-whiteframe-5dp layout-content form-content">
+    <div class="md-whiteframe-5dp layout-content form-content" ng-controller="WerkbonEdit">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>
                     <span>Werkbon toevoegen</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="checkRole()"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <form class="content" ng-controller="WerkbonEdit" ng-submit="submitWerkbon()">
+        <form class="content"  ng-submit="submitWerkbon()">
             <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
             <div layout-gt-xs="row">
                 <md-list flex-gt-xs="50">

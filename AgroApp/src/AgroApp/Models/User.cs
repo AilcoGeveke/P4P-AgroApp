@@ -7,11 +7,13 @@ namespace AgroApp.Models
 {
     public class User
     {
-        public int IdWerknemer { private set; get; }
+        public int IdWerknemer { set; get; }
         public string Name { private set; get; }
         public string Email { private set; get; }
         public UserRol Rol { private set; get; }
         public bool IsDeleted { private set; get; }
+
+        public User() { }
 
         public User(int idWerknemer, string name, string email, string rol, bool isDeleted)
         {
