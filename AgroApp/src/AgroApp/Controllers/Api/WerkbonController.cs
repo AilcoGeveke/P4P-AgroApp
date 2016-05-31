@@ -307,10 +307,11 @@ namespace AgroApp.Controllers.Api
 
         // Werkbonnen
         [HttpPost("toevoegen")]
-        public async Task<bool> Toevoegen([FromBody]Werkbon werkbon)
+        public async Task<bool> Toevoegen([FromBody] Werkbon werkbon)
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
+                int werktijdId;
                 string query = "INSERT INTO Werktijd "
                              + "SET Werktijd.van = @0, Werktijd.tot = @1, "
                              + "Werktijd.urenTotaal = @2, Werktijd.datum = @3, "
@@ -321,33 +322,35 @@ namespace AgroApp.Controllers.Api
                              + "SELECT OpdrachtWerknemer.idOpdrachtWerknemer "
                              + "FROM OpdrachtWerknemer "
                              + "WHERE idWerknemer = @7 AND idOpdracht = @8);"
-                             + "SET @last_id_Werktijd = LAST_INSERT_ID();";
+                             + "SELECT LAST_INSERT_ID();";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                     new MySqlParameter("@0", werkbon.VanTijd),
                     new MySqlParameter("@1", werkbon.TotTijd),
                     new MySqlParameter("@2", werkbon.TotaalTijd),
                     new MySqlParameter("@3", werkbon.Datum),
+                    new MySqlParameter("@4", werkbon.VerbruikteMaterialen),
                     new MySqlParameter("@5", werkbon.Opmerking),
                     new MySqlParameter("@6", werkbon.Mankeuze),
                     new MySqlParameter("@7", werkbon.Gebruiker.IdWerknemer),
                     new MySqlParameter("@8", werkbon.IdOpdracht)))
                 {
                     await reader.ReadAsync();
+                    werktijdId = reader.GetInt32(0);
                 }
 
-                query = "INSERT INTO WerktijdMachines "
-                        + "SET WerktijdMachines.idWerktijd = @last_id_Werktijd, "
-                        + "WerktijdMachines.idMachines = @0; ";
-                foreach (Machine machine in werkbon.Machines)
-                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", machine.IdMachine));
+                //query = "INSERT INTO WerktijdMachines "
+                //        + "SET WerktijdMachines.idWerktijd = @last_id_Werktijd, "
+                //        + "WerktijdMachines.idMachines = @0; ";
+                //foreach (Machine machine in werkbon.Machines)
+                //    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                //        new MySqlParameter("@0", machine.IdMachine));
 
-                query = "INSERT INTO WerktijdHulpstuk "
-                    + "SET WerktijdHulpstuk.idWerktijd = @last_id_Werktijd, "
-                    + "WerktijdHulpstuk.idHulpstuk = @0";
-                foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken)
-                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", hulpstuk.IdHulpstuk));
+                //query = "INSERT INTO WerktijdHulpstuk "
+                //    + "SET WerktijdHulpstuk.idWerktijd = @last_id_Werktijd, "
+                //    + "WerktijdHulpstuk.idHulpstuk = @0";
+                //foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken)
+                //    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                //        new MySqlParameter("@0", hulpstuk.IdHulpstuk));
 
                 //query = "INSERT INTO Gewicht "
                 //    + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "

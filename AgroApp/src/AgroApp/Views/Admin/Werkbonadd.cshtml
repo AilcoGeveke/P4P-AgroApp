@@ -9,18 +9,18 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <form class="content" ng-controller="WerkbonEdit" ng-submit="submitWerkbon()">
+        <form class="content" ng-controller="WerkbonEdit as edit" ng-submit="submitWerkbon()">
             <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
             <div layout-gt-xs="row">
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Werklocatie</label>
-                        <input input disabled type="text" ng-model="opdracht.locatie">
+                        <input input disabled type="text" ng-model="opdracht.locatie" ng-init="opdracht.locatie = '@ViewData["Locatie"]'">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
                         <label>Werknemer</label>
-                        <md-select ng-model="selectedGebruiker">
-                            <md-option ng-repeat="n in gebruikers">
+                        <md-select ng-model="selectedGebruiker" ng-init="selectedGebruiker = '@ViewData["Gebruiker"]'">
+                            <md-option ng-value="n" ng-repeat="n in edit.gebruikers">
                                 {{n.Name}}
                             </md-option>
                         </md-select>
@@ -32,7 +32,7 @@
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Opdrachtgever </label>
-                        <input ng-model="klant.naam" type="text">
+                        <input ng-model="klant.Name" ng-init="selectedGebruiker = '@ViewData["KlantNaam"]'" type="text">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
                         <label>Man</label>
@@ -191,12 +191,12 @@
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Verbruikte materialen</label>
-                    <textarea ng-model="userMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                    <textarea ng-model="werktijd.verbruikteMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>
                 </md-input-container>
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Omschrijving / Opmerking</label>
-                    <textarea ng-model="userOmschrijving" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                    <textarea ng-model="werktijd.opmerking" md-maxlength="150" rows="5" md-select-on-focus></textarea>
                 </md-input-container>
                 <md-button class="md-raised md-primary" type="submit">Verzenden</md-button>
 

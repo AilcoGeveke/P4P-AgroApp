@@ -7,23 +7,28 @@ namespace AgroApp.Models
 {
     public class Werkbon
     {
-        public User Gebruiker { private set; get; }
-        public DateTime Datum { private set; get; }
-        public Customer Klant { private set; get; }
-        public string Mankeuze { private set; get; }
-        public Machine[] Machines { private set; get; }
-        public Hulpstuk[] Hulpstukken { private set; get; }
-        public DateTime VanTijd { private set; get; }
-        public DateTime TotTijd { private set; get; }
-        public int TotaalTijd { private set; get; }
-        public Gewicht[] Gewichten { private set; get; }
-        public Rijplaat IngaandeRijplaten { private set; get; }
-        public Rijplaat UitgaandeRijplaten { private set; get; }
-        public string VerbruikteMaterialen { private set; get; }
-        public string Opmerking { private set; get; }
-        public int IdOpdracht { private set; get; }
+        public User Gebruiker { set; get; }
+        public DateTime Datum { set; get; }
+        public Customer Klant { set; get; }
+        public string Mankeuze { set; get; }
+        public Machine[] Machines { set; get; }
+        public Hulpstuk[] Hulpstukken { set; get; }
+        public DateTime VanTijd { set; get; }
+        public DateTime TotTijd { set; get; }
+        public DateTime TotaalTijd { set; get; }
+        public Gewicht[] Gewichten { set; get; }
+        public Rijplaat IngaandeRijplaten { set; get; }
+        public Rijplaat UitgaandeRijplaten { set; get; }
+        public string VerbruikteMaterialen { set; get; }
+        public string Opmerking { set; get; }
+        public int IdOpdracht { set; get; }
 
-        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, int totaalTijd, Machine[] machines = null, Hulpstuk[] hulpstukken = null, DateTime vanTijd = new DateTime(), DateTime totTijd = new DateTime(), Gewicht[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
+        public Werkbon()
+        {
+            
+        }
+
+        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, DateTime totaalTijd, Machine[] machines = null, Hulpstuk[] hulpstukken = null, DateTime vanTijd = new DateTime(), DateTime totTijd = new DateTime(), Gewicht[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
         {
             Gebruiker = selectedGebruiker;
             Datum = datum;
