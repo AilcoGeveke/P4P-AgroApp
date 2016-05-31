@@ -8,12 +8,14 @@ namespace AgroApp.Models
 {
     public class Opdracht
     {
-        public Customer selectedKlant;
-        public User[] selectedGebruikers;
+        public Customer klant;
+        public User[] gebruikers;
         public string locatie;
         public string beschrijving;
         public DateTime? datum;
         public int idOpdracht;
+
+        public int gebruikerCount;
 
         public Opdracht(int idOpdracht, string locatie, string beschrijving, DateTime? datum, Customer selectedKlant = null)
         {

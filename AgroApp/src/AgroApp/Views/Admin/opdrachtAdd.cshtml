@@ -12,7 +12,7 @@
         <form ng-controller="WerkbonEdit as ctrl" ng-submit="submitOpdracht()" name="opdrachtForm">
             <div class="md-padding">
 
-                <h2 class="md-title">Algemeen</h2>
+                <md-subheader class="md-no-sticky">Algemeen</md-subheader>
                 <div layout-gt-xs="row" ng-init="getKlanten()">
                     <md-autocomplete flex required
                                      md-search-text="klantZoekText"
@@ -53,7 +53,7 @@
                     <textarea ng-model="opdracht.omschrijving" md-maxlength="200" rows="15" md-select-on-focus></textarea>
                 </md-input-container>
 
-                <h2 class="md-title">Werknemers</h2>
+                <md-subheader class="md-no-sticky">Werknemers</md-subheader>
                 <md-chips ng-init="getAllUserData()" ng-model="ctrl.selectedGebruikers" md-autocomplete-snap
                           md-require-match="true">
                     <md-autocomplete md-autoselect="true"
