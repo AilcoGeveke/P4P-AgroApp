@@ -29,7 +29,8 @@ namespace AgroApp.Controllers.Api
             List<Claim> claimCollection = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
-                    new Claim(ClaimTypes.Role, "Admin")};
+                    new Claim(ClaimTypes.Role, "Admin"),
+                    new Claim(ClaimTypes.NameIdentifier, user.IdWerknemer.ToString())};
 
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection)));
             return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "werknemer/menu"; // auth succeed 
@@ -73,7 +74,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", email)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean (4)) : null;
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)) : null;
             }
         }
 

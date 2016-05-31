@@ -600,6 +600,8 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.selectedMachines = [];
     $scope.selectedUsers = [];
     $scope.machines = [];
+    $scope.selectedGewichten = [];
+    $scope.gewichten = ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];
     $scope.getMachines = function () {
         $scope.showloading = true;
 
@@ -622,6 +624,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         $scope.selectedMachines.pop();
     }
 
+    $scope.increaseSelectedGewichtenList = function () {
+        $scope.selectedGewichten.push($scope.gewichten[0]);
+    }
+    $scope.decreaseSelectedGewichtenList = function () {
+        $scope.selectedGewichten.pop();
+    }
+
     $scope.increaseSelectedUserList = function () {
         $scope.selectedUsers.push($scope.gebruikers[0]);
     }
@@ -629,6 +638,9 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         $scope.selectedUsers.pop();
     }
 
+
+
+    
     $scope.selectedHulpstukken = [];
     $scope.hulpstukken = [];
     $scope.getHulpstukken = function () {
@@ -708,8 +720,8 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.submitOpdracht = function () {
         $rootScope.showLoading = true;
         var sendData = JSON.stringify({
-            selectedKlant: self.selectedKlant,
-            selectedGebruikers: self.selectedGebruikers,
+            klant: self.selectedKlant,
+            gebruikers: self.selectedGebruikers,
             locatie: $scope.opdracht.adres,
             beschrijving: $scope.opdracht.omschrijving,
             datum: $scope.opdracht.datum
@@ -784,16 +796,30 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 
 });
 
-agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.opdrachten = [];
-    $scope.getOpdrachten = function () {
+agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.print = [];
+    $scope.getArchiefMachines = function () {
         $rootScope.showLoading = true;
         $http({
             method: 'GET',
-            url: '/werknemer/getopdrachten',
+            url: '/api/werkbon/getdata',
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
+            $scope.print = data;
+            $rootScope.showLoading = false;
+        })
+    }
+
+});
+
+agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.opdrachten = [];
+    $scope.getGebruikerOpdrachten = function () {
+        $rootScope.showLoading = true;
+        $http.get(
+            '/werknemer/getgebruikeropdrachten'
+        ).success(function (data) {
             $scope.opdrachten = data;
             $rootScope.showLoading = false;
         })
@@ -848,6 +874,16 @@ agroApp.controller('PlanningView', function ($scope, $http, $rootScope) {
             if (uur != 20)
                 $scope.tijden.push(uur + ":30");
         }
+    }
+
+    $scope.opdrachten = [];
+    $scope.getOpdrachten = function () {
+        $rootScope.showLoading = true;
+        $http.get('/api/opdracht/alle/false')
+        .success(function (data) {
+            $scope.opdrachten = data;
+            $rootScope.showLoading = false;
+        })
     }
 })
 

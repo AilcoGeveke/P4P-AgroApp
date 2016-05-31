@@ -34,6 +34,10 @@
     background-color: transparent;
 }
 
+.white {
+    background-color: white;
+}
+
 /*content*/
 .layout-content {
     max-width: 864px;
@@ -159,8 +163,7 @@ md-autocomplete[md-floating-label] {
     margin-bottom: -32px;
 }
 
-h2.md-title {
-    margin: 4px;
-    margin-top: 8px;
-    font-weight: 100;
+md-list-item ._md-list-item-inner > md-icon {
+    margin-left: 4px;
+    margin-right: 20px !important;
 }
