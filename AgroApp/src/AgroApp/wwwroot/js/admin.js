@@ -662,7 +662,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-    self.selectedGebruiker = [];
+    self.selectedGebruikers = [];
     self.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading = true;
@@ -702,7 +702,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         var sendData = JSON.stringify({
             Gebruiker: $scope.selectedGebruiker,
             Datum: $scope.opdracht.datum,
-            Klant: $scope.klant.naam,
+            Klant: $scope.klant,
             ManKeuze: $scope.manKeuze,
             Machines: self.selectedMachines,
             Hulpstukken: self.selectedHulpstukken,
@@ -743,15 +743,15 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
     $scope.onUrenChange = function ($isAantal) {
         if ($isAantal) {
-            $scope.tijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
-            $scope.tijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
+            $scope.werktijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
+            $scope.werktijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
         }
         else {
-            var millDiff = $scope.tijd.tot - $scope.tijd.van;
+            var millDiff = $scope.werktijd.tot - $scope.werktijd.van;
             var sec = millDiff / 1000;
             var min = sec / 60;
             var hours = min / 60;
-            $scope.tijd.aantal = new Date(1970, 1, 1, hours % 24, min % 60, 0, 0);
+            $scope.werktijd.urenTotaal = new Date(1970, 1, 1, hours % 24, min % 60, 0, 0);
         }
     }
 
