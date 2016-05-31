@@ -39,12 +39,6 @@ namespace AgroApp.Controllers
             return View("../werknemer/Assignment");
         }
 
-        [HttpGet("assignmentedit/{id}")]
-        public IActionResult OpdrachtEdit()
-        {
-            return View("../werknemer/assignmentedit");
-        }
-
         [HttpGet("getopdrachten")]
         public async Task<IEnumerable<Opdracht>> GetOpdrachten()
         {
@@ -58,7 +52,6 @@ namespace AgroApp.Controllers
                         idOpdracht: reader["idOpdracht"] as int? ?? -1, 
                         locatie: reader["locatie"] as string, 
                         beschrijving: reader["beschrijving"] as string, 
-                        idKlant: reader["idKlant"] as int? ?? -1, 
                         datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
 
             System.Diagnostics.Debug.WriteLine("-------------------------------------------");
@@ -86,20 +79,19 @@ namespace AgroApp.Controllers
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new Opdracht(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), reader.GetDateTime(4)) : null;
+                return new Opdracht(reader["idOpdracht"] as int? ?? 0, reader["locatie"] as string ?? "", reader["beschrijving"] as string ?? "", reader["datum"] as DateTime?);
             }
         }
 
-        [HttpGet("werknemer/assignmentedit/{id}")]
+        [HttpGet("assignmentedit/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
             Opdracht opdracht = await GetOpdracht(id);
             ViewData["id"] = id;
-            ViewData["idOpdracht"] = opdracht.idOpdracht;
             ViewData["locatie"] = opdracht.locatie;
             ViewData["beschrijving"] = opdracht.beschrijving;
-            ViewData["datum"] = opdracht.datum;
-            return View("..werknemer/assignmentedit/");
+            ViewData["datum"] = opdracht?.datum.ToString() ?? "";
+            return View("assignmentedit");
         }
 
     }

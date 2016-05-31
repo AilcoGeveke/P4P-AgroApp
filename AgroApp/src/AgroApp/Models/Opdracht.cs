@@ -12,16 +12,14 @@ namespace AgroApp.Models
         public User[] selectedGebruikers;
         public string locatie;
         public string beschrijving;
-        public DateTime datum;
+        public DateTime? datum;
         public int idOpdracht;
-        private int idKlant;
 
-        public Opdracht(int idOpdracht, string locatie, string beschrijving, int idKlant, DateTime datum)
+        public Opdracht(int idOpdracht, string locatie, string beschrijving, DateTime? datum)
         {
             this.idOpdracht = idOpdracht;
             this.locatie = locatie;
             this.beschrijving = beschrijving;
-            this.idKlant = idKlant;
             this.datum = datum;
         }
     }
