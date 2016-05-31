@@ -21,7 +21,7 @@ namespace AgroApp.Models
         public Rijplaat UitgaandeRijplaten { set; get; }
         public string VerbruikteMaterialen { set; get; }
         public string Opmerking { set; get; }
-        public int IdOpdracht { set; get; }
+        public int IdOpdrachtWerknemer { set; get; }
 
         public Werkbon()
         {

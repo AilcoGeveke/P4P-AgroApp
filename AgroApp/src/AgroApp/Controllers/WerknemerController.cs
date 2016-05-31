@@ -22,15 +22,7 @@ namespace AgroApp.Controllers
             ViewData["volledigenaam"] = HttpContext.User.Identity.Name;
             return View("../werknemer/main");
         }
-
-        [HttpGet("werkboninvullen/")]
-        public IActionResult werkbontoevoegen()
-        {
-            return View("../admin/werkbonadd");
-
-        }
-
-
+        
         [HttpGet("gebruikerbeheer")]
         public IActionResult Accountbeheren()
         {
@@ -79,7 +71,7 @@ namespace AgroApp.Controllers
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
                         datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
-                        idOpdrachtWerknemer = reader ["idOpdrachtWerknemer"] as int? ?? -1
+                        idOpdrachtWerknemer = reader["idOpdrachtWerknemer"] as int? ?? -1
                     });
             return OpdrachtWerknemer;
         }
@@ -87,7 +79,7 @@ namespace AgroApp.Controllers
         [HttpGet("getOpdrachtWerknemer/{id}")]
         public async Task<OpdrachtWerknemer> GetOpdrachtWerknemer(int id)
         {
-            string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres, OpdrachtWerknemer.idWerknemer" +
+            string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.idKlant, Klant.naam, Klant.adres, OpdrachtWerknemer.idWerknemer" +
                 " FROM Opdracht LEFT JOIN Klant ON Klant.idKlant = Opdracht.idKlant LEFT JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
                 "WHERE OpdrachtWerknemer.idOpdrachtWerknemer = @0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
@@ -98,7 +90,7 @@ namespace AgroApp.Controllers
                     {
                         Opdracht = new Opdracht(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(Name: reader["naam"] as string, Adress: reader["adres"] as string),
+                        selectedKlant: new Customer(IdCustomer: reader["idKlant"] as int? ?? -1, Name: reader["naam"] as string, Adress: reader["adres"] as string),
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
                         datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
@@ -132,12 +124,23 @@ namespace AgroApp.Controllers
         [HttpGet("assignmentedit/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
-            Opdracht opdracht = await GetOpdracht(id);
+            OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             ViewData["id"] = id;
-            ViewData["locatie"] = opdracht.locatie;
-            ViewData["beschrijving"] = opdracht.beschrijving;
-            ViewData["datum"] = opdracht?.datum.ToString() ?? "";
+            ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
+            ViewData["beschrijving"] = opdrachtWerknemer.Opdracht.beschrijving;
+            ViewData["datum"] = opdrachtWerknemer.Opdracht?.datum.ToString() ?? "";
             return View("assignmentedit");
+        }
+
+        [HttpGet("werkboninvullen/{id}")]
+        public async Task<IActionResult> WerkbonToevoegen(int id)
+        {
+            OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
+            ViewData["id"] = id;
+            ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
+            ViewData["gebruiker"] = opdrachtWerknemer.Werknemer.Name;
+            ViewData["klantNaam"] = opdrachtWerknemer.Opdracht.klant.Name;
+            return View("../admin/werkbonadd");
         }
 
     }

@@ -10,6 +10,7 @@
             </div>
         </md-toolbar>
         <div class="content" >
+            <p hidden ng-model="WerknemerOpdracht.id" ng-init="WerknemerOpdracht.id = '@ViewData["id"]'"></p>
                 <h5>Locatie</h5>
                 <p   ng-init="assignmentDetails.locatie = '@ViewData["locatie"]'">{{assignmentDetails.locatie}}</p>
 
@@ -18,7 +19,7 @@
                 <p ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">{{assignmentDetails.beschrijving}}</p>
 
             <div layout="row" layout-align="end center" class="content-actions">
-                <md-button class="md-primary md-raised" ng-click="changeView('werknemer/werkboninvullen')">Werkboninvullen</md-button>
+                <md-button class="md-primary md-raised" ng-click="changeView('werknemer/werkboninvullen/' + WerknemerOpdracht.id)">Werkboninvullen</md-button>
             </div>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>

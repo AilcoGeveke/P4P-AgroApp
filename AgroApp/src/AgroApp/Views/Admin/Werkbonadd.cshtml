@@ -11,15 +11,16 @@
         </md-toolbar>
         <form class="content" ng-controller="WerkbonEdit as edit" ng-submit="submitWerkbon()">
             <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
+            <p hidden ng-model="werknemerOpdracht.id" ng-init="werknemerOpdracht.id = '@ViewData["id"]'"></p>
             <div layout-gt-xs="row">
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Werklocatie</label>
-                        <input input disabled type="text" ng-model="opdracht.locatie" ng-init="opdracht.locatie = '@ViewData["Locatie"]'">
+                        <input input type="text" ng-model="opdracht.locatie" ng-init="opdracht.locatie = '@ViewData["locatie"]'">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
                         <label>Werknemer</label>
-                        <md-select ng-model="selectedGebruiker" ng-init="selectedGebruiker = '@ViewData["Gebruiker"]'">
+                        <md-select ng-model="selectedGebruiker" ng-init="n.Name = '@ViewData["gebruiker"]'">
                             <md-option ng-value="n" ng-repeat="n in edit.gebruikers">
                                 {{n.Name}}
                             </md-option>
@@ -32,7 +33,7 @@
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Opdrachtgever </label>
-                        <input ng-model="klant.Name" ng-init="selectedGebruiker = '@ViewData["KlantNaam"]'" type="text">
+                        <input ng-model="klant.Name" ng-init="klant.Name = '@ViewData["klantNaam"]'" type="text">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
                         <label>Man</label>

@@ -710,7 +710,8 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             TotTijd: $scope.werktijd.tot,
             TotaalTijd: $scope.werktijd.urenTotaal,
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
-            opmerking: $scope.werktijd.opmerking
+            opmerking: $scope.werktijd.opmerking,
+            IdOpdrachtWerknemer: $scope.werknemerOpdracht.id
         })
 
         var config = { headers: { 'Content-Type': 'application/json' } }
