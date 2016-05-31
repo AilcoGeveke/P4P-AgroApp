@@ -4,6 +4,7 @@ using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,11 +22,12 @@ namespace AgroApp.Controllers
             return View("../werknemer/main");
         }
 
-        [HttpGet("werkbontoevoegen")]
+        [HttpGet("werkboninvullen/")]
         public IActionResult werkbontoevoegen()
         {
             return View("../admin/werkbonadd");
         }
+
 
         [HttpGet("gebruikerbeheer")]
         public IActionResult Accountbeheren()
@@ -47,17 +49,33 @@ namespace AgroApp.Controllers
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", 1)))
-                while (await reader.ReadAsync())       
+                while (await reader.ReadAsync())
                     opdrachten.Add(new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1, 
-                        locatie: reader["locatie"] as string, 
-                        beschrijving: reader["beschrijving"] as string, 
+                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
+                        locatie: reader["locatie"] as string,
+                        beschrijving: reader["beschrijving"] as string,
                         datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
+            return opdrachten;
+        }
 
-            System.Diagnostics.Debug.WriteLine("-------------------------------------------");
-            System.Diagnostics.Debug.WriteLine("Debug value of opdrachten:");
-            System.Diagnostics.Debug.WriteLine(opdrachten);
-            System.Diagnostics.Debug.WriteLine("-------------------------------------------");
+        [HttpGet("GetGebruikerOpdrachten")]
+        public async Task<IEnumerable<Opdracht>> GetGebruikerOpdrachten()
+        {
+
+            string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres" +
+                " FROM Opdracht JOIN Klant ON Klant.idKlant = Opdracht.idKlant JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
+                "WHERE OpdrachtWerknemer.idWerknemer = @0";
+            List<Opdracht> opdrachten = new List<Opdracht>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", 0)))
+                while (await reader.ReadAsync())
+                    opdrachten.Add(new Opdracht(
+                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
+                        selectedKlant: new Customer(Name: reader["naam"] as string, Adress: reader["adres"] as string),
+                        locatie: reader["locatie"] as string,
+                        beschrijving: reader["beschrijving"] as string,
+                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
             return opdrachten;
         }
 

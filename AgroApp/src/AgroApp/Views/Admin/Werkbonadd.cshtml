@@ -6,7 +6,17 @@
                     <span>Werkbon toevoegen</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+
+                @if (User.IsInRole("Admin"))
+                {
+
+                    <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+                }
+
+                else
+                {
+                    <md-button class="md-icon-button" ng-click="changeView('werknemer/menu')"><md-icon>arrow_back</md-icon></md-button>
+                }
             </div>
         </md-toolbar>
         <form class="content" ng-controller="WerkbonEdit" ng-submit="submitWerkbonAdd()">
@@ -17,11 +27,12 @@
                         <label>Werklocatie</label>
                         <input input type="text">
                     </md-input-container>
+
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
                         <label>Werknemer</label>
-                        <md-select ng-model="userKeuze">
-                            <md-option ng-repeat="n in gebruikers">
-                                {{n.Name}}
+                        <md-select ng-model="selectedGebruikers">
+                            <md-option ng-repeat="gebruiker in gebruikers">
+                                {{gebruiker.Name}}
                             </md-option>
                         </md-select>
                     </md-input-container>
@@ -48,163 +59,193 @@
             <div layout="row">
                 <md-list flex-gt-xs="50">
                     @*<div ng-init="getMachines()">
-                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                            <label>Machine</label>
-                            <md-select ng-model="selectedMachines[$index]">
-                                <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
-                                    {{n.Nummer}}: {{n.Naam}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>*@
+                            <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
+                                <label>Machine</label>
+                                <md-select ng-model="selectedMachines[$index]">
+                                    <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
+                                        {{n.Nummer}}: {{n.Naam}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>*@
                 </md-list>
 
 
                 <md-list flex-gt-xs="50">
                     @*<div ng-init="getHulpstukken()">
-                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                            <label>Hulpstuk</label>
-                            <md-select ng-model="selectedHulpstukken[$index]">
-                                <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
+                            <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
+                                <label>Hulpstuk</label>
+                                <md-select ng-model="selectedHulpstukken[$index]">
+                                    <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
+                                        {{n}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>*@
+                </md-list>
+            </div>
+            @*<div layout="row">
+                    <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+                    <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+                </div>*@
+            <md-subheader class="md-no-sticky">Uren</md-subheader>
+            <div layout="row">
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Van</label>
+                    <input input type="time" name="van" ng-model="tijd.van" ng-change="onUrenChange(false)">
+                </md-input-container>
+
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Tot</label>
+                    <input input type="time" name="tot" ng-model="tijd.tot" ng-change="onUrenChange(false)">
+                </md-input-container>
+
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Aantal uren</label>
+                    <input input type="time" name="totaal" ng-model="tijd.aantal" ng-change="onUrenChange(true)">
+                </md-input-container>
+            </div>
+
+            <md-subheader class="md-no-sticky">Gewichten</md-subheader>
+            @*<md-list flex-gt-xs="50">
+                <div>
+                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedGewichten track by $index">
+                            <label>Gewicht</label>
+                            <md-select ng-model="selectedGewichten[$index]">
+                                <md-option ng-repeat="n in gewichten">
                                     {{n}}
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                    </div>*@
-                </md-list>
-            </div>
-            @*<div layout="row">
-                <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
-                <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
-            </div>*@
-                <md-subheader class="md-no-sticky">Uren</md-subheader>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Van</label>
-                        <input input type="time" name="van" ng-model="tijd.van" ng-change="onUrenChange(false)">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Tot</label>
-                        <input input type="time" name="tot" ng-model="tijd.tot" ng-change="onUrenChange(false)">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Aantal uren</label>
-                        <input input type="time" name="totaal" ng-model="tijd.aantal" ng-change="onUrenChange(true)">
-                    </md-input-container>
-                </div>
-
-                <md-subheader class="md-no-sticky">Gewichten</md-subheader>
-
-                <div layout="row">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
-                        <label>Ingaand/Uitgaand</label>
-                        <md-select ng-model="ctrl.richting">
-                            <md-option ng-repeat="n in ['Ingaand', 'Uitgaand']">
-                                {{n}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
-                        <label>Soort</label>
-                        <md-select ng-model="ctrl.soort">
-                            <md-option ng-repeat="n in ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];">
-                                {{n}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                </div>
-
-
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Vol gewicht</label>
-                        <input input type="number" name="vol" ng-model="gewicht.vol" ng-change="onGewichtChange(false)">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Leeg gewicht</label>
-                        <input input type="number" name="leeg" ng-model="gewicht.leeg" ng-change="onGewichtChange(false)">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Netto gewicht</label>
-                        <input input type="number" name="netto" ng-model="gewicht.netto" ng-change="onGewichtChange(true)">
-                    </md-input-container>
-                </div>
-
-                <md-subheader class="md-no-sticky">Ingaande rijplaten</md-subheader>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Groot</label>
-                        <input input type="number">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Klein</label>
-                        <input input type="number">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Kunststof</label>
-                        <input input type="number">
-                    </md-input-container>
-                </div>
-
-                <md-subheader class="md-no-sticky">Uitgaande rijplaten</md-subheader>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Groot</label>
-                        <input input type="number">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Klein</label>
-                        <input input type="number">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Kunststof</label>
-                        <input input type="number">
-                    </md-input-container>
-                </div>
-
-
-                <md-subheader class="md-no-sticky">Losse machines</md-subheader>
-                @*@*<div ng-init="getMachines()">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                        <label>Losse machine</label>
-                        <md-select ng-model="selectedMachines[$index]">
-                            <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
-                                {{n.Nummer}}: {{n.Naam}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <div layout="row">
-                        <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedHulpstukList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
-                        <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedHulpstukList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
                     </div>
-                </div>*@
+            </md-list>
 
-                <md-input-container class="md-block inputnomargin">
-                    <label>Verbruikte materialen</label>
-                    <textarea ng-model="userMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
 
-                <md-input-container class="md-block inputnomargin">
-                    <label>Omschrijving / Opmerking</label>
-                    <textarea ng-model="userOmschrijving" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-                <md-button class="md-raised md-primary" type="submit">Verzenden</md-button>
+            <md-list flex-gt-xs="50">
+                <div>
+                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedGewichten track by $index">
+                            <label>Hoeveelheid</label>
+                            <md-select>
+                                <md-option ng-selected="$first" ng-value="n">
+                                    {{n}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+            </md-list>
+   
+    <div layout="row">
+            <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedGewichtenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+            <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedGewichtenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+        </div>*@
+    <div layout="row">
+        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
+            <label>Ingaand/Uitgaand</label>
+            <md-select ng-model="ctrl.richting">
+                <md-option ng-repeat="n in ['Ingaand', 'Uitgaand']">
+                    {{n}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-</form>
-        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
+            <label>Soort</label>
+            <md-select ng-model="ctrl.soort">
+                <md-option ng-repeat="n in ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];">
+                    {{n}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
     </div>
 
+
+    <div layout="row">
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Vol gewicht</label>
+            <input input type="number" name="vol" ng-model="gewicht.vol" ng-change="onGewichtChange(false)">
+        </md-input-container>
+
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Leeg gewicht</label>
+            <input input type="number" name="leeg" ng-model="gewicht.leeg" ng-change="onGewichtChange(false)">
+        </md-input-container>
+
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Netto gewicht</label>
+            <input input type="number" name="netto" ng-model="gewicht.netto" ng-change="onGewichtChange(true)">
+        </md-input-container>
+    </div>
+
+    <md-subheader class="md-no-sticky">Ingaande rijplaten</md-subheader>
+    <div layout="row">
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Groot</label>
+            <input input type="number">
+        </md-input-container>
+
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Klein</label>
+            <input input type="number">
+        </md-input-container>
+
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Kunststof</label>
+            <input input type="number">
+        </md-input-container>
+    </div>
+
+    <md-subheader class="md-no-sticky">Uitgaande rijplaten</md-subheader>
+    <div layout="row">
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Groot</label>
+            <input input type="number">
+        </md-input-container>
+
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Klein</label>
+            <input input type="number">
+        </md-input-container>
+
+        <md-input-container class="full-width md-block inputnomargin">
+            <label>Kunststof</label>
+            <input input type="number">
+        </md-input-container>
+    </div>
+
+
+    <md-subheader class="md-no-sticky">Losse machines</md-subheader>
+    @*@*<div ng-init="getMachines()">
+            <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
+                <label>Losse machine</label>
+                <md-select ng-model="selectedMachines[$index]">
+                    <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
+                        {{n.Nummer}}: {{n.Naam}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <div layout="row">
+                <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedHulpstukList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+                <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedHulpstukList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+            </div>
+        </div>*@
+
+    <md-input-container class="md-block inputnomargin">
+        <label>Verbruikte materialen</label>
+        <textarea ng-model="userMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+    </md-input-container>
+
+    <md-input-container class="md-block inputnomargin">
+        <label>Omschrijving / Opmerking</label>
+        <textarea ng-model="userOmschrijving" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+    </md-input-container>
+    <md-button class="md-raised md-primary" type="submit">Verzenden</md-button>
+
+    </form>
+    <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+    
 </md-content>
 <div class="body-halfbackground"></div>
 
