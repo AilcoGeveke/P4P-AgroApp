@@ -9,30 +9,30 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <form class="content" ng-controller="WerkbonEdit" ng-submit="submitWerkbonAdd()">
+        <form class="content" ng-controller="WerkbonEdit" ng-submit="submitWerkbon()">
             <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
             <div layout-gt-xs="row">
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Werklocatie</label>
-                        <input input type="text">
+                        <input input disabled type="text" ng-model="opdracht.locatie">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
                         <label>Werknemer</label>
-                        <md-select ng-model="userKeuze">
+                        <md-select ng-model="selectedGebruiker">
                             <md-option ng-repeat="n in gebruikers">
                                 {{n.Name}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-datepicker ng-model="myDate" md-placeholder="Datum">
+                    <md-datepicker ng-model="opdracht.datum" md-placeholder="Datum">
                     </md-datepicker>
                 </md-list>
 
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
                         <label>Opdrachtgever </label>
-                        <input ng-model="user.title" type="text">
+                        <input ng-model="klant.naam" type="text">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
                         <label>Man</label>
@@ -81,26 +81,26 @@
                 <div layout="row">
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Van</label>
-                        <input input type="time" name="van" ng-model="tijd.van" ng-change="onUrenChange(false)">
+                        <input input type="time" name="van" ng-model="werktijd.van" ng-change="onUrenChange(false)">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Tot</label>
-                        <input input type="time" name="tot" ng-model="tijd.tot" ng-change="onUrenChange(false)">
+                        <input input type="time" name="tot" ng-model="werktijd.tot" ng-change="onUrenChange(false)">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Aantal uren</label>
-                        <input input type="time" name="totaal" ng-model="tijd.aantal" ng-change="onUrenChange(true)">
+                        <input input type="time" name="totaal" ng-model="werktijd.urenTotaal" ng-change="onUrenChange(true)">
                     </md-input-container>
                 </div>
-
+                @*Gewicht*@
                 <md-subheader class="md-no-sticky">Gewichten</md-subheader>
-
+                
                 <div layout="row">
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
                         <label>Ingaand/Uitgaand</label>
-                        <md-select ng-model="ctrl.richting">
+                        <md-select ng-model="gewicht.richting">
                             <md-option ng-repeat="n in ['Ingaand', 'Uitgaand']">
                                 {{n}}
                             </md-option>
@@ -109,7 +109,7 @@
 
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
                         <label>Soort</label>
-                        <md-select ng-model="ctrl.soort">
+                        <md-select ng-model="gewicht.type">
                             <md-option ng-repeat="n in ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];">
                                 {{n}}
                             </md-option>
@@ -117,40 +117,39 @@
                     </md-input-container>
 
                 </div>
-
-
                 <div layout="row">
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Vol gewicht</label>
-                        <input input type="number" name="vol" ng-model="gewicht.vol" ng-change="onGewichtChange(false)">
+                        <input input type="number" name="vol" ng-model="gewicht.volGewicht" ng-change="onGewichtChange(false)">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Leeg gewicht</label>
-                        <input input type="number" name="leeg" ng-model="gewicht.leeg" ng-change="onGewichtChange(false)">
+                        <input input type="number" name="leeg" ng-model="gewicht.leegGewicht" ng-change="onGewichtChange(false)">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Netto gewicht</label>
-                        <input input type="number" name="netto" ng-model="gewicht.netto" ng-change="onGewichtChange(true)">
+                        <input input type="number" name="netto" ng-model="gewicht.nettoGewicht" ng-change="onGewichtChange(true)">
                     </md-input-container>
                 </div>
 
+                @*Rijplaten*@
                 <md-subheader class="md-no-sticky">Ingaande rijplaten</md-subheader>
                 <div layout="row">
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Groot</label>
-                        <input input type="number">
+                        <input input type="number" ng-model="ingaand.rijplaten.groot">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Klein</label>
-                        <input input type="number">
+                        <input input type="number" ng-model="ingaand.rijplaten.klein">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Kunststof</label>
-                        <input input type="number">
+                        <input input type="number" ng-model="ingaand.rijplaten.kunststof">
                     </md-input-container>
                 </div>
 
@@ -158,17 +157,17 @@
                 <div layout="row">
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Groot</label>
-                        <input input type="number">
+                        <input input type="number" ng-model="uitgaand.rijplaten.groot">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Klein</label>
-                        <input input type="number">
+                        <input input type="number" ng-model="uitgaand.rijplaten.klein">
                     </md-input-container>
 
                     <md-input-container class="full-width md-block inputnomargin">
                         <label>Kunststof</label>
-                        <input input type="number">
+                        <input input type="number" ng-model="uitgaand.rijplaten.kunststof">
                     </md-input-container>
                 </div>
 

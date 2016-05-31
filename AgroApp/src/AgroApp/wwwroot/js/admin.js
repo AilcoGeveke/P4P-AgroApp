@@ -580,7 +580,6 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     var self = this;
     $rootScope.showloading = false;
 
-    $scope.manKeuze = [];
     $scope.user = {
         title: 'Nagtegaal'
     }
@@ -646,7 +645,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-    self.selectedGebruikers = [];
+    self.selectedGebruiker = [];
     self.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading = true;
@@ -684,30 +683,25 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.submitWerkbon = function () {
         $rootScope.showLoading = true;
         var sendData = JSON.stringify({
-            selectedGebruikers: self.selectedGebruikers,
-            werklocatie: $scope.opdracht.locatie,
-            opdrachtgever: $scope.klant.naam,
-            manKeuze: self.manKeuze,
-            datum: $scope.opdracht.datum,
-            selectedMachine: self.selectedMachine,
-            selectedHulpstukken: self.selectedHulpstukken,
-            urenvan: $scope.werktijd.van,
-            urentot: $scope.werktijd.tot,
-            urentotaal: $scope.werktijd.urenTotaal,
-            gewichtenrichting: $scope.gewicht.richting,
-            gewichtensoort: $scope.gewicht.type,
-            gewichtvol: $scope.gewicht.volGewicht,
-            gewichtleeg: $scope.gewicht.leegGewicht,
-            gewichtnetto: $scope.gewicht.nettoGewicht,
-            rijplateningaandgroot: $scope.rijplaten.groot,
-            rijplateningaandklein: $scope.rijplaten.klein,
-            rijplateningaandkunststof: $scope.rijplaten.kunststof,
-            rijplatenuitgaandgroot: $scope.rijplaten.groot,
-            rijplatenuitgaandklein: $scope.rijplaten.klein,
-            rijplatenuitgaandkunststof: $scope.rijplaten.kunststof,
-            lossemachines: $scope.machine.naam,
+            Gebruiker: $scope.selectedGebruiker,
+            Datum: $scope.opdracht.datum,
+            Klant: $scope.klant.naam,
+            ManKeuze: $scope.manKeuze,
+            Machines: self.selectedMachines,
+            Hulpstukken: self.selectedHulpstukken,
+            VanTijd: $scope.werktijd.van,
+            TotTijd: $scope.werktijd.tot,
+            TotaalTijd: $scope.werktijd.urenTotaal,
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
             opmerking: $scope.werktijd.opmerking
+        })
+
+        var config = { headers: { 'Content-Type': 'application/json' } }
+
+        $http.post('/api/werkbon/toevoegen', sendData)
+        .success(function (data, status, headers, config) {
+            $rootScope.showLoading = false;
+            $rootScope.changeView('admin/planning');
         })
     }
 
@@ -790,22 +784,6 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 
 });
 
-agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.print = [];
-    $scope.getArchiefMachines = function () {
-        $rootScope.showLoading = true;
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getdata',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            $scope.print = data;
-            $rootScope.showLoading = false;
-        })
-    }
-
-});
 agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.opdrachten = [];
     $scope.getOpdrachten = function () {
