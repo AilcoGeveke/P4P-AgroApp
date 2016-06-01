@@ -64,7 +64,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
     $scope.showConfirmArchiveDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Gebruiker Verwijderen')
               .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
@@ -74,13 +74,13 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $mdDialog.show(confirm).then(function () {
             ArchiveUser();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
     $scope.showConfirmChangePasswordDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Als u doorgaat zal het wachtwoord van deze gebruiker gereset worden!')
               .textContent('Het nieuwe wachtwoord zal op het scherm getoond worden. Geef deze aan de medewerker door!')
@@ -88,15 +88,15 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
               .ok('Reset')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -106,13 +106,13 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $mdDialog.show(confirm).then(function () {
             EditUser();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
     $scope.ArchiefGebruikers = [];
     $scope.getArchiefUserData = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         $http({
             method: 'GET',
             url: '/api/account/getarchiefusers',
@@ -120,7 +120,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             $scope.ArchiefGebruikers = data;
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         })
     }
 
@@ -132,7 +132,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Gebruiker dearchiveren')
               .textContent('Als u doorgaat zal deze gebruiker gedearchiveerd worden!')
@@ -142,7 +142,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $mdDialog.show(confirm).then(function () {
             ReAddUser();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
@@ -224,7 +224,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -234,13 +234,13 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $mdDialog.show(confirm).then(function () {
             EditMachine();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
     $scope.showConfirmDeleteDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Machine Verwijderen')
               .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
@@ -250,13 +250,13 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $mdDialog.show(confirm).then(function () {
             DeleteMachine();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
     $scope.ArchiefMachines = [];
     $scope.getArchiefMachines = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         $http({
             method: 'GET',
             url: '/api/werkbon/getarchiefmachine',
@@ -264,7 +264,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             $scope.ArchiefMachines = data;
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         })
     }
 
@@ -276,7 +276,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Machine dearchiveren')
               .textContent('Als u doorgaat zal deze machine gedearchiveerd worden!')
@@ -286,7 +286,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $mdDialog.show(confirm).then(function () {
             ReAddMachine();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
@@ -392,7 +392,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -402,13 +402,13 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         $mdDialog.show(confirm).then(function () {
             EditKlant();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
     $scope.showConfirmDeleteDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Klant Archiveren')
               .textContent('Als u doorgaat zal deze klant gearchiveerd worden!')
@@ -418,7 +418,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         $mdDialog.show(confirm).then(function () {
             DeleteKlant();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
@@ -431,7 +431,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Klant Dearchiveren')
               .textContent('Als u doorgaat zal deze klant gedearchiveerd worden')
@@ -441,7 +441,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         $mdDialog.show(confirm).then(function () {
             ReAddKlant();
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
@@ -578,7 +578,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
     var self = this;
-    $rootScope.showloading = false;
+    $rootscope.showloading = 0;
     $scope.getManKeuzeData = function () {
         $scope.showloading = true;
 
@@ -645,7 +645,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
 
 
-    
+
     $scope.selectedHulpstukken = [];
     $scope.hulpstukken = [];
     $scope.getHulpstukken = function () {
@@ -665,7 +665,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     self.selectedGebruikers = [];
     self.gebruikers = [];
     $scope.getAllUserData = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
         $http({
             method: 'GET',
             url: '/api/account/getfulllist',
@@ -673,14 +673,16 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             self.gebruikers = data;
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
+        }).error(function (data) {
+            $rootScope.showLoading--;
         })
     }
 
     self.selectedKlant = "";
     self.klanten = [];
     $scope.getKlanten = function () {
-        $scope.showloading = true;
+        $rootScope.showloading++;
 
         $http({
             method: 'GET',
@@ -690,6 +692,9 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             self.klanten = data;
+            $rootScope.showloading--;
+        }).error(function (data) {
+            $rootScope.showloading--;
         });
     };
 
@@ -698,7 +703,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     }
 
     $scope.submitWerkbon = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var sendData = JSON.stringify({
             Gebruiker: $scope.selectedGebruiker,
             Datum: $scope.opdracht.datum,
@@ -718,13 +723,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
         $http.post('/api/werkbon/toevoegen', sendData)
         .success(function (data, status, headers, config) {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
             $rootScope.changeView('admin/planning');
         })
     }
 
     $scope.submitOpdracht = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var sendData = JSON.stringify({
             klant: self.selectedKlant,
             gebruikers: self.selectedGebruiker,
@@ -736,11 +741,20 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         var config = { headers: { 'Content-Type': 'application/json' } }
 
         $http.post('/api/opdracht/toevoegen', sendData)
-        .success(function (data, status, headers, config) {
-            $rootScope.showLoading = false;
-            $scope.showMessage = true;
-            $scope.message = "Opdracht succesvol toegevoegd!";
+        .success(function (data, status, headers, config, $timeout) {
+            $rootscope.showloading--;
+            $rootScope.showMessage = true;
+            $rootScope.message = "Opdracht succesvol toegevoegd!";
+            $timeout(function () {
+                $rootScope.showMessage = false;
+            }, 5000);
             //$rootScope.changeView('admin/planning');
+        }).error(function (data, $timeout) {
+            $rootScope.showMessage = true;
+            $rootScope.message = "Er ging iets mis! " + data;
+            $timeout(function () {
+                $rootScope.showMessage = false;
+            }, 5000);
         })
     }
 
@@ -789,16 +803,16 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.showConfirmChangePasswordDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         var confirm = $mdDialog.confirm()
               .title('Als u doorgaat zal het wachtwoord worden veranderd.')
               .targetEvent(ev)
               .ok('Wijzig')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         }, function () {
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         });
     };
 
@@ -807,7 +821,7 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.print = [];
     $scope.getArchiefMachines = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         $http({
             method: 'GET',
             url: '/api/werkbon/getdata',
@@ -815,7 +829,7 @@ agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             $scope.print = data;
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         })
     }
 
@@ -824,24 +838,24 @@ agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
 agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.WerknemerOpdrachten = [];
     $scope.getGebruikerOpdrachten = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         $http.get(
             '/werknemer/getgebruikeropdrachten'
         ).success(function (data) {
             console.log(data);
             $scope.WerknemerOpdrachten = data;
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         })
     }
     $scope.werknemeropdrachten = [];
     $scope.getOpdrachtWerknemer = function () {
-        $rootScope.showLoading = true;
+        $rootscope.showloading++;
         $http.get(
             '/werknemer/getopdrachtwerknemer/'
         ).success(function (data) {
             console.log(data);
             $scope.opdrachten = data;
-            $rootScope.showLoading = false;
+            $rootscope.showloading--;
         })
     }
 
@@ -874,12 +888,21 @@ agroApp.controller('PlanningView', function ($scope, $http, $rootScope) {
     $scope.gebruikerTijden = [];
     $scope.geselecteerdeDagDatum = new Date();
     $scope.geselecteerdeWeekDatum = new Date();
+    $rootScope.showLoading = 0;
 
     $scope.updateGebruikersDag = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
         $http.get('/api/planning/getGebruikersWerktijden/' + $scope.geselecteerdeDagDatum.getTime())
-        .success(function (response) { $scope.gebruikerTijden = response; $rootScope.showLoading = false; })
-        .error(function (response) { console.log(response) });
+        .success(function (response) { $scope.gebruikerTijden = response; $rootScope.showLoading--; })
+        .error(function (response, $timeout) {
+            $rootScope.showLoading--;
+            console.log(response);
+            $rootScope.showMessage = true;
+            $rootScope.message = "Er ging iets mis! Probeer het later opnieuw.";
+            $timeout(function () {
+                $rootScope.showMessage = false;
+            }, 5000);
+        });
     }
 
     $scope.updateGebruikersWeek = function () {
@@ -898,12 +921,12 @@ agroApp.controller('PlanningView', function ($scope, $http, $rootScope) {
 
     $scope.opdrachten = [];
     $scope.getOpdrachten = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
         $http.get('/api/opdracht/alle/false')
         .success(function (data) {
             $scope.opdrachten = data;
-            $rootScope.showLoading = false;
-        })
+            $rootScope.showLoading--;
+        }).error(function (data) { $rootScope.showLoading--; })
     }
 
     $scope.opdrachtGeenDatumFilter = function (item) {

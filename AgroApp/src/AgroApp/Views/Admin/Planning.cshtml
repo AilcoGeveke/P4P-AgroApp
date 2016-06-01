@@ -121,9 +121,14 @@
                     </md-tabs>
                 </md-tab>
             </md-tabs>
-
-            <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
         </md-content>
+
+        <md-toolbar ng-class="messageTypeClass" ng-show="showMessage">
+            <div class="md-toolbar-tools">
+                <h6 class="md-flex">{{message}}</h6>
+            </div>
+        </md-toolbar>
+        <md-progress-linear ng-show="showLoading !== 0" md-mode="indeterminate"></md-progress-linear>
     </div>
 </md-content>
 
