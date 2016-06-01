@@ -42,6 +42,13 @@ namespace AgroApp.Controllers
             return View();
         }
 
+        // GET: /admin/planningopdracht
+        [HttpGet("admin/opdrachtplanning")]
+        public IActionResult opdrachtplanning()
+        {
+            return View("admin/planningopdracht/");
+        }
+
         // GET: /admin/werkbonadd
         public IActionResult Werkbonadd()
         {

@@ -62,7 +62,7 @@
 
                             <md-list flex>
                                 <md-subheader class="md-no-sticky">Geen Datum</md-subheader>
-                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:{item.datum === null}" ng-click="null">
+                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:{item:datum === null}" >
                                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                     <div class="md-list-item-text" layout="column">
                                         <h3>{{ item.klant.Name }}</h3>
@@ -73,7 +73,7 @@
                                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
                                 </md-list-item>
                                 <md-subheader class="md-no-sticky">Geen werknemers</md-subheader>
-                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:{item.gebruikerCount === 0}" ng-click="null">
+                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:{item:gebruikerCount === 0}" ng-click="null">
                                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                     <div class="md-list-item-text" layout="column">
                                         <h3>{{ item.klant.Name }}</h3>
@@ -88,7 +88,7 @@
                         <div flex="50">
                             <md-list flex>
                                 <md-subheader class="md-no-sticky">Lopende Opdrachten</md-subheader>
-                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten" ng-click="null">
+                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten" ng-click="changeView('admin/planningopdracht/' + item.Opdracht.idOpdracht)">
                                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                     <div class="md-list-item-text" layout="column">
                                         <h3>{{ item.klant.Name }}</h3>
