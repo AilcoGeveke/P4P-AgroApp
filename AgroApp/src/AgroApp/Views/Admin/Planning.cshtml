@@ -57,50 +57,68 @@
                     </md-tabs>
                 </md-tab>
                 <md-tab label="Opdrachten" md-on-select="getOpdrachten()">
-                    <div layout="row">
-                        <div flex="50">
 
-                            <md-list flex>
-                                <md-subheader class="md-no-sticky">Geen Datum</md-subheader>
-                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:{item:datum === null}" >
-                                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
-                                    <div class="md-list-item-text" layout="column">
-                                        <h3>{{ item.klant.Name }}</h3>
-                                        <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
-                                        <p>{{ item.beschrijving }}</p>
-                                    </div>
-                                    <span flex></span>
-                                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
-                                </md-list-item>
-                                <md-subheader class="md-no-sticky">Geen werknemers</md-subheader>
-                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:{item:gebruikerCount === 0}" ng-click="null">
-                                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
-                                    <div class="md-list-item-text" layout="column">
-                                        <h3>{{ item.klant.Name }}</h3>
-                                        <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
-                                        <p>{{ item.beschrijving }}</p>
-                                    </div>
-                                    <span flex></span>
-                                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
-                                </md-list-item>
-                            </md-list>
-                        </div>
-                        <div flex="50">
-                            <md-list flex>
-                                <md-subheader class="md-no-sticky">Lopende Opdrachten</md-subheader>
-                                <md-list-item class="md-3-line" ng-repeat="item in opdrachten" ng-click="changeView('admin/planningopdracht/' + item.Opdracht.idOpdracht)">
-                                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
-                                    <div class="md-list-item-text" layout="column">
-                                        <h3>{{ item.klant.Name }}</h3>
-                                        <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
-                                        <p>{{ item.beschrijving }}</p>
-                                    </div>
-                                    <span flex></span>
-                                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
-                                </md-list-item>
-                            </md-list>
-                        </div>
-                    </div>
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="Actueel">
+                            <div layout="row">
+                                <div flex="50">
+                                    <md-subheader class="md-no-sticky">Geen Datum</md-subheader>
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeenDatumFilter" ng-click="null">
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{ item.klant.Name }}</h3>
+                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
+                                            <p>{{ item.beschrijving }}</p>
+                                        </div>
+                                        <span flex></span>
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
+                                    </md-list-item>
+                                    <md-subheader class="md-no-sticky">Geen werknemers</md-subheader>
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeenWerknemersFilter" ng-click="null">
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{ item.klant.Name }}</h3>
+                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
+                                            <p>{{ item.beschrijving }}</p>
+                                        </div>
+                                        <span flex></span>
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
+                                    </md-list-item>
+                                    <md-subheader class="md-no-sticky">Gepland</md-subheader>
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeplandFilter" ng-click="null">
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{ item.klant.Name }}</h3>
+                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
+                                            <p>{{ item.beschrijving }}</p>
+                                        </div>
+                                        <span flex></span>
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
+                                    </md-list-item>
+                                </div>
+                                <div flex="50">
+                                    <md-subheader class="md-no-sticky">Lopende Opdrachten</md-subheader>
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtLopendFilter" ng-click="null">
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{ item.klant.Name }}</h3>
+                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
+                                            <p>{{ item.beschrijving }}</p>
+                                        </div>
+                                        <span flex></span>
+                                        <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
+                                    </md-list-item>
+                                </div>
+                            </div>
+                        </md-tab>
+
+                        <md-tab label="Archief">
+                        </md-tab>
+
+                        <md-tab label="Opdracht Toevoegen">
+                            @Html.Partial("opdrachtAdd")
+                        </md-tab>
+                    </md-tabs>
                 </md-tab>
             </md-tabs>
 

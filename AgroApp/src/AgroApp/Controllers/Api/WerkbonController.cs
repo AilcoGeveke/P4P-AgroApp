@@ -321,7 +321,7 @@ namespace AgroApp.Controllers.Api
                              + "Werktijd.idOpdrachtWerknemer = ("
                              + "SELECT OpdrachtWerknemer.idOpdrachtWerknemer "
                              + "FROM OpdrachtWerknemer "
-                             + "WHERE idWerknemer = @7 AND idOpdracht = @8);"
+                             + "WHERE idOpdrachtWerknemer = @7);"
                              + "SELECT LAST_INSERT_ID();";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                     new MySqlParameter("@0", werkbon.VanTijd),
@@ -331,8 +331,7 @@ namespace AgroApp.Controllers.Api
                     new MySqlParameter("@4", werkbon.VerbruikteMaterialen),
                     new MySqlParameter("@5", werkbon.Opmerking),
                     new MySqlParameter("@6", werkbon.Mankeuze),
-                    new MySqlParameter("@7", werkbon.Gebruiker.IdWerknemer),
-                    new MySqlParameter("@8", werkbon.IdOpdracht)))
+                    new MySqlParameter("@7", werkbon.IdOpdrachtWerknemer)))
                 {
                     await reader.ReadAsync();
                     werktijdId = reader.GetInt32(0);
