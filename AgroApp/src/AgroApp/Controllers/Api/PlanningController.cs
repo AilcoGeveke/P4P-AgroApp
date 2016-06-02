@@ -34,8 +34,8 @@ namespace AgroApp.Controllers.Api
                     {
                         while (await reader.ReadAsync())
                         {
-                            gt.dateTimesVan.Add(reader["werktijd.van"] as DateTime? ?? DateTime.Now);
-                            gt.dateTimesTot.Add(reader["werktijd.tot"] as DateTime? ?? DateTime.Now);
+                            gt.dateTimesVan.Add(reader["van"] as DateTime? ?? DateTime.Now);
+                            gt.dateTimesTot.Add(reader["tot"] as DateTime? ?? DateTime.Now);
                         }
                     }
                 }

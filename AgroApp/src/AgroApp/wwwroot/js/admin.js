@@ -884,71 +884,78 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
     };
 });
 
-agroApp.controller('PlanningView', function ($scope, $http, $rootScope, $timeout) {
-    $scope.gebruikerTijden = [];
-    $scope.geselecteerdeDagDatum = new Date();
-    $scope.geselecteerdeWeekDatum = new Date();
-    $rootScope.showLoading = 0;
+agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout' ,
+    function ($scope, $http, $rootScope, $timeout) {
+        $scope.gebruikerTijden = [];
+        $scope.geselecteerdeDagDatum = new Date();
+        $scope.geselecteerdeWeekDatum = new Date();
+        $rootScope.showLoading = 0;
 
-    $scope.updateGebruikersDag = function ($timeout) {
-        $rootScope.showLoading++;
-        $http.get('/api/planning/getGebruikersWerktijden/' + $scope.geselecteerdeDagDatum.getTime())
-        .success(function (response) { $scope.gebruikerTijden = response; $rootScope.showLoading--; })
-        .error(function (response, $timeout) {
-            $rootScope.showLoading--;
-            console.log(response);
-            $rootScope.showMessage = true;
-            $rootScope.message = "Er ging iets mis! Probeer het later opnieuw.";
-            $timeout(function () {
-                $rootScope.showMessage = false;
-            }, 5000);
-        });
-    }
-
-    $scope.updateGebruikersWeek = function () {
-        $scope.weekNummer = $scope.geselecteerdeWeekDatum.getWeek();
-    }
-
-    $scope.tijden = [];
-    $scope.setTijdenRange = function () {
-        $scope.tijden = [];
-        for (uur = 6; uur <= 20; uur++) {
-            $scope.tijden.push(uur + ":00");
-            if (uur != 20)
-                $scope.tijden.push(uur + ":30");
+        $scope.updateGebruikersDag = function ($timeout) {
+            $rootScope.showLoading++;
+            $http.get('/api/planning/getGebruikersWerktijden/' + $scope.geselecteerdeDagDatum.getTime())
+            .success(function (response) { $scope.gebruikerTijden = response; $rootScope.showLoading--; })
+            .error(function (response, $timeout) {
+                $rootScope.showLoading--;
+                setMessage($rootScope, $timeout, "Er is iets misgegaan bij het ophalen van de gebruikers");
+            });
         }
-    }
 
-    $scope.opdrachten = [];
-    $scope.getOpdrachten = function () {
-        $rootScope.showLoading++;
-        $http.get('/api/opdracht/alle/false')
-        .success(function (data) {
-            $scope.opdrachten = data;
-            $rootScope.showLoading--;
-        }).error(function (data) { $rootScope.showLoading--; })
-    }
+        $scope.updateGebruikersWeek = function () {
+            $scope.weekNummer = $scope.geselecteerdeWeekDatum.getWeek();
+        }
 
-    $scope.opdrachtGeenDatumFilter = function (item) {
-        return item.datum === null;
-    }
+        $scope.tijden = [];
+        $scope.setTijdenRange = function () {
+            $scope.tijden = [];
+            for (uur = 6; uur <= 20; uur++) {
+                $scope.tijden.push(uur + ":00");
+                if (uur != 20)
+                    $scope.tijden.push(uur + ":30");
+            }
+        }
 
-    $scope.opdrachtGeenWerknemersFilter = function (item) {
-        return item.gebruikerCount === 0;
-    }
+        $scope.opdrachten = [];
+        $scope.getOpdrachten = function () {
+            $rootScope.showLoading++;
+            $http.get('/api/opdracht/alle/false')
+            .success(function (data) {
+                $scope.opdrachten = data;
+                $rootScope.showLoading--;
+            }).error(function (data) {
+                $rootScope.showLoading--;
+                setMessage($rootScope, $timeout, "Er is iets misgegaan bij het ophalen van de opdrachten");
+            })
+        }
 
-    $scope.opdrachtLopendFilter = function (item) {
-        var date = new Date(item.datum);
-        return item.datum != null && item.gebruikerCount != 0 && date.getTime() <= new Date().getTime();
-    }
+        $scope.opdrachtGeenDatumFilter = function (item) {
+            return item.datum === null;
+        }
 
-    $scope.opdrachtGeplandFilter = function (item) {
-        var date = new Date(item.datum);
-        return item.datum != null && item.gebruikerCount != 0 && date.getTime() > new Date().getTime();
-    }
-})
+        $scope.opdrachtGeenWerknemersFilter = function (item) {
+            return item.gebruikerCount === 0;
+        }
+
+        $scope.opdrachtLopendFilter = function (item) {
+            var date = new Date(item.datum);
+            return item.datum != null && item.gebruikerCount != 0 && date.getTime() <= new Date().getTime();
+        }
+
+        $scope.opdrachtGeplandFilter = function (item) {
+            var date = new Date(item.datum);
+            return item.datum != null && item.gebruikerCount != 0 && date.getTime() > new Date().getTime();
+        }
+    }])
 
 Date.prototype.getWeek = function () {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+}
+
+setMessage = function ($rootScope, $timeout, mess) {
+    $rootScope.message = mess;
+    $rootScope.showMessage = true;
+    $timeout(function () {
+        $rootScope.showMessage = false;
+    }, 5000);
 }
