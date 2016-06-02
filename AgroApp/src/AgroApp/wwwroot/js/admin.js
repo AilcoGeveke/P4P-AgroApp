@@ -946,8 +946,6 @@ agroApp.controller('PlanningView', function ($scope, $http, $rootScope, $timeout
         var date = new Date(item.datum);
         return item.datum != null && item.gebruikerCount != 0 && date.getTime() > new Date().getTime();
     }
-
-
 })
 
 Date.prototype.getWeek = function () {

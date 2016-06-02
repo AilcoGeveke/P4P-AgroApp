@@ -171,3 +171,12 @@ md-list-item ._md-list-item-inner > md-icon {
     margin-left: 4px;
     margin-right: 20px !important;
 }
+
+/*No yellow autofill*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition-delay: 9999s;
+    transition: background-color 5000s ease-in-out 0s;
+}
