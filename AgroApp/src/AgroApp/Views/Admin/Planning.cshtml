@@ -1,4 +1,4 @@
-﻿\<md-content layout-fill layout="column" ng-controller="Navigation">
+﻿<md-content layout-fill layout="column" ng-controller="Navigation">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>
@@ -63,18 +63,18 @@
                             <div layout="row">
                                 <div flex="50">
                                     <md-subheader class="md-no-sticky">Geen Datum</md-subheader>
-                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeenDatumFilter" ng-click="null">
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeenDatumFilter" ng-click="changeView('planningopdracht/' + Opdracht.idOpdracht)">
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                         <div class="md-list-item-text" layout="column">
                                             <h3>{{ item.klant.Name }}</h3>
-                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>
+                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>s
                                             <p>{{ item.beschrijving }}</p>
                                         </div>
                                         <span flex></span>
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
                                     </md-list-item>
                                     <md-subheader class="md-no-sticky">Geen werknemers</md-subheader>
-                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeenWerknemersFilter" ng-click="null">
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeenWerknemersFilter" ng-click="changeView('planningopdracht/' + Opdracht.idOpdracht)">
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                         <div class="md-list-item-text" layout="column">
                                             <h3>{{ item.klant.Name }}</h3>
@@ -85,7 +85,7 @@
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">edit</md-icon>
                                     </md-list-item>
                                     <md-subheader class="md-no-sticky">Gepland</md-subheader>
-                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeplandFilter" ng-click="null">
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtGeplandFilter" ng-click="changeView('planningopdracht/' + Opdracht.idOpdracht)">
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                         <div class="md-list-item-text" layout="column">
                                             <h3>{{ item.klant.Name }}</h3>
@@ -98,7 +98,7 @@
                                 </div>
                                 <div flex="50">
                                     <md-subheader class="md-no-sticky">Lopende Opdrachten</md-subheader>
-                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtLopendFilter" ng-click="null">
+                                    <md-list-item class="md-3-line" ng-repeat="item in opdrachten | filter:opdrachtLopendFilter" ng-click="changeView('planningopdracht/' + Opdracht.idOpdracht)">
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                         <div class="md-list-item-text" layout="column">
                                             <h3>{{ item.klant.Name }}</h3>
@@ -121,9 +121,14 @@
                     </md-tabs>
                 </md-tab>
             </md-tabs>
-
-            <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
         </md-content>
+
+        <md-toolbar ng-class="messageTypeClass" ng-show="showMessage">
+            <div class="md-toolbar-tools">
+                <h6 class="md-flex">{{message}}</h6>
+            </div>
+        </md-toolbar>
+        <md-progress-linear ng-show="showLoading !== 0" md-mode="indeterminate"></md-progress-linear>
     </div>
 </md-content>
 
