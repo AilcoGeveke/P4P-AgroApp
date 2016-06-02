@@ -29,6 +29,8 @@ namespace AgroApp
         {
             // Add framework services.
             services.AddMvc();
+            services.AddCaching();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +61,8 @@ namespace AgroApp
             app.UseIISPlatformHandler();
 
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
