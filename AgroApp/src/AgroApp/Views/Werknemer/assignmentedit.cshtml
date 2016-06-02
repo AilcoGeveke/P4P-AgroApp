@@ -9,14 +9,16 @@
                 <md-button class="md-icon-button" ng-click="changeView('werknemer/opdrachten')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div class="content" >
+        <div class="content">
             <p hidden ng-model="WerknemerOpdracht.id" ng-init="WerknemerOpdracht.id = '@ViewData["id"]'"></p>
-                <h5>Locatie</h5>
-                <p   ng-init="assignmentDetails.locatie = '@ViewData["locatie"]'">{{assignmentDetails.locatie}}</p>
+            <h5>Locatie</h5>
+            <p ng-init="assignmentDetails.locatie = '@ViewData["locatie"]'">{{assignmentDetails.locatie}}</p>
 
-                <h5>Beschrijving</h5>
-                @*<input readonly ng-model="assignmentDetails.beschrijving" ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">  *@
-                <p ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">{{assignmentDetails.beschrijving}}</p>
+            <h5>Beschrijving</h5>
+            <p ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">{{assignmentDetails.beschrijving}}</p>
+
+            <h5>Collega's</h5>
+            @*<p ng-init="assignmentDetails.beschrijving = '@ViewData["beschrijving"]'">{{assignmentDetails.beschrijving}}</p>*@
 
             <div layout="row" layout-align="end center" class="content-actions">
                 <md-button class="md-primary md-raised" ng-click="changeView('werknemer/werkboninvullen/' + WerknemerOpdracht.id)">Werkboninvullen</md-button>
