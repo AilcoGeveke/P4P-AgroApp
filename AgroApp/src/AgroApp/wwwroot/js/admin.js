@@ -704,12 +704,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             Datum: $scope.opdracht.datum,
             Klant: $scope.klant,
             ManKeuze: $scope.manKeuze,
-            Machines: self.selectedMachines,
-            Hulpstukken: self.selectedHulpstukken,
+            Machines: $scope.selectedMachines,
+            Hulpstukken: $scope.selectedHulpstukken,
             VanTijd: $scope.werktijd.van,
             TotTijd: $scope.werktijd.tot,
             TotaalTijd: $scope.werktijd.urenTotaal,
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
+            Gewichten: $scope.selectedGewichten,
             opmerking: $scope.werktijd.opmerking,
             IdOpdrachtWerknemer: $scope.werknemerOpdracht.id
         })
@@ -804,20 +805,21 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 
 });
 
-agroApp.controller('Query', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.print = [];
-    $scope.getArchiefMachines = function () {
-        $rootScope.showLoading = true;
+agroApp.controller('WerkbonView', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.werkbonnen = [];
+    $scope.getWerkbonnen = function () {
+        $scope.showloading = true;
+
         $http({
             method: 'GET',
-            url: '/api/werkbon/getdata',
+            url: '/werknemer/getwerkbonnen',
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
-            $scope.print = data;
-            $rootScope.showLoading = false;
-        })
-    }
+            // With the data succesfully returned, call our callback
+            $scope.werkbonnen = data;
+        });
+    };
 
 });
 

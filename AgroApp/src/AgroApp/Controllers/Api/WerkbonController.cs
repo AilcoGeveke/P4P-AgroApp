@@ -337,29 +337,29 @@ namespace AgroApp.Controllers.Api
                     werktijdId = reader.GetInt32(0);
                 }
 
-                //query = "INSERT INTO WerktijdMachines "
-                //        + "SET WerktijdMachines.idWerktijd = @last_id_Werktijd, "
-                //        + "WerktijdMachines.idMachines = @0; ";
-                //foreach (Machine machine in werkbon.Machines)
-                //    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                //        new MySqlParameter("@0", machine.IdMachine));
+                query = "INSERT INTO WerktijdMachines "
+                        + "SET WerktijdMachines.idWerktijd = @last_id_Werktijd, "
+                        + "WerktijdMachines.idMachines = @0; ";
+                foreach (Machine machine in werkbon.Machines)
+                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                        new MySqlParameter("@0", machine.IdMachine));
 
-                //query = "INSERT INTO WerktijdHulpstuk "
-                //    + "SET WerktijdHulpstuk.idWerktijd = @last_id_Werktijd, "
-                //    + "WerktijdHulpstuk.idHulpstuk = @0";
-                //foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken)
-                //    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                //        new MySqlParameter("@0", hulpstuk.IdHulpstuk));
+                query = "INSERT INTO WerktijdHulpstuk "
+                    + "SET WerktijdHulpstuk.idWerktijd = @last_id_Werktijd, "
+                    + "WerktijdHulpstuk.idHulpstuk = @0";
+                foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken)
+                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                        new MySqlParameter("@0", hulpstuk.IdHulpstuk));
 
-                //query = "INSERT INTO Gewicht "
-                //    + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "
-                //    + "Gewicht.richting = @3, Gewicht.idWerktijd = @last_id_Werktijd";
-                //foreach (Gewicht gewicht in werkbon.Gewichten)
-                //    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                //        new MySqlParameter("@0", gewicht.Type),
-                //        new MySqlParameter("@1", gewicht.VolGewicht),
-                //        new MySqlParameter("@2", gewicht.NettoGewicht),
-                //        new MySqlParameter("@3", gewicht.Richting));
+                query = "INSERT INTO Gewicht "
+                    + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "
+                    + "Gewicht.richting = @3, Gewicht.idWerktijd = @last_id_Werktijd";
+                foreach (Gewicht gewicht in werkbon.Gewichten)
+                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                        new MySqlParameter("@0", gewicht.Type),
+                        new MySqlParameter("@1", gewicht.VolGewicht),
+                        new MySqlParameter("@2", gewicht.NettoGewicht),
+                        new MySqlParameter("@3", gewicht.Richting));
 
                 return true;
             }

@@ -22,7 +22,7 @@ namespace AgroApp.Controllers
             ViewData["volledigenaam"] = HttpContext.User.Identity.Name;
             return View("../werknemer/main");
         }
-        
+
         [HttpGet("gebruikerbeheer")]
         public IActionResult Accountbeheren()
         {
@@ -133,7 +133,7 @@ namespace AgroApp.Controllers
         }
 
         [HttpGet("werkboninvullen/{id}")]
-        public async Task<IActionResult> WerkbonToevoegen(int id)
+        public async Task<IActionResult> WerkbonInvullen(int id)
         {
             OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             ViewData["id"] = id;
@@ -141,6 +141,43 @@ namespace AgroApp.Controllers
             ViewData["gebruiker"] = opdrachtWerknemer.Werknemer.Name;
             ViewData["klantNaam"] = opdrachtWerknemer.Opdracht.klant.Name;
             return View("../admin/werkbonadd");
+        }
+
+        [HttpGet("getWerkbonnen")]
+        public async Task<IEnumerable<Werkbon>> GetWerkbonnen()
+        {
+            string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.datum, Werktijd.verbruikteMaterialen, "
+                    + "Werktijd.Opmerking, Mankeuze.naam AS MankeuzeNaam, Werknemer.idWerknemer, "
+                    + "Werknemer.naam AS WerknemerNaam, Opdracht.locatie, Klant.naam AS KlantNaam "
+                    + "FROM Werktijd "
+                    + "JOIN Mankeuze "
+                    + "ON Werktijd.idMankeuze = Mankeuze.idMankeuze "
+                    + "JOIN OpdrachtWerknemer "
+                    + "ON Werktijd.idOpdrachtWerknemer = OpdrachtWerknemer.idOpdrachtWerknemer "
+                    + "JOIN Werknemer "
+                    + "ON Werknemer.idWerknemer = OpdrachtWerknemer.idWerknemer "
+                    + "JOIN Opdracht "
+                    + "ON OpdrachtWerknemer.idOpdracht = Opdracht.idOpdracht "
+                    + "JOIN Klant "
+                    + "ON Opdracht.idKlant = Klant.idKlant;";
+            List<Werkbon> werkbon = new List<Werkbon>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
+                while (await reader.ReadAsync())
+                    werkbon.Add(new Werkbon()
+                    {
+                        Gebruiker = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1, Name = reader["WerknemerNaam"] as string ?? "" },
+                        Datum = reader["datum"] as DateTime? ?? new DateTime(),
+                        Klant = new Customer() {Name = reader["KlantNaam"] as string ?? "" },
+                        Mankeuze = reader["MankeuzeNaam"] as string ?? "",
+                        VanTijd = reader["van"] as DateTime? ?? new DateTime(),
+                        TotTijd = reader["tot"] as DateTime? ?? new DateTime(),
+                        TotaalTijd = reader["urenTotaal"] as DateTime? ?? new DateTime(),
+                        VerbruikteMaterialen = reader["verbruikteMaterialen"] as string ?? "",
+                        Opmerking = reader["Opmerking"] as string ?? ""
+                    });
+            return werkbon;
         }
 
     }

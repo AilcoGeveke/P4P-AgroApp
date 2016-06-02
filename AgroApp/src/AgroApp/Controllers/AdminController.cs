@@ -48,5 +48,11 @@ namespace AgroApp.Controllers
             return View();
         }
 
+        [HttpGet("admin/werkbonoverzicht")]
+        public IActionResult WerkbonOverzicht()
+        {
+            return View("../admin/werkbonoverzicht");
+        }
+
     }
 }
