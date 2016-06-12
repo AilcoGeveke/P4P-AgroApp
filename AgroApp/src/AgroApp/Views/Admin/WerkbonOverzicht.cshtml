@@ -14,7 +14,7 @@
         <div ng-controller="WerkbonView" ng-init="getWerkbonnen()">
             <div class="content">
                 <md-input-container class="md-block inputnomargin">
-                    <label>Zoek Machine</label>
+                    <label>Zoek Werkbon</label>
                     <md-icon>search</md-icon>
                     <input ng-model="searchterm" type="search">
                 </md-input-container>
@@ -28,7 +28,7 @@
                         <p>{{ werkbon.Opmerking }}</p>
                     </div>
                     <span flex></span>
-                    <p>Kenteken: {{ werkbon.Mankeuze}}</p>
+                    <p>Mankeuze: {{ werkbon.Mankeuze}}</p>
                     <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
                 </md-list-item>
             </md-list>
