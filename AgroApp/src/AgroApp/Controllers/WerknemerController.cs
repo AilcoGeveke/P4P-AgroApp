@@ -35,6 +35,12 @@ namespace AgroApp.Controllers
             return View("../werknemer/Assignment");
         }
 
+        [HttpGet("statistieken")]
+        public IActionResult Statistieken()
+        {
+            return View("../werknemer/Statistieken");
+        }
+
         [HttpGet("getopdrachten")]
         public async Task<IEnumerable<Opdracht>> GetOpdrachten()
         {
@@ -180,6 +186,31 @@ namespace AgroApp.Controllers
             return werkbon;
         }
 
+        [HttpGet("getStatistieken")]
+        public async Task<IEnumerable<Werkbon>> GetStatistieken()
+        {
+            string query = "SELECT OpdrachtWerknemer.idOpdrachtWerknemer, Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.datum "
+                    + "FROM OpdrachtWerknemer "
+                    + "JOIN Werktijd "
+                    + "ON OpdrachtWerknemer.idOpdrachtWerknemer = Werktijd.idOpdrachtWerknemer "
+                    + "WHERE OpdrachtWerknemer.idWerknemer = @0";
+                    //+ "AND Werktijd.datum >= @1 AND Werktijd.datum <= @2";
+            List<Werkbon> statistiek = new List<Werkbon>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
+                //new MySqlParameter("@1", datumVan),
+                //new MySqlParameter("@2", datumTot)))
+                while (await reader.ReadAsync())
+                    statistiek.Add(new Werkbon()
+                    {
+                        Datum = reader["datum"] as DateTime? ?? new DateTime(),
+                        VanTijd = reader["van"] as DateTime? ?? new DateTime(),
+                        TotTijd = reader["tot"] as DateTime? ?? new DateTime(),
+                        TotaalTijd = reader["urenTotaal"] as DateTime? ?? new DateTime(),
+                    });
+            return statistiek;
+        }
     }
 
 }

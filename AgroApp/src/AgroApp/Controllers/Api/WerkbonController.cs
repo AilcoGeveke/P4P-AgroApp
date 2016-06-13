@@ -365,6 +365,22 @@ namespace AgroApp.Controllers.Api
             }
         }
 
+        [HttpGet("deleteall")]
+        public async Task<bool> DeleteAllData()
+        {
+            string query = "SET FOREIGN_KEY_CHECKS = 0; "
+                    + "TRUNCATE TABLE Gewicht; "
+                    + "TRUNCATE TABLE Rijplaten ; "
+                    + "TRUNCATE TABLE OpdrachtWerknemer; "
+                    + "TRUNCATE TABLE Opdracht; "
+                    + "TRUNCATE TABLE WerktijdHulpstuk; "
+                    + "TRUNCATE TABLE WerktijdMachines; "
+                    + "TRUNCATE TABLE Werktijd; "
+                    + "SET FOREIGN_KEY_CHECKS = 1;";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
+                return reader.RecordsAffected >= 1; ;
+        }
 
         //[HttpGet("getcollegakeuze")]
         //public async Task<IEnumerable<string>> GetCollegaKeuze()
