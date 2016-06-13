@@ -9,14 +9,10 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
     $scope.goLogin = function () {
         $scope.showloading = true;
 
-        $http({
-            method: 'GET',
-            url: '/api/user/login/' + $scope.userDetails.email + '/' + $scope.userDetails.password,
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
+        $http.get('/api/user/login/' + $scope.userDetails.email + '/' + $scope.userDetails.password)
+        .success(function (data) {
             // With the data succesfully returned, call our callback
-            if (data)
+            if (data != "false")
                 window.location.href = data;
             else {
                 $scope.showloading = false;
@@ -26,7 +22,7 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
         }).error(function () {
             $scope.showloading = false;
             $scope.showError = true;
-            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een administrator";
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een administrator" + data;
         });
     };
 
