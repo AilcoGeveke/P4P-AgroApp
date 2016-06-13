@@ -1,14 +1,14 @@
-﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-controller="Navigation" class="transparent content-padding">
+﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-controller="Navigation" class="transparent content-padding" ng-cloak>
+    <md-toolbar class="form-content">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Werkbon toevoegen</span>
+            </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
+        </div>
+    </md-toolbar>
     <div class="md-whiteframe-5dp layout-content form-content">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>
-                    <span>Werkbon toevoegen</span>
-                </h2>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
-            </div>
-        </md-toolbar>
         <form class="content" ng-controller="WerkbonEdit as edit" ng-submit="submitWerkbon()">
             <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
             <p hidden ng-model="werknemerOpdracht.id" ng-init="werknemerOpdracht.id = '@ViewData["id"]'"></p>
@@ -26,7 +26,7 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-datepicker ng-model="opdracht.datum" md-placeholder="Datum">
+                    <md-datepicker ng-model="opdracht.datum" md-placeholder="Datum" class="md-block">
                     </md-datepicker>
                 </md-list>
 
@@ -45,136 +45,158 @@
                     </md-input-container>
                 </md-list>
             </div>
-            <md-subheader class="md-no-sticky">Machines en hulpstukken</md-subheader>
+            <md-subheader class="md-no-sticky">
+                Machines en hulpstukken
+            </md-subheader>
+            <md-chips ng-init="getMachines()" ng-model="selectedMachines" md-autocomplete-snap
+                      md-require-match="true">
+                <md-autocomplete md-autoselect="true"
+                                 md-items="item in querySearchNaam(gebruikerZoekText, machines)"
+                                 md-item-text="item.Name"
+                                 md-search-text="gebruikerZoekText"
+                                 placeholder="+Machine"
+                                 md-menu-class="chiplist">
+                    <span md-highlight-text="we.userSearchText">{{item.Name}}</span>
+                    <md-item-template>
+                        <span class="item-title">
+                            <md-icon>person</md-icon>
+                            <span> {{item.Naam}} </span>
+                        </span>
+                        <span class="item-metadata">
+                            <span class="item-metastat">
+                                <small>{{item.Nummer}}</small>
+                            </span>
+                        </span>
+                    </md-item-template>
+                </md-autocomplete>
+                <md-chip-template>
+                    {{$chip.Naam}}
+                </md-chip-template>
+            </md-chips>
+
+            <md-chips ng-init="getHulpstukken()" ng-model="selectedHulpstukken" md-autocomplete-snap
+                      md-require-match="true">
+                <md-autocomplete md-autoselect="true"
+                                 md-items="item in querySearchNaam(gebruikerZoekText, hulpstukken)"
+                                 md-item-text="item.Naam"
+                                 md-search-text="gebruikerZoekText"
+                                 placeholder="+Hulpstuk"
+                                 md-menu-class="chiplist">
+                    <span md-highlight-text="we.userSearchText">{{item.Name}}</span>
+                    <md-item-template>
+                        <span class="item-title">
+                            <md-icon>person</md-icon>
+                            <span> {{item.Naam}} </span>
+                        </span>
+                        <span class="item-metadata">
+                            <span class="item-metastat">
+                                <small>{{item.Nummer}}</small>
+                            </span>
+                        </span>
+                    </md-item-template>
+                </md-autocomplete>
+                <md-chip-template>
+                    {{$chip.Naam}}
+                </md-chip-template>
+            </md-chips>
+
+            <md-subheader class="md-no-sticky">Uren</md-subheader>
             <div layout="row">
-                <md-list flex-gt-xs="50">
-                    @*<div ng-init="getMachines()">
-                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                            <label>Machine</label>
-                            <md-select ng-model="selectedMachines[$index]">
-                                <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
-                                    {{n.Nummer}}: {{n.Naam}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>*@
-                </md-list>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Van</label>
+                    <input input type="time" name="van" ng-model="werktijd.van" ng-change="onUrenChange(false)">
+                </md-input-container>
 
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Tot</label>
+                    <input input type="time" name="tot" ng-model="werktijd.tot" ng-change="onUrenChange(false)">
+                </md-input-container>
 
-                <md-list flex-gt-xs="50">
-                    @*<div ng-init="getHulpstukken()">
-                        <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
-                            <label>Hulpstuk</label>
-                            <md-select ng-model="selectedHulpstukken[$index]">
-                                <md-option ng-repeat="n in hulpstukken" ng-selected="$first" ng-value="n">
-                                    {{n}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>*@
-                </md-list>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Aantal uren</label>
+                    <input input type="time" name="totaal" ng-model="werktijd.urenTotaal" ng-change="onUrenChange(true)">
+                </md-input-container>
             </div>
-            @*<div layout="row">
-                <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
-                <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedMachineList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
-            </div>*@
-                <md-subheader class="md-no-sticky">Uren</md-subheader>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Van</label>
-                        <input input type="time" name="van" ng-model="werktijd.van" ng-change="onUrenChange(false)">
-                    </md-input-container>
+            @*Gewicht*@
+            <md-subheader class="md-no-sticky">Gewichten</md-subheader>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Tot</label>
-                        <input input type="time" name="tot" ng-model="werktijd.tot" ng-change="onUrenChange(false)">
-                    </md-input-container>
+            <div layout="row">
+                <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
+                    <label>Ingaand/Uitgaand</label>
+                    <md-select ng-model="gewicht.richting">
+                        <md-option ng-repeat="n in ['Ingaand', 'Uitgaand']">
+                            {{n}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Aantal uren</label>
-                        <input input type="time" name="totaal" ng-model="werktijd.urenTotaal" ng-change="onUrenChange(true)">
-                    </md-input-container>
-                </div>
-                @*Gewicht*@
-                <md-subheader class="md-no-sticky">Gewichten</md-subheader>
-                
-                <div layout="row">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
-                        <label>Ingaand/Uitgaand</label>
-                        <md-select ng-model="gewicht.richting">
-                            <md-option ng-repeat="n in ['Ingaand', 'Uitgaand']">
-                                {{n}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
+                <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
+                    <label>Soort</label>
+                    <md-select ng-model="gewicht.type">
+                        <md-option ng-repeat="n in ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];">
+                            {{n}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
 
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="">
-                        <label>Soort</label>
-                        <md-select ng-model="gewicht.type">
-                            <md-option ng-repeat="n in ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];">
-                                {{n}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
+            <div layout="row">
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Vol gewicht</label>
+                    <input input type="number" name="vol" ng-model="gewicht.volGewicht" ng-change="onGewichtChange(false)">
+                </md-input-container>
 
-                </div>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Vol gewicht</label>
-                        <input input type="number" name="vol" ng-model="gewicht.volGewicht" ng-change="onGewichtChange(false)">
-                    </md-input-container>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Leeg gewicht</label>
+                    <input input type="number" name="leeg" ng-model="gewicht.leegGewicht" ng-change="onGewichtChange(false)">
+                </md-input-container>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Leeg gewicht</label>
-                        <input input type="number" name="leeg" ng-model="gewicht.leegGewicht" ng-change="onGewichtChange(false)">
-                    </md-input-container>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Netto gewicht</label>
+                    <input input type="number" name="netto" ng-model="gewicht.nettoGewicht" ng-change="onGewichtChange(true)">
+                </md-input-container>
+            </div>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Netto gewicht</label>
-                        <input input type="number" name="netto" ng-model="gewicht.nettoGewicht" ng-change="onGewichtChange(true)">
-                    </md-input-container>
-                </div>
+            @*Rijplaten*@
+            <md-subheader class="md-no-sticky">Ingaande rijplaten</md-subheader>
+            <div layout="row">
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Groot</label>
+                    <input input type="number" ng-model="ingaand.rijplaten.groot">
+                </md-input-container>
 
-                @*Rijplaten*@
-                <md-subheader class="md-no-sticky">Ingaande rijplaten</md-subheader>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Groot</label>
-                        <input input type="number" ng-model="ingaand.rijplaten.groot">
-                    </md-input-container>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Klein</label>
+                    <input input type="number" ng-model="ingaand.rijplaten.klein">
+                </md-input-container>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Klein</label>
-                        <input input type="number" ng-model="ingaand.rijplaten.klein">
-                    </md-input-container>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Kunststof</label>
+                    <input input type="number" ng-model="ingaand.rijplaten.kunststof">
+                </md-input-container>
+            </div>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Kunststof</label>
-                        <input input type="number" ng-model="ingaand.rijplaten.kunststof">
-                    </md-input-container>
-                </div>
+            <md-subheader class="md-no-sticky">Uitgaande rijplaten</md-subheader>
+            <div layout="row">
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Groot</label>
+                    <input input type="number" ng-model="uitgaand.rijplaten.groot">
+                </md-input-container>
 
-                <md-subheader class="md-no-sticky">Uitgaande rijplaten</md-subheader>
-                <div layout="row">
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Groot</label>
-                        <input input type="number" ng-model="uitgaand.rijplaten.groot">
-                    </md-input-container>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Klein</label>
+                    <input input type="number" ng-model="uitgaand.rijplaten.klein">
+                </md-input-container>
 
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Klein</label>
-                        <input input type="number" ng-model="uitgaand.rijplaten.klein">
-                    </md-input-container>
-
-                    <md-input-container class="full-width md-block inputnomargin">
-                        <label>Kunststof</label>
-                        <input input type="number" ng-model="uitgaand.rijplaten.kunststof">
-                    </md-input-container>
-                </div>
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Kunststof</label>
+                    <input input type="number" ng-model="uitgaand.rijplaten.kunststof">
+                </md-input-container>
+            </div>
 
 
-                <md-subheader class="md-no-sticky">Losse machines</md-subheader>
-                @*@*<div ng-init="getMachines()">
+            <md-subheader class="md-no-sticky">Losse machines</md-subheader>
+            @*@*<div ng-init="getMachines()">
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
                         <label>Losse machine</label>
                         <md-select ng-model="selectedMachines[$index]">
@@ -190,20 +212,20 @@
                     </div>
                 </div>*@
 
-                <md-input-container class="md-block inputnomargin">
-                    <label>Verbruikte materialen</label>
-                    <textarea ng-model="werktijd.verbruikteMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
+            <md-input-container class="md-block inputnomargin">
+                <label>Verbruikte materialen</label>
+                <textarea ng-model="werktijd.verbruikteMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
 
-                <md-input-container class="md-block inputnomargin">
-                    <label>Omschrijving / Opmerking</label>
-                    <textarea ng-model="werktijd.opmerking" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-                <md-button class="md-raised md-primary" type="submit">Verzenden</md-button>
+            <md-input-container class="md-block inputnomargin">
+                <label>Omschrijving / Opmerking</label>
+                <textarea ng-model="werktijd.opmerking" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
+            <md-button class="md-raised md-primary" type="submit">Verzenden</md-button>
 
-</form>
-        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+        </form>
     </div>
+    <md-progress-linear ng-show="showLoading" md-mode="indeterminate" class="form-content"></md-progress-linear>
 
 </md-content>
 <div class="body-halfbackground"></div>

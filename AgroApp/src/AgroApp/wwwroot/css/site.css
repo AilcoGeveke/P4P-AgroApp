@@ -47,6 +47,7 @@ h5 {
     width: 100%;
     background-color: white;
     z-index: 2;
+    overflow: auto;
 }
 
 .form-content {
@@ -179,4 +180,14 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     -webkit-transition-delay: 9999s;
     transition: background-color 5000s ease-in-out 0s;
+}
+
+._md-subheader-content {
+    display: flex !important;
+    align-items: center !important;
+}
+
+._md-subheader-content .md-button {
+    margin-top: -12px;
+    margin-bottom: -12px;
 }

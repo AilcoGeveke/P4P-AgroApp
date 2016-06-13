@@ -147,7 +147,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
     };
 
     var EditUser = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -159,19 +159,19 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             if (data == true)
                 $rootScope.changeView('admin/gebruikers');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ArchiveUser = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -183,12 +183,12 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             if (data == true)
                 $rootScope.changeView('admin/gebruikerbeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -205,12 +205,12 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             if (data == true)
                 $rootScope.changeView('admin/gebruikerbeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -291,7 +291,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
     };
 
     $scope.AddMachine = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -303,19 +303,19 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Het machinenummer is al geregistreerd";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var EditMachine = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -327,19 +327,19 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var DeleteMachine = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -351,19 +351,19 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen machine geselecteerd!";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ReAddMachine = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -375,12 +375,12 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen machine geselecteerd!";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -446,7 +446,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
     };
 
     $scope.AddKlant = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -458,19 +458,19 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Deze klant is al geregistreerd!";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ReAddKlant = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -482,12 +482,12 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen klant geselecteerd!";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -496,7 +496,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
     $scope.selectedKlanten = [];
     $scope.klanten = [];
     $scope.getKlanten = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -512,7 +512,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
     $scope.ArchiefKlanten = [];
     $scope.getArchiefKlanten = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -527,7 +527,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
 
     var EditKlant = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -539,19 +539,19 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var DeleteKlant = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -563,12 +563,12 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen klant geselecteerd!";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -580,7 +580,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     var self = this;
     $rootScope.showloading = 0;
     $scope.getManKeuzeData = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -608,7 +608,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.selectedGewichten = [];
     $scope.gewichten = ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];
     $scope.getMachines = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -649,7 +649,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.selectedHulpstukken = [];
     $scope.hulpstukken = [];
     $scope.getHulpstukken = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -681,7 +681,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
     self.selectedKlant = "";
     self.klanten = [];
-    $scope.getKlanten = function () {
+    $scope.getKlanten = function ($mdToast) {
         $rootScope.showloading++;
 
         $http({
@@ -694,6 +694,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             self.klanten = data;
             $rootScope.showloading--;
         }).error(function (data) {
+            $mdToast.showSimple('Kon klanten niet inladen! Ververs de pagina');
             $rootScope.showloading--;
         });
     };
@@ -799,6 +800,17 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         };
     }
 
+    $scope.querySearchNaam = function (criteria, targetArray) {
+        return criteria ? targetArray.filter($scope.createFilterForNaam(criteria)) : targetArray;
+    };
+
+    $scope.createFilterForNaam = function (query) {
+        var lowercaseQuery = angular.lowercase(query);
+        return function filterFn(state) {
+            return (state.Naam.toLowerCase().indexOf(lowercaseQuery) === 0);
+        };
+    }
+
 });
 
 agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDialog) {
@@ -822,7 +834,7 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 agroApp.controller('WerkbonView', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.werkbonnen = [];
     $scope.getWerkbonnen = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -862,7 +874,7 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
     }
 
     var EditAssignment = function () {
-        $scope.showloading = true;
+        $rootScope.showLoading = true;
 
         $http({
             method: 'GET',
@@ -874,12 +886,12 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
             if (data == true)
                 $rootScope.changeView('werknemer/');
             else {
-                $scope.showloading = false;
+                $rootScope.showLoading = false;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $scope.showloading = false;
+            $rootScope.showLoading = false;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
