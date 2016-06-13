@@ -577,7 +577,6 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
-    var self = this;
     $rootScope.showloading = 0;
 
     $scope.getManKeuzeData = function () {
@@ -659,8 +658,8 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-    self.selectedGebruikers = [];
-    self.gebruikers = [];
+    $scope.selectedGebruikers = [];
+    $scope.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading++;
         $http({
@@ -669,15 +668,15 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
-            self.gebruikers = data;
+            $scope.gebruikers = data;
             $rootScope.showLoading--;
         }).error(function (data) {
             $rootScope.showLoading--;
         })
     }
 
-    self.selectedKlant = "";
-    self.klanten = [];
+    $scope.selectedKlant = "";
+    $scope.klanten = [];
     $scope.getKlanten = function ($mdToast) {
         $rootScope.showloading++;
 
@@ -781,10 +780,10 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }
     }
 
-    self.querySearch = querySearch;
+    $scope.querySearch = querySearch;
 
-    self.machineSelectie = [];
-    self.selectedMachine = "";
+    $scope.machineSelectie = [];
+    $scope.selectedMachine = "";
 
     function querySearch(criteria, targetArray) {
         return criteria ? targetArray.filter(createFilterFor(criteria)) : targetArray;
