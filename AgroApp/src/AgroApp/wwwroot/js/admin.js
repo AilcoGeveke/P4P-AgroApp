@@ -577,8 +577,8 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
-    var self = this;
     $rootScope.showloading = 0;
+
     $scope.getManKeuzeData = function () {
         $rootScope.showLoading = true;
 
@@ -593,14 +593,12 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-
     $scope.checkRole = function () {
         if (User.IsInRole("Administrator"))
             changeView("admin/main");
         else
             changeView("werknemer/menu");
     }
-
 
     $scope.selectedMachines = [];
     $scope.selectedUsers = [];
@@ -644,8 +642,6 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     }
 
 
-
-
     $scope.selectedHulpstukken = [];
     $scope.hulpstukken = [];
     $scope.getHulpstukken = function () {
@@ -662,8 +658,8 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         });
     };
 
-    self.selectedGebruikers = [];
-    self.gebruikers = [];
+    $scope.selectedGebruikers = [];
+    $scope.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading++;
         $http({
@@ -672,15 +668,15 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
-            self.gebruikers = data;
+            $scope.gebruikers = data;
             $rootScope.showLoading--;
         }).error(function (data) {
             $rootScope.showLoading--;
         })
     }
 
-    self.selectedKlant = "";
-    self.klanten = [];
+    $scope.selectedKlant = "";
+    $scope.klanten = [];
     $scope.getKlanten = function ($mdToast) {
         $rootScope.showloading++;
 
@@ -784,10 +780,10 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }
     }
 
-    self.querySearch = querySearch;
+    $scope.querySearch = querySearch;
 
-    self.machineSelectie = [];
-    self.selectedMachine = "";
+    $scope.machineSelectie = [];
+    $scope.selectedMachine = "";
 
     function querySearch(criteria, targetArray) {
         return criteria ? targetArray.filter(createFilterFor(criteria)) : targetArray;
@@ -898,12 +894,44 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
     };
 });
 
-agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
-    function ($scope, $http, $rootScope, $timeout) {
+agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout', '$mdDialog',
+    function ($scope, $http, $rootScope, $timeout, $mdDialog) {
         $scope.gebruikerTijden = [];
         $scope.geselecteerdeDagDatum = new Date();
         $scope.geselecteerdeWeekDatum = new Date();
         $rootScope.showLoading = 0;
+
+        $scope.showConfirmDeleteAll = function (ev) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            $rootScope.showloading++;
+            var confirm = $mdDialog.confirm()
+                  .title('Weet u zeker dat u alle opdrachten en werkbonnen wilt verwijderen?')
+                  .textContent('LET OP: Het is niet mogelijk om de verijderde data hierna nog terug te halen!!')
+                  .targetEvent(ev)
+                  .ok('Verwijderen')
+                  .cancel('Annuleer');
+            $mdDialog.show(confirm).then(function () {
+                $scope.showConfirmPermanentDelete();
+            }, function () {
+                $rootScope.showloading--;
+            });
+        };
+
+        $scope.showConfirmPermanentDelete = function (ev) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            $rootScope.showloading++;
+            var confirm = $mdDialog.confirm()
+                  .title('Verwijdering bevestigen')
+                  .textContent('Alle opdrachten en werkbonnen zullen worden verwijderd!!')
+                  .targetEvent(ev)
+                  .ok('Definitief verwijderen')
+                  .cancel('Annuleer');
+            $mdDialog.show(confirm).then(function () {
+                DeleteAllData();
+            }, function () {
+                $rootScope.showloading--;
+            });
+        };
 
         $scope.updateGebruikersDag = function ($timeout) {
             $rootScope.showLoading++;
@@ -942,6 +970,29 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
             })
         }
 
+        var DeleteAllData = function () {
+            $rootScope.showloading++;
+            $http({
+                method: 'GET',
+                url: '/api/werkbon/deleteall',
+                params: 'limit=10, sort_by=created:desc',
+                headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+            }).success(function (data) {
+                // With the data succesfully returned, call our callback
+                if (data == true)
+                    $rootScope.changeView('admin/planning');
+                else {
+                    $rootScope.showloading--;
+                    $scope.showError = true;
+                    $scope.errorMessage = "Er is niets om te verwijderen!";
+                }
+            }).error(function () {
+                $rootScope.showloading--;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+            });
+        };
+
         $scope.opdrachtGeenDatumFilter = function (item) {
             return item.datum === null;
         }
@@ -961,6 +1012,20 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
         }
     }])
 
+agroApp.controller('StatistiekenView', function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.statistieken = [];
+    $scope.getStatistieken = function () {
+        $rootScope.showloading++;
+        $http.get(
+            '/werknemer/getstatistieken/'
+            //+ $scope.statistieken.vanaf + '/' + $scope.statistieken.tot
+        ).success(function (data) {
+            console.log(data);
+            $scope.statistieken = data;
+            $rootScope.showloading--;
+        })
+    }
+});
 Date.prototype.getWeek = function () {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);

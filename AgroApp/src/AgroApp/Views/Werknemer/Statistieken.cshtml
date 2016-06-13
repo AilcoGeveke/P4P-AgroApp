@@ -1,0 +1,44 @@
+﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent content-padding">
+    <div class="md-whiteframe-5dp layout-content">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Statistieken</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('werknemer/menu')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <div ng-controller="StatistiekenView">
+            <md-datepicker ng-model="statistieken.vanaf" md-placeholder="Datum">
+            </md-datepicker>
+            <md-datepicker ng-model="statistieken.tot" md-placeholder="Datum">
+            </md-datepicker>
+            <span flex></span>
+            <md-button class="md-primary md-raised" ng-click="getStatistieken()">Zoeken</md-button>
+            <md-divider></md-divider>
+            <md-list>
+                <md-list-item class="md-3-line" ng-repeat="n in statistieken" ng-click="hoi())">
+                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ n.Datum }}</h3>
+                    </div>
+                    <span flex></span>
+                    <p>{{ n.TotaalTijd }}</p>
+                    <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
+                </md-list-item>
+            </md-list>
+            <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+        </div>
+    </div>
+</md-content>
+
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/admin.js"></script>
+}
+
+
+
+
