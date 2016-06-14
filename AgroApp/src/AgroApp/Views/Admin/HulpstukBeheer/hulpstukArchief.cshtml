@@ -6,7 +6,7 @@
                     <span>Archief Hulpstukken</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/hulpstukbeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
         <div ng-controller="HulpstukEdit" ng-init="getArchiefHulpstukken()">
@@ -20,7 +20,7 @@
             <md-divider></md-divider>
             <md-list>
                 <md-list-item class="md-3-line" ng-repeat="n in ArchiefHulpstukken | filter:searchterm" ng-click="ConfirmReAdd(n.IdHulpstuk)">
-                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">person</md-icon>
+                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">group_work</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ n.Naam }}</h3>
                         <p>{{ n.Nummer }}</p>
