@@ -152,12 +152,10 @@ namespace AgroApp.Controllers
         [HttpGet("getWerkbonnen")]
         public async Task<IEnumerable<Werkbon>> GetWerkbonnen()
         {
-            string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.pauzeTotaal, Werktijd.datum, Werktijd.verbruikteMaterialen, "
-                    + "Werktijd.Opmerking, Mankeuze.naam AS MankeuzeNaam, Werknemer.idWerknemer, "
+            string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.pauzeTotaal, Werktijd.datum, Werktijd.manKeuze, Werktijd.verbruikteMaterialen, "
+                    + "Werktijd.Opmerking, Werknemer.idWerknemer, "
                     + "Werknemer.naam AS WerknemerNaam, Opdracht.locatie, Klant.naam AS KlantNaam "
                     + "FROM Werktijd "
-                    + "JOIN Mankeuze "
-                    + "ON Werktijd.idMankeuze = Mankeuze.idMankeuze "
                     + "JOIN OpdrachtWerknemer "
                     + "ON Werktijd.idOpdrachtWerknemer = OpdrachtWerknemer.idOpdrachtWerknemer "
                     + "JOIN Werknemer "
@@ -176,7 +174,7 @@ namespace AgroApp.Controllers
                         Gebruiker = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1, Name = reader["WerknemerNaam"] as string ?? "" },
                         Datum = reader["datum"] as DateTime? ?? new DateTime(),
                         Klant = new Customer() {Name = reader["KlantNaam"] as string ?? "" },
-                        Mankeuze = reader["MankeuzeNaam"] as string ?? "",
+                        Mankeuze = reader["manKeuze"] as string ?? "",
                         VanTijd = reader["van"] as int? ?? 0,
                         TotTijd = reader["tot"] as int? ?? 0,
                         TotaalTijd = reader["urenTotaal"] as int ? ?? 0,

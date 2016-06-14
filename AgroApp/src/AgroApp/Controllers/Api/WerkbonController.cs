@@ -427,28 +427,31 @@ namespace AgroApp.Controllers.Api
                 }
 
                 query = "INSERT INTO WerktijdMachines "
-                        + "SET WerktijdMachines.idWerktijd = @last_id_Werktijd, "
+                        + "SET WerktijdMachines.idWerktijd = @1, "
                         + "WerktijdMachines.idMachines = @0; ";
                 foreach (Machine machine in werkbon.Machines ?? Enumerable.Empty<Machine>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", machine.IdMachine));
+                        new MySqlParameter("@0", machine.IdMachine),
+                        new MySqlParameter("@1", werktijdId));
 
                 query = "INSERT INTO WerktijdHulpstuk "
-                    + "SET WerktijdHulpstuk.idWerktijd = @last_id_Werktijd, "
+                    + "SET WerktijdHulpstuk.idWerktijd = @1, "
                     + "WerktijdHulpstuk.idHulpstuk = @0";
                 foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken ?? Enumerable.Empty<Hulpstuk>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", hulpstuk.IdHulpstuk));
+                        new MySqlParameter("@0", hulpstuk.IdHulpstuk),
+                        new MySqlParameter("@1", werktijdId));
 
                 query = "INSERT INTO Gewicht "
                     + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "
-                    + "Gewicht.richting = @3, Gewicht.idWerktijd = @last_id_Werktijd";
+                    + "Gewicht.richting = @3, Gewicht.idWerktijd = @4";
                 foreach (Gewicht gewicht in werkbon.Gewichten ?? Enumerable.Empty<Gewicht>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", gewicht.Type),
                         new MySqlParameter("@1", gewicht.VolGewicht),
                         new MySqlParameter("@2", gewicht.NettoGewicht),
-                        new MySqlParameter("@3", gewicht.Richting));
+                        new MySqlParameter("@3", gewicht.Richting),
+                        new MySqlParameter("@4", werktijdId));
 
                 return true;
             }
