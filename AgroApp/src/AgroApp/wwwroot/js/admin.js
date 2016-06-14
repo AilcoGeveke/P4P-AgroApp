@@ -575,6 +575,177 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
     };
 });
 
+agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialog) {
+
+    $scope.showConfirmChangesDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showloading++;
+        var confirm = $mdDialog.confirm()
+              .title('Wijzigingen Toepassen?')
+              .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
+              .targetEvent(ev)
+              .ok('Wijzigingen Toepassen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            EditHulpstuk();
+        }, function () {
+            $rootScope.showloading--;
+        });
+    };
+
+    $scope.showConfirmDeleteDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showloading++;
+        var confirm = $mdDialog.confirm()
+              .title('Klant Archiveren')
+              .textContent('Als u doorgaat zal deze hulpstuk gearchiveerd worden!')
+              .targetEvent(ev)
+              .ok('Hulpstuk Archiveren')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            DeleteHulpstuk();
+        }, function () {
+            $rootScope.showloading--;
+        });
+    };
+
+    $scope.hulpstukid = 0;
+    $scope.ConfirmReAdd = function (hulpstukid) {
+        $scope.hulpstukid = hulpstukid;
+        $scope.showConfirmReAddDialog();
+    }
+
+    $scope.showConfirmReAddDialog = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showloading++;
+        var confirm = $mdDialog.confirm()
+              .title('Hulpstuk Dearchiveren')
+              .textContent('Als u doorgaat zal dit hulpstuk gedearchiveerd worden')
+              .targetEvent(ev)
+              .ok('Dearchiveren')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            ReAddHulpstuk();
+        }, function () {
+            $rootScope.showloading--;
+        });
+    };
+
+    $scope.AddHulpstuk = function () {
+        $rootScope.showLoading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/addhulpstuk/' + $scope.hulpstukDetails.naam + '/' + $scope.hulpstukDetails.nummer,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/hulpstukbeheer');
+            else {
+                $rootScope.showLoading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Deze hulpstuk is al geregistreerd!";
+            }
+        }).error(function () {
+            $rootScope.showLoading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+    var ReAddHulpstuk = function () {
+        $rootScope.showLoading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/hulpstuk/terughalen/' + $scope.hulpstukid,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/hulpstukbeheer');
+            else {
+                $rootScope.showLoading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is geen hulpstuk geselecteerd!";
+            }
+        }).error(function () {
+            $rootScope.showLoading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    }
+
+    $scope.ArchiefHulpstukken = [];
+    $scope.getArchiefHulpstukken = function () {
+        $rootScope.showLoading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/getarchiefhulpstukken',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            $scope.ArchiefHulpstukken = data;
+            $rootScope.showLoading--;
+        }).error(function (data) {
+            $rootScope.showLoading--;
+        })
+    };
+
+    var EditHulpstuk = function () {
+        $rootScope.showLoading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/edithulpstuk/' + $scope.hulpstukDetails.id + '/' + $scope.hulpstukDetails.naam + '/' + $scope.hulpstukDetails.nummer,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/hulpstukbeheer');
+            else {
+                $rootScope.showLoading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
+            }
+        }).error(function () {
+            $rootScope.showLoading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
+    var DeleteHulpstuk = function () {
+        $rootScope.showLoading = true;
+
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/deletehulpstuk/' + $scope.hulpstukDetails.id,
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/hulpstukbeheer');
+            else {
+                $rootScope.showLoading = false;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is geen hulpstuk geselecteerd!";
+            }
+        }).error(function () {
+            $rootScope.showLoading = false;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+});
+
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
     $rootScope.showloading = 0;
@@ -616,8 +787,11 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             $scope.machines = data;
+            $rootScope.showLoading--;
+        }).error(function (data) {
+            $rootScope.showLoading--;
         });
-    };
+    }
 
 
     $scope.increaseSelectedMachineList = function () {
@@ -645,7 +819,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.selectedHulpstukken = [];
     $scope.hulpstukken = [];
     $scope.getHulpstukken = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -655,8 +829,11 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             $scope.hulpstukken = data;
+            $rootScope.showLoading--;
+        }).error(function (data) {
+            $rootScope.showLoading--;
         });
-    };
+    }
 
     $scope.selectedGebruikers = [];
     $scope.gebruikers = [];
@@ -931,7 +1108,7 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
             }, function () {
                 $rootScope.showloading--;
             });
-        };
+        }
 
         $scope.updateGebruikersDag = function ($timeout) {
             $rootScope.showLoading++;
@@ -968,7 +1145,7 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
                 $rootScope.showLoading--;
                 setMessage($rootScope, $timeout, "Er is iets misgegaan bij het ophalen van de opdrachten");
             })
-        }
+        };
 
         var DeleteAllData = function () {
             $rootScope.showloading++;

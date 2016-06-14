@@ -1,33 +1,34 @@
 ﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent content-padding">
     <div class="md-whiteframe-5dp layout-content">
-        <md-toolbar ng-controller="LoginView">
+        <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>
-                    <span>Archief Machines</span>
+                    <span>Hulpstuk beheer</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/hulpstukbeheer/archief')"><md-icon>archive</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/hulpstukbeheer/toevoegen')"><md-icon>add_circle</md-icon></md-button>
+                <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="VehicleEdit" ng-init="getArchiefMachines()">
+        <div ng-controller="WerkbonEdit" ng-init="getHulpstukken()">
             <div class="content">
                 <md-input-container class="md-block inputnomargin">
-                    <label>Zoek Machine</label>
+                    <label>Zoek Hulpstuk</label>
                     <md-icon>search</md-icon>
                     <input ng-model="searchterm" type="search">
                 </md-input-container>
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="machine in ArchiefMachines | filter:searchterm" ng-click="ConfirmReAdd(machine.IdMachine)">
-                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">person</md-icon>
+                <md-list-item class="md-3-line" ng-repeat="n in hulpstukken | filter:searchterm" ng-click="changeView('admin/hulpstukbeheer/wijzigen/' + n.IdHulpstuk)">
+                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ machine.Naam }}</h3>
-                        <p>{{ machine.Nummer }}</p>
+                        <h3>{{ n.Naam }}</h3>
+                        <p>{{ n.Nummer }}</p>
                     </div>
                     <span flex></span>
-                    <p>Kenteken: {{ n.Kenteken}}</p>
-                    <md-icon ng-style="{color: '#3F51B5'}">unarchive</md-icon>
+                    <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
                 </md-list-item>
             </md-list>
             <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
@@ -40,3 +41,6 @@
 @section scripts{
     <script src="~/js/admin.js"></script>
 }
+
+
+

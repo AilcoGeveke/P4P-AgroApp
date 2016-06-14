@@ -142,18 +142,109 @@ namespace AgroApp.Controllers.Api
         }
 
         //Hulpstuk
-        [HttpGet("gethulpstukken")]
-        public async Task<IEnumerable<string>> GetHulpstukken()
+        public static async Task<Hulpstuk> GetHulpstuk(int id)
         {
-            string query = "SELECT idHulpstuk, nummer, naam FROM Hulpstuk";
-            List<string> data = new List<string>();
+            if (id < 0)
+                return null;
+
+            string query = "SELECT idHulpstuk, naam, nummer FROM Hulpstuk WHERE idHulpstuk=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
-                while (reader.Read())
-                    data.Add(reader.GetString(2));
-            return data;
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", id)))
+            {
+                await reader.ReadAsync();
+                return reader.HasRows ? new Hulpstuk(idHulpstuk: reader.GetInt32(0), naam: reader.GetString(1), nummer: reader.GetInt32(2)) : null;
+            }
         }
 
+        [HttpGet("gethulpstukken")]
+        public async Task<string> GetHulpstukken()
+        {
+            string query = "SELECT idHulpstuk, nummer, naam, isDeleted FROM Hulpstuk WHERE isDeleted = @0";
+            List<Hulpstuk> data = new List<Hulpstuk>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false)))
+                while (reader.Read())
+                    data.Add(new Hulpstuk(idHulpstuk: reader.GetInt32(0), nummer: reader.GetInt32(1), naam: reader.GetString(2)));
+            return JsonConvert.SerializeObject(data);
+        }
+
+        [HttpGet("getarchiefhulpstukken")]
+        public async Task<string> GetArchiefHulpstukken()
+        {
+            string query = "SELECT idHulpstuk, nummer, naam, isDeleted FROM Hulpstuk WHERE isDeleted = @0";
+            List<Hulpstuk> data = new List<Hulpstuk>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (reader.Read())
+                    data.Add(new Hulpstuk(idHulpstuk: reader.GetInt32(0), nummer: reader.GetInt32(1), naam: reader.GetString(2)));
+            return JsonConvert.SerializeObject(data);
+        }
+
+        [HttpGet("addhulpstuk/{naam}/{nummer}")]
+        public async Task<bool> AddHulpstuk(string naam, int nummer = 0)
+        {
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            {
+                string query = "SELECT * FROM Hulpstuk WHERE naam=@0 AND nummer=@1";
+                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                    new MySqlParameter("@0", naam),
+                    new MySqlParameter("@1", nummer)))
+                    if (reader.HasRows)
+                        return false;
+
+                query = "INSERT INTO Hulpstuk (naam, nummer) VALUES (@0, @1)";
+                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                    new MySqlParameter("@0", naam),
+                    new MySqlParameter("@1", nummer)))
+                    return reader.RecordsAffected == 1;
+            }
+        }
+
+        [HttpGet("edithulpstuk/{id}/{naam}/{nummer}")]
+        public async Task<bool> EditHulpstuk(int id, string naam, string nummer)
+        {
+            if (GetHulpstuk(id) == null)
+                return false;
+
+            string query = "UPDATE Hulpstuk SET naam=@0, nummer=@1 WHERE idHulpstuk=@2";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", naam),
+                new MySqlParameter("@1", nummer),
+                new MySqlParameter("@2", id)))
+                return reader.RecordsAffected == 1;
+        }
+
+        [HttpGet("deletehulpstuk/{id}")]
+        public async Task<bool> DeleteHulpstuk(int id)
+        {
+            if (GetHulpstuk(id) == null)
+                return false;
+
+            string query = "UPDATE Hulpstuk SET isDeleted=@0 WHERE idHulpstuk=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1; ;
+        }
+
+        [HttpGet("hulpstuk/terughalen/{id}")]
+        public async Task<bool> ReAddHulpstuk(int id)
+        {
+            if (GetHulpstuk(id) == null)
+                return false;
+
+            string query = "UPDATE Hulpstuk SET isDeleted=@0 WHERE idHulpstuk=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1; ;
+        }
 
         //Klanten
         public static async Task<Customer> GetKlant(int id)

@@ -23,7 +23,7 @@ namespace AgroApp.Controllers.Admin
         }
 
         [HttpGet("admin/machinebeheer/wijzigen/{id}")]
-        public async Task<IActionResult> GebruikerWijzigen(int id)
+        public async Task<IActionResult> MachineWijzigen(int id)
         {
             Machine machine = await WerkbonController.GetMachine(id);
             ViewData["id"] = id;

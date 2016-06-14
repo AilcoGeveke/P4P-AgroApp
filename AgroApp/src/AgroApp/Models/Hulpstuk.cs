@@ -7,15 +7,14 @@ namespace AgroApp.Models
 {
     public class Hulpstuk
     {
-        public int IdHulpstuk { private set; get; }
-        public string Type { private set; get; }
-        public int Nummer { private set; get; }
-        public string Naam { private set; get; }
+        public int IdHulpstuk { set; get; }
+        public int Nummer { set; get; }
+        public string Naam { set; get; }
 
-        public Hulpstuk(int idHulpstuk = -1, string type = "", int nummer = 0, string naam = "")
+
+        public Hulpstuk(int idHulpstuk = -1, int nummer = 0, string naam = "")
         {
             IdHulpstuk = idHulpstuk;
-            Type = type;
             Nummer = nummer;
             Naam = naam;
         }

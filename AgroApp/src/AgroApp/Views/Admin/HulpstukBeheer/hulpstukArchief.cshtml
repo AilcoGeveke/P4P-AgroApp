@@ -3,30 +3,29 @@
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
                 <h2>
-                    <span>Archief Machines</span>
+                    <span>Archief Hulpstukken</span>
                 </h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="VehicleEdit" ng-init="getArchiefMachines()">
+        <div ng-controller="HulpstukEdit" ng-init="getArchiefHulpstukken()">
             <div class="content">
                 <md-input-container class="md-block inputnomargin">
-                    <label>Zoek Machine</label>
+                    <label>Zoek Hulpstuk</label>
                     <md-icon>search</md-icon>
                     <input ng-model="searchterm" type="search">
                 </md-input-container>
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="machine in ArchiefMachines | filter:searchterm" ng-click="ConfirmReAdd(machine.IdMachine)">
+                <md-list-item class="md-3-line" ng-repeat="n in ArchiefHulpstukken | filter:searchterm" ng-click="ConfirmReAdd(n.IdHulpstuk)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">person</md-icon>
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ machine.Naam }}</h3>
-                        <p>{{ machine.Nummer }}</p>
+                        <h3>{{ n.Naam }}</h3>
+                        <p>{{ n.Nummer }}</p>
                     </div>
                     <span flex></span>
-                    <p>Kenteken: {{ n.Kenteken}}</p>
                     <md-icon ng-style="{color: '#3F51B5'}">unarchive</md-icon>
                 </md-list-item>
             </md-list>
