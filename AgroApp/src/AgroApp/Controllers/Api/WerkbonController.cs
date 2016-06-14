@@ -405,24 +405,25 @@ namespace AgroApp.Controllers.Api
                 int werktijdId;
                 string query = "INSERT INTO Werktijd "
                              + "SET Werktijd.van = @0, Werktijd.tot = @1, "
-                             + "Werktijd.urenTotaal = @2, Werktijd.datum = @3, "
-                             + "Werktijd.verbruikteMaterialen = @4, Werktijd.Opmerking = @5, "
+                             + "Werktijd.urenTotaal = @2, Werktijd.pauzeTotaal = @3, Werktijd.datum = @4, "
+                             + "Werktijd.verbruikteMaterialen = @5, Werktijd.Opmerking = @6, "
                              + "Werktijd.idMankeuze = ( SELECT Mankeuze.idManKeuze "
-                             + "FROM ManKeuze WHERE Mankeuze.naam = @6), "
+                             + "FROM ManKeuze WHERE Mankeuze.naam = @7), "
                              + "Werktijd.idOpdrachtWerknemer = ("
                              + "SELECT OpdrachtWerknemer.idOpdrachtWerknemer "
                              + "FROM OpdrachtWerknemer "
-                             + "WHERE idOpdrachtWerknemer = @7);"
+                             + "WHERE idOpdrachtWerknemer = @8);"
                              + "SELECT LAST_INSERT_ID();";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                     new MySqlParameter("@0", werkbon.VanTijd),
                     new MySqlParameter("@1", werkbon.TotTijd),
                     new MySqlParameter("@2", werkbon.TotaalTijd),
-                    new MySqlParameter("@3", werkbon.Datum),
-                    new MySqlParameter("@4", werkbon.VerbruikteMaterialen),
-                    new MySqlParameter("@5", werkbon.Opmerking),
-                    new MySqlParameter("@6", werkbon.Mankeuze),
-                    new MySqlParameter("@7", werkbon.IdOpdrachtWerknemer)))
+                    new MySqlParameter("@3", werkbon.PauzeTijd),
+                    new MySqlParameter("@4", werkbon.Datum),
+                    new MySqlParameter("@5", werkbon.VerbruikteMaterialen),
+                    new MySqlParameter("@6", werkbon.Opmerking),
+                    new MySqlParameter("@7", werkbon.Mankeuze),
+                    new MySqlParameter("@8", werkbon.IdOpdrachtWerknemer)))
                 {
                     await reader.ReadAsync();
                     werktijdId = reader.GetInt32(0);

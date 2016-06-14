@@ -878,6 +878,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             VanTijd: $scope.werktijd.van,
             TotTijd: $scope.werktijd.tot,
             TotaalTijd: $scope.werktijd.urenTotaal,
+            TotaalTijd: $scope.werktijd.pauzeTotaal,
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
             Gewichten: $scope.selectedGewichten,
             opmerking: $scope.werktijd.opmerking,

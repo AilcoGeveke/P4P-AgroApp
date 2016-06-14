@@ -13,9 +13,10 @@ namespace AgroApp.Models
         public string Mankeuze { set; get; }
         public Machine[] Machines { set; get; }
         public Hulpstuk[] Hulpstukken { set; get; }
-        public DateTime VanTijd { set; get; }
-        public DateTime TotTijd { set; get; }
-        public DateTime TotaalTijd { set; get; }
+        public int VanTijd { set; get; }
+        public int TotTijd { set; get; }
+        public int TotaalTijd { set; get; }
+        public int PauzeTijd { set; get; }
         public Gewicht[] Gewichten { set; get; }
         public Rijplaat IngaandeRijplaten { set; get; }
         public Rijplaat UitgaandeRijplaten { set; get; }
@@ -28,7 +29,7 @@ namespace AgroApp.Models
             
         }
 
-        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, DateTime totaalTijd, Machine[] machines = null, Hulpstuk[] hulpstukken = null, DateTime vanTijd = new DateTime(), DateTime totTijd = new DateTime(), Gewicht[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
+        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, int totaalTijd, Machine[] machines = null, Hulpstuk[] hulpstukken = null, int vanTijd = 0, int totTijd = 0, int pauzeTijd = 0, Gewicht[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
         {
             Gebruiker = selectedGebruiker;
             Datum = datum;
@@ -39,6 +40,7 @@ namespace AgroApp.Models
             VanTijd = vanTijd;
             TotTijd = totTijd;
             TotaalTijd = totaalTijd;
+            PauzeTijd = pauzeTijd;
             Gewichten = gewichten;
             IngaandeRijplaten = ingaandeRijplaten;
             UitgaandeRijplaten = uitgaandeRijplaten;

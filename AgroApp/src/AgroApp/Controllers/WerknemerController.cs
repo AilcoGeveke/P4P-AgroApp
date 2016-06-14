@@ -152,7 +152,7 @@ namespace AgroApp.Controllers
         [HttpGet("getWerkbonnen")]
         public async Task<IEnumerable<Werkbon>> GetWerkbonnen()
         {
-            string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.datum, Werktijd.verbruikteMaterialen, "
+            string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.pauzeTotaal, Werktijd.datum, Werktijd.verbruikteMaterialen, "
                     + "Werktijd.Opmerking, Mankeuze.naam AS MankeuzeNaam, Werknemer.idWerknemer, "
                     + "Werknemer.naam AS WerknemerNaam, Opdracht.locatie, Klant.naam AS KlantNaam "
                     + "FROM Werktijd "
@@ -177,9 +177,10 @@ namespace AgroApp.Controllers
                         Datum = reader["datum"] as DateTime? ?? new DateTime(),
                         Klant = new Customer() {Name = reader["KlantNaam"] as string ?? "" },
                         Mankeuze = reader["MankeuzeNaam"] as string ?? "",
-                        VanTijd = reader["van"] as DateTime? ?? new DateTime(),
-                        TotTijd = reader["tot"] as DateTime? ?? new DateTime(),
-                        TotaalTijd = reader["urenTotaal"] as DateTime? ?? new DateTime(),
+                        VanTijd = reader["van"] as int? ?? 0,
+                        TotTijd = reader["tot"] as int? ?? 0,
+                        TotaalTijd = reader["urenTotaal"] as int ? ?? 0,
+                        PauzeTijd = reader["pauzeTotaal"] as int? ?? 0,
                         VerbruikteMaterialen = reader["verbruikteMaterialen"] as string ?? "",
                         Opmerking = reader["Opmerking"] as string ?? ""
                     });
@@ -205,9 +206,9 @@ namespace AgroApp.Controllers
                     statistiek.Add(new Werkbon()
                     {
                         Datum = reader["datum"] as DateTime? ?? new DateTime(),
-                        VanTijd = reader["van"] as DateTime? ?? new DateTime(),
-                        TotTijd = reader["tot"] as DateTime? ?? new DateTime(),
-                        TotaalTijd = reader["urenTotaal"] as DateTime? ?? new DateTime(),
+                        VanTijd = reader["van"] as int? ?? 0,
+                        TotTijd = reader["tot"] as int? ?? 0,
+                        TotaalTijd = reader["urenTotaal"] as int? ?? 0,
                     });
             return statistiek;
         }

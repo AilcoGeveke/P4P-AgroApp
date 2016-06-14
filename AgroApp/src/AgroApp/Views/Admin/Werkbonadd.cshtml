@@ -32,7 +32,7 @@
 
                 <md-list flex-gt-xs="50">
                     <md-input-container class="md-block inputnomargin">
-                        <label>Opdrachtgever </label>
+                        <label>Opdrachtgever</label>
                         <input ng-model="klant.Name" ng-init="klant.Name = '@ViewData["klantNaam"]'" type="text">
                     </md-input-container>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
@@ -100,6 +100,7 @@
                 </md-chip-template>
             </md-chips>
 
+            @*Werktijden*@
             <md-subheader class="md-no-sticky">Uren</md-subheader>
             <div layout="row">
                 <md-input-container class="full-width md-block inputnomargin">
@@ -115,6 +116,11 @@
                 <md-input-container class="full-width md-block inputnomargin">
                     <label>Aantal uren</label>
                     <input input type="time" name="totaal" ng-model="werktijd.urenTotaal" ng-change="onUrenChange(true)">
+                </md-input-container>
+
+                <md-input-container class="full-width md-block inputnomargin">
+                    <label>Pauze tijd</label>
+                    <input input type="time" name="totaal" ng-model="werktijd.pauzeTotaal">
                 </md-input-container>
             </div>
             @*Gewicht*@
