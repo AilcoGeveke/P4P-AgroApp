@@ -747,8 +747,11 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
     $rootScope.showLoading = 0;
+    $scope.werktijd = [];
     $scope.werktijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
     $scope.werktijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
+    $scope.werktijd.urenTotaal = new Date(1970, 1, 1, 0, 0, 0, 0);
+    $scope.werktijd.pauzeTotaal = new Date(1970, 1, 1, 0, 0, 0, 0);
 
     $scope.getManKeuzeData = function () {
         $rootScope.showLoading++;
@@ -878,7 +881,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             VanTijd: $scope.werktijd.van,
             TotTijd: $scope.werktijd.tot,
             TotaalTijd: $scope.werktijd.urenTotaal,
-            TotaalTijd: $scope.werktijd.pauzeTotaal,
+            PauzeTijd: $scope.werktijd.pauzeTotaal,
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
             Gewichten: $scope.selectedGewichten,
             opmerking: $scope.werktijd.opmerking,
