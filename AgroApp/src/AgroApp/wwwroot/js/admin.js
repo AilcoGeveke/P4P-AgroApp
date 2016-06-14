@@ -754,23 +754,15 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
     $scope.opdracht = [];
     $scope.opdracht.datum = new Date();
 
-    $scope.getManKeuzeData = function () {
-        $rootScope.showLoading++;
-
-        $http.get('/api/werkbon/getmankeuze').success(function (data) {
-            $rootScope.showLoading--;
-            $scope.man = data;
-        }).error(function (data) {
-            $rootScope.showLoading--;
-        });
-    };
-
     $scope.checkRole = function () {
         if (User.IsInRole("Administrator"))
             changeView("admin/main");
         else
             changeView("werknemer/menu");
     }
+
+    $scope.manKeuze = ['Man', 'Hovenier', 'Stratenmaker', 'Machinist', 'Onderhoud/Reparatie', 'Klaarzetten/omkoppelen/opbergen', 'Schoonmaken', 'Opruimen', 'Diverse werkzaamheden', 'Brandstof rondbrengen',
+        'Compostering', 'Recycling', 'Terreinbeheer', 'Weegbonnen administratie', 'Groenonderhoud', 'Reistijd', 'Calculatie', 'Klantcontact/werving/service', 'Uitvoering', 'Werkvoorbereiding', 'Kantoor algemeen', 'Administratie', 'Financiële administratie'];
 
     $scope.selectedMachines = [];
     $scope.selectedUsers = [];

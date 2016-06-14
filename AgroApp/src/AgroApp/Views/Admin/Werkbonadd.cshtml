@@ -80,7 +80,7 @@
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
                         <label>Man</label>
                         <md-select ng-model="manKeuze">
-                            <md-option ng-repeat="n in man">
+                            <md-option ng-repeat="n in manKeuze">
                                 {{n}}
                             </md-option>
                         </md-select>
@@ -246,18 +246,17 @@
 
             <md-subheader class="md-no-sticky">Losse machines</md-subheader>
             @*@*<div ng-init="getMachines()">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
+                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedRijplaten track by $index">
                         <label>Losse machine</label>
-                        <md-select ng-model="selectedMachines[$index]">
+                        <md-select ng-model="selectedRijplaten[$index]">
                             <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
                                 {{n.Nummer}}: {{n.Naam}}
                             </md-option>
                         </md-select>
                     </md-input-container>
-
                     <div layout="row">
-                        <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedHulpstukList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
-                        <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedHulpstukList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+                        <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedRijplatenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+                        <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedRijplatenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
                     </div>
                 </div>*@
 
