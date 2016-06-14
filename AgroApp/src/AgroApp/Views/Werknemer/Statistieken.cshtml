@@ -21,7 +21,7 @@
                 <md-list-item class="md-3-line" ng-repeat="n in statistieken" ng-click="hoi())">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ n.Datum }}</h3>
+                        <h3>{{ n.Datum | date:'dd-MM-yyyy' }}</h3>
                     </div>
                     <span flex></span>
                     <p>{{ n.TotaalTijd }}</p>

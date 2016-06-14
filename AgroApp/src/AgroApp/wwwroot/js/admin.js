@@ -64,7 +64,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
     $scope.showConfirmArchiveDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Gebruiker Verwijderen')
               .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
@@ -74,13 +74,13 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $mdDialog.show(confirm).then(function () {
             ArchiveUser();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.showConfirmChangePasswordDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Als u doorgaat zal het wachtwoord van deze gebruiker gereset worden!')
               .textContent('Het nieuwe wachtwoord zal op het scherm getoond worden. Geef deze aan de medewerker door!')
@@ -88,15 +88,15 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
               .ok('Reset')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -106,13 +106,13 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $mdDialog.show(confirm).then(function () {
             EditUser();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.ArchiefGebruikers = [];
     $scope.getArchiefUserData = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         $http({
             method: 'GET',
             url: '/api/account/getarchiefusers',
@@ -120,7 +120,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             $scope.ArchiefGebruikers = data;
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         })
     }
 
@@ -132,7 +132,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Gebruiker dearchiveren')
               .textContent('Als u doorgaat zal deze gebruiker gedearchiveerd worden!')
@@ -142,12 +142,12 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         $mdDialog.show(confirm).then(function () {
             ReAddUser();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     var EditUser = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -159,19 +159,19 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             if (data == true)
                 $rootScope.changeView('admin/gebruikers');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ArchiveUser = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -183,12 +183,12 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             if (data == true)
                 $rootScope.changeView('admin/gebruikerbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -205,12 +205,12 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
             if (data == true)
                 $rootScope.changeView('admin/gebruikerbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -224,7 +224,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -234,13 +234,13 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $mdDialog.show(confirm).then(function () {
             EditMachine();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.showConfirmDeleteDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Machine Verwijderen')
               .textContent('Als u doorgaat zal de machine definitief verwijderd worden!')
@@ -250,13 +250,13 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $mdDialog.show(confirm).then(function () {
             DeleteMachine();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.ArchiefMachines = [];
     $scope.getArchiefMachines = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         $http({
             method: 'GET',
             url: '/api/werkbon/getarchiefmachine',
@@ -264,7 +264,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
             $scope.ArchiefMachines = data;
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         })
     }
 
@@ -276,7 +276,7 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Machine dearchiveren')
               .textContent('Als u doorgaat zal deze machine gedearchiveerd worden!')
@@ -286,12 +286,12 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
         $mdDialog.show(confirm).then(function () {
             ReAddMachine();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.AddMachine = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -303,19 +303,19 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Het machinenummer is al geregistreerd";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var EditMachine = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -327,19 +327,19 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var DeleteMachine = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -351,19 +351,19 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen machine geselecteerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ReAddMachine = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -375,12 +375,12 @@ agroApp.controller('VehicleEdit', function ($scope, $http, $rootScope, $mdDialog
             if (data == true)
                 $rootScope.changeView('admin/machinebeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen machine geselecteerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -392,7 +392,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -402,13 +402,13 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         $mdDialog.show(confirm).then(function () {
             EditKlant();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.showConfirmDeleteDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Klant Archiveren')
               .textContent('Als u doorgaat zal deze klant gearchiveerd worden!')
@@ -418,7 +418,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         $mdDialog.show(confirm).then(function () {
             DeleteKlant();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
@@ -431,7 +431,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Klant Dearchiveren')
               .textContent('Als u doorgaat zal deze klant gedearchiveerd worden')
@@ -441,12 +441,12 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
         $mdDialog.show(confirm).then(function () {
             ReAddKlant();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.AddKlant = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -458,19 +458,19 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Deze klant is al geregistreerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ReAddKlant = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -482,12 +482,12 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen klant geselecteerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -496,23 +496,21 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
     $scope.selectedKlanten = [];
     $scope.klanten = [];
     $scope.getKlanten = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getklanten',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
+        $http.get('/api/werkbon/getklanten')
+        .success(function (data) {
             $scope.klanten = data;
+            $rootScope.showLoading--;
+        }).error(function (data) {
+            $rootScope.showLoading--;
         });
     };
 
 
     $scope.ArchiefKlanten = [];
     $scope.getArchiefKlanten = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -527,7 +525,7 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
 
 
     var EditKlant = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -539,19 +537,19 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var DeleteKlant = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -563,12 +561,12 @@ agroApp.controller('KlantEdit', function ($scope, $http, $rootScope, $mdDialog) 
             if (data == true)
                 $rootScope.changeView('admin/klantbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen klant geselecteerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -579,7 +577,7 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
 
     $scope.showConfirmChangesDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Wijzigingen Toepassen?')
               .textContent('Als u doorgaat zullen de wijzigingen opgeslagen worden!')
@@ -589,13 +587,13 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
         $mdDialog.show(confirm).then(function () {
             EditHulpstuk();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.showConfirmDeleteDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Klant Archiveren')
               .textContent('Als u doorgaat zal deze hulpstuk gearchiveerd worden!')
@@ -605,7 +603,7 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
         $mdDialog.show(confirm).then(function () {
             DeleteHulpstuk();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
@@ -617,7 +615,7 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
 
     $scope.showConfirmReAddDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Hulpstuk Dearchiveren')
               .textContent('Als u doorgaat zal dit hulpstuk gedearchiveerd worden')
@@ -627,12 +625,12 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
         $mdDialog.show(confirm).then(function () {
             ReAddHulpstuk();
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
     $scope.AddHulpstuk = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -644,19 +642,19 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
             if (data == true)
                 $rootScope.changeView('admin/hulpstukbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Deze hulpstuk is al geregistreerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var ReAddHulpstuk = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -668,12 +666,12 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
             if (data == true)
                 $rootScope.changeView('admin/hulpstukbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen hulpstuk geselecteerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -681,7 +679,7 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
 
     $scope.ArchiefHulpstukken = [];
     $scope.getArchiefHulpstukken = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -698,7 +696,7 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
     };
 
     var EditHulpstuk = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -710,19 +708,19 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
             if (data == true)
                 $rootScope.changeView('admin/hulpstukbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
     };
 
     var DeleteHulpstuk = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -734,12 +732,12 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
             if (data == true)
                 $rootScope.changeView('admin/hulpstukbeheer');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is geen hulpstuk geselecteerd!";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -748,19 +746,18 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
 
 agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     'use strict';
-    $rootScope.showloading = 0;
+    $rootScope.showLoading = 0;
+    $scope.werktijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
+    $scope.werktijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
 
     $scope.getManKeuzeData = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getmankeuze',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
+        $http.get('/api/werkbon/getmankeuze').success(function (data) {
+            $rootScope.showLoading--;
             $scope.man = data;
+        }).error(function (data) {
+            $rootScope.showLoading--;
         });
     };
 
@@ -777,7 +774,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.selectedGewichten = [];
     $scope.gewichten = ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];
     $scope.getMachines = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -855,20 +852,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.selectedKlant = "";
     $scope.klanten = [];
     $scope.getKlanten = function ($mdToast) {
-        $rootScope.showloading++;
-
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/getklanten',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
-            self.klanten = data;
-            $rootScope.showloading--;
+        $rootScope.showLoading++;
+        $http.get('/api/werkbon/getklanten').success(function (data) {
+            $scopeklanten = data;
+            $rootScope.showLoading--;
         }).error(function (data) {
             $mdToast.showSimple('Kon klanten niet inladen! Ververs de pagina');
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
@@ -877,7 +867,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     }
 
     $scope.submitWerkbon = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var sendData = JSON.stringify({
             Gebruiker: $scope.selectedGebruiker,
             Datum: $scope.opdracht.datum,
@@ -898,16 +888,16 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
         $http.post('/api/werkbon/toevoegen', sendData)
         .success(function (data, status, headers, config) {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
             $rootScope.changeView('admin/planning');
         })
     }
 
     $scope.submitOpdracht = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var sendData = JSON.stringify({
-            klant: self.selectedKlant,
-            gebruikers: self.selectedGebruiker,
+            klant: $scopeselectedKlant,
+            gebruikers: $scopeselectedGebruiker,
             locatie: $scope.opdracht.adres,
             beschrijving: $scope.opdracht.omschrijving,
             datum: $scope.opdracht.datum
@@ -917,7 +907,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
         $http.post('/api/opdracht/toevoegen', sendData)
         .success(function (data, status, headers, config, $timeout) {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
             $rootScope.showMessage = true;
             $rootScope.message = "Opdracht succesvol toegevoegd!";
             $timeout(function () {
@@ -989,16 +979,16 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.showConfirmChangePasswordDialog = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
               .title('Als u doorgaat zal het wachtwoord worden veranderd.')
               .targetEvent(ev)
               .ok('Wijzig')
               .cancel('Annuleer');
         $mdDialog.show(confirm).then(function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         }, function () {
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         });
     };
 
@@ -1007,7 +997,7 @@ agroApp.controller('WerknemerEdit', function ($scope, $http, $rootScope, $mdDial
 agroApp.controller('WerkbonView', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.werkbonnen = [];
     $scope.getWerkbonnen = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -1025,29 +1015,29 @@ agroApp.controller('WerkbonView', function ($scope, $http, $rootScope, $mdDialog
 agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.WerknemerOpdrachten = [];
     $scope.getGebruikerOpdrachten = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         $http.get(
             '/werknemer/getgebruikeropdrachten'
         ).success(function (data) {
             console.log(data);
             $scope.WerknemerOpdrachten = data;
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         })
     }
     $scope.werknemeropdrachten = [];
     $scope.getOpdrachtWerknemer = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         $http.get(
             '/werknemer/getopdrachtwerknemer/'
         ).success(function (data) {
             console.log(data);
             $scope.opdrachten = data;
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         })
     }
 
     var EditAssignment = function () {
-        $rootScope.showLoading = true;
+        $rootScope.showLoading++;
 
         $http({
             method: 'GET',
@@ -1059,12 +1049,12 @@ agroApp.controller('OpdrachtView', function ($scope, $http, $rootScope, $mdDialo
             if (data == true)
                 $rootScope.changeView('werknemer/');
             else {
-                $rootScope.showLoading = false;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven waardes zijn ongeldig";
             }
         }).error(function () {
-            $rootScope.showLoading = false;
+            $rootScope.showLoading--;
             $scope.showError = true;
             $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
         });
@@ -1080,7 +1070,7 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
 
         $scope.showConfirmDeleteAll = function (ev) {
             // Appending dialog to document.body to cover sidenav in docs app
-            $rootScope.showloading++;
+            $rootScope.showLoading++;
             var confirm = $mdDialog.confirm()
                   .title('Weet u zeker dat u alle opdrachten en werkbonnen wilt verwijderen?')
                   .textContent('LET OP: Het is niet mogelijk om de verijderde data hierna nog terug te halen!!')
@@ -1090,13 +1080,13 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
             $mdDialog.show(confirm).then(function () {
                 $scope.showConfirmPermanentDelete();
             }, function () {
-                $rootScope.showloading--;
+                $rootScope.showLoading--;
             });
         };
 
         $scope.showConfirmPermanentDelete = function (ev) {
             // Appending dialog to document.body to cover sidenav in docs app
-            $rootScope.showloading++;
+            $rootScope.showLoading++;
             var confirm = $mdDialog.confirm()
                   .title('Verwijdering bevestigen')
                   .textContent('Alle opdrachten en werkbonnen zullen worden verwijderd!!')
@@ -1106,7 +1096,7 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
             $mdDialog.show(confirm).then(function () {
                 DeleteAllData();
             }, function () {
-                $rootScope.showloading--;
+                $rootScope.showLoading--;
             });
         }
 
@@ -1148,7 +1138,7 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
         };
 
         var DeleteAllData = function () {
-            $rootScope.showloading++;
+            $rootScope.showLoading++;
             $http({
                 method: 'GET',
                 url: '/api/werkbon/deleteall',
@@ -1159,12 +1149,12 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
                 if (data == true)
                     $rootScope.changeView('admin/planning');
                 else {
-                    $rootScope.showloading--;
+                    $rootScope.showLoading--;
                     $scope.showError = true;
                     $scope.errorMessage = "Er is niets om te verwijderen!";
                 }
             }).error(function () {
-                $rootScope.showloading--;
+                $rootScope.showLoading--;
                 $scope.showError = true;
                 $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
             });
@@ -1192,14 +1182,14 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
 agroApp.controller('StatistiekenView', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.statistieken = [];
     $scope.getStatistieken = function () {
-        $rootScope.showloading++;
+        $rootScope.showLoading++;
         $http.get(
             '/werknemer/getstatistieken/'
             //+ $scope.statistieken.vanaf + '/' + $scope.statistieken.tot
         ).success(function (data) {
             console.log(data);
             $scope.statistieken = data;
-            $rootScope.showloading--;
+            $rootScope.showLoading--;
         })
     }
 });

@@ -1,5 +1,5 @@
 ﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
-    <form ng-controller="WerkbonEdit as ctrl" ng-submit="submitOpdracht()" name="opdrachtForm" class="form-content">
+    <form ng-controller="WerkbonEdit" ng-submit="submitOpdracht()" name="opdrachtForm" class="form-content">
         <div class="md-padding">
 
             <md-subheader class="md-no-sticky">Algemeen</md-subheader>
@@ -7,8 +7,8 @@
                 <md-autocomplete flex required
                                  md-search-text="klantZoekText"
                                  md-input-class="inputnomargin"
-                                 md-selected-item="ctrl.selectedKlant"
-                                 md-items="item in ctrl.querySearch(klantZoekText, ctrl.klanten)"
+                                 md-selected-item="selectedKlant"
+                                 md-items="item in querySearch(klantZoekText, ctrl.klanten)"
                                  md-item-text="item.Name"
                                  md-autoselect="true"
                                  md-floating-label="Opdrachtgever"

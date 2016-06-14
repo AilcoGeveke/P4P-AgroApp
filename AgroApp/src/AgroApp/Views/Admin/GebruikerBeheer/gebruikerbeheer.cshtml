@@ -11,7 +11,7 @@
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
-        <div ng-controller="WerkbonEdit as edit" ng-init="getAllUserData()">
+        <div ng-controller="WerkbonEdit" ng-init="getAllUserData()">
             <div class="content">
                 <md-input-container class="md-block inputnomargin">
                     <label>Zoek Gebruiker</label>
@@ -21,7 +21,7 @@
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="gebruiker in edit.gebruikers | filter:searchterm" ng-click="changeView('admin/gebruikerbeheer/wijzigen/' + gebruiker.IdWerknemer)">
+                <md-list-item class="md-3-line" ng-repeat="gebruiker in gebruikers | filter:searchterm" ng-click="changeView('admin/gebruikerbeheer/wijzigen/' + gebruiker.IdWerknemer)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">face</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ gebruiker.Name }}</h3>
