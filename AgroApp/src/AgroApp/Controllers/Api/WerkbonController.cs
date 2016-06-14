@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -407,12 +408,8 @@ namespace AgroApp.Controllers.Api
                              + "SET Werktijd.van = @0, Werktijd.tot = @1, "
                              + "Werktijd.urenTotaal = @2, Werktijd.pauzeTotaal = @3, Werktijd.datum = @4, "
                              + "Werktijd.verbruikteMaterialen = @5, Werktijd.Opmerking = @6, "
-                             + "Werktijd.idMankeuze = ( SELECT Mankeuze.idManKeuze "
-                             + "FROM ManKeuze WHERE Mankeuze.naam = @7), "
-                             + "Werktijd.idOpdrachtWerknemer = ("
-                             + "SELECT OpdrachtWerknemer.idOpdrachtWerknemer "
-                             + "FROM OpdrachtWerknemer "
-                             + "WHERE idOpdrachtWerknemer = @8);"
+                             + "Werktijd.manKeuze = @7, " 
+                             + "Werktijd.idOpdrachtWerknemer = @8;"
                              + "SELECT LAST_INSERT_ID();";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                     new MySqlParameter("@0", werkbon.VanTijd),
@@ -432,21 +429,21 @@ namespace AgroApp.Controllers.Api
                 query = "INSERT INTO WerktijdMachines "
                         + "SET WerktijdMachines.idWerktijd = @last_id_Werktijd, "
                         + "WerktijdMachines.idMachines = @0; ";
-                foreach (Machine machine in werkbon.Machines)
+                foreach (Machine machine in werkbon.Machines ?? Enumerable.Empty<Machine>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", machine.IdMachine));
 
                 query = "INSERT INTO WerktijdHulpstuk "
                     + "SET WerktijdHulpstuk.idWerktijd = @last_id_Werktijd, "
                     + "WerktijdHulpstuk.idHulpstuk = @0";
-                foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken)
+                foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken ?? Enumerable.Empty<Hulpstuk>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", hulpstuk.IdHulpstuk));
 
                 query = "INSERT INTO Gewicht "
                     + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "
                     + "Gewicht.richting = @3, Gewicht.idWerktijd = @last_id_Werktijd";
-                foreach (Gewicht gewicht in werkbon.Gewichten)
+                foreach (Gewicht gewicht in werkbon.Gewichten ?? Enumerable.Empty<Gewicht>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", gewicht.Type),
                         new MySqlParameter("@1", gewicht.VolGewicht),

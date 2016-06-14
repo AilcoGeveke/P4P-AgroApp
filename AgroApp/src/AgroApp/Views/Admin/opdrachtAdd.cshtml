@@ -8,11 +8,12 @@
                                  md-search-text="klantZoekText"
                                  md-input-class="inputnomargin"
                                  md-selected-item="selectedKlant"
-                                 md-items="item in querySearch(klantZoekText, ctrl.klanten)"
+                                 md-items="item in querySearch(klantZoekText, klanten)"
                                  md-item-text="item.Name"
                                  md-autoselect="true"
                                  md-floating-label="Opdrachtgever"
-                                 md-menu-class="chiplist">
+                                 md-menu-class="chiplist"
+                                 md-min-length="0">
                     <md-item-template>
                         <span class="item-title">
                             <md-icon>person</md-icon>
@@ -70,7 +71,7 @@
                 </md-chip-template>
             </md-chips>
         </div>
-        
+
         <div layout="row" layout-align="end center" class="content-actions">
             <md-button class="md-raised md-primary" type="submit">Opslaan</md-button>
         </div>

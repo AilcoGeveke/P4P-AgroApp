@@ -1,5 +1,5 @@
 ﻿<md-content layout-align-gt-xs="start center" layout-fill layout="column" ng-controller="Navigation" class="transparent content-padding" ng-cloak>
-    <md-toolbar class="form-content">
+    <md-toolbar class="layout-content">
         <div class="md-toolbar-tools">
             <h2>
                 <span>Werkbon toevoegen</span>
@@ -8,7 +8,7 @@
             <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
         </div>
     </md-toolbar>
-    <div class="md-whiteframe-5dp layout-content form-content">
+    <div class="md-whiteframe-5dp layout-content">
         <form class="content" ng-controller="WerkbonEdit as edit" ng-submit="submitWerkbon()">
             <md-subheader class="md-no-sticky">Algemene informatie</md-subheader>
             <p hidden ng-model="werknemerOpdracht.id" ng-init="werknemerOpdracht.id = '@ViewData["id"]'"></p>
@@ -18,23 +18,65 @@
                         <label>Werklocatie</label>
                         <input input type="text" ng-model="opdracht.locatie" ng-init="opdracht.locatie = '@ViewData["locatie"]'">
                     </md-input-container>
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getAllUserData()">
-                        <label>Werknemer</label>
-                        <md-select ng-model="selectedGebruiker" ng-init="n.Name = '@ViewData["gebruiker"]'">
-                            <md-option ng-value="n" ng-repeat="n in edit.gebruikers">
-                                {{n.Name}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
+                    <md-autocomplete flex required ng-init="getAllUserData()"
+                                     md-input-class="inputnomargin"
+                                     md-input-name="selectedGebruiker"
+                                     md-selected-item="selectedGebruiker"
+                                     md-search-text="gebruikerZoekTekst"
+                                     md-items="item in querySearch(gebruikerZoekTekst, gebruikers)"
+                                     md-item-text="item.Name"
+                                     md-floating-label="Werknemer"
+                                     md-min-length="0"
+                                     md-require-match="true"
+                                     md-autoselect="true"
+                                     md-menu-class="chiplist">
+                        <md-item-template>
+                            <span class="item-title">
+                                <md-icon>person</md-icon>
+                                <span> {{item.Name}} </span>
+                            </span>
+                            <span class="item-metadata">
+                                <span class="item-metastat">
+                                    <small>{{item.Email}}</small>
+                                </span>
+                            </span>
+                        </md-item-template>
+                    </md-autocomplete>
                     <md-datepicker ng-model="opdracht.datum" md-placeholder="Datum" class="md-block">
                     </md-datepicker>
                 </md-list>
 
                 <md-list flex-gt-xs="50">
-                    <md-input-container class="md-block inputnomargin">
-                        <label>Opdrachtgever</label>
-                        <input ng-model="klant.Name" ng-init="klant.Name = '@ViewData["klantNaam"]'" type="text">
-                    </md-input-container>
+                    @*<md-input-container class="md-block inputnomargin">
+                            <label>Opdrachtgever</label>
+                            <input ng-model="klant.Name" ng-init="klant.Name = '@ViewData["klantNaam"]'" type="text">
+                        </md-input-container>*@
+                    <md-autocomplete flex required ng-init="getKlanten()"
+                                     md-search-text="klantZoekText"
+                                     md-input-class="inputnomargin"
+                                     md-selected-item="selectedKlant"
+                                     md-items="item in querySearch(klantZoekText, klanten)"
+                                     md-item-text="item.Name"
+                                     md-autoselect="true"
+                                     md-floating-label="Opdrachtgever"
+                                     md-menu-class="chiplist"
+                                     md-min-length="1">
+                        <md-item-template>
+                            <span class="item-title">
+                                <md-icon>person</md-icon>
+                                <span> {{item.Name}} </span>
+                            </span>
+                            <span class="item-metadata">
+                                <span class="item-metastat">
+                                    <small>{{item.Adress}}</small>
+                                </span>
+                            </span>
+                        </md-item-template>
+                        <md-not-found>
+                            Klant "{{klantZoekText}}" kon niet gevonden worden.
+                            <a ng-click="gg()">Voeg deze klant toe?</a>
+                        </md-not-found>
+                    </md-autocomplete>
                     <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
                         <label>Man</label>
                         <md-select ng-model="manKeuze">
@@ -45,6 +87,7 @@
                     </md-input-container>
                 </md-list>
             </div>
+
             <md-subheader class="md-no-sticky">
                 Machines en hulpstukken
             </md-subheader>
@@ -56,7 +99,7 @@
                                  md-search-text="gebruikerZoekText"
                                  placeholder="+Machine"
                                  md-menu-class="chiplist">
-                    <span md-highlight-text="we.userSearchText">{{item.Name}}</span>
+                    <span md-highlight-text="gebruikerZoekText">{{item.Name}}</span>
                     <md-item-template>
                         <span class="item-title">
                             <md-icon>person</md-icon>
@@ -231,7 +274,7 @@
 
         </form>
     </div>
-    <md-progress-linear ng-show="showLoading !== 0" md-mode="indeterminate" class="form-content"></md-progress-linear>
+    <md-progress-linear ng-show="showLoading !== 0" md-mode="indeterminate" class="layout-content"></md-progress-linear>
 
 </md-content>
 <div class="body-halfbackground"></div>

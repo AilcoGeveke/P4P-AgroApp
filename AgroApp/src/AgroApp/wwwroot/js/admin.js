@@ -744,14 +744,15 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
     };
 });
 
-agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
-    'use strict';
+agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast, $mdDialog) {
     $rootScope.showLoading = 0;
     $scope.werktijd = [];
     $scope.werktijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
     $scope.werktijd.tot = new Date(1970, 1, 1, 0, 0, 0, 0);
     $scope.werktijd.urenTotaal = new Date(1970, 1, 1, 0, 0, 0, 0);
     $scope.werktijd.pauzeTotaal = new Date(1970, 1, 1, 0, 0, 0, 0);
+    $scope.opdracht = [];
+    $scope.opdracht.datum = new Date();
 
     $scope.getManKeuzeData = function () {
         $rootScope.showLoading++;
@@ -821,12 +822,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.getHulpstukken = function () {
         $rootScope.showLoading++;
 
-        $http({
-            method: 'GET',
-            url: '/api/werkbon/gethulpstukken',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
+        $http.get('/api/werkbon/gethulpstukken').success(function (data) {
             // With the data succesfully returned, call our callback
             $scope.hulpstukken = data;
             $rootScope.showLoading--;
@@ -839,12 +835,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
     $scope.gebruikers = [];
     $scope.getAllUserData = function () {
         $rootScope.showLoading++;
-        $http({
-            method: 'GET',
-            url: '/api/account/getfulllist',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
-        }).success(function (data) {
+        $http.get('/api/account/getfulllist').success(function (data) {
             $scope.gebruikers = data;
             $rootScope.showLoading--;
         }).error(function (data) {
@@ -854,13 +845,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
 
     $scope.selectedKlant = "";
     $scope.klanten = [];
-    $scope.getKlanten = function ($mdToast) {
+    $scope.getKlanten = function () {
         $rootScope.showLoading++;
         $http.get('/api/werkbon/getklanten').success(function (data) {
-            $scopeklanten = data;
+            $scope.klanten = data;
             $rootScope.showLoading--;
         }).error(function (data) {
-            $mdToast.showSimple('Kon klanten niet inladen! Ververs de pagina');
+            $mdToast.show($mdToast.simple().textContent('Kon klanten niet inladen!').action('Ververs pagina'));
             $rootScope.showLoading--;
         });
     };
@@ -878,10 +869,10 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
             ManKeuze: $scope.manKeuze,
             Machines: $scope.selectedMachines,
             Hulpstukken: $scope.selectedHulpstukken,
-            VanTijd: $scope.werktijd.van,
-            TotTijd: $scope.werktijd.tot,
-            TotaalTijd: $scope.werktijd.urenTotaal,
-            PauzeTijd: $scope.werktijd.pauzeTotaal,
+            VanTijd: $scope.werktijd.van.getTime(),
+            TotTijd: $scope.werktijd.tot.getTime(),
+            TotaalTijd: $scope.werktijd.urenTotaal.getTime(),
+            PauzeTijd: $scope.werktijd.pauzeTotaal.getTime(),
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
             Gewichten: $scope.selectedGewichten,
             opmerking: $scope.werktijd.opmerking,
@@ -894,7 +885,19 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http) {
         .success(function (data, status, headers, config) {
             $rootScope.showLoading--;
             $rootScope.changeView('admin/planning');
-        })
+        }).error(function (data, ev) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('Er is iets misgegaan!')
+                .textContent(data)
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Begrepen')
+                .targetEvent(ev)
+            );
+            $rootScope.showLoading--;
+        });
     }
 
     $scope.submitOpdracht = function () {

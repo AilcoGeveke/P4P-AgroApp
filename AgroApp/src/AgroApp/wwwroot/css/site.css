@@ -158,8 +158,8 @@ md-datepicker {
   border-bottom-width: 0; }
 
 md-autocomplete[md-floating-label] > md-autocomplete-wrap > md-input-container {
-    margin-top: 20px !important;
-    margin-bottom: 21px;
+    margin-top: 21.5px !important;
+    margin-bottom: 20px;
     /*height: 40px;*/
     padding: 0;
 }

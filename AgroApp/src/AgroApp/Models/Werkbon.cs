@@ -13,16 +13,16 @@ namespace AgroApp.Models
         public string Mankeuze { set; get; }
         public Machine[] Machines { set; get; }
         public Hulpstuk[] Hulpstukken { set; get; }
-        public int VanTijd { set; get; }
-        public int TotTijd { set; get; }
-        public int TotaalTijd { set; get; }
-        public int PauzeTijd { set; get; }
+        public long VanTijd { set; get; }
+        public long TotTijd { set; get; }
+        public long TotaalTijd { set; get; }
+        public long PauzeTijd { set; get; }
         public Gewicht[] Gewichten { set; get; }
         public Rijplaat IngaandeRijplaten { set; get; }
         public Rijplaat UitgaandeRijplaten { set; get; }
         public string VerbruikteMaterialen { set; get; }
         public string Opmerking { set; get; }
-        public int IdOpdrachtWerknemer { set; get; }
+        public int? IdOpdrachtWerknemer { set; get; }
 
         public Werkbon()
         {
