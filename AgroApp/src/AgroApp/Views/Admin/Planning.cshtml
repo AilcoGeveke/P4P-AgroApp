@@ -10,8 +10,8 @@
     </md-toolbar>
     <div class="page-container" ng-controller="PlanningView">
         <md-content class="white">
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Werknemers">
+            <md-tabs md-dynamic-height md-border-bottom md-enable-disconnect="true">
+                <md-tab label="Werknemers" md-on-select="updateGebruikersDag(); setTijdenRange()">
 
                     <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="Dag" md-on-select="updateGebruikersDag(); setTijdenRange()">
@@ -58,8 +58,8 @@
                 </md-tab>
                 <md-tab label="Opdrachten" md-on-select="getOpdrachten()">
 
-                    <md-tabs md-dynamic-height md-border-bottom>
-                        <md-tab label="Actueel">
+                    <md-tabs md-dynamic-height md-border-bottom md-enable-disconnect="true">
+                        <md-tab label="Actueel" md-on-select="getOpdrachten()">
                             <div layout="row">
                                 <div flex="50">
                                     <md-subheader class="md-no-sticky">Geen Datum</md-subheader>
@@ -67,7 +67,6 @@
                                         <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                                         <div class="md-list-item-text" layout="column">
                                             <h3>{{ item.klant.Name }}</h3>
-                                            <h4>{{ item.datum | date:'dd/MM/yyyy' }}</h4>s
                                             <p>{{ item.beschrijving }}</p>
                                         </div>
                                         <span flex></span>

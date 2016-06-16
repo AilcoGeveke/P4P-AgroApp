@@ -19,11 +19,11 @@
             </div>
             <md-divider></md-divider>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="klant in ArchiefKlanten | filter:searchterm" ng-click="ConfirmReAdd(klant.IdKlant)">
+                <md-list-item class="md-3-line" ng-repeat="klant in ArchiefKlanten | filter:searchterm" ng-click="ConfirmReAdd(klant.IdCustomer)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">person</md-icon>
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ klant.Naam }}</h3>
-                        <p>{{ klant.Adres }}</p>
+                        <h3>{{ klant.Name }}</h3>
+                        <p>{{ klant.Adress }}</p>
                     </div>
                     <md-icon ng-style="{color: '#3F51B5'}">unarchive</md-icon>
                 </md-list-item>

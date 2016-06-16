@@ -157,7 +157,7 @@ agroApp.controller('UserEdit', function ($scope, $http, $rootScope, $mdDialog) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == true)
-                $rootScope.changeView('admin/gebruikers');
+                $rootScope.changeView('admin/gebruikerbeheer');
             else {
                 $rootScope.showLoading--;
                 $scope.showError = true;
@@ -744,7 +744,7 @@ agroApp.controller('HulpstukEdit', function ($scope, $http, $rootScope, $mdDialo
     };
 });
 
-agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast, $mdDialog) {
+agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast, $mdDialog, $timeout) {
     $rootScope.showLoading = 0;
     $scope.werktijd = [];
     $scope.werktijd.van = new Date(1970, 1, 1, 0, 0, 0, 0);
@@ -874,7 +874,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
         $http.post('/api/werkbon/toevoegen', sendData)
         .success(function (data) {
             $rootScope.showLoading--;
-            $rootScope.changeView('admin/planning');
+            $rootScope.changeView('werknemer/opdrachten');
         }).error(function (data, ev) {
             $mdDialog.show(
                 $mdDialog.alert()
@@ -901,7 +901,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
         });
 
         $http.post('/api/opdracht/toevoegen', sendData)
-        .success(function (data, status, headers, config, $timeout) {
+        .success(function (data, status, headers, config) {
             $rootScope.showLoading--;
             $rootScope.showMessage = true;
             $rootScope.message = "Opdracht succesvol toegevoegd!";
@@ -1101,11 +1101,11 @@ agroApp.controller('PlanningView', ['$scope', '$http', '$rootScope', '$timeout',
             });
         }
 
-        $scope.updateGebruikersDag = function ($timeout) {
+        $scope.updateGebruikersDag = function () {
             $rootScope.showLoading++;
             $http.get('/api/planning/getGebruikersWerktijden/' + $scope.geselecteerdeDagDatum.getTime())
                 .success(function (response) { $scope.gebruikerTijden = response; $rootScope.showLoading--; })
-                .error(function (response, $timeout) {
+                .error(function (response) {    
                     $rootScope.showLoading--;
                     setMessage($rootScope, $timeout, "Er is iets misgegaan bij het ophalen van de gebruikers");
                 });
