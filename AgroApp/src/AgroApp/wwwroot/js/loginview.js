@@ -37,7 +37,7 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data == "true")
-                window.location.href = '/admin/gebruikers';
+                window.location.href = '/admin/gebruikerbeheer';
             else {
                 $scope.showloading = false;
                 $scope.showError = true;
