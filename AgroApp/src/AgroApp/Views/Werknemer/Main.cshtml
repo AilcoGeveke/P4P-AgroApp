@@ -1,5 +1,5 @@
 ﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
-    <div class="md-whiteframe-5dp layout-content">
+    <div class="md-whiteframe-5dp layout-content form-content">
         <md-toolbar ng-controller="LoginView">
             <div class="md-toolbar-tools">
                 <h2>
@@ -33,27 +33,21 @@
             </div>
         </md-toolbar>
         <div>
-            <div layout="row">
-                <md-list flex-gt-xs="50">
-                    <md-list-item ng-click="changeView('werknemer/opdrachten')">
-                        <md-icon class="notopmargin">content_paste</md-icon>
-                        <p>Opdrachten</p>
-                    </md-list-item>
+            <md-list-item ng-click="changeView('werknemer/opdrachten')">
+                <md-icon class="notopmargin">content_paste</md-icon>
+                <p>Alle Opdrachten</p>
+            </md-list-item>
 
-                    <md-list-item ng-click="changeView('werknemer/statistieken')">
-                        <md-icon class="notopmargin">work</md-icon>
-                        <p>Statistieken</p>
-                    </md-list-item>
+            <md-list-item ng-click="changeView('werknemer/werkboninvullen')">
+                <md-icon class="notopmargin">work</md-icon>
+                <p>Spoedopdracht Toevoegen</p>
+            </md-list-item>
 
-                </md-list>
-                <md-list flex-gt-xs="50">
-                    <md-list-item ng-click="changeView('werknemer/werkboninvullen')">
-                        <md-icon class="notopmargin">work</md-icon>
-                        <p>Werkbon invullen</p>
-                    </md-list-item>
-                </md-list>
-            </div>
-            
+            <md-list-item ng-click="changeView('werknemer/statistieken')">
+                <md-icon class="notopmargin">work</md-icon>
+                <p>Statistieken</p>
+            </md-list-item>
+
             <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
         </div>
     </div>

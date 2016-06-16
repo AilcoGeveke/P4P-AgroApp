@@ -19,10 +19,10 @@ agroApp.controller('loginController', function ($scope, $location, $http) {
                 $scope.showError = true;
                 $scope.errorMessage = "De opgegeven combinatie is incorrect";
             }
-        }).error(function () {
+        }).error(function (data) {
             $scope.showloading = false;
             $scope.showError = true;
-            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een administrator" + data;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een administrator";
         });
     };
 

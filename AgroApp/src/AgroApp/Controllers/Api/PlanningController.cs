@@ -34,8 +34,8 @@ namespace AgroApp.Controllers.Api
                     {
                         while (await reader.ReadAsync())
                         {
-                            gt.dateTimesVan.Add(reader["van"] as DateTime? ?? DateTime.Now);
-                            gt.dateTimesTot.Add(reader["tot"] as DateTime? ?? DateTime.Now);
+                            gt.vanTijd = reader["van"] as DateTime? ?? DateTime.Now;
+                            gt.totTijd = reader["tot"] as DateTime? ?? DateTime.Now;
                         }
                     }
                 }
@@ -49,8 +49,8 @@ namespace AgroApp.Controllers.Api
 
     public class GebruikerTijd
     {
-        public List<DateTime> dateTimesVan = new List<DateTime>();
-        public List<DateTime> dateTimesTot = new List<DateTime>();
+        public DateTime vanTijd;
+        public DateTime totTijd;
         public string naam;
         public int idUser;
 

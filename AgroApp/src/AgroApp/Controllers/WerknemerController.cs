@@ -142,10 +142,11 @@ namespace AgroApp.Controllers
         public async Task<IActionResult> WerkbonInvullen(int id)
         {
             OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
+            opdrachtWerknemer.Werknemer = await UserController.GetUser(opdrachtWerknemer.Werknemer.IdWerknemer);
             ViewData["id"] = id;
             ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
-            ViewData["gebruiker"] = opdrachtWerknemer.Werknemer.Name;
-            ViewData["klantNaam"] = opdrachtWerknemer.Opdracht.klant.Name;
+            ViewData["gebruiker"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Werknemer, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
+            ViewData["klant"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Opdracht.klant, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
             return View("../admin/werkbonadd");
         }
 

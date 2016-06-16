@@ -11,8 +11,9 @@
         </md-toolbar>
 
         <div ng-controller="OpdrachtView" ng-init="getGebruikerOpdrachten()">
+            <md-subheader class="md-no-sticky">Vandaag</md-subheader>
             <md-list>
-                <md-list-item class="md-3-line" ng-repeat="WerknemerOpdracht in WerknemerOpdrachten | limitTo: 7" ng-click="changeView('werknemer/assignmentedit/' + WerknemerOpdracht.idOpdrachtWerknemer)">
+                <md-list-item class="md-3-line" ng-repeat="WerknemerOpdracht in WerknemerOpdrachten" ng-click="changeView('werknemer/assignmentedit/' + WerknemerOpdracht.idOpdrachtWerknemer)">
                     <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">content_paste</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ WerknemerOpdracht.Opdracht.locatie }}</h3>
@@ -22,6 +23,20 @@
                     <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
                 </md-list-item>
             </md-list>
+            <div ng-show="!WerknemerOpdrachten.length" style="display:none">Geen opdrachten</div>
+            <md-subheader class="md-no-sticky">Nog beschikbaar (Werkbon niet ingevuld of nog niet gecontroleerd door administrator)</md-subheader>
+            <md-list>
+                <md-list-item class="md-3-line" ng-repeat="WerknemerOpdracht in WerknemerOpdrachten" ng-click="changeView('werknemer/assignmentedit/' + WerknemerOpdracht.idOpdrachtWerknemer)">
+                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">content_paste</md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ WerknemerOpdracht.Opdracht.locatie }}</h3>
+                        <p>{{ WerknemerOpdracht.Opdracht.beschrijving }}</p>
+                    </div>
+                    <span flex></span>
+                    <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
+                </md-list-item>
+            </md-list>
+            <div ng-show="!WerknemerOpdrachten.length" style="display:none">Geen opdrachten</div>
         </div>
         <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
     </div>

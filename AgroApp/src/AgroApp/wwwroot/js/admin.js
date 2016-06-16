@@ -867,14 +867,12 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
             PauzeTijd: $scope.werktijd.pauzeTotaal.getTime(),
             verbruiktematerialen: $scope.werktijd.verbruikteMaterialen,
             Gewichten: $scope.selectedGewichten,
-            opmerking: $scope.werktijd.opmerking,
+            Opmerking: $scope.werktijd.opmerking,
             IdOpdrachtWerknemer: $scope.werknemerOpdracht.id
         })
 
-        var config = { headers: { 'Content-Type': 'application/json' } }
-
         $http.post('/api/werkbon/toevoegen', sendData)
-        .success(function (data, status, headers, config) {
+        .success(function (data) {
             $rootScope.showLoading--;
             $rootScope.changeView('admin/planning');
         }).error(function (data, ev) {
@@ -895,14 +893,12 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
     $scope.submitOpdracht = function () {
         $rootScope.showLoading++;
         var sendData = JSON.stringify({
-            klant: $scopeselectedKlant,
-            gebruikers: $scopeselectedGebruiker,
+            klant: $scope.selectedKlant,
+            gebruikers: $scope.selectedGebruikers,
             locatie: $scope.opdracht.adres,
             beschrijving: $scope.opdracht.omschrijving,
             datum: $scope.opdracht.datum
         });
-
-        var config = { headers: { 'Content-Type': 'application/json' } }
 
         $http.post('/api/opdracht/toevoegen', sendData)
         .success(function (data, status, headers, config, $timeout) {
@@ -913,12 +909,18 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
                 $rootScope.showMessage = false;
             }, 5000);
             //$rootScope.changeView('admin/planning');
-        }).error(function (data, $timeout) {
-            $rootScope.showMessage = true;
-            $rootScope.message = "Er ging iets mis! " + data;
-            $timeout(function () {
-                $rootScope.showMessage = false;
-            }, 5000);
+        }).error(function (data, ev) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('Er is iets misgegaan!')
+                .textContent(data)
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Begrepen')
+                .targetEvent(ev)
+            );
+            $rootScope.showLoading--;
         })
     }
 

@@ -161,7 +161,7 @@ md-autocomplete[md-floating-label] > md-autocomplete-wrap > md-input-container {
     margin-top: 21.5px !important;
     margin-bottom: 20px;
     /*height: 40px;*/
-    padding: 0;
+    padding-top: 0;
 }
 
 md-autocomplete[md-floating-label] {
@@ -190,4 +190,8 @@ input:-webkit-autofill:active {
 ._md-subheader-content .md-button {
     margin-top: -12px;
     margin-bottom: -12px;
+}
+
+button > .layout-row {
+    width: 100%;
 }
