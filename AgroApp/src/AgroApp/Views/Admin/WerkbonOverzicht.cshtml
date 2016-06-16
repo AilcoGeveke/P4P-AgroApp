@@ -6,8 +6,6 @@
                     <span>Werkbonnen</span>
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer/archief')"><md-icon>archive</md-icon></md-button>
-                <md-button class="md-icon-button" ng-click="changeView('admin/machinebeheer/toevoegen')"><md-icon>add_circle</md-icon></md-button>
                 <md-button class="md-icon-button" ng-click="changeView('admin/main')"><md-icon>arrow_back</md-icon></md-button>
             </div>
         </md-toolbar>
@@ -22,14 +20,14 @@
             <md-divider></md-divider>
             <md-list>
                 <md-list-item class="md-3-line" ng-repeat="werkbon in werkbonnen | filter:searchterm")" ng-click="hoi()">
-                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">directions_car</md-icon>
+                    <md-icon class="notopmargin" ng-style="{color: '#3F51B5'}">assignment</md-icon>
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ werkbon.Klant.Name }}</h3>
                         <p>{{ werkbon.Opmerking }}</p>
                     </div>
                     <span flex></span>
                     <p>Mankeuze: {{ werkbon.Mankeuze}}</p>
-                    <md-icon ng-style="{color: '#3F51B5'}">edit</md-icon>
+                    <md-icon ng-style="{color: '#3F51B5'}">info</md-icon>
                 </md-list-item>
             </md-list>
             <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
