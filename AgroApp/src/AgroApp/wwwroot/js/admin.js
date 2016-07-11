@@ -764,9 +764,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
     $scope.manKeuze = ['Man', 'Hovenier', 'Stratenmaker', 'Machinist', 'Onderhoud/Reparatie', 'Klaarzetten/omkoppelen/opbergen', 'Schoonmaken', 'Opruimen', 'Diverse werkzaamheden', 'Brandstof rondbrengen',
         'Compostering', 'Recycling', 'Terreinbeheer', 'Weegbonnen administratie', 'Groenonderhoud', 'Reistijd', 'Calculatie', 'Klantcontact/werving/service', 'Uitvoering', 'Werkvoorbereiding', 'Kantoor algemeen', 'Administratie', 'Financiële administratie'];
 
+    $scope.
+        ankeuze = [];
+    
     $scope.selectedMachines = [];
     $scope.selectedUsers = [];
     $scope.machines = [];
+    $scope.mankeuzes = [];
     $scope.selectedGewichten = [];
     $scope.gewichten = ['Zand', 'Gemengde grond', 'Gezeefde grond', 'Woudgrond', 'Compost', 'Menggranulaat', 'Kleischelpen', 'Schone schelpen', 'Houtchips'];
     $scope.getMachines = function () {
@@ -792,6 +796,13 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
     }
     $scope.decreaseSelectedMachineList = function () {
         $scope.selectedMachines.pop();
+    }
+    $scope.increaseMankeuze = function () {
+        $scope.manKeuze.push($scope.mankeuzes[0]);
+    }
+
+    $scope.decreaseMankeuze = function () {
+        $scope.manKeuze.pop();
     }
 
     $scope.increaseSelectedGewichtenList = function () {
@@ -944,7 +955,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
             $scope.gewicht.leeg = new Number(0);
         }
         else {
-            $scope.gewicht.netto = ($scope.gewicht.vol - $scope.gewicht.leeg);
+            $scope.gewicht.netto = $scope.gewicht.vol - $scope.gewicht.leeg;
         }
     }
 
