@@ -15,6 +15,8 @@ namespace AgroApp.Controllers.Api
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        public static bool IsLoggedIn { get { return false; } }
+
         // GET: api/values
         [HttpGet("login/{username}/{password}")]
         [AllowAnonymous]
@@ -78,6 +80,11 @@ namespace AgroApp.Controllers.Api
                 await reader.ReadAsync();
                 return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)) : null;
             }
+        }
+
+        public static async Task<User> GetUser(HttpContext context)
+        {
+            return IsLoggedIn ? await GetUser(int.Parse(context.Request.Cookies["idUser"])) : null;
         }
 
         public static async Task<User> GetUser(int id)

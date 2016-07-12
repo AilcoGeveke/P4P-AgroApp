@@ -2,17 +2,17 @@
   "name": "ASP.NET",
   "private": true,
   "dependencies": {
-    "angular-animate": "~1.4.8",
-    "angular-chosen-localytics": "~1.0.7",
-    "angular-bootstrap": "~0.14.3",
+    "angular-animate": "*",
+    "angular-chosen-localytics": "*",
+    "angular-bootstrap": "*",
     "angular-farbtastic": "*",
-    "angular-loading-bar": "~0.8.0",
-    "angular-nouislider": "~0.3.1",
-    "angular-resource": "~1.4.8",
-    "angular-ui-router": "ui-router#~0.2.15",
+    "angular-loading-bar": "*",
+    "angular-nouislider": "*",
+    "angular-resource": "*",
+    "angular-ui-router": "*",
     "animate.css": "daneden/animate.css#~3.3.0",
     "autosize": "~3.0.6",
-    "bootstrap-sweetalert": "~0.4.5",
+    "bootstrap-sweetalert": "*",
     "bower": "*",
     "br-validations": "~0.2.4",
     "eonasdan-bootstrap-datetimepicker": "Eonasdan/bootstrap-datetimepicker#~4.7.14",
@@ -35,7 +35,10 @@
     "string-mask": "~0.2.0",
     "summernote": "~0.6.7",
     "sweetalert": "~1.0.1",
-    "Waves": "waves#~0.7.4",
-    "angular": "1.4.7"
+    "Waves": "fians/Waves#0.7.5",
+    "angular": "^1.5.7"
+  },
+  "resolutions": {
+    "angular": "1.5.7"
   }
 }

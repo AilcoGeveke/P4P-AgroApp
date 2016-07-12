@@ -8,14 +8,10 @@
             if (data != "false")
                 window.location.href = data;
             else {
-                $scope.showloading = false;
-                $scope.showError = true;
-                $scope.errorMessage = "De opgegeven combinatie is incorrect";
+                swal("", "De opgegeven gegevens zijn incorrect!", "error");
             }
         }).error(function (data) {
-            $scope.showloading = false;
-            $scope.showError = true;
-            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een administrator";
+            swal("Fout", "Er is iets misgegaan!", "error");
         });
     };
 

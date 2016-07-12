@@ -10,7 +10,10 @@ namespace AgroApp.Controllers.Admin
 {
     public class AdminController : Controller
     {
-        // GET: /<controller>/
+        /// <summary>
+        /// Returns main page of the admins
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
