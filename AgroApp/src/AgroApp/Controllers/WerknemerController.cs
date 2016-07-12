@@ -42,15 +42,15 @@ namespace AgroApp.Controllers
         }
 
         [HttpGet("getopdrachten")]
-        public async Task<IEnumerable<Opdracht>> GetOpdrachten()
+        public async Task<IEnumerable<Assignment>> GetOpdrachten()
         {
             string query = "SELECT * FROM Opdracht";
-            List<Opdracht> opdrachten = new List<Opdracht>();
+            List<Assignment> opdrachten = new List<Assignment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", 1)))
                 while (await reader.ReadAsync())
-                    opdrachten.Add(new Opdracht(
+                    opdrachten.Add(new Assignment(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
@@ -71,7 +71,7 @@ namespace AgroApp.Controllers
                 while (await reader.ReadAsync())
                     OpdrachtWerknemer.Add(new OpdrachtWerknemer()
                     {
-                        Opdracht = new Opdracht(
+                        Opdracht = new Assignment(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
                         selectedKlant: new Customer(name: reader["naam"] as string, adress: reader["adres"] as string),
                         locatie: reader["locatie"] as string,
@@ -94,7 +94,7 @@ namespace AgroApp.Controllers
                 while (await reader.ReadAsync())
                     return new OpdrachtWerknemer()
                     {
-                        Opdracht = new Opdracht(
+                        Opdracht = new Assignment(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
                         selectedKlant: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, adress: reader["adres"] as string),
                         locatie: reader["locatie"] as string,
@@ -107,12 +107,12 @@ namespace AgroApp.Controllers
         }
 
         [HttpGet("getopdracht")]
-        private async Task<Opdracht> _GetOpdracht(int id)
+        private async Task<Assignment> _GetOpdracht(int id)
         {
             return await _GetOpdracht(id);
         }
 
-        public static async Task<Opdracht> GetOpdracht(int id)
+        public static async Task<Assignment> GetOpdracht(int id)
         {
             if (id < 0)
                 return null;
@@ -123,7 +123,7 @@ namespace AgroApp.Controllers
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return new Opdracht(reader["idOpdracht"] as int? ?? 0, reader["locatie"] as string ?? "", reader["beschrijving"] as string ?? "", reader["datum"] as DateTime?);
+                return new Assignment(reader["idOpdracht"] as int? ?? 0, reader["locatie"] as string ?? "", reader["beschrijving"] as string ?? "", reader["datum"] as DateTime?);
             }
         }
 
@@ -132,9 +132,9 @@ namespace AgroApp.Controllers
         {
             OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             ViewData["id"] = id;
-            ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
-            ViewData["beschrijving"] = opdrachtWerknemer.Opdracht.beschrijving;
-            ViewData["datum"] = opdrachtWerknemer.Opdracht?.datum.ToString() ?? "";
+            ViewData["locatie"] = opdrachtWerknemer.Opdracht.Location;
+            ViewData["beschrijving"] = opdrachtWerknemer.Opdracht.Description;
+            ViewData["datum"] = opdrachtWerknemer.Opdracht?.Date.ToString() ?? "";
             return View("assignmentedit");
         }
 
@@ -144,9 +144,9 @@ namespace AgroApp.Controllers
             OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             opdrachtWerknemer.Werknemer = await UserController.GetUser(opdrachtWerknemer.Werknemer.IdWerknemer);
             ViewData["id"] = id;
-            ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
+            ViewData["locatie"] = opdrachtWerknemer.Opdracht.Location;
             ViewData["gebruiker"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Werknemer, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
-            ViewData["klant"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Opdracht.klant, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
+            ViewData["klant"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Opdracht.Customer, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
             return View("../admin/werkbonadd");
         }
 
