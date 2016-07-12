@@ -78,7 +78,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", email)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)) : null;
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
             }
         }
 
@@ -98,7 +98,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)) : null;
+                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
             }
         }
 
@@ -159,17 +159,19 @@ namespace AgroApp.Controllers.Api
         }
 
         //[Authorize("Admin")]
+        [HttpGet("getall")]
         public static async Task<IEnumerable<User>> GetAllUsers()
         {
-            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol, isDeleted FROM Werknemer WHERE isDeleted=@0";
+            string query = "SELECT idEmployee, username, role, isDeleted FROM Employee WHERE isDeleted=@0";
             List<User> users = new List<User>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (await reader.ReadAsync())
-                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)));
+                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
             return users;
         }
+
 
         public static async Task<IEnumerable<User>> GetArchivedUsers()
         {
@@ -179,7 +181,7 @@ namespace AgroApp.Controllers.Api
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true)))
                 while (await reader.ReadAsync())
-                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)));
+                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
             return users;
         }
 

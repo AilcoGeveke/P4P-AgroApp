@@ -159,7 +159,7 @@ namespace AgroApp.Controllers.Api
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (await reader.ReadAsync())
-                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)));
+                    users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
             return users;
         }
 

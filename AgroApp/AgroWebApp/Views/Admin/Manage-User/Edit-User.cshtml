@@ -1,0 +1,45 @@
+﻿<md-content layout-align-gt-xs="center center" layout-fill layout="column" ng-cloak ng-controller="Navigation" class="transparent">
+    <div class="md-whiteframe-5dp layout-content form-content" ng-controller="UserEdit">
+        <md-toolbar ng-controller="LoginView">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Wijzigt momenteel @ViewData["naam"]</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="changeView('admin/gebruikerbeheer')"><md-icon>arrow_back</md-icon></md-button>
+            </div>
+        </md-toolbar>
+        <div class="content">
+            <p hidden ng-model="userDetails.id" ng-init="userDetails.id = '@ViewData["id"]'"></p>
+            <md-input-container class="md-block inputnomargin">
+                <label>Volledige naam</label>
+                <input ng-model="userDetails.naam" ng-init="userDetails.naam = '@ViewData["naam"]'">
+            </md-input-container>
+            <md-input-container class="md-block inputnomargin">
+                <label>Email adres</label>
+                <input ng-model="userDetails.email"  ng-init="userDetails.email = '@ViewData["email"]'">
+            </md-input-container>
+            <md-input-container class="md-block inputnomargin">
+                <label>Rol</label>
+                <md-select required ng-model="userDetails.rol" ng-init="userDetails.rol = '@ViewData["rol"]'">
+                    <md-option ng-repeat="n in rollen">
+                        {{n}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <md-divider></md-divider>
+        <div layout="row" layout-align="end center" class="content-actions">
+            <md-button ng-style="{color: 'red'}" ng-click="showConfirmArchiveDialog()">Gebruiker Archiveren</md-button>
+            <md-button ng-click="showConfirmChangePasswordDialog()">Reset Wachtwoord</md-button>
+            <md-button class="md-primary md-raised" ng-click="showConfirmChangesDialog()">Pas Wijzigingen Toe</md-button>
+        </div>
+        <md-progress-linear ng-show="showLoading" md-mode="indeterminate"></md-progress-linear>
+    </div>
+</md-content>
+
+<div class="body-halfbackground"></div>
+
+@section scripts{
+    <script src="~/js/admin.js"></script>
+}

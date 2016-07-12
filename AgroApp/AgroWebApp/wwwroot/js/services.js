@@ -6,7 +6,7 @@ materialAdmin
 
     .service('messageService', ['$resource', function($resource){
         this.getMessage = function(img, user, text) {
-            var gmList = $resource("data/messages-notifications.json");
+            var gmList = $resource("~/data/messages-notifications.json");
             
             return gmList.get({
                 img: img,
