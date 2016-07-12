@@ -437,7 +437,7 @@ namespace AgroApp.Controllers.Api
                 query = "INSERT INTO WorkOrderAttachment "
                     + "SET WorkOrderAttachment.idWorkOrder = @1, "
                     + "WorkOrderAttachment.idAttachment = @0";
-                foreach (Attachment attachment in WorkOrder.Attachments ?? Enumerable.Empty<Attachment>())
+                foreach (Attachment attachment in WorkOrder.Attachment ?? Enumerable.Empty<Attachment>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", Attachment.IdAttachment),
                         new MySqlParameter("@1", WorkOrderId));
@@ -445,7 +445,7 @@ namespace AgroApp.Controllers.Api
                 query = "INSERT INTO Cargo "
                     + "SET Cargo.type = @0, Cargo.fullLoad = @1, Cargo.netLoad = @2, "
                     + "Cargo.direction = @3, Cargo.idWorkOrder = @4";
-                foreach (Cargo Cargo in WorkOrder.Cargos ?? Enumerable.Empty<Cargo>())
+                foreach (Cargo Cargo in WorkOrder.Cargo ?? Enumerable.Empty<Cargo>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", Cargo.Type),
                         new MySqlParameter("@1", Cargo.fullLoad),

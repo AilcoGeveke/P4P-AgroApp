@@ -5,47 +5,32 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Werkbon
+
+
+    public class WorkOrder
+
     {
-        public User Gebruiker { set; get; }
-        public DateTime Datum { set; get; }
-        public Customer Klant { set; get; }
-        public string Mankeuze { set; get; }
-        public Machine[] Machines { set; get; }
-        public Attachment[] Hulpstukken { set; get; }
-        public long VanTijd { set; get; }
-        public long TotTijd { set; get; }
-        public long TotaalTijd { set; get; }
-        public long PauzeTijd { set; get; }
-        public Cargo[] Gewichten { set; get; }
-        public Rijplaat IngaandeRijplaten { set; get; }
-        public Rijplaat UitgaandeRijplaten { set; get; }
-        public string VerbruikteMaterialen { set; get; }
-        public string Opmerking { set; get; }
-        public int? IdOpdrachtWerknemer { set; get; }
+        public int idWorkorder { set; get; }
+        public DateTime Date { set; get; }
+        public long pauseTime { set; get; }
+        public string usedMaterials { set; get; }
+        public string description { set; get; }
+        public int idEmployeeAssignment { set; get; }
+        public bool isVerified { set; get; }
 
-        public Werkbon()
-        {
-            
-        }
 
-        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, int totaalTijd, Machine[] machines = null, Attachment[] hulpstukken = null, int vanTijd = 0, int totTijd = 0, int pauzeTijd = 0, Cargo[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
+        public WorkOrder(bool isverified, int idemployeeassignment, int idworkorder, DateTime date, long pausetime = 0, string usedmaterials = "", string Description = "")
         {
-            Gebruiker = selectedGebruiker;
-            Datum = datum;
-            Klant = klant;
-            Mankeuze = mankeuze;
-            Machines = machines;
-            Hulpstukken = hulpstukken;
-            VanTijd = vanTijd;
-            TotTijd = totTijd;
-            TotaalTijd = totaalTijd;
-            PauzeTijd = pauzeTijd;
-            Gewichten = gewichten;
-            IngaandeRijplaten = ingaandeRijplaten;
-            UitgaandeRijplaten = uitgaandeRijplaten;
-            VerbruikteMaterialen = verbruikteMaterialen;
-            Opmerking = opmerking;
+            isverified = isVerified;
+            idemployeeassignment = idEmployeeAssignment;
+            idworkorder = idWorkorder;
+            date = Date;
+            pausetime = pauseTime;
+            usedmaterials = usedMaterials;
+            description = description;
+           
+         
+
         }
     }
 }

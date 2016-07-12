@@ -8,22 +8,22 @@ namespace AgroApp.Models
 {
     public class Opdracht
     {
-        public Customer klant;
-        public User[] gebruikers;
-        public string locatie;
-        public string beschrijving;
-        public DateTime? datum;
-        public int idOpdracht;
+        public Customer customer;
+        public User[] users;
+        public string location;
+        public string description;
+        public DateTime? date;
+        public int idassignment;
 
-        public int gebruikerCount;
+        public int usercount;
 
-        public Opdracht(int idOpdracht, string locatie, string beschrijving, DateTime? datum, Customer selectedKlant = null)
+        public Opdracht(int idAssignment, string Location, string Description, DateTime? Date, Customer selectedCustomer = null)
         {
-            this.idOpdracht = idOpdracht;
-            this.locatie = locatie;
-            this.beschrijving = beschrijving;
-            this.datum = datum;
-            this.klant = selectedKlant;
+            this.idassignment = idAssignment;
+            this.location = Location;
+            this.description = Description;
+            this.date = Date;
+            this.customer = selectedCustomer;
         }
     }
 }

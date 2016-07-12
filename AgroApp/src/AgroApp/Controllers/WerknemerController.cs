@@ -51,10 +51,10 @@ namespace AgroApp.Controllers
                 new MySqlParameter("@0", 1)))
                 while (await reader.ReadAsync())
                     opdrachten.Add(new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        locatie: reader["locatie"] as string,
-                        beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
+                        idAssignment: reader["idOpdracht"] as int? ?? -1,
+                        Location: reader["locatie"] as string,
+                        Description: reader["beschrijving"] as string,
+                        Date: reader["datum"] as DateTime? ?? DateTime.MinValue));
             return opdrachten;
         }
 
@@ -72,11 +72,11 @@ namespace AgroApp.Controllers
                     OpdrachtWerknemer.Add(new OpdrachtWerknemer()
                     {
                         Opdracht = new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(name: reader["naam"] as string, adress: reader["adres"] as string),
-                        locatie: reader["locatie"] as string,
-                        beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        idAssignment: reader["idOpdracht"] as int? ?? -1,
+                        selectedCustomer: new Customer(name: reader["naam"] as string, adress: reader["adres"] as string),
+                        Location: reader["locatie"] as string,
+                        Description: reader["beschrijving"] as string,
+                        Date: reader["datum"] as DateTime? ?? DateTime.MinValue),
                         idOpdrachtWerknemer = reader["idOpdrachtWerknemer"] as int? ?? -1
                     });
             return OpdrachtWerknemer;
@@ -95,11 +95,11 @@ namespace AgroApp.Controllers
                     return new OpdrachtWerknemer()
                     {
                         Opdracht = new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, adress: reader["adres"] as string),
-                        locatie: reader["locatie"] as string,
-                        beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        idAssignment: reader["idOpdracht"] as int? ?? -1,
+                        selectedCustomer: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, adress: reader["adres"] as string),
+                        Location: reader["locatie"] as string,
+                        Description: reader["beschrijving"] as string,
+                        Date: reader["datum"] as DateTime? ?? DateTime.MinValue),
                         Werknemer = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1 },
                         idOpdrachtWerknemer = id as int? ?? -1
                     };
@@ -151,7 +151,7 @@ namespace AgroApp.Controllers
         }
 
         [HttpGet("getWerkbonnen")]
-        public async Task<IEnumerable<Werkbon>> GetWerkbonnen()
+        public async Task<IEnumerable<WorkOrder>> GetWerkbonnen()
         {
             string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.pauzeTotaal, Werktijd.datum, Werktijd.manKeuze, Werktijd.verbruikteMaterialen, "
                     + "Werktijd.Opmerking, Werknemer.idWerknemer, "
@@ -165,15 +165,15 @@ namespace AgroApp.Controllers
                     + "ON OpdrachtWerknemer.idOpdracht = Opdracht.idOpdracht "
                     + "JOIN Klant "
                     + "ON Opdracht.idKlant = Klant.idKlant;";
-            List<Werkbon> werkbon = new List<Werkbon>();
+            List<WorkOrder> werkbon = new List<WorkOrder>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
                 while (await reader.ReadAsync())
-                    werkbon.Add(new Werkbon()
+                    werkbon.Add(new WorkOrder()
                     {
-                        Gebruiker = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1, Name = reader["WerknemerNaam"] as string ?? "" },
-                        Datum = reader["datum"] as DateTime? ?? new DateTime(),
+                        User = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1, Name = reader["WerknemerNaam"] as string ?? "" },
+                        Date = reader["datum"] as DateTime? ?? new DateTime(),
                         Klant = new Customer() {Name = reader["KlantNaam"] as string ?? "" },
                         Mankeuze = reader["manKeuze"] as string ?? "",
                         VanTijd = reader["van"] as int? ?? 0,
@@ -183,11 +183,11 @@ namespace AgroApp.Controllers
                         VerbruikteMaterialen = reader["verbruikteMaterialen"] as string ?? "",
                         Opmerking = reader["Opmerking"] as string ?? ""
                     });
-            return werkbon;
+            return WorkOrder;
         }
 
         [HttpGet("getStatistieken")]
-        public async Task<IEnumerable<Werkbon>> GetStatistieken()
+        public async Task<IEnumerable<WorkOrder>> GetStatistieken()
         {
             string query = "SELECT OpdrachtWerknemer.idOpdrachtWerknemer, Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.datum "
                     + "FROM OpdrachtWerknemer "

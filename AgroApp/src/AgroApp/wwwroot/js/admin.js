@@ -846,7 +846,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
         })
     }
 
-    $scope.selectedKlant = "";
+    $scope.selectedCustomer = "";
     $scope.klanten = [];
     $scope.getKlanten = function () {
         $rootScope.showLoading++;
@@ -904,7 +904,7 @@ agroApp.controller('WerkbonEdit', function ($scope, $rootScope, $http, $mdToast,
     $scope.submitOpdracht = function () {
         $rootScope.showLoading++;
         var sendData = JSON.stringify({
-            klant: $scope.selectedKlant,
+            klant: $scope.selectedCustomer,
             gebruikers: $scope.selectedGebruikers,
             locatie: $scope.opdracht.adres,
             beschrijving: $scope.opdracht.omschrijving,

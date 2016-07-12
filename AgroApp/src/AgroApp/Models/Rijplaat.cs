@@ -5,19 +5,21 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Rijplaat
+    public class RoadPlate
     {
-        public int IdRijplaat { private set; get; }
-        public int Groot { private set; get; }
-        public int Klein { private set; get; }
-        public int Kunstof { private set; get; }
+        public int idRoadPlate { private set; get; }
+        public int large { private set; get; }
+        public int small { private set; get; }
+        public int plastic { private set; get; }
+        public string direction { private set; get; }
 
-        public Rijplaat(int idRijplaat = -1, int groot = 0, int klein = 0, int kunstof = 0)
+        public RoadPlate(int idroadplate = -1, int Large = 0, int Small = 0, int Plastic = 0, string Direction = "")
         {
-            IdRijplaat = idRijplaat;
-            Groot = groot;
-            Klein = klein;
-            Kunstof = kunstof;
+            idRoadPlate = idroadplate;
+            large = Large;
+            small = Small;
+            plastic = Plastic;
+            direction = Direction;
         }
     }
 }
