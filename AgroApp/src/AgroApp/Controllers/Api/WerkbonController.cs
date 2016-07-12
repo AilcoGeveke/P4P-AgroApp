@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 namespace AgroApp.Controllers.Api
 {
     [Route("api/[controller]")]
-    public class WerkbonController : Controller
+    public class WorkOrderController : Controller
     {
         // GET: api/values
-        [HttpGet("getmankeuze")]
-        public async Task<IEnumerable<string>> GetManKeuze()
+        [HttpGet("getWorkType")]
+        public async Task<IEnumerable<string>> GetWorkType()
         {
-            string query = "SELECT naam FROM Mankeuze";
+            string query = "SELECT WorkType FROM WorkType";
             List<string> data = new List<string>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
@@ -39,7 +39,7 @@ namespace AgroApp.Controllers.Api
             if (id < 0)
                 return null;
 
-            string query = "SELECT idMachines, type, nummer, naam, kenteken, status FROM Machine WHERE idMachines=@0";
+            string query = "SELECT idMachine, type, number, name, tag, status FROM Machine WHERE idMachine=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
@@ -52,65 +52,65 @@ namespace AgroApp.Controllers.Api
         [HttpGet("getmachines")]
         public async Task<string> GetMachines()
         {
-            string query = "SELECT naam, nummer, kenteken, idMachines FROM Machine WHERE isDeleted=@0";
+            string query = "SELECT name, number, tag, idMachine FROM Machine WHERE isDeleted=@0";
             List<Machine> data = new List<Machine>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (reader.Read())
-                    data.Add(new Machine(idMachine: reader.GetInt32(3), kenteken: reader.GetString(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
+                    data.Add(new Machine(idMachine: reader.GetInt32(3), tag: reader.GetString(2), number: reader.GetInt32(1), name: reader.GetString(0)));
             return JsonConvert.SerializeObject(data);
         }
 
         [HttpGet("getarchiefmachine")]
         public async Task<string> GetArchiefMachines()
         {
-            string query = "SELECT naam, nummer, kenteken, idMachines FROM Machine WHERE isDeleted=@0";
+            string query = "SELECT name, number, tag, idMachine FROM Machine WHERE isDeleted=@0";
             List<Machine> data = new List<Machine>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true)))
                 while (reader.Read())
-                    data.Add(new Machine(idMachine: reader.GetInt32(3), kenteken: reader.GetString(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
+                    data.Add(new Machine(idMachine: reader.GetInt32(3), tag: reader.GetString(2), number: reader.GetInt32(1), name: reader.GetString(0)));
             return JsonConvert.SerializeObject(data);
         }
 
-        [HttpGet("addmachine/{naam}/{nummer}/{kenteken}/{type}")]
-        public async Task<bool> AddMachine(string naam, string type, int nummer = 0, string kenteken = "")
+        [HttpGet("addmachine/{name}/{number}/{tag}/{type}")]
+        public async Task<bool> AddMachine(string name, string type, int number = 0, string tag = "")
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
-                string query = "SELECT * FROM Machine WHERE nummer=@0";
+                string query = "SELECT * FROM Machine WHERE number=@0";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", nummer)))
+                    new MySqlParameter("@0", number)))
                     if (reader.HasRows)
                         return false;
 
-                query = "INSERT INTO Machine (naam, nummer, kenteken, type, status) VALUES (@0, @1, @2, @3, @4)";
+                query = "INSERT INTO Machine (name, number, tag, type, status) VALUES (@0, @1, @2, @3, @4)";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", naam),
-                    new MySqlParameter("@1", nummer),
-                    new MySqlParameter("@2", kenteken),
+                    new MySqlParameter("@0", name),
+                    new MySqlParameter("@1", number),
+                    new MySqlParameter("@2", tag),
                     new MySqlParameter("@3", type),
                     new MySqlParameter("@4", "")))
                     return reader.RecordsAffected == 1;
             }
         }
 
-        [HttpGet("editmachine/{id}/{naam}/{nummer}/{kenteken}/{type}")]
-        public async Task<bool> EditMachine(int id, string naam, string type = "Kranen", int nummer = 0, string kenteken = "")
+        [HttpGet("editmachine/{idmachine}/{name}/{number}/{tag}/{type}")]
+        public async Task<bool> EditMachine(int id, string name, string type = "Kranen", int number = 0, string tag = "")
         {
             if (GetMachine(id) == null)
                 return false;
 
-            string query = "UPDATE Machine SET naam=@0, nummer=@1, kenteken=@2, type=@3 WHERE idMachines=@4";
+            string query = "UPDATE Machine SET name=@0, number=@1, tag=@2, type=@3 WHERE idMachine=@4";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", naam),
-                new MySqlParameter("@1", nummer),
-                new MySqlParameter("@2", kenteken),
+                new MySqlParameter("@0", name),
+                new MySqlParameter("@1", number),
+                new MySqlParameter("@2", tag),
                 new MySqlParameter("@3", type),
-                new MySqlParameter("@4", id)))
+                new MySqlParameter("@4", idMachine)))
                 return reader.RecordsAffected == 1;
         }
 
@@ -120,7 +120,7 @@ namespace AgroApp.Controllers.Api
             if (GetMachine(id) == null)
                 return false;
 
-            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachines=@1";
+            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachine=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true),
@@ -134,7 +134,7 @@ namespace AgroApp.Controllers.Api
             if (GetMachine(id) == null)
                 return false;
 
-            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachines=@1";
+            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachine=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false),
@@ -142,90 +142,90 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1; ;
         }
 
-        //Hulpstuk
-        public static async Task<Hulpstuk> GetHulpstuk(int id)
+        //Attachment
+        public static async Task<Attachment> GetAttachment(int id)
         {
             if (id < 0)
                 return null;
 
-            string query = "SELECT idHulpstuk, naam, nummer FROM Hulpstuk WHERE idHulpstuk=@0";
+            string query = "SELECT idAttachment, name, number FROM Attachment WHERE idAttachment=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new Hulpstuk(idHulpstuk: reader.GetInt32(0), naam: reader.GetString(1), nummer: reader.GetInt32(2)) : null;
+                return reader.HasRows ? new Attachment(idAttachment: reader.GetInt32(0), name: reader.GetString(1), number: reader.GetInt32(2)) : null;
             }
         }
 
-        [HttpGet("gethulpstukken")]
-        public async Task<string> GetHulpstukken()
+        [HttpGet("getAttachmentken")]
+        public async Task<string> GetAttachmentken()
         {
-            string query = "SELECT idHulpstuk, nummer, naam, isDeleted FROM Hulpstuk WHERE isDeleted = @0";
-            List<Hulpstuk> data = new List<Hulpstuk>();
+            string query = "SELECT idAttachment, number, name, isDeleted FROM Attachment WHERE isDeleted = @0";
+            List<Attachment> data = new List<Attachment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (reader.Read())
-                    data.Add(new Hulpstuk(idHulpstuk: reader.GetInt32(0), nummer: reader.GetInt32(1), naam: reader.GetString(2)));
+                    data.Add(new Attachment(idAttachment: reader.GetInt32(0), number: reader.GetInt32(1), name: reader.GetString(2)));
             return JsonConvert.SerializeObject(data);
         }
 
-        [HttpGet("getarchiefhulpstukken")]
-        public async Task<string> GetArchiefHulpstukken()
+        [HttpGet("getarchiefAttachmentken")]
+        public async Task<string> GetArchiefAttachmentken()
         {
-            string query = "SELECT idHulpstuk, nummer, naam, isDeleted FROM Hulpstuk WHERE isDeleted = @0";
-            List<Hulpstuk> data = new List<Hulpstuk>();
+            string query = "SELECT idAttachment, number, name, isDeleted FROM Attachment WHERE isDeleted = @0";
+            List<Attachment> data = new List<Attachment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true)))
                 while (reader.Read())
-                    data.Add(new Hulpstuk(idHulpstuk: reader.GetInt32(0), nummer: reader.GetInt32(1), naam: reader.GetString(2)));
+                    data.Add(new Attachment(idAttachment: reader.GetInt32(0), number: reader.GetInt32(1), name: reader.GetString(2)));
             return JsonConvert.SerializeObject(data);
         }
 
-        [HttpGet("addhulpstuk/{naam}/{nummer}")]
-        public async Task<bool> AddHulpstuk(string naam, int nummer = 0)
+        [HttpGet("addAttachment/{name}/{number}")]
+        public async Task<bool> AddAttachment(string name, int number = 0)
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
-                string query = "SELECT * FROM Hulpstuk WHERE naam=@0 AND nummer=@1";
+                string query = "SELECT * FROM Attachment WHERE name=@0 AND number=@1";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", naam),
-                    new MySqlParameter("@1", nummer)))
+                    new MySqlParameter("@0", name),
+                    new MySqlParameter("@1", number)))
                     if (reader.HasRows)
                         return false;
 
-                query = "INSERT INTO Hulpstuk (naam, nummer) VALUES (@0, @1)";
+                query = "INSERT INTO Attachment (name, number) VALUES (@0, @1)";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", naam),
-                    new MySqlParameter("@1", nummer)))
+                    new MySqlParameter("@0", name),
+                    new MySqlParameter("@1", number)))
                     return reader.RecordsAffected == 1;
             }
         }
 
-        [HttpGet("edithulpstuk/{id}/{naam}/{nummer}")]
-        public async Task<bool> EditHulpstuk(int id, string naam, string nummer)
+        [HttpGet("editAttachment/{id}/{name}/{number}")]
+        public async Task<bool> EditAttachment(int id, string name, string number)
         {
-            if (GetHulpstuk(id) == null)
+            if (GetAttachment(id) == null)
                 return false;
 
-            string query = "UPDATE Hulpstuk SET naam=@0, nummer=@1 WHERE idHulpstuk=@2";
+            string query = "UPDATE Attachment SET name=@0, number=@1 WHERE idAttachment=@2";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", naam),
-                new MySqlParameter("@1", nummer),
+                new MySqlParameter("@0", name),
+                new MySqlParameter("@1", number),
                 new MySqlParameter("@2", id)))
                 return reader.RecordsAffected == 1;
         }
 
-        [HttpGet("deletehulpstuk/{id}")]
-        public async Task<bool> DeleteHulpstuk(int id)
+        [HttpGet("deleteAttachment/{id}")]
+        public async Task<bool> DeleteAttachment(int id)
         {
-            if (GetHulpstuk(id) == null)
+            if (GetAttachment(id) == null)
                 return false;
 
-            string query = "UPDATE Hulpstuk SET isDeleted=@0 WHERE idHulpstuk=@1";
+            string query = "UPDATE Attachment SET isDeleted=@0 WHERE idAttachment=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true),
@@ -233,13 +233,13 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1; ;
         }
 
-        [HttpGet("hulpstuk/terughalen/{id}")]
-        public async Task<bool> ReAddHulpstuk(int id)
+        [HttpGet("Attachment/terughalen/{id}")]
+        public async Task<bool> ReAddAttachment(int id)
         {
-            if (GetHulpstuk(id) == null)
+            if (GetAttachment(id) == null)
                 return false;
 
-            string query = "UPDATE Hulpstuk SET isDeleted=@0 WHERE idHulpstuk=@1";
+            string query = "UPDATE Attachment SET isDeleted=@0 WHERE idAttachment=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false),
@@ -247,13 +247,13 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1; ;
         }
 
-        //Klanten
-        public static async Task<Customer> GetKlant(int id)
+        //Customers
+        public static async Task<Customer> GetCustomer(int id)
         {
             if (id < 0)
                 return null;
 
-            string query = "SELECT idKlant, naam, adres FROM Klant WHERE idKlant=@0";
+            string query = "SELECT idCustomer, name, address FROM Customer WHERE idCustomer=@0";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
@@ -263,10 +263,10 @@ namespace AgroApp.Controllers.Api
             }
         }
 
-        [HttpGet("getklanten")]
-        public async Task<string> GetKlanten()
+        [HttpGet("getCustomers")]
+        public async Task<string> GetCustomers()
         {
-            string query = "SELECT * FROM Klant WHERE isDeleted=@0";
+            string query = "SELECT * FROM Customer WHERE isDeleted=@0";
             List<Customer> data = new List<Customer>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -277,10 +277,10 @@ namespace AgroApp.Controllers.Api
 
         }
 
-        [HttpGet("getarchiefklanten")]
-        public async Task<string> GetArchiefKlanten()
+        [HttpGet("getarchiefCustomers")]
+        public async Task<string> GetArchiefCustomers()
         {
-            string query = "SELECT * FROM Klant WHERE isDeleted=@0";
+            string query = "SELECT * FROM Customer WHERE isDeleted=@0";
             List<Customer> data = new List<Customer>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -291,49 +291,49 @@ namespace AgroApp.Controllers.Api
 
         }
 
-        [HttpGet("addklant/{naam}/{adres}")]
-        public async Task<bool> AddKlant(string naam, string adres)
+        [HttpGet("addCustomer/{name}/{address}")]
+        public async Task<bool> AddCustomer(string name, string address)
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
-                string query = "SELECT * FROM Klant WHERE naam=@0 AND adres=@1";
+                string query = "SELECT * FROM Customer WHERE name=@0 AND address=@1";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", naam),
-                    new MySqlParameter("@1", adres)))
+                    new MySqlParameter("@0", name),
+                    new MySqlParameter("@1", address)))
                     if (reader.HasRows)
                         return false;
 
-                query = "INSERT INTO Klant (naam, adres) VALUES (@0, @1)";
+                query = "INSERT INTO Customer (name, address) VALUES (@0, @1)";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", naam),
-                    new MySqlParameter("@1", adres)))
+                    new MySqlParameter("@0", name),
+                    new MySqlParameter("@1", address)))
                     return reader.RecordsAffected == 1;
             }
         }
 
-        [HttpGet("editklant/{id}/{naam}/{adres}")]
-        public async Task<bool> EditKlant(int id, string naam, string adres)
+        [HttpGet("editCustomer/{id}/{name}/{address}")]
+        public async Task<bool> EditCustomer(int id, string name, string address)
         {
-            if (GetKlant(id) == null)
+            if (GetCustomer(id) == null)
                 return false;
 
-            string query = "UPDATE Klant SET naam=@0, adres=@1 WHERE idKlant=@2";
+            string query = "UPDATE Customer SET name=@0, address=@1 WHERE idCustomer=@2";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", naam),
-                new MySqlParameter("@1", adres),
+                new MySqlParameter("@0", name),
+                new MySqlParameter("@1", address),
                 new MySqlParameter("@2", id)))
                 return reader.RecordsAffected == 1;
         }
 
-        [HttpGet("deleteklant/{id}")]
-        public async Task<bool> DeleteKlant(int id)
+        [HttpGet("deleteCustomer/{id}")]
+        public async Task<bool> DeleteCustomer(int id)
         {
             bool isDeleted = true;
-            if (GetKlant(id) == null)
+            if (GetCustomer(id) == null)
                 return false;
 
-            string query = "UPDATE Klant SET isDeleted=@0 WHERE idKlant=@1";
+            string query = "UPDATE Customer SET isDeleted=@0 WHERE idCustomer=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", isDeleted),
@@ -341,13 +341,13 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1; ;
         }
 
-        [HttpGet("klant/terughalen/{id}")]
-        public async Task<bool> ReAddKlant(int id)
+        [HttpGet("Customer/terughalen/{id}")]
+        public async Task<bool> ReAddCustomer(int id)
         {
-            if (GetKlant(id) == null)
+            if (GetCustomer(id) == null)
                 return false;
 
-            string query = "UPDATE Klant SET isDeleted=@0 WHERE idKlant=@1";
+            string query = "UPDATE Customer SET isDeleted=@0 WHERE idCustomer=@1";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false),
@@ -355,19 +355,19 @@ namespace AgroApp.Controllers.Api
                 return reader.RecordsAffected == 1;
         }
 
-        //Opdracht
-        [HttpGet("addopdracht")]
-        public async Task<bool> AddOpdracht()
+        //Assignment
+        [HttpGet("addAssignment")]
+        public async Task<bool> AddAssignment()
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
-                string query = "SELECT * FROM Machine WHERE nummer=@0";
+                string query = "SELECT * FROM Machine WHERE number=@0";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
 
                     if (reader.HasRows)
                         return false;
 
-                query = "INSERT INTO Opdracht (locatie, beschrijving, idklant) VALUES (@0, @1, @2, @3, @4)";
+                query = "INSERT INTO Assignment (location, description, idCustomer) VALUES (@0, @1, @2, @3, @4)";
 
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                     new MySqlParameter("@4", "")))
@@ -376,17 +376,17 @@ namespace AgroApp.Controllers.Api
             throw new NotImplementedException();
         }
 
-        // GET: /admin/werkboncheck
-        [HttpGet("admin/werkbon/controleren")]
-        public IActionResult Opdracht()
+        // GET: /admin/WorkOrdercheck
+        [HttpGet("admin/WorkOrder/controleren")]
+        public IActionResult Assignment()
         {
-            return View("../admin/werkbonCheck");
+            return View("../admin/WorkOrderCheck");
         }
 
         [HttpGet("getdata")]
         public async Task<string> GetData()
         {
-            string query = "SELECT Opdracht.locatie, Klant.naam FROM Opdracht JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht JOIN Klant ON Opdracht.idKlant = Klant.idKlant";
+            string query = "SELECT Assignment.location, Customer.name FROM Assignment JOIN EmployeeAssignment ON Assignment.idAssignment = EmployeeAssignment.idAssignment JOIN Customer ON Assignment.idCustomer = Customer.idCustomer";
             List<Customer> data = new List<Customer>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -397,61 +397,61 @@ namespace AgroApp.Controllers.Api
 
         }
 
-        // Werkbonnen
+        // WorkOrdernen
         [HttpPost("toevoegen")]
-        public async Task<bool> Toevoegen([FromBody] Werkbon werkbon)
+        public async Task<bool> Toevoegen([FromBody] WorkOrder WorkOrder)
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
-                int werktijdId;
-                string query = "INSERT INTO Werktijd "
-                             + "SET Werktijd.van = @0, Werktijd.tot = @1, "
-                             + "Werktijd.urenTotaal = @2, Werktijd.pauzeTotaal = @3, Werktijd.datum = @4, "
-                             + "Werktijd.verbruikteMaterialen = @5, Werktijd.Opmerking = @6, "
-                             + "Werktijd.manKeuze = @7, " 
-                             + "Werktijd.idOpdrachtWerknemer = @8;"
+                int WorkOrderId;
+                string query = "INSERT INTO WorkOrder "
+                             + "SET WorkOrder.startTime = @0, WorkOrder.endTime = @1, "
+                             + "WorkOrder.totalTime = @2, WorkOrder.pauseTime = @3, WorkOrder.date = @4, "
+                             + "WorkOrder.verbruikteMaterialen = @5, WorkOrder.description = @6, "
+                             + "WorkOrder.WorkType = @7, " 
+                             + "WorkOrder.idEmployeeAssignment = @8;"
                              + "SELECT LAST_INSERT_ID();";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", werkbon.VanTijd),
-                    new MySqlParameter("@1", werkbon.TotTijd),
-                    new MySqlParameter("@2", werkbon.TotaalTijd),
-                    new MySqlParameter("@3", werkbon.PauzeTijd),
-                    new MySqlParameter("@4", werkbon.Datum),
-                    new MySqlParameter("@5", werkbon.VerbruikteMaterialen),
-                    new MySqlParameter("@6", werkbon.Opmerking),
-                    new MySqlParameter("@7", werkbon.Mankeuze),
-                    new MySqlParameter("@8", werkbon.IdOpdrachtWerknemer)))
+                    new MySqlParameter("@0", WorkOrder.startTime),
+                    new MySqlParameter("@1", WorkOrder.endTime),
+                    new MySqlParameter("@2", WorkOrder.totalTime),
+                    new MySqlParameter("@3", WorkOrder.pauseTime),
+                    new MySqlParameter("@4", WorkOrder.date),
+                    new MySqlParameter("@5", WorkOrder.usedMaterials),
+                    new MySqlParameter("@6", WorkOrder.description),
+                    new MySqlParameter("@7", WorkOrder.WorkType),
+                    new MySqlParameter("@8", WorkOrder.IdEmployeeAssignment)))
                 {
                     await reader.ReadAsync();
-                    werktijdId = reader.GetInt32(0);
+                    WorkOrderId = reader.GetInt32(0);
                 }
 
-                query = "INSERT INTO WerktijdMachines "
-                        + "SET WerktijdMachines.idWerktijd = @1, "
-                        + "WerktijdMachines.idMachines = @0; ";
-                foreach (Machine machine in werkbon.Machines ?? Enumerable.Empty<Machine>())
+                query = "INSERT INTO WorkOrderMachines "
+                        + "SET WorkOrderMachines.idWorkOrder = @1, "
+                        + "WorkOrderMachines.idMachine = @0; ";
+                foreach (Machine machine in WorkOrder.Machines ?? Enumerable.Empty<Machine>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", machine.IdMachine),
-                        new MySqlParameter("@1", werktijdId));
+                        new MySqlParameter("@1", WorkOrderId));
 
-                query = "INSERT INTO WerktijdHulpstuk "
-                    + "SET WerktijdHulpstuk.idWerktijd = @1, "
-                    + "WerktijdHulpstuk.idHulpstuk = @0";
-                foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken ?? Enumerable.Empty<Hulpstuk>())
+                query = "INSERT INTO WorkOrderAttachment "
+                    + "SET WorkOrderAttachment.idWorkOrder = @1, "
+                    + "WorkOrderAttachment.idAttachment = @0";
+                foreach (Attachment attachment in WorkOrder.Attachments ?? Enumerable.Empty<Attachment>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", hulpstuk.IdHulpstuk),
-                        new MySqlParameter("@1", werktijdId));
+                        new MySqlParameter("@0", Attachment.IdAttachment),
+                        new MySqlParameter("@1", WorkOrderId));
 
-                query = "INSERT INTO Gewicht "
-                    + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "
-                    + "Gewicht.richting = @3, Gewicht.idWerktijd = @4";
-                foreach (Gewicht gewicht in werkbon.Gewichten ?? Enumerable.Empty<Gewicht>())
+                query = "INSERT INTO Cargo "
+                    + "SET Cargo.type = @0, Cargo.fullLoad = @1, Cargo.netLoad = @2, "
+                    + "Cargo.direction = @3, Cargo.idWorkOrder = @4";
+                foreach (Cargo Cargo in WorkOrder.Cargos ?? Enumerable.Empty<Cargo>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", gewicht.Type),
-                        new MySqlParameter("@1", gewicht.VolGewicht),
-                        new MySqlParameter("@2", gewicht.NettoGewicht),
-                        new MySqlParameter("@3", gewicht.Richting),
-                        new MySqlParameter("@4", werktijdId));
+                        new MySqlParameter("@0", Cargo.Type),
+                        new MySqlParameter("@1", Cargo.fullLoad),
+                        new MySqlParameter("@2", Cargo.netLoad),
+                        new MySqlParameter("@3", Cargo.direction),
+                        new MySqlParameter("@4", WorkOrderId));
 
                 return true;
             }
@@ -461,13 +461,13 @@ namespace AgroApp.Controllers.Api
         public async Task<bool> DeleteAllData()
         {
             string query = "SET FOREIGN_KEY_CHECKS = 0; "
-                    + "TRUNCATE TABLE Gewicht; "
-                    + "TRUNCATE TABLE Rijplaten ; "
-                    + "TRUNCATE TABLE OpdrachtWerknemer; "
-                    + "TRUNCATE TABLE Opdracht; "
-                    + "TRUNCATE TABLE WerktijdHulpstuk; "
-                    + "TRUNCATE TABLE WerktijdMachines; "
-                    + "TRUNCATE TABLE Werktijd; "
+                    + "TRUNCATE TABLE Cargo; "
+                    + "TRUNCATE TABLE RoadPlate ; "
+                    + "TRUNCATE TABLE EmployeeAssignment; "
+                    + "TRUNCATE TABLE Assignment; "
+                    + "TRUNCATE TABLE WorkOrderAttachment; "
+                    + "TRUNCATE TABLE WorkOrderMachines; "
+                    + "TRUNCATE TABLE WorkOrder; "
                     + "SET FOREIGN_KEY_CHECKS = 1;";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
@@ -480,7 +480,7 @@ namespace AgroApp.Controllers.Api
         //    using (MySqlConnection con = DatabaseConnection.GetConnection())
         //    {
         //        con.Open();
-        //        string query = "SELECT naam FROM Werknemer";
+        //        string query = "SELECT name FROM Employee";
         //        using (MySqlCommand cmd = new MySqlCommand(query, con))
         //        {
         //            List<string> data = new List<string>();
