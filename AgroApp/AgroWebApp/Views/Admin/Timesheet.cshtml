@@ -8,66 +8,132 @@
 <section id="main">
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
-    <section id="content">
-
+	<section id="content">
+	
+    <div class="card">
         <div class="card-header">
-            <h2>@*@gebruiker*@ <small>Uren overzicht</small></h2>
-        </div>
+            <h2>Gebruiker <small>Uw uren overzicht</small></h2>
+        </div> 
         <div class="card-body">
             <div class="table-responsive">
-                <table ng-table="tctrl.tableEdit" class="table table-striped table-vmiddle ng-scope ng-table">
-                    <!-- ngInclude: templates.header -->
-                    <thead ng-include="templates.header" class="ng-scope"><tr> <!-- ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th title="" ng-repeat="$column in $columns" ng-class="{ 'sortable': $column.sortable(this), 'sort-asc': params.sorting()[$column.sortable(this)]=='asc', 'sort-desc': params.sorting()[$column.sortable(this)]=='desc' }" ng-click="sortBy($column, $event)" ng-if="$column.show(this)" ng-init="template=$column.headerTemplateURL(this)" class="header "> <!-- ngIf: !template --><div ng-if="!template" class="ng-table-header ng-scope" ng-class="{'sort-indicator': params.settings().sortingIndicator=='div'}"> <span ng-bind="$column.title(this)" ng-class="{'sort-indicator': params.settings().sortingIndicator=='span'}" class="ng-binding sort-indicator">ID</span> </div><!-- end ngIf: !template --> <!-- ngIf: template --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th title="" ng-repeat="$column in $columns" ng-class="{ 'sortable': $column.sortable(this), 'sort-asc': params.sorting()[$column.sortable(this)]=='asc', 'sort-desc': params.sorting()[$column.sortable(this)]=='desc' }" ng-click="sortBy($column, $event)" ng-if="$column.show(this)" ng-init="template=$column.headerTemplateURL(this)" class="header "> <!-- ngIf: !template --><div ng-if="!template" class="ng-table-header ng-scope" ng-class="{'sort-indicator': params.settings().sortingIndicator=='div'}"> <span ng-bind="$column.title(this)" ng-class="{'sort-indicator': params.settings().sortingIndicator=='span'}" class="ng-binding sort-indicator">Name</span> </div><!-- end ngIf: !template --> <!-- ngIf: template --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th title="" ng-repeat="$column in $columns" ng-class="{ 'sortable': $column.sortable(this), 'sort-asc': params.sorting()[$column.sortable(this)]=='asc', 'sort-desc': params.sorting()[$column.sortable(this)]=='desc' }" ng-click="sortBy($column, $event)" ng-if="$column.show(this)" ng-init="template=$column.headerTemplateURL(this)" class="header "> <!-- ngIf: !template --><div ng-if="!template" class="ng-table-header ng-scope" ng-class="{'sort-indicator': params.settings().sortingIndicator=='div'}"> <span ng-bind="$column.title(this)" ng-class="{'sort-indicator': params.settings().sortingIndicator=='span'}" class="ng-binding sort-indicator">Email</span> </div><!-- end ngIf: !template --> <!-- ngIf: template --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th title="" ng-repeat="$column in $columns" ng-class="{ 'sortable': $column.sortable(this), 'sort-asc': params.sorting()[$column.sortable(this)]=='asc', 'sort-desc': params.sorting()[$column.sortable(this)]=='desc' }" ng-click="sortBy($column, $event)" ng-if="$column.show(this)" ng-init="template=$column.headerTemplateURL(this)" class="header "> <!-- ngIf: !template --><div ng-if="!template" class="ng-table-header ng-scope" ng-class="{'sort-indicator': params.settings().sortingIndicator=='div'}"> <span ng-bind="$column.title(this)" ng-class="{'sort-indicator': params.settings().sortingIndicator=='span'}" class="ng-binding sort-indicator">Username</span> </div><!-- end ngIf: !template --> <!-- ngIf: template --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th title="" ng-repeat="$column in $columns" ng-class="{ 'sortable': $column.sortable(this), 'sort-asc': params.sorting()[$column.sortable(this)]=='asc', 'sort-desc': params.sorting()[$column.sortable(this)]=='desc' }" ng-click="sortBy($column, $event)" ng-if="$column.show(this)" ng-init="template=$column.headerTemplateURL(this)" class="header "> <!-- ngIf: !template --><div ng-if="!template" class="ng-table-header ng-scope" ng-class="{'sort-indicator': params.settings().sortingIndicator=='div'}"> <span ng-bind="$column.title(this)" ng-class="{'sort-indicator': params.settings().sortingIndicator=='span'}" class="ng-binding sort-indicator">Contact</span> </div><!-- end ngIf: !template --> <!-- ngIf: template --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th title="" ng-repeat="$column in $columns" ng-class="{ 'sortable': $column.sortable(this), 'sort-asc': params.sorting()[$column.sortable(this)]=='asc', 'sort-desc': params.sorting()[$column.sortable(this)]=='desc' }" ng-click="sortBy($column, $event)" ng-if="$column.show(this)" ng-init="template=$column.headerTemplateURL(this)" class="header "> <!-- ngIf: !template --><div ng-if="!template" class="ng-table-header ng-scope" ng-class="{'sort-indicator': params.settings().sortingIndicator=='div'}"> <span ng-bind="$column.title(this)" ng-class="{'sort-indicator': params.settings().sortingIndicator=='span'}" class="ng-binding sort-indicator">Actions</span> </div><!-- end ngIf: !template --> <!-- ngIf: template --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --> </tr> <tr ng-show="show_filter" class="ng-table-filters ng-hide"> <!-- ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th data-title-text="ID" ng-repeat="$column in $columns" ng-if="$column.show(this)" class="filter ng-scope"> <!-- ngRepeat: (name, filter) in $column.filter(this) --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th data-title-text="Name" ng-repeat="$column in $columns" ng-if="$column.show(this)" class="filter ng-scope"> <!-- ngRepeat: (name, filter) in $column.filter(this) --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th data-title-text="Email" ng-repeat="$column in $columns" ng-if="$column.show(this)" class="filter ng-scope"> <!-- ngRepeat: (name, filter) in $column.filter(this) --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th data-title-text="Username" ng-repeat="$column in $columns" ng-if="$column.show(this)" class="filter ng-scope"> <!-- ngRepeat: (name, filter) in $column.filter(this) --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th data-title-text="Contact" ng-repeat="$column in $columns" ng-if="$column.show(this)" class="filter ng-scope"> <!-- ngRepeat: (name, filter) in $column.filter(this) --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --><!-- ngIf: $column.show(this) --><th data-title-text="Actions" ng-repeat="$column in $columns" ng-if="$column.show(this)" class="filter ng-scope"> <!-- ngRepeat: (name, filter) in $column.filter(this) --> </th><!-- end ngIf: $column.show(this) --><!-- end ngRepeat: $column in $columns --> </tr> </thead>
-                    <tbody>
-                        <!-- ngRepeat: w in $data -->
-                        <tr ng-repeat="w in $data" ng-class="{ 'active': w.$edit }" class="ng-scope">
-                            <td data-title="'Opdrachtgever'" data-title-text="Opdrachtgever">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">Nagtegaal</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Locatie'" data-title-text="Locatie">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">Marc Barnes</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Van'" data-title-text="Van">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">marc.barnes54@example.com</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Tot'" data-title-text="Tot">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">MarcBarns</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Totaal'" data-title-text="Totaal">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">(382)-122-5003</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Man'" data-title-text="Man">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">(382)-122-5003</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Machine'" data-title-text="Machine">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">(382)-122-5003</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Omschrijving'" data-title-text="Omschrijving">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">(382)-122-5003</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Collega's" data-title-text="Collega's">
-                                <!-- ngIf: !w.$edit --><span ng-if="!w.$edit" class="ng-binding ng-scope">(382)-122-5003</span><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                            <td data-title="'Aanpassen'" data-title-text="Aanpassen">
-                                <!-- ngIf: !w.$edit --><button type="button" class="btn btn-default ng-scope waves-effect" ng-if="!w.$edit" ng-click="w.$edit = true"><i class="zmdi zmdi-edit"></i></button><!-- end ngIf: !w.$edit -->
-                                <!-- ngIf: w.$edit -->
-                            </td>
-                        </tr><!-- end ngRepeat: w in $data -->
-                        <tr ng-repeat="w in $data" ng-class="{ 'active': w.$edit }" class="ng-scope">
-
-                    </tbody>
-                </table><div ng-table-pagination="params" template-url="templates.pagination" class="ng-scope ng-isolate-scope"><!-- ngInclude: templateUrl --><div ng-include="templateUrl" class="ng-scope"><!-- ngIf: params.data.length --><div class="ng-table-pager ng-scope" ng-if="params.data.length"> <!-- ngIf: params.settings().counts.length --><div ng-if="params.settings().counts.length" class="ng-table-counts btn-group pull-right ng-scope"> <!-- ngRepeat: count in params.settings().counts --><button ng-repeat="count in params.settings().counts" type="button" ng-class="{'active':params.count()==count}" ng-click="params.count(count)" class="btn btn-default ng-scope waves-effect active"> <span ng-bind="count" class="ng-binding">10</span> </button><!-- end ngRepeat: count in params.settings().counts --><button ng-repeat="count in params.settings().counts" type="button" ng-class="{'active':params.count()==count}" ng-click="params.count(count)" class="btn btn-default ng-scope waves-effect"> <span ng-bind="count" class="ng-binding">25</span> </button><!-- end ngRepeat: count in params.settings().counts --><button ng-repeat="count in params.settings().counts" type="button" ng-class="{'active':params.count()==count}" ng-click="params.count(count)" class="btn btn-default ng-scope waves-effect"> <span ng-bind="count" class="ng-binding">50</span> </button><!-- end ngRepeat: count in params.settings().counts --><button ng-repeat="count in params.settings().counts" type="button" ng-class="{'active':params.count()==count}" ng-click="params.count(count)" class="btn btn-default ng-scope waves-effect"> <span ng-bind="count" class="ng-binding">100</span> </button><!-- end ngRepeat: count in params.settings().counts --> </div><!-- end ngIf: params.settings().counts.length --> <ul class="pagination ng-table-pagination"> <!-- ngRepeat: page in pages --><li ng-class="{'disabled': !page.active &amp;&amp; !page.current, 'active': page.current}" ng-repeat="page in pages" ng-switch="page.type" class="ng-scope disabled"> <!-- ngSwitchWhen: prev --><a ng-switch-when="prev" ng-click="params.page(page.number)" href="" class="ng-scope">«</a><!-- end ngSwitchWhen: --> <!-- ngSwitchWhen: first --> <!-- ngSwitchWhen: page --> <!-- ngSwitchWhen: more --> <!-- ngSwitchWhen: last --> <!-- ngSwitchWhen: next --> </li><!-- end ngRepeat: page in pages --><li ng-class="{'disabled': !page.active &amp;&amp; !page.current, 'active': page.current}" ng-repeat="page in pages" ng-switch="page.type" class="ng-scope active"> <!-- ngSwitchWhen: prev --> <!-- ngSwitchWhen: first --><a ng-switch-when="first" ng-click="params.page(page.number)" href="" class="ng-scope"><span ng-bind="page.number" class="ng-binding">1</span></a><!-- end ngSwitchWhen: --> <!-- ngSwitchWhen: page --> <!-- ngSwitchWhen: more --> <!-- ngSwitchWhen: last --> <!-- ngSwitchWhen: next --> </li><!-- end ngRepeat: page in pages --><li ng-class="{'disabled': !page.active &amp;&amp; !page.current, 'active': page.current}" ng-repeat="page in pages" ng-switch="page.type" class="ng-scope"> <!-- ngSwitchWhen: prev --> <!-- ngSwitchWhen: first --> <!-- ngSwitchWhen: page --> <!-- ngSwitchWhen: more --> <!-- ngSwitchWhen: last --><a ng-switch-when="last" ng-click="params.page(page.number)" href="" class="ng-scope"><span ng-bind="page.number" class="ng-binding">2</span></a><!-- end ngSwitchWhen: --> <!-- ngSwitchWhen: next --> </li><!-- end ngRepeat: page in pages --><li ng-class="{'disabled': !page.active &amp;&amp; !page.current, 'active': page.current}" ng-repeat="page in pages" ng-switch="page.type" class="ng-scope"> <!-- ngSwitchWhen: prev --> <!-- ngSwitchWhen: first --> <!-- ngSwitchWhen: page --> <!-- ngSwitchWhen: more --> <!-- ngSwitchWhen: last --> <!-- ngSwitchWhen: next --><a ng-switch-when="next" ng-click="params.page(page.number)" href="" class="ng-scope">»</a><!-- end ngSwitchWhen: --> </li><!-- end ngRepeat: page in pages --> </ul> </div><!-- end ngIf: params.data.length --> </div></div>
+                <table ng-table="tctrl.tableEdit" class="table table-striped table-vmiddle">
+                    <tr ng-repeat="w in $data"  ng-class="{ 'active': w.$edit }">
+                        <td data-title="'ID'">
+                            <span ng-if="!w.$edit">{{ Customer.name }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="Customer.name" /></div>
+                        </td>
+                        <td data-title="'Name'">
+                            <span ng-if="!w.$edit">{{ Assignment.location }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="Assignment.location" /></div>
+                        </td>
+                        <td data-title="'Email'">
+                            <span ng-if="!w.$edit">{{ TimesheetPart.startTime }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="email" ng-model="TimesheetPart.startTime" /></div>
+                        </td>
+                        <td data-title="'Username'">
+                            <span ng-if="!w.$edit">{{ Timesheet.endTime }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="TimesheetPart.endTime" /></div>
+                        </td>
+                        <td data-title="'Contact'">
+                            <span ng-if="!w.$edit">{{ TimesheetPart.totalTime }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="TimesheetPart.totalTime" /></div>
+                        </td>
+						                        <td data-title="'Name'">
+                            <span ng-if="!w.$edit">{{ WorkType.type }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="WorkType.type" /></div>
+                        </td>
+                        <td data-title="'Email'">
+                            <span ng-if="!w.$edit">{{ Machine.name }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="email" ng-model="Machine.name" /></div>
+                        </td>
+                        <td data-title="'Username'">
+                            <span ng-if="!w.$edit">{{ TimesheetPart.description }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="TimesheetPart.endTime" /></div>
+                        </td>
+                        <td data-title="'Contact'">
+                            <span ng-if="!w.$edit">{{ Employee.name }}</span>
+                            <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="Employee.name" /></div>
+                        </td>
+                        <td data-title="'Actions'">
+                            <button type="button" class="btn btn-default" ng-if="!w.$edit" ng-click="w.$edit = true"><i class="zmdi zmdi-edit"></i></button>
+                            <button type="button" class="btn btn-success" ng-if="w.$edit" ng-click="w.$edit = false"><i class="zmdi zmdi-check"></i></button>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
+		
+		<div class="card">
+        <div class="card-header">
+            <h2>Werkbon <small>Verstuur een werkbon</small></h2>
+        </div>
 
+        <div class="card-body card-padding">
+		<div class="card">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Opdrachtgever">
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Locatie">
+                    </div>
+                </div>
+		</div>
+		
+		<div class="card">		
+                <div class="col-xs-4">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control ng-isolate-scope" data-input-mask="{mask: '00:00'}" placeholder="Van" maxlength="5" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control ng-isolate-scope" data-input-mask="{mask: '00:00'}" placeholder="Tot" maxlength="5" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control ng-isolate-scope" data-input-mask="{mask: '00:00'}" placeholder="Totaal" maxlength="5" autocomplete="off">
+                    </div>
+                </div>
+		</div>
+		
+		<div class="card">
+                <div class="col-xs-6">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Man">
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Machine">
+                    </div>
+                </div>
+		</div>
+		<div class="card">
+                <div class="col-xs-12">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Omshrijving">
+                    </div>
+                </div>
+		</div>
+		<div class="card">
+                <div class="col-xs-12">
+                    <div class="fg-line form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Collega's">
+                    </div>
+                </div>
+		</div>
+		
+		</div>
+
+            </div>
+        </div>
+    </div>
+    </div>        
+     
     </section>
 </section>
