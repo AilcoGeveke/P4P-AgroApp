@@ -13,13 +13,13 @@ namespace AgroApp.Models
         public string Location;
         public string Description;
         public DateTime? Date;
-        public int idOpdracht;
+        public int idAssignment;
 
         public int gebruikerCount;
 
         public Assignment(int idOpdracht, string locatie, string beschrijving, DateTime? datum, Customer selectedKlant = null)
         {
-            this.idOpdracht = idOpdracht;
+            this.idAssignment = idOpdracht;
             this.Location = locatie;
             this.Description = beschrijving;
             this.Date = datum;
