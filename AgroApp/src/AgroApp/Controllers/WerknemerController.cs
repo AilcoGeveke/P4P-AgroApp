@@ -73,7 +73,7 @@ namespace AgroApp.Controllers
                     {
                         Opdracht = new Opdracht(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(Name: reader["naam"] as string, Adress: reader["adres"] as string),
+                        selectedKlant: new Customer(name: reader["naam"] as string, adress: reader["adres"] as string),
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
                         datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
@@ -96,7 +96,7 @@ namespace AgroApp.Controllers
                     {
                         Opdracht = new Opdracht(
                         idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(IdCustomer: reader["idKlant"] as int? ?? -1, Name: reader["naam"] as string, Adress: reader["adres"] as string),
+                        selectedKlant: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, adress: reader["adres"] as string),
                         locatie: reader["locatie"] as string,
                         beschrijving: reader["beschrijving"] as string,
                         datum: reader["datum"] as DateTime? ?? DateTime.MinValue),

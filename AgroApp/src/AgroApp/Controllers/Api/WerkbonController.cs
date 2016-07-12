@@ -58,7 +58,7 @@ namespace AgroApp.Controllers.Api
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (reader.Read())
-                    data.Add(new Machine(idMachine: reader.GetInt32(3), kenteken: reader.GetString(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
+                    data.Add(new Machine(idMachine: reader.GetInt32(3), tag: reader.GetString(2), number: reader.GetInt32(1), name: reader.GetString(0)));
             return JsonConvert.SerializeObject(data);
         }
 
@@ -71,7 +71,7 @@ namespace AgroApp.Controllers.Api
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true)))
                 while (reader.Read())
-                    data.Add(new Machine(idMachine: reader.GetInt32(3), kenteken: reader.GetString(2), nummer: reader.GetInt32(1), naam: reader.GetString(0)));
+                    data.Add(new Machine(idMachine: reader.GetInt32(3), tag: reader.GetString(2), number: reader.GetInt32(1), name: reader.GetString(0)));
             return JsonConvert.SerializeObject(data);
         }
 
@@ -143,7 +143,7 @@ namespace AgroApp.Controllers.Api
         }
 
         //Hulpstuk
-        public static async Task<Hulpstuk> GetHulpstuk(int id)
+        public static async Task<Attachment> GetHulpstuk(int id)
         {
             if (id < 0)
                 return null;
@@ -154,7 +154,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new Hulpstuk(idHulpstuk: reader.GetInt32(0), naam: reader.GetString(1), nummer: reader.GetInt32(2)) : null;
+                return reader.HasRows ? new Attachment(idAttachment: reader.GetInt32(0), name: reader.GetString(1), number: reader.GetInt32(2)) : null;
             }
         }
 
@@ -162,12 +162,12 @@ namespace AgroApp.Controllers.Api
         public async Task<string> GetHulpstukken()
         {
             string query = "SELECT idHulpstuk, nummer, naam, isDeleted FROM Hulpstuk WHERE isDeleted = @0";
-            List<Hulpstuk> data = new List<Hulpstuk>();
+            List<Attachment> data = new List<Attachment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (reader.Read())
-                    data.Add(new Hulpstuk(idHulpstuk: reader.GetInt32(0), nummer: reader.GetInt32(1), naam: reader.GetString(2)));
+                    data.Add(new Attachment(idAttachment: reader.GetInt32(0), number: reader.GetInt32(1), name: reader.GetString(2)));
             return JsonConvert.SerializeObject(data);
         }
 
@@ -175,12 +175,12 @@ namespace AgroApp.Controllers.Api
         public async Task<string> GetArchiefHulpstukken()
         {
             string query = "SELECT idHulpstuk, nummer, naam, isDeleted FROM Hulpstuk WHERE isDeleted = @0";
-            List<Hulpstuk> data = new List<Hulpstuk>();
+            List<Attachment> data = new List<Attachment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", true)))
                 while (reader.Read())
-                    data.Add(new Hulpstuk(idHulpstuk: reader.GetInt32(0), nummer: reader.GetInt32(1), naam: reader.GetString(2)));
+                    data.Add(new Attachment(idAttachment: reader.GetInt32(0), number: reader.GetInt32(1), name: reader.GetString(2)));
             return JsonConvert.SerializeObject(data);
         }
 
@@ -437,20 +437,20 @@ namespace AgroApp.Controllers.Api
                 query = "INSERT INTO WerktijdHulpstuk "
                     + "SET WerktijdHulpstuk.idWerktijd = @1, "
                     + "WerktijdHulpstuk.idHulpstuk = @0";
-                foreach (Hulpstuk hulpstuk in werkbon.Hulpstukken ?? Enumerable.Empty<Hulpstuk>())
+                foreach (Attachment hulpstuk in werkbon.Hulpstukken ?? Enumerable.Empty<Attachment>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-                        new MySqlParameter("@0", hulpstuk.IdHulpstuk),
+                        new MySqlParameter("@0", hulpstuk.IdAttachment),
                         new MySqlParameter("@1", werktijdId));
 
                 query = "INSERT INTO Gewicht "
                     + "SET Gewicht.type = @0, Gewicht.volGewicht = @1, Gewicht.nettoGewicht = @2, "
                     + "Gewicht.richting = @3, Gewicht.idWerktijd = @4";
-                foreach (Gewicht gewicht in werkbon.Gewichten ?? Enumerable.Empty<Gewicht>())
+                foreach (Cargo gewicht in werkbon.Gewichten ?? Enumerable.Empty<Cargo>())
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@0", gewicht.Type),
-                        new MySqlParameter("@1", gewicht.VolGewicht),
-                        new MySqlParameter("@2", gewicht.NettoGewicht),
-                        new MySqlParameter("@3", gewicht.Richting),
+                        new MySqlParameter("@1", gewicht.FullLoad),
+                        new MySqlParameter("@2", gewicht.NetLoad),
+                        new MySqlParameter("@3", gewicht.Direction),
                         new MySqlParameter("@4", werktijdId));
 
                 return true;

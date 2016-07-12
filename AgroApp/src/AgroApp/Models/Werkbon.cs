@@ -12,12 +12,12 @@ namespace AgroApp.Models
         public Customer Klant { set; get; }
         public string Mankeuze { set; get; }
         public Machine[] Machines { set; get; }
-        public Hulpstuk[] Hulpstukken { set; get; }
+        public Attachment[] Hulpstukken { set; get; }
         public long VanTijd { set; get; }
         public long TotTijd { set; get; }
         public long TotaalTijd { set; get; }
         public long PauzeTijd { set; get; }
-        public Gewicht[] Gewichten { set; get; }
+        public Cargo[] Gewichten { set; get; }
         public Rijplaat IngaandeRijplaten { set; get; }
         public Rijplaat UitgaandeRijplaten { set; get; }
         public string VerbruikteMaterialen { set; get; }
@@ -29,7 +29,7 @@ namespace AgroApp.Models
             
         }
 
-        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, int totaalTijd, Machine[] machines = null, Hulpstuk[] hulpstukken = null, int vanTijd = 0, int totTijd = 0, int pauzeTijd = 0, Gewicht[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
+        public Werkbon(User selectedGebruiker, DateTime datum, Customer klant, string mankeuze, int totaalTijd, Machine[] machines = null, Attachment[] hulpstukken = null, int vanTijd = 0, int totTijd = 0, int pauzeTijd = 0, Cargo[] gewichten = null, Rijplaat ingaandeRijplaten = null, Rijplaat uitgaandeRijplaten = null, string verbruikteMaterialen = "", string opmerking = "")
         {
             Gebruiker = selectedGebruiker;
             Datum = datum;
