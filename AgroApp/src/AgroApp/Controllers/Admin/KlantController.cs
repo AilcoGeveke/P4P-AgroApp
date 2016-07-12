@@ -34,7 +34,7 @@ namespace AgroApp.Controllers.Admin
             Customer klant = await WerkbonController.GetKlant(id);
             ViewData["idKlant"] = id;
             ViewData["naamKlant"] = klant.Name;
-            ViewData["adresKlant"] = klant.Adress;
+            ViewData["adresKlant"] = klant.Address;
             return View("../admin/klantbeheer/klantedit");
         }
     }

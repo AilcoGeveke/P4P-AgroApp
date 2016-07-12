@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Opdracht
+    public class Assignment
     {
         public Customer Customer;
+        public int IdAssignment;
         public User[] Users;
         public string Location;
         public string Description;
         public DateTime? Date;
-        public int Idassignment;
 
-        public int usercount;
+        public int gebruikerCount;
 
-        public Opdracht(int idAssignment, string location, string description, DateTime? date, Customer selectedCustomer = null)
+        public Assignment(int idAssignment, string location, string description, DateTime? date, Customer customer = null)
         {
-            Idassignment = idAssignment;
+            IdAssignment = idAssignment;
             Location = location;
             Description = description;
             Date = date;
-            Customer = selectedCustomer;
+            Customer = customer;
         }
     }
 }

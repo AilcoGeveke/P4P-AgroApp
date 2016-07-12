@@ -16,7 +16,7 @@
                 <md-autocomplete flex required ng-init="getKlanten(); selectedKlant = @ViewData["klant"]"
                                  md-search-text="klantZoekText"
                                  md-input-class="inputnomargin"
-                                 md-selected-item="selectedKlant"
+                                 md-selected-item="selectedCustomer"
                                  md-items="item in querySearch(klantZoekText, klanten)"
                                  md-item-text="item.Name"
                                  md-autoselect="true"
@@ -64,15 +64,22 @@
                     </md-item-template>
                 </md-autocomplete>
             </div>
+
             <div layout-gt-xs="row">
-                <md-input-container class="md-block inputnomargin" flex-gt-sm ng-init="getManKeuzeData()">
+                <md-input-container class="md-block inputnomargin" flex-gt-sm ng-select="x in selectedMankeuze track by $index">
                     <label>Man</label>
-                    <md-select ng-model="manKeuze">
-                        <md-option ng-repeat="n in manKeuze">
+                    <md-select ng-model="selectedMankeuze[$index]" ng-selected="$first" ng-value="n">
+                        <md-option ng-repeat="n in manKeuze" ng-selected="$first" ng-value="n">
                             {{n}}
                         </md-option>
                     </md-select>
                 </md-input-container>
+                <div layout="row">
+                    <md-button class="md-icon-button" layout="center" ng-click="increaseMankeuze()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+                    <md-button class="md-icon-button" layout="center" ng-click="decreaseMankeuze()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+                </div>
+
+
 
                 <md-input-container class="md-block inputnomargin">
                     <label>Werklocatie</label>
@@ -190,17 +197,17 @@
             <div layout="row">
                 <md-input-container class="full-width md-block inputnomargin">
                     <label>Vol gewicht</label>
-                    <input input type="number" name="vol" ng-model="gewicht.volGewicht" ng-change="onGewichtChange(false)">
+                    <input input type="number" name="vol" ng-model="gewicht.vol" ng-change="onGewichtChange(false)">
                 </md-input-container>
 
                 <md-input-container class="full-width md-block inputnomargin">
                     <label>Leeg gewicht</label>
-                    <input input type="number" name="leeg" ng-model="gewicht.leegGewicht" ng-change="onGewichtChange(false)">
+                    <input input type="number" name="leeg" ng-model="gewicht.leeg" ng-change="onGewichtChange(false)">
                 </md-input-container>
 
                 <md-input-container class="full-width md-block inputnomargin">
                     <label>Netto gewicht</label>
-                    <input input type="number" name="netto" ng-model="gewicht.nettoGewicht" ng-change="onGewichtChange(true)">
+                    <input input type="number" name="netto" ng-model="gewicht.netto" ng-change="onGewichtChange(true)">
                 </md-input-container>
             </div>
 
@@ -243,21 +250,35 @@
 
 
             <md-subheader class="md-no-sticky">Losse machines</md-subheader>
-            @*@*<div ng-init="getMachines()">
-                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedRijplaten track by $index">
+            <div ng-init="getMachines()">
+                    <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedMachines track by $index">
                         <label>Losse machine</label>
-                        <md-select ng-model="selectedRijplaten[$index]">
+                        <md-select ng-model="selectedMachines[$index]">
                             <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
                                 {{n.Nummer}}: {{n.Naam}}
                             </md-option>
                         </md-select>
                     </md-input-container>
                     <div layout="row">
-                        <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedRijplatenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
-                        <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedRijplatenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+                        <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedMachines()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+                        <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedMachines()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
                     </div>
-                </div>*@
-
+                </div>
+           
+            @*<div ng-init="getMachines()">
+            <md-input-container class="md-block inputnomargin" flex-gt-sm ng-repeat="x in selectedRijplaten track by $index">
+                <label>Losse machine</label>
+                <md-select ng-model="selectedRijplaten[$index]">
+                    <md-option ng-repeat="n in machines" ng-selected="$first" ng-value="n">
+                        {{n.Nummer}}: {{n.Naam}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <div layout="row">
+                <md-button class="md-icon-button" layout="center" ng-click="increaseSelectedRijplatenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">add_circle</md-icon></md-button>
+                <md-button class="md-icon-button" layout="center" ng-click="decreaseSelectedRijplatenList()"><md-icon ng-style="{color: 'rgb(63, 81, 181)'}">delete</md-icon></md-button>
+            </div>
+        </div>*@
             <md-input-container class="md-block inputnomargin">
                 <label>Verbruikte materialen</label>
                 <textarea ng-model="werktijd.verbruikteMaterialen" md-maxlength="150" rows="5" md-select-on-focus></textarea>

@@ -24,17 +24,17 @@ namespace AgroApp.Controllers.Api
                 int opdrachtId = -1;
                 string query = "INSERT INTO Opdracht (locatie, beschrijving, idKlant, datum) VALUES (@0, @1, @2, @3); SELECT LAST_INSERT_ID()";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", opdracht.locatie),
-                    new MySqlParameter("@1", opdracht.beschrijving),
-                    new MySqlParameter("@2", opdracht.klant.IdCustomer),
-                    new MySqlParameter("@3", opdracht.datum)))
+                    new MySqlParameter("@0", opdracht.Location),
+                    new MySqlParameter("@1", opdracht.Description),
+                    new MySqlParameter("@2", opdracht.Customer.IdCustomer),
+                    new MySqlParameter("@3", opdracht.Date)))
                 {
                     await reader.ReadAsync();
                     opdrachtId = reader.GetInt32(0);
                 }
 
                 query = "INSERT INTO OpdrachtWerknemer (idWerknemer, idOpdracht) VALUES (@0, @1)";
-                foreach (User user in opdracht.gebruikers)
+                foreach (User user in opdracht.Users)
                     await MySqlHelper.ExecuteNonQueryAsync(conn, query,
                         new MySqlParameter("@1", opdrachtId),
                         new MySqlParameter("@0", user.IdWerknemer));

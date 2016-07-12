@@ -51,39 +51,39 @@ namespace AgroApp.Controllers
                 new MySqlParameter("@0", 1)))
                 while (await reader.ReadAsync())
                     opdrachten.Add(new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        locatie: reader["locatie"] as string,
-                        beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue));
+                        idAssignment: reader["idOpdracht"] as int? ?? -1,
+                        location: reader["locatie"] as string,
+                        description: reader["beschrijving"] as string,
+                        date: reader["datum"] as DateTime? ?? DateTime.MinValue));
             return opdrachten;
         }
 
         [HttpGet("GetGebruikerOpdrachten")]
-        public async Task<IEnumerable<OpdrachtWerknemer>> GetGebruikerOpdrachten()
+        public async Task<IEnumerable<EmployeeAssignment>> GetGebruikerOpdrachten()
         {
             string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres, OpdrachtWerknemer.idOpdrachtWerknemer" +
                 " FROM Opdracht JOIN Klant ON Klant.idKlant = Opdracht.idKlant JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
                 "WHERE OpdrachtWerknemer.idWerknemer = @0";
-            List<OpdrachtWerknemer> OpdrachtWerknemer = new List<OpdrachtWerknemer>();
+            List<EmployeeAssignment> OpdrachtWerknemer = new List<EmployeeAssignment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
                 while (await reader.ReadAsync())
-                    OpdrachtWerknemer.Add(new OpdrachtWerknemer()
+                    OpdrachtWerknemer.Add(new EmployeeAssignment()
                     {
                         Opdracht = new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(Name: reader["naam"] as string, Adress: reader["adres"] as string),
-                        locatie: reader["locatie"] as string,
-                        beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
-                        idOpdrachtWerknemer = reader["idOpdrachtWerknemer"] as int? ?? -1
+                        idAssignment: reader["idOpdracht"] as int? ?? -1,
+                        selectedCustomer: new Customer(name: reader["naam"] as string, address: reader["adres"] as string),
+                        location: reader["locatie"] as string,
+                        description: reader["beschrijving"] as string,
+                        date: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        idEmployeeAssignment = reader["idOpdrachtWerknemer"] as int? ?? -1
                     });
             return OpdrachtWerknemer;
         }
 
         [HttpGet("getOpdrachtWerknemer/{id}")]
-        public async Task<OpdrachtWerknemer> GetOpdrachtWerknemer(int id)
+        public async Task<EmployeeAssignment> GetOpdrachtWerknemer(int id)
         {
             string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.idKlant, Klant.naam, Klant.adres, OpdrachtWerknemer.idWerknemer" +
                 " FROM Opdracht LEFT JOIN Klant ON Klant.idKlant = Opdracht.idKlant LEFT JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
@@ -92,16 +92,16 @@ namespace AgroApp.Controllers
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
                 while (await reader.ReadAsync())
-                    return new OpdrachtWerknemer()
+                    return new EmployeeAssignment()
                     {
                         Opdracht = new Opdracht(
-                        idOpdracht: reader["idOpdracht"] as int? ?? -1,
-                        selectedKlant: new Customer(IdCustomer: reader["idKlant"] as int? ?? -1, Name: reader["naam"] as string, Adress: reader["adres"] as string),
-                        locatie: reader["locatie"] as string,
-                        beschrijving: reader["beschrijving"] as string,
-                        datum: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        idAssignment: reader["idOpdracht"] as int? ?? -1,
+                        selectedCustomer: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, address: reader["adres"] as string),
+                        location: reader["locatie"] as string,
+                        description: reader["beschrijving"] as string,
+                        date: reader["datum"] as DateTime? ?? DateTime.MinValue),
                         Werknemer = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1 },
-                        idOpdrachtWerknemer = id as int? ?? -1
+                        idEmployeeAssignment = id as int? ?? -1
                     };
             return null;
         }
@@ -130,7 +130,7 @@ namespace AgroApp.Controllers
         [HttpGet("assignmentedit/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
-            OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
+            EmployeeAssignment opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             ViewData["id"] = id;
             ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
             ViewData["beschrijving"] = opdrachtWerknemer.Opdracht.beschrijving;
@@ -141,7 +141,7 @@ namespace AgroApp.Controllers
         [HttpGet("werkboninvullen/{id}")]
         public async Task<IActionResult> WerkbonInvullen(int id)
         {
-            OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
+            EmployeeAssignment opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             opdrachtWerknemer.Werknemer = await UserController.GetUser(opdrachtWerknemer.Werknemer.IdWerknemer);
             ViewData["id"] = id;
             ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
@@ -151,7 +151,7 @@ namespace AgroApp.Controllers
         }
 
         [HttpGet("getWerkbonnen")]
-        public async Task<IEnumerable<Werkbon>> GetWerkbonnen()
+        public async Task<IEnumerable<WorkOrder>> GetWerkbonnen()
         {
             string query = "SELECT Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.pauzeTotaal, Werktijd.datum, Werktijd.manKeuze, Werktijd.verbruikteMaterialen, "
                     + "Werktijd.Opmerking, Werknemer.idWerknemer, "
@@ -165,15 +165,15 @@ namespace AgroApp.Controllers
                     + "ON OpdrachtWerknemer.idOpdracht = Opdracht.idOpdracht "
                     + "JOIN Klant "
                     + "ON Opdracht.idKlant = Klant.idKlant;";
-            List<Werkbon> werkbon = new List<Werkbon>();
+            List<WorkOrder> werkbon = new List<WorkOrder>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
                 while (await reader.ReadAsync())
-                    werkbon.Add(new Werkbon()
+                    werkbon.Add(new WorkOrder()
                     {
-                        Gebruiker = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1, Name = reader["WerknemerNaam"] as string ?? "" },
-                        Datum = reader["datum"] as DateTime? ?? new DateTime(),
+                        User = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1, Name = reader["WerknemerNaam"] as string ?? "" },
+                        Date = reader["datum"] as DateTime? ?? new DateTime(),
                         Klant = new Customer() {Name = reader["KlantNaam"] as string ?? "" },
                         Mankeuze = reader["manKeuze"] as string ?? "",
                         VanTijd = reader["van"] as int? ?? 0,
@@ -183,11 +183,11 @@ namespace AgroApp.Controllers
                         VerbruikteMaterialen = reader["verbruikteMaterialen"] as string ?? "",
                         Opmerking = reader["Opmerking"] as string ?? ""
                     });
-            return werkbon;
+            return WorkOrder;
         }
 
         [HttpGet("getStatistieken")]
-        public async Task<IEnumerable<Werkbon>> GetStatistieken()
+        public async Task<IEnumerable<WorkOrder>> GetStatistieken()
         {
             string query = "SELECT OpdrachtWerknemer.idOpdrachtWerknemer, Werktijd.van, Werktijd.tot, Werktijd.urenTotaal, Werktijd.datum "
                     + "FROM OpdrachtWerknemer "

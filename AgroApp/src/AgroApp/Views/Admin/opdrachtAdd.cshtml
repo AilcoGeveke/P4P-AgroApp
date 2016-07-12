@@ -7,7 +7,7 @@
                 <md-autocomplete flex required
                                  md-search-text="klantZoekText"
                                  md-input-class="inputnomargin"
-                                 md-selected-item="selectedKlant"
+                                 md-selected-item="selectedCustomer"
                                  md-items="item in querySearch(klantZoekText, klanten)"
                                  md-item-text="item.Name"
                                  md-autoselect="true"
@@ -26,8 +26,10 @@
                         </span>
                     </md-item-template>
                     <md-not-found>
-                        Klant "{{klantZoekText}}" kon niet gevonden worden.
-                        <a ng-click="gg()">Voeg deze klant toe?</a>
+                        <a ng-click="changeView('/admin/klantbeheer/toevoegen')">
+                            Klant "{{klantZoekText}}" niet gevonden,
+                            klik hier om toe te voegen.
+                        </a>
                     </md-not-found>
                 </md-autocomplete>
                 <md-datepicker ng-model="opdracht.datum" md-placeholder="Startdatum">
@@ -43,7 +45,7 @@
                 <label>Beschrijving</label>
                 <textarea ng-model="opdracht.omschrijving" md-maxlength="200" rows="15" md-select-on-focus></textarea>
             </md-input-container>
-
+           
             <md-subheader class="md-no-sticky">Werknemers</md-subheader>
             <md-chips ng-init="getAllUserData()" ng-model="selectedGebruikers" md-autocomplete-snap
                       md-require-match="true">
