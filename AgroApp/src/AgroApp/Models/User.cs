@@ -14,7 +14,7 @@ namespace AgroApp.Models
 
         public User() { }
 
-        public User(int idWerknemer, string name, string username, string rol, bool isDeleted)
+        public User(int idWerknemer, string name, string username, string rol)
         {
             IdWerknemer = idWerknemer;
             Name = name;

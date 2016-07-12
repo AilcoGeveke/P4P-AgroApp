@@ -1,11 +1,13 @@
-﻿agroApp.controller('ManageUser', function ($scope, $http, $rootScope, $mdDialog) {
+﻿var agroApp = angular.module('materialAdmin');
+
+agroApp.controller('ManageUser', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 
-    $scope.selectedGebruikers = [];
-    $scope.gebruikers = [];
+    $scope.selectedUsers = [];
+    $scope.users = [];
     $scope.getAllUserData = function () {
         $http.get('/api/user/getall').success(function (data) {
-            $scope.gebruikers = data;
+            $scope.users = data;
         }).error(function (data) {
         })
     }
