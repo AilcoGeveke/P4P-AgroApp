@@ -13,6 +13,7 @@
     "animate.css": "daneden/animate.css#~3.3.0",
     "autosize": "~3.0.6",
     "bootstrap-sweetalert": "~0.4.5",
+    "bower": "*",
     "br-validations": "~0.2.4",
     "eonasdan-bootstrap-datetimepicker": "Eonasdan/bootstrap-datetimepicker#~4.7.14",
     "flot-orderBars": "emmerich/flot-orderBars",
@@ -35,9 +36,6 @@
     "summernote": "~0.6.7",
     "sweetalert": "~1.0.1",
     "Waves": "waves#~0.7.4",
-    "angular": "*"
-  },
-  "resolutions": {
-    "angular": "1.4.12"
+    "angular": "1.4.7"
   }
 }
