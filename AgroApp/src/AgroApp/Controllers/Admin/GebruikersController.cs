@@ -22,7 +22,7 @@ namespace AgroApp.Controllers
             User user = await UserController.GetUser(id);
             ViewData["id"] = user.IdWerknemer;
             ViewData["naam"] = user.Name;
-            ViewData["email"] = user.Email;
+            ViewData["email"] = user.Username;
             ViewData["rol"] = user.Rol;
             return View("../admin/gebruikerbeheer/gebruikeredit");
         }

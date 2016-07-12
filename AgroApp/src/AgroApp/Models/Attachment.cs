@@ -7,9 +7,9 @@ namespace AgroApp.Models
 {
     public class Attachment
     {
-        public int IdAttachment { set; get; }
-        public int Number { set; get; }
-        public string Name { set; get; }
+        public int IdAttachment { private set; get; }
+        public int Number { private set; get; }
+        public string Name { private set; get; }
 
 
         public Attachment(int idAttachment = -1, int number = 0, string name = "")

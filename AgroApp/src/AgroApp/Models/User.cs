@@ -9,21 +9,19 @@ namespace AgroApp.Models
     {
         public int IdWerknemer { set; get; }
         public string Name { set; get; }
-        public string Email { set; get; }
+        public string Username { set; get; }
         public UserRol Rol { set; get; }
-        public bool IsDeleted { set; get; }
 
         public User() { }
 
-        public User(int idWerknemer, string name, string email, string rol, bool isDeleted)
+        public User(int idWerknemer, string name, string username, string rol, bool isDeleted)
         {
             IdWerknemer = idWerknemer;
             Name = name;
-            Email = email;
+            Username = username;
             UserRol finalRol = UserRol.Gebruiker;
             Enum.TryParse<User.UserRol>(rol, true, out finalRol);
             Rol = finalRol;
-            IsDeleted = isDeleted;
         }
 
         public override string ToString()

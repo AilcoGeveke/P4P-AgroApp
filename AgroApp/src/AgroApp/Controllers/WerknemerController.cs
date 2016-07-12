@@ -132,9 +132,9 @@ namespace AgroApp.Controllers
         {
             EmployeeAssignment opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             ViewData["id"] = id;
-            ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
-            ViewData["beschrijving"] = opdrachtWerknemer.Opdracht.beschrijving;
-            ViewData["datum"] = opdrachtWerknemer.Opdracht?.datum.ToString() ?? "";
+            ViewData["locatie"] = opdrachtWerknemer.Assignment.locatie;
+            ViewData["beschrijving"] = opdrachtWerknemer.Assignment.beschrijving;
+            ViewData["datum"] = opdrachtWerknemer.Assignment?.datum.ToString() ?? "";
             return View("assignmentedit");
         }
 
@@ -142,11 +142,11 @@ namespace AgroApp.Controllers
         public async Task<IActionResult> WerkbonInvullen(int id)
         {
             EmployeeAssignment opdrachtWerknemer = await GetOpdrachtWerknemer(id);
-            opdrachtWerknemer.Werknemer = await UserController.GetUser(opdrachtWerknemer.Werknemer.IdWerknemer);
+            opdrachtWerknemer.Werknemer = await UserController.GetUser(opdrachtWerknemer.Employee.IdWerknemer);
             ViewData["id"] = id;
-            ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
-            ViewData["gebruiker"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Werknemer, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
-            ViewData["klant"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Opdracht.klant, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
+            ViewData["locatie"] = opdrachtWerknemer.Assignment.locatie;
+            ViewData["gebruiker"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Employee, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
+            ViewData["klant"] = Newtonsoft.Json.JsonConvert.SerializeObject(opdrachtWerknemer.Assignment.klant, new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore });
             return View("../admin/werkbonadd");
         }
 
@@ -195,7 +195,7 @@ namespace AgroApp.Controllers
                     + "ON OpdrachtWerknemer.idOpdrachtWerknemer = Werktijd.idOpdrachtWerknemer "
                     + "WHERE OpdrachtWerknemer.idWerknemer = @0";
                     //+ "AND Werktijd.datum >= @1 AND Werktijd.datum <= @2";
-            List<Werkbon> statistiek = new List<Werkbon>();
+            List<TimesheetPart> statistiek = new List<TimesheetPart>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
