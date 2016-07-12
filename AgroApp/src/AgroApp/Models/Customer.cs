@@ -9,13 +9,13 @@ namespace AgroApp.Models
     {
         public int IdCustomer { set; get; }
         public string Name { set; get; }
-        public string Adress { set; get; }
+        public string Address { set; get; }
 
-        public Customer(int idCustomer = -1, string name = "", string adress = "")
+        public Customer(int idCustomer = -1, string name = "", string address = "")
         {
             IdCustomer = idCustomer;
             Name = name;
-            Adress = adress;
+            Address = address;
         }
     }
 }

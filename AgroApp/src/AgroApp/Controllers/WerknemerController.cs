@@ -52,38 +52,38 @@ namespace AgroApp.Controllers
                 while (await reader.ReadAsync())
                     opdrachten.Add(new Opdracht(
                         idAssignment: reader["idOpdracht"] as int? ?? -1,
-                        Location: reader["locatie"] as string,
-                        Description: reader["beschrijving"] as string,
-                        Date: reader["datum"] as DateTime? ?? DateTime.MinValue));
+                        location: reader["locatie"] as string,
+                        description: reader["beschrijving"] as string,
+                        date: reader["datum"] as DateTime? ?? DateTime.MinValue));
             return opdrachten;
         }
 
         [HttpGet("GetGebruikerOpdrachten")]
-        public async Task<IEnumerable<OpdrachtWerknemer>> GetGebruikerOpdrachten()
+        public async Task<IEnumerable<EmployeeAssignment>> GetGebruikerOpdrachten()
         {
             string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.naam, Klant.adres, OpdrachtWerknemer.idOpdrachtWerknemer" +
                 " FROM Opdracht JOIN Klant ON Klant.idKlant = Opdracht.idKlant JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
                 "WHERE OpdrachtWerknemer.idWerknemer = @0";
-            List<OpdrachtWerknemer> OpdrachtWerknemer = new List<OpdrachtWerknemer>();
+            List<EmployeeAssignment> OpdrachtWerknemer = new List<EmployeeAssignment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", HttpContext.Request.Cookies["idUser"])))
                 while (await reader.ReadAsync())
-                    OpdrachtWerknemer.Add(new OpdrachtWerknemer()
+                    OpdrachtWerknemer.Add(new EmployeeAssignment()
                     {
                         Opdracht = new Opdracht(
                         idAssignment: reader["idOpdracht"] as int? ?? -1,
-                        selectedCustomer: new Customer(name: reader["naam"] as string, adress: reader["adres"] as string),
-                        Location: reader["locatie"] as string,
-                        Description: reader["beschrijving"] as string,
-                        Date: reader["datum"] as DateTime? ?? DateTime.MinValue),
-                        idOpdrachtWerknemer = reader["idOpdrachtWerknemer"] as int? ?? -1
+                        selectedCustomer: new Customer(name: reader["naam"] as string, address: reader["adres"] as string),
+                        location: reader["locatie"] as string,
+                        description: reader["beschrijving"] as string,
+                        date: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        idEmployeeAssignment = reader["idOpdrachtWerknemer"] as int? ?? -1
                     });
             return OpdrachtWerknemer;
         }
 
         [HttpGet("getOpdrachtWerknemer/{id}")]
-        public async Task<OpdrachtWerknemer> GetOpdrachtWerknemer(int id)
+        public async Task<EmployeeAssignment> GetOpdrachtWerknemer(int id)
         {
             string query = "SELECT Opdracht.idOpdracht, Opdracht.locatie, Opdracht.beschrijving, Opdracht.datum, Klant.idKlant, Klant.naam, Klant.adres, OpdrachtWerknemer.idWerknemer" +
                 " FROM Opdracht LEFT JOIN Klant ON Klant.idKlant = Opdracht.idKlant LEFT JOIN OpdrachtWerknemer ON Opdracht.idOpdracht = OpdrachtWerknemer.idOpdracht " +
@@ -92,16 +92,16 @@ namespace AgroApp.Controllers
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", id)))
                 while (await reader.ReadAsync())
-                    return new OpdrachtWerknemer()
+                    return new EmployeeAssignment()
                     {
                         Opdracht = new Opdracht(
                         idAssignment: reader["idOpdracht"] as int? ?? -1,
-                        selectedCustomer: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, adress: reader["adres"] as string),
-                        Location: reader["locatie"] as string,
-                        Description: reader["beschrijving"] as string,
-                        Date: reader["datum"] as DateTime? ?? DateTime.MinValue),
+                        selectedCustomer: new Customer(idCustomer: reader["idKlant"] as int? ?? -1, name: reader["naam"] as string, address: reader["adres"] as string),
+                        location: reader["locatie"] as string,
+                        description: reader["beschrijving"] as string,
+                        date: reader["datum"] as DateTime? ?? DateTime.MinValue),
                         Werknemer = new User() { IdWerknemer = reader["idWerknemer"] as int? ?? -1 },
-                        idOpdrachtWerknemer = id as int? ?? -1
+                        idEmployeeAssignment = id as int? ?? -1
                     };
             return null;
         }
@@ -130,7 +130,7 @@ namespace AgroApp.Controllers
         [HttpGet("assignmentedit/{id}")]
         public async Task<IActionResult> GebruikerWijzigen(int id)
         {
-            OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
+            EmployeeAssignment opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             ViewData["id"] = id;
             ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;
             ViewData["beschrijving"] = opdrachtWerknemer.Opdracht.beschrijving;
@@ -141,7 +141,7 @@ namespace AgroApp.Controllers
         [HttpGet("werkboninvullen/{id}")]
         public async Task<IActionResult> WerkbonInvullen(int id)
         {
-            OpdrachtWerknemer opdrachtWerknemer = await GetOpdrachtWerknemer(id);
+            EmployeeAssignment opdrachtWerknemer = await GetOpdrachtWerknemer(id);
             opdrachtWerknemer.Werknemer = await UserController.GetUser(opdrachtWerknemer.Werknemer.IdWerknemer);
             ViewData["id"] = id;
             ViewData["locatie"] = opdrachtWerknemer.Opdracht.locatie;

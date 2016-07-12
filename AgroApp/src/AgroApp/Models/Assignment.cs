@@ -9,21 +9,21 @@ namespace AgroApp.Models
     public class Assignment
     {
         public Customer Customer;
+        public int IdAssignment;
         public User[] Users;
         public string Location;
         public string Description;
         public DateTime? Date;
-        public int idAssignment;
 
         public int gebruikerCount;
 
-        public Assignment(int idOpdracht, string locatie, string beschrijving, DateTime? datum, Customer selectedKlant = null)
+        public Assignment(int idAssignment, string location, string description, DateTime? date, Customer customer = null)
         {
-            this.idAssignment = idOpdracht;
-            this.Location = locatie;
-            this.Description = beschrijving;
-            this.Date = datum;
-            this.Customer = selectedKlant;
+            IdAssignment = idAssignment;
+            Location = location;
+            Description = description;
+            Date = date;
+            Customer = customer;
         }
     }
 }
