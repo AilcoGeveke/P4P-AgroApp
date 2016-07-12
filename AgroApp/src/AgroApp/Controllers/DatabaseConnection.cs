@@ -10,7 +10,7 @@ namespace AgroApp.Controllers
     {
         public static async Task<MySqlConnection> GetConnection()
         {
-            string connectionString = "Database=acsm_c2056a9f0688b3b;Data Source=eu-cdbr-azure-west-d.cloudapp.net;User Id=bbe0ad93c4b224;Password=3b9d7513;pooling=false";
+            string connectionString = "Database=agrowebdatabase;Data Source=eu-cdbr-azure-west-d.cloudapp.net;User Id=b899ef5ed45ce9;Password=8d16616f;pooling=false";
             MySqlConnection conn = new MySqlConnection(connectionString);
             await conn.OpenAsync();
             return conn;

@@ -11,11 +11,11 @@ namespace AgroApp.Models
         public string Name { set; get; }
         public string Adress { set; get; }
 
-        public Customer(int IdCustomer = -1, string Name = "", string Adress = "")
+        public Customer(int idCustomer = -1, string name = "", string adress = "")
         {
-            this.IdCustomer = IdCustomer;
-            this.Name = Name;
-            this.Adress = Adress;
+            IdCustomer = idCustomer;
+            Name = name;
+            Adress = adress;
         }
     }
 }

@@ -25,10 +25,10 @@ namespace AgroApp.Controllers.Admin
         [HttpGet("admin/hulpstukbeheer/wijzigen/{id}")]
         public async Task<IActionResult> HulpstukWijzigen(int id)
         {
-            Hulpstuk hulpstuk = await WerkbonController.GetHulpstuk(id);
+            Attachment hulpstuk = await WerkbonController.GetHulpstuk(id);
             ViewData["id"] = id;
-            ViewData["naam"] = hulpstuk.Naam;
-            ViewData["hulpstuknummer"] = hulpstuk.Nummer;
+            ViewData["naam"] = hulpstuk.Name;
+            ViewData["hulpstuknummer"] = hulpstuk.Number;
             return View("../admin/hulpstukbeheer/hulpstukedit");
         }
 

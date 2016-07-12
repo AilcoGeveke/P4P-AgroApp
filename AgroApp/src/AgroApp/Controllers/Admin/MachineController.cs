@@ -27,9 +27,9 @@ namespace AgroApp.Controllers.Admin
         {
             Machine machine = await WerkbonController.GetMachine(id);
             ViewData["id"] = id;
-            ViewData["naam"] = machine.Naam;
-            ViewData["machinenummer"] = machine.Nummer;
-            ViewData["kenteken"] = machine.Kenteken;
+            ViewData["naam"] = machine.Name;
+            ViewData["machinenummer"] = machine.Number;
+            ViewData["kenteken"] = machine.Tag;
             ViewData["type"] = machine.Type;
             return View("../admin/machinebeheer/machineedit");
         }
