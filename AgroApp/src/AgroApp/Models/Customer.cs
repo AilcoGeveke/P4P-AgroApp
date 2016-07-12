@@ -7,9 +7,9 @@ namespace AgroApp.Models
 {
     public class Customer
     {
-        public int IdCustomer { set; get; }
-        public string Name { set; get; }
-        public string Address { set; get; }
+        public int IdCustomer { private set; get; }
+        public string Name { private set; get; }
+        public string Address { private set; get; }
 
         public Customer(int idCustomer = -1, string name = "", string address = "")
         {

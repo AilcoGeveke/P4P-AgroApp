@@ -8,12 +8,12 @@ namespace AgroApp.Models
 {
     public class Assignment
     {
-        public Customer Customer;
-        public int IdAssignment;
-        public User[] Users;
-        public string Location;
-        public string Description;
-        public DateTime? Date;
+        public Customer Customer { private set; get; }
+        public int IdAssignment { private set; get; }
+        public User[] Users { private set; get; }
+        public string Location { private set; get; }
+        public string Description { private set; get; }
+        public DateTime? Date { private set; get; }
 
         public int gebruikerCount;
 

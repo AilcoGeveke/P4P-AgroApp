@@ -8,14 +8,14 @@ namespace AgroApp.Models
 {
     public class Opdracht
     {
-        public Customer Customer;
-        public User[] Users;
-        public string Location;
-        public string Description;
-        public DateTime? Date;
-        public int Idassignment;
+        public Customer Customer { private set; get; }
+        public User[] Users { private set; get; }
+        public string Location { private set; get; }
+        public string Description { private set; get; }
+        public DateTime? Date { private set; get; }
+        public int Idassignment { private set; get; }
 
-        public int usercount;
+        public int Usercount { private set; get; }
 
         public Opdracht(int idAssignment, string location, string description, DateTime? date, Customer selectedCustomer = null)
         {
