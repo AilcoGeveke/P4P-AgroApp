@@ -15,5 +15,36 @@ namespace AgroApp.Controllers.Admin
         {
             return View();
         }
+
+        [HttpGet("admin/werkbon")]
+        public IActionResult WorkOrderView()
+        {
+            return View("timesheet");
+        }
+
+        [HttpGet("admin/gebruikers/overzicht")]
+        public IActionResult OverviewUsers()
+        {
+            return View("manage-user/overview-user");
+        }
+
+        [HttpGet("admin/gebruikers/toevoegen")]
+        public IActionResult AddUser()
+        {
+            return View("manage-user/add-user");
+        }
+
+        [HttpGet("admin/gebruikers/wijzigen")]
+        public IActionResult EditUser()
+        {
+            return View("manage-user/edit-user");
+        }
+
+        [HttpGet("admin/gebruikers/archief")]
+        public IActionResult ArchivedUsers()
+        {
+            return View("manage-user/archive-user");
+        }
+
     }
 }

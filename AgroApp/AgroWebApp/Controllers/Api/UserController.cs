@@ -152,9 +152,10 @@ namespace AgroApp.Controllers.Api
         }
 
         //[Authorize("Admin")]
+        [HttpGet("getall")]
         public static async Task<IEnumerable<User>> GetAllUsers()
         {
-            string query = "SELECT idWerknemer, naam, gebruikersnaam, rol, isDeleted FROM Werknemer WHERE isDeleted=@0";
+            string query = "SELECT idEmployee, username, role, isDeleted FROM Employee WHERE isDeleted=@0";
             List<User> users = new List<User>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -163,6 +164,7 @@ namespace AgroApp.Controllers.Api
                     users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetBoolean(4)));
             return users;
         }
+
 
         public static async Task<IEnumerable<User>> GetArchivedUsers()
         {
