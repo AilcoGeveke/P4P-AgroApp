@@ -22,7 +22,7 @@
                         <table ng-table="um.tableSorting" class="table table-striped table-vmiddle" ng-init="um.getAllArchivedCustomers()">
                             <tr ng-repeat="w in um.allCustomers">
                                 <td data-title="'ID'" sortable="'id'">
-                                    {{ w.IdCustomer }}
+                                    {{ w.IdCustome }}
                                 </td>
                                 <td data-title="'Name'" sortable="'name'">
                                     {{ w.Name }}
@@ -31,7 +31,7 @@
                                     {{ w.Address }}
                                 </td>
                                 <td>
-                                    <button class="btn btn-default" ng-click="um.restoreUser(w)"><i class="zmdi zmdi-account-add"></i></button>
+                                    <button class="btn btn-default" ng-click="um.restoreCustomer(w)"><i class="zmdi zmdi-account-add"></i></button>
                                 </td>
                             </tr>
                         </table>

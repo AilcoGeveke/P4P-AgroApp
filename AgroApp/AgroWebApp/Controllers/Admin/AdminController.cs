@@ -59,8 +59,8 @@ namespace AgroApp.Controllers.Admin
         }
 
 
-        [HttpGet("admin/wijzigen/{id}")]
-        public IActionResult EditCustomers()
+        [HttpGet("admin/klanten/wijzigen/{id}")]
+        public async Task<IActionResult> EditCustomers(int id)
         {
 
             Customer customer = await CustomerController.GetCustomer(id);
@@ -68,6 +68,14 @@ namespace AgroApp.Controllers.Admin
 
             return View("management/editcustomer");
         }
+
+        
+         [HttpGet("admin/klanten/archief")]
+        public IActionResult ArchiveCustomer()
+        {
+            return View("management/archivecustomer");
+        }
+
 
         [HttpGet("admin/gebruikers/toevoegen")]
         public IActionResult AddUser()

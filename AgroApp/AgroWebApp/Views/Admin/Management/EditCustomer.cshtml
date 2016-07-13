@@ -14,45 +14,33 @@
             <div class="card">
                 <div class="form-horizontal">
                     <div class="card-header ch-alt m-b-20">
-                        <h2>Voertuig '@ViewData["Name"]' wijzigen <small>Vul de gegevens hieronder in en druk vervolgens op Verzenden</small></h2>
+                        <h2>Klant '@ViewData["Name"]' wijzigen <small>Vul de gegevens hieronder in en druk vervolgens op verzenden</small></h2>
                     </div>
 
-                    <div ng-init="um.machineDetails = @ViewData["machineData"]"></div>
+                    <div ng-init="um.customerDetails = @ViewData["customerData"]"></div>
 
                     <div class="card-body card-padding">
                         <div class="form-group">
                             <label for="inputFullName" class="col-sm-2 control-label">Volledige Naam</label>
                             <div class="col-sm-10">
                                 <div class="fg-line">
-                                    <input required ng-model="um.machineDetails.Name" type="text" class="form-control input-sm" id="inputFullName" placeholder="Volledige Naam">
+                                    <input required ng-model="um.customerDetails.Name" type="text" class="form-control input-sm" id="inputFullName" placeholder="Volledige Naam">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                            <label for="inputAdres" class="col-sm-2 control-label">Adres</label>
                             <div class="col-sm-10">
                                 <div class="fg-line">
-                                    <input required ng-model="um.machineDetails.Username" type="email" class="form-control input-sm" id="inputEmail3" placeholder="Email">
+                                    <input required ng-model="um.customerDetails.Address" type="email" class="form-control input-sm" id="inputAdres" placeholder="Adres">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="inputRole" class="col-sm-2 control-label">Rol</label>
-                            <div class="col-sm-10 m-b-10">
-
-                                <div class="fg-line">
-                                    <select ng-model="um.machineDetails.Role" chosen data-placeholder="Selecteer een rol..." class="w-100" id="inputRole">
-                                        <option value="User">Gebruiker</option>
-                                        <option value="Admin">Administrator</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-primary btn-sm waves-effect" ng-click="um.applyChangesToUser()">Wijzig gebruiker</button>
+                                <button class="btn btn-primary btn-sm waves-effect" ng-click="um.applyChangesToCustomer()">Wijzig gebruiker</button>
                             </div>
                         </div>
                     </div>
