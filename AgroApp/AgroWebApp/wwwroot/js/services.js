@@ -60,6 +60,37 @@ materialAdmin
         }
     })
 
+
+
+    // =========================================================================
+    // Service for handling user data
+    // =========================================================================
+
+    .service('customerManagement', function ($http) {
+        this.register = function (customer) {
+            return $http.post('/api/customer/add', customer);
+        }
+
+        this.getAll = function () {
+            return $http.get('/api/customer/getall');
+        }
+
+        this.getAllArchived = function () {
+            return $http.get('/api/customer/getallarchived');
+        }
+
+        this.applyChanges = function (customer) {
+            return $http.post('/api/customer/change', customer);
+        }
+
+        this.archive = function (id) {
+            return $http.get('/api/customer/archive/' + id);
+        }
+
+        this.restore = function (id) {
+            return $http.get('/api/customer/restore/' + id);
+        }
+    })
     // =========================================================================
     // Service for handling cargo data
     // =========================================================================

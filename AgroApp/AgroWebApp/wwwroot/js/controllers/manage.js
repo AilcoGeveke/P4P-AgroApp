@@ -14,7 +14,7 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
             }
             else {
                 swal({ title: "Gebruiker is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -352,7 +352,7 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
     };
 });
 
-agroApp.controller('CustomerManagement', function ($window, $scope, CustomerManagement, tableService) {
+agroApp.controller('CustomerManagement', function ($window, $scope, customerManagement, tableService) {
     var um = this;
 
     um.customerDetails = {};
