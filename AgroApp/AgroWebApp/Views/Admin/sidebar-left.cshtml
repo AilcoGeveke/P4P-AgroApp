@@ -6,23 +6,17 @@
             </div>
 
             <div class="profile-info">
-                Malinda Hollaway
+                @Context.User.Identity.Name
                 <i class="zmdi zmdi-caret-down"></i>
             </div>
         </a>
 
         <ul class="main-menu">
             <li>
-                <a data-ui-sref="pages.profile.profile-about" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-account"></i> View Profile</a>
+                <a href=""><i class="zmdi zmdi-settings"></i> Gegevens Veranderen</a>
             </li>
             <li>
-                <a href=""><i class="zmdi zmdi-input-antenna"></i> Privacy Settings</a>
-            </li>
-            <li>
-                <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
-            </li>
-            <li>
-                <a href=""><i class="zmdi zmdi-time-restore"></i> Logout</a>
+                <a href=""><i class="zmdi zmdi-time-restore"></i> Uitloggen</a>
             </li>
         </ul>
     </div>
@@ -55,25 +49,21 @@
             <ul style="display: block;">
                 <li class="sub-menu">
                     <a href="" toggle-submenu="">
-                        <i class="zmdi zmdi-account-box"></i>
                         Gebruiker Beheer
                     </a>
                     <ul style="display: none;">
                         <li>
                             <a href="~/admin/gebruikers/overzicht">
-                                <i class="zmdi zmdi-assignment"></i>
                                 Overzicht
                             </a>
                         </li>
                         <li>
                             <a href="~/admin/gebruikers/archief">
-                                <i class="zmdi zmdi-archive"></i>
                                 Archief
                             </a>
                         </li>
                         <li>
                             <a href="~/admin/gebruikers/toevoegen">
-                                <i class="zmdi zmdi-account-add"></i>
                                 Gebruiker Toevoegen
                             </a>
                         </li>
@@ -81,13 +71,11 @@
                 </li>
                 <li class="sub-menu">
                     <a href="" toggle-submenu="">
-                        <i class="zmdi zmdi-face"></i>
                         Klant Beheer
                     </a>
                     <ul style="display: none;">
                         <li>
                             <a href="">
-                                <i class="zmdi zmdi-assignment"></i>
                                 Overzicht
                             </a>
                         </li>
@@ -101,7 +89,7 @@
                     <a href="" toggle-submenu="">Machine Beheer</a>
                     <ul style="display: none;">
                         <li>
-                            <a href="">Overzicht</a>
+                            <a href="~/admin/machines/overzicht">Overzicht</a>
                         </li>
                         <li><a href="">Archief</a></li>
                         <li>

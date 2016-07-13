@@ -7,21 +7,22 @@ namespace AgroApp.Models
 {
     public class User
     {
-        public int IdWerknemer { set; get; }
+        public int IdEmployee { set; get; }
         public string Name { set; get; }
         public string Username { set; get; }
-        public UserRol Rol { set; get; }
+        public string Password { set; get; }
+        public UserRole Role { set; get; }
 
         public User() { }
 
         public User(int idWerknemer, string name, string username, string rol)
         {
-            IdWerknemer = idWerknemer;
+            IdEmployee = idWerknemer;
             Name = name;
             Username = username;
-            UserRol finalRol = UserRol.Gebruiker;
-            Enum.TryParse<User.UserRol>(rol, true, out finalRol);
-            Rol = finalRol;
+            UserRole finalRol = UserRole.User;
+            Enum.TryParse<User.UserRole>(rol, true, out finalRol);
+            Role = finalRol;
         }
 
         public override string ToString()
@@ -29,9 +30,9 @@ namespace AgroApp.Models
             return Name;
         }
 
-        public enum UserRol
+        public enum UserRole
         {
-            Gebruiker, Admin
+            User, Admin
         }
     }
 }

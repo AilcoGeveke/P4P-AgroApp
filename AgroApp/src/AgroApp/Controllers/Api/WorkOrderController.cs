@@ -75,24 +75,24 @@ namespace AgroApp.Controllers.Api
             return JsonConvert.SerializeObject(data);
         }
 
-        [HttpGet("addmachine/{name}/{number}/{tag}/{type}")]
-        public async Task<bool> AddMachine(string name, string type, int number = 0, string tag = "")
+        [HttpPost("addmachine")]
+        public async Task<bool> AddMachine([FromBody]Machine machine)
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
                 string query = "SELECT * FROM Machine WHERE number=@0";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", number)))
+                    new MySqlParameter("@0", machine.Number)))
                     if (reader.HasRows)
                         return false;
 
                 query = "INSERT INTO Machine (name, number, tag, type, status) VALUES (@0, @1, @2, @3, @4)";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", name),
-                    new MySqlParameter("@1", number),
-                    new MySqlParameter("@2", tag),
-                    new MySqlParameter("@3", type),
-                    new MySqlParameter("@4", "")))
+                    new MySqlParameter("@0", machine.Name),
+                    new MySqlParameter("@1", machine.Number),
+                    new MySqlParameter("@2", machine.Tag),
+                    new MySqlParameter("@3", machine.Type),
+                    new MySqlParameter("@4", machine.Status)))
                     return reader.RecordsAffected == 1;
             }
         }

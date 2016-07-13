@@ -12,13 +12,13 @@ namespace AgroApp.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            if (UserController.IsLoggedIn)
+            if (UserController.IsLoggedIn(HttpContext))
             {
                 User user = await UserController.GetUser(HttpContext);
-                if (user.Rol == Models.User.UserRol.Admin)
-                    return View("");
+                if (user.Role == Models.User.UserRole.Admin)
+                    return RedirectToAction("Index", "Admin");
                 else
-                    return View("");
+                    return RedirectToAction("Index", "User");
             }
             return View();
         }
