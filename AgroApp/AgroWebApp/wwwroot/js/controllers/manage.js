@@ -215,6 +215,24 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     };
 });
 
+agroApp.controller('TimesheetController', function (userManagement) {
+    var um = this;
+
+    um.allUsers = [];
+    um.selectedCoworkers = [];
+
+    um.getAllUsers = function () {
+        userManagement.getAllUsers().then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.allUsers = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+});
+
 agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog) {
     $scope.rollen = ['Gebruiker', 'Admin'];
 

@@ -5,119 +5,69 @@
 <!-- Header -->
 <header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
-<section id="main">
+<section id="main" ng-controller="TimesheetController as tc">
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
     <section id="content">
-
-        <div class="card">
-            <div class="card-header">
-                <h2>Gebruiker <small>Een overzicht van uw uren.</small></h2>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table ng-table="tctrl.tableEdit" class="table table-striped table-vmiddle">
-                        <tr ng-repeat="w in $data" ng-class="{ 'active': w.$edit }">
-                            <td data-title="'Opdrachtgever'">
-                                <span ng-if="!w.$edit">{{ Customer.name }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="Customer.name" /></div>
-                            </td>
-                            <td data-title="'Locatie'">
-                                <span ng-if="!w.$edit">{{ Assignment.location }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="Assignment.location" /></div>
-                            </td>
-                            <td data-title="'Van'">
-                                <span ng-if="!w.$edit">{{ TimesheetPart.startTime }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="email" ng-model="TimesheetPart.startTime" /></div>
-                            </td>
-                            <td data-title="'Tot'">
-                                <span ng-if="!w.$edit">{{ Timesheet.endTime }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="TimesheetPart.endTime" /></div>
-                            </td>
-                            <td data-title="'Totaal'">
-                                <span ng-if="!w.$edit">{{ TimesheetPart.totalTime }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="TimesheetPart.totalTime" /></div>
-                            </td>
-                            <td data-title="'Man'">
-                                <span ng-if="!w.$edit">{{ WorkType.type }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="WorkType.type" /></div>
-                            </td>
-                            <td data-title="'Machine'">
-                                <span ng-if="!w.$edit">{{ Machine.name }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="email" ng-model="Machine.name" /></div>
-                            </td>
-                            <td data-title="'Omschrijving'">
-                                <span ng-if="!w.$edit">{{ TimesheetPart.description }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="TimesheetPart.description" /></div>
-                            </td>
-                            <td data-title="'Collega's'">
-                                <span ng-if="!w.$edit">{{ Employee.name }}</span>
-                                <div ng-if="w.$edit"><input class="form-control" type="text" ng-model="Employee.name" /></div>
-                            </td>
-                            <td data-title="'Actions'">
-                                <button type="button" class="btn btn-default" ng-if="!w.$edit" ng-click="w.$edit = true"><i class="zmdi zmdi-edit"></i></button>
-                                <button type="button" class="btn btn-success" ng-if="w.$edit" ng-click="w.$edit = false"><i class="zmdi zmdi-check"></i></button>
-                            </td>
-                        </tr>
-                    </table>
+        <div class="container">
+            <div class="card">
+                <div class="card-header ch-alt">
+                    <div class="media">
+                        <div class="media-body">
+                            <h2>Opdracht <small>{{tc.assignement.Date}}</small></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body card-padding">
+                    <p>{{tc.assignement.description}}</p>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h2>Urenregistratie <small>Vul hier uw uren in.</small></h2>
+
+            <div class="card">
+                <div class="card-header ch-alt m-b-20">
+                    <h2>Overzicht Uren <small>Overzicht ingevulde gegevens voor deze opdracht</small></h2>
+                    <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+                </div>
+
+                <div class="card-body card-padding">
+
+                </div>
+
+                <div class="lv-header card-body card-padding bgm-teal c-white">
+                    Totaal: 0 uur
+                </div>
             </div>
 
-            <div class="card-body card-padding">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control input-sm" placeholder="Opdrachtgever">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control input-sm" placeholder="Locatie">
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control ng-isolate-scope" data-input-mask="{mask: '00:00'}" placeholder="Van" maxlength="5" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control ng-isolate-scope" data-input-mask="{mask: '00:00'}" placeholder="Tot" maxlength="5" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control ng-isolate-scope" data-input-mask="{mask: '00:00'}" placeholder="Totaal" maxlength="5" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control input-sm" placeholder="Man">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control input-sm" placeholder="Machine">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control input-sm" placeholder="Omshrijving">
-                        </div>
-                    </div>
+            <div class="card" ng-init="tc.getAllUsers()">
+                <div class="card-header ch-alt">
+                    <h2>Collegas <small>Met welke collegas heb je gewerkt</small></h2>
+                </div>
 
-                    <div class="col-xs-6">
-                        <div class="fg-line form-group">
-                            <input type="text" class="form-control input-sm" placeholder="Collega's">
-                        </div>
-                    </div>
+                <div class="card-body card-padding">
+                    <select chosen multiple class="w-100"
+                            data-placeholder="Selecteer uw collega's"
+                            ng-model="tc.selectedCoworkers"
+                            ng-options="x.IdEmployee as x.Name for x in tc.allUsers"></select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body card-padding">
+                    <button class="btn bgm-blue">Opslaan</button>
                 </div>
             </div>
         </div>
     </section>
 </section>
+
+@section styles{
+    <link href="~/lib/chosen/chosen.css" rel="stylesheet" />
+    <link href="~/lib/chosen/chosen-sprite.png" rel="image_src" />
+}
+
+@section scripts{
+    <script src="~/lib/chosen/chosen.js"></script>
+    <script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
+
+    <script>angular.module('materialAdmin').requires.push('localytics.directives');</script>
+}

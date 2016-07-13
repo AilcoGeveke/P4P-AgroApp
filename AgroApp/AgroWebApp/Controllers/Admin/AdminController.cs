@@ -71,7 +71,7 @@ namespace AgroApp.Controllers.Admin
         public async Task<IActionResult> EditVehicle(int id)
         {
             Machine machine = await MachineController.GetMachine(id);
-            ViewData["machineData"] = JsonConvert.SerializeObject(machine); ;
+            ViewData["machineData"] = JsonConvert.SerializeObject(machine);
 
             return View("management/editUser");
         }
