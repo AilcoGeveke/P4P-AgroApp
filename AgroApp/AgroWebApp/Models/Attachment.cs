@@ -5,22 +5,19 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Assignment
+    public class Attachment
     {
-        public int IdAssignment { set; get; }
-        public string Location { set; get; }
-        public string Description { set; get; }
-        public DateTime Date { set; get; }
+        public int IdAttachment { set; get; }
+        public int Number { set; get; }
+        public string Name { set; get; }
 
-        public Assignment() { }
+        public Attachment() { }
 
-        public Assignment(DateTime date, int idAssignment = -1, string location = "", string description = "")
-
+        public Attachment(int idAttachment, int number, string name)
         {
-            IdAssignment = idAssignment;
-            Location = location;
-            Description = description;
-            Date = date;
+            IdAttachment = idAttachment;
+            Number = number;
+            Name = name;
         }
     }
 }

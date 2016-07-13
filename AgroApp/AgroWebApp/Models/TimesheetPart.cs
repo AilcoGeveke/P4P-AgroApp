@@ -5,22 +5,24 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Assignment
+    public class TimesheetPart
     {
-        public int IdAssignment { set; get; }
-        public string Location { set; get; }
+        public int IdTimesheetPart { set; get; }
+        public long StartTime { set; get; }
+        public long EndTime { set; get; }
+        public long TotalTime{ set; get; }
         public string Description { set; get; }
-        public DateTime Date { set; get; }
 
-        public Assignment() { }
+        public TimesheetPart() { }
 
-        public Assignment(DateTime date, int idAssignment = -1, string location = "", string description = "")
+        public TimesheetPart(int idTimesheetPart, long startTime, long endTime, long totalTime, string description)
 
         {
-            IdAssignment = idAssignment;
-            Location = location;
-            Description = description;
-            Date = date;
+            IdTimesheetPart = idTimesheetPart;
+            StartTime = startTime;
+            EndTime = endTime;
+            TotalTime = totalTime;
+            Description = description; 
         }
     }
 }

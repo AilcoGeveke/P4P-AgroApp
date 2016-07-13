@@ -5,22 +5,23 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Assignment
+    public class RoadPlate
     {
-        public int IdAssignment { set; get; }
-        public string Location { set; get; }
-        public string Description { set; get; }
-        public DateTime Date { set; get; }
+        public int IdRoadplate { set; get; }
+        public int Small { set; get; }
+        public int Large { set; get; }
+        public int Plastic { set; get;}
+        public string Direction { get; set; }
 
-        public Assignment() { }
+        public RoadPlate() { }
 
-        public Assignment(DateTime date, int idAssignment = -1, string location = "", string description = "")
-
+        public RoadPlate(int idRoadplate, int small, int large, int plastic, string direction)
         {
-            IdAssignment = idAssignment;
-            Location = location;
-            Description = description;
-            Date = date;
+            IdRoadplate = idRoadplate;
+            Small = small;
+            Large = large;
+            Plastic = plastic;
+            Direction = direction;
         }
     }
 }
