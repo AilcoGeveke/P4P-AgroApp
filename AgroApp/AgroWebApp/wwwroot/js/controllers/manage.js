@@ -358,8 +358,8 @@ agroApp.controller('CustomerManagement', function ($window, $scope, CustomerMana
     um.customerDetails = {};
     um.allCustomers = {};
 
-    um.registerCustomer = function () {
-        customerManagement.registerCustomer(this.customerDetails)
+    um.AddCustomer = function () {
+        customerManagement.AddCustomer(this.customerDetails)
         .then(function successCallback(response) {
             if (response.data != "succes") {
                 swal("", response.data, "error");
