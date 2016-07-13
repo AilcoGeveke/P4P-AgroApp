@@ -16,14 +16,16 @@
                 <a href=""><i class="zmdi zmdi-settings"></i> Gegevens Veranderen</a>
             </li>
             <li>
-                <a href=""><i class="zmdi zmdi-time-restore"></i> Uitloggen</a>
+               ]<form class="form-logout" role="form">
+   <input type="submit" value="Logout" id="logout" class="btn btn-primary btn-lg">
+</form>
             </li>
         </ul>
     </div>
 
     <ul class="main-menu">
         <li data-ui-sref-active="active">
-            <a data-ui-sref="home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i> Home</a>
+            <a data-ui-sref="home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i>Planning</a>
         </li>
 
         <li class="menu">
@@ -117,6 +119,13 @@
                     </ul>
                 </li>
             </ul>
+        </li>
+
+        <li class="menu">
+            <a href="">
+                <i class="zmdi zmdi-menu"></i>
+                Statistieken
+            </a>
         </li>
     </ul>
 </div>
