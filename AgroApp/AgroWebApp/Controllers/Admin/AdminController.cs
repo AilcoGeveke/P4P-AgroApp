@@ -118,5 +118,11 @@ namespace AgroApp.Controllers.Admin
 
             return View("management/editUser");
         }
+
+        [HttpGet("admin/opdrachten")]
+        public IActionResult AssignementOverview()
+        {
+            return View("management/overviewAssignement");
+        }
     }
 }
