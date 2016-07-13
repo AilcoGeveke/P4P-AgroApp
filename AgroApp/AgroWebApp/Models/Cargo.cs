@@ -5,22 +5,28 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class Assignment
+    public class Cargo
     {
-        public int IdAssignment { set; get; }
-        public string Location { set; get; }
-        public string Description { set; get; }
-        public DateTime Date { set; get; }
+        public int IdCargo { set; get; }
+        public long Date { set; get; }
+        public string Type { set; get; }
+        public int FullLoad { set; get; }
+        public int EmptyLoad { set; get; }
+        public int NetLoad { set; get; }
+        public string Direction { set; get; }
 
-        public Assignment() { }
+        public Cargo() { }
 
-        public Assignment(DateTime date, int idAssignment = -1, string location = "", string description = "")
+        public Cargo(int idCargo, long date, string type, int fullLoad, int emptyLoad, int netLoad, string direction)
 
         {
-            IdAssignment = idAssignment;
-            Location = location;
-            Description = description;
+            IdCargo = idCargo;
             Date = date;
+            Type = type;
+            FullLoad = fullLoad;
+            EmptyLoad = emptyLoad;
+            NetLoad = netLoad;
+            Direction = direction;
         }
     }
 }
