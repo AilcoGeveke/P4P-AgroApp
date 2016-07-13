@@ -9,7 +9,7 @@ materialAdmin
             return $http.post('/api/user/register', user);
         }
 
-        this.getAllUsers = function(){
+        this.getAllUsers = function () {
             return $http.get('/api/user/getall');
         }
 
@@ -24,7 +24,7 @@ materialAdmin
         this.archiveUser = function (id) {
             return $http.get('/api/user/archive/' + id);
         }
-        
+
         this.restoreUser = function (id) {
             return $http.get('/api/user/restore/' + id);
         }
@@ -60,11 +60,67 @@ materialAdmin
         }
     })
 
+
+
+    // =========================================================================
+    // Service for handling user data
+    // =========================================================================
+
+    .service('customerManagement', function ($http) {
+        this.register = function (customer) {
+            return $http.post('/api/customer/add', customer);
+        }
+
+        this.getAll = function () {
+            return $http.get('/api/customer/getall');
+        }
+
+        this.getAllArchived = function () {
+            return $http.get('/api/customer/getallarchived');
+        }
+
+        this.applyChanges = function (customer) {
+            return $http.post('/api/customer/change', customer);
+        }
+
+        this.archive = function (id) {
+            return $http.get('/api/customer/archive/' + id);
+        }
+
+        this.restore = function (id) {
+            return $http.get('/api/customer/restore/' + id);
+        }
+    })
+    // =========================================================================
+    // Service for handling cargo data
+    // =========================================================================
+
+    .service('cargoManagement', function ($http) {
+        this.add = function (machine) {
+            return $http.post('/api/cargo/add', machine);
+        }
+
+        this.getAll = function () {
+            return $http.get('/api/cargo/getall');
+        }
+
+        this.applyChanges = function (machine) {
+            return $http.post('/api/machine/change', machine);
+        }
+
+        this.archive = function (id) {
+            return $http.get('/api/machine/archive/' + id);
+        }
+
+        this.restore = function (id) {
+            return $http.get('/api/machine/restore/' + id);
+        }
+    })
     // =========================================================================
     // Data Table
     // =========================================================================
-    
-    .service('tableService', [function(){
+
+    .service('tableService', [function () {
         this.data = {};
     }])
 
@@ -72,13 +128,13 @@ materialAdmin
     // =========================================================================
     // Malihu Scroll - Custom Scroll bars
     // =========================================================================
-    .service('scrollService', function() {
+    .service('scrollService', function () {
         var ss = {};
         ss.malihuScroll = function scrollBar(selector, theme, mousewheelaxis) {
             $(selector).mCustomScrollbar({
                 theme: theme,
                 scrollInertia: 100,
-                axis:'yx',
+                axis: 'yx',
                 mouseWheel: {
                     enable: true,
                     axis: mousewheelaxis,
@@ -86,7 +142,7 @@ materialAdmin
                 }
             });
         }
-        
+
         return ss;
     })
 
@@ -95,12 +151,12 @@ materialAdmin
     // BOOTSTRAP GROWL
     //==============================================
 
-    .service('growlService', function(){
+    .service('growlService', function () {
         var gs = {};
-        gs.growl = function(message, type) {
+        gs.growl = function (message, type) {
             $.growl({
                 message: message
-            },{
+            }, {
                 type: type,
                 allow_dismiss: false,
                 label: 'Cancel',
@@ -111,8 +167,8 @@ materialAdmin
                 },
                 delay: 2500,
                 animate: {
-                        enter: 'animated bounceIn',
-                        exit: 'animated bounceOut'
+                    enter: 'animated bounceIn',
+                    exit: 'animated bounceOut'
                 },
                 offset: {
                     x: 20,
@@ -120,6 +176,6 @@ materialAdmin
                 }
             });
         }
-        
+
         return gs;
     })
