@@ -104,7 +104,7 @@ namespace AgroApp.Controllers.Admin
 
         // Assignment
         [HttpGet("admin/opdrachtenoverzicht")]
-        public IActionResult OverviewAssigments()
+        public IActionResult OverviewAssignments()
         {
             return View("assignments");
         }

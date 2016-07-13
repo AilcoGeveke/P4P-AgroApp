@@ -83,7 +83,7 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
     um.restoreUser = function (user) {
         swal({
             title: "Weet u zeker dat u " + user.Name + " wilt dearchiveren?",
-            text: "Hierdoor zal de account geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
+            text: "Hierdoor zal het account geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
             type: "info",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -169,7 +169,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     um.archiveMachine = function (machine) {
         swal({
             title: "Weet u zeker dat u " + machine.Name + " wilt archiveren?",
-            text: "Hierdoor zal de account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
+            text: "Hierdoor zal het account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
             type: "warning",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -212,6 +212,24 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
                     swal({ title: "Fout!", type: "error", text: machine.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
                 });
         });
+    };
+});
+
+agroApp.controller('TimesheetController', function (userManagement) {
+    var um = this;
+
+    um.allUsers = [];
+    um.selectedCoworkers = [];
+
+    um.getAllUsers = function () {
+        userManagement.getAllUsers().then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.allUsers = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
     };
 });
 
@@ -334,34 +352,109 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
     };
 });
 
-agroApp.controller('CustomerManagement', function ($window, $scope, machineManagement, tableService) {
-    um.getAllCustomers = function () {
-        CustomerManagement.getAllCustomers().then(
-            function successCallback(response) {
-                console.log(response.data);
-                um.getAllCustomers = response.data;
-                tableService.data = um.AllCustomers;
-            },
-            function errorCallback(response) {
-                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
-            });
-    }
+agroApp.controller('CustomerManagement', function ($window, $scope, CustomerManagement, tableService) {
+    var um = this;
 
     um.customerDetails = {};
     um.allCustomers = {};
 
-    um.registerCustomer = function () {
-        customerManagement.registerCustomer(this.customerDetails)
+    um.AddCustomer = function () {
+        customerManagement.AddCustomer(this.customerDetails)
         .then(function successCallback(response) {
             if (response.data != "succes") {
                 swal("", response.data, "error");
             }
             else {
-                swal({ title: "Gebruiker is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                swal({ title: "Klant is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
                 setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
+        });
+    };
+    um.getAllCustomer = function () {
+        customerManagement.getAllCustomer().then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.allCustomer = response.data;
+                tableService.data = um.allCustomers;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.getAllArchivedCustomers = function () {
+        customerManagement.getAllArchivedCustomers().then(
+            function successCallback(response) {
+                um.allCustomers = response.data;
+                tableService.data = um.allCustomers;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.applyChangesToCustomer = function () {
+        customerManagement.applyChangesToCustomer(this.customerDetails)
+        .then(function successCallback(response) {
+            if (response.data != true) {
+                swal("", response.data, "error");
+            }
+            else {
+                swal({ title: "Klant is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
+            }
+        }, function errorCallback(response) {
+            swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
+        });
+    };
+    um.archiveCustomer = function (customer) {
+        swal({
+            title: "Weet u zeker dat u " + customer.Name + " wilt archiveren?",
+            text: "Hierdoor zal het account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function () {
+            customerManagement.archiveCustomer(customer.IdCustomer).then(
+                function successCallback(response) {
+                    if (response.data == true) {
+                        swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 3000, showConfirmButton: false });
+                        um.getAllCustomers();
+                    }
+                    else
+                        swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
+                }, function errorCallback(response) {
+                    swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
+                });
+            //setTimeout(function () {
+            //    swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 4000, showConfirmButton: false });
+            //}, 3000);
+        });
+    };
+    um.restoreCustomer = function (customer) {
+        swal({
+            title: "Weet u zeker dat u " + customer.Name + " wilt dearchiveren?",
+            text: "Hierdoor zal het account geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function () {
+            customerManagement.restoreCustomer(customer.IdCustomer).then(
+                function successCallback(response) {
+                    if (response.data == true) {
+                        swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gedearchiveerd. De gebruiker kan weer inloggen!", timer: 3000, showConfirmButton: false });
+                        setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                    }
+                    else
+                        swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
+        }, function errorCallback(response) {
+                    swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
+                });
+            //setTimeout(function () {
+            //    swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 4000, showConfirmButton: false });
+            //}, 3000);
         });
     };
 

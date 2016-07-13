@@ -13,27 +13,10 @@ namespace AgroApp.Controllers.Api
     [Route("api/[controller]")]
     public class CustomerController : Controller
     {
-        [HttpPost("add")]
-        public async Task<bool> AddMachine([FromBody]Machine machine)
-        {
-            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-            {
-                string query = "SELECT * FROM Machine WHERE number=@0";
-                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", machine.Number)))
-                    if (reader.HasRows)
-                        return false;
-
-                query = "INSERT INTO Machine (name, number, tag, type, status) VALUES (@0, @1, @2, @3, @4)";
-                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                    new MySqlParameter("@0", machine.Name),
-                    new MySqlParameter("@1", machine.Number),
-                    new MySqlParameter("@2", machine.Tag),
-                    new MySqlParameter("@3", machine.Type),
-                    new MySqlParameter("@4", machine.Status)))
-                    return reader.RecordsAffected == 1;
-            }
-        }
+        /// <summary>
+        /// Laat een lijst van alle customers zien
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet("getall")]
         public async Task<List<Customer>> GetAllCustomers()
@@ -48,6 +31,12 @@ namespace AgroApp.Controllers.Api
             return data;
         }
 
+
+        /// <summary>
+        /// voegt een customer toe
+        /// </summary>
+        /// <param name="Customer"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<string> AddCustomer([FromBody]Customer Customer)
         {
@@ -68,6 +57,12 @@ namespace AgroApp.Controllers.Api
             catch { return "Er is iets misgegaan, neem contact op met een ontwikkelaar!"; }
         }
 
+
+        /// <summary>
+        /// geeft 1 customer weer om deze te bewerken.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
             public static async Task<Customer> GetCustomer(int id)
         {
             if (id < 0)

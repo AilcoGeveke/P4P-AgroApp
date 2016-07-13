@@ -9,7 +9,7 @@
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
 
     <!-- Page Content -->
-    <section id="content" ng-controller="UserManagement as um">
+    <section id="content" ng-controller="CustomerManagement as um">
         <div class="container">
             <div class="card">
                 <div class="card-header ch-alt m-b-20">
@@ -19,16 +19,16 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table ng-table="um.tableSorting" class="table table-striped table-vmiddle" ng-init="um.getAllArchivedUsers()">
-                            <tr ng-repeat="w in um.allUsers">
+                        <table ng-table="um.tableSorting" class="table table-striped table-vmiddle" ng-init="um.getAllArchivedCustomers()">
+                            <tr ng-repeat="w in um.allCustomers">
                                 <td data-title="'ID'" sortable="'id'">
-                                    {{ w.IdEmployee }}
+                                    {{ w.IdCustomer }}
                                 </td>
                                 <td data-title="'Name'" sortable="'name'">
                                     {{ w.Name }}
                                 </td>
                                 <td data-title="'Email'" sortable="'email'">
-                                    {{ w.Username }}
+                                    {{ w.Address }}
                                 </td>
                                 <td>
                                     <button class="btn btn-default" ng-click="um.restoreUser(w)"><i class="zmdi zmdi-account-add"></i></button>
