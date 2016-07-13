@@ -70,6 +70,12 @@ namespace AgroApp.Controllers.Admin
             return View("management/addcustomer");
         }
 
+        [HttpGet("admin/klanten/archief")]
+        public IActionResult ArchiveCustomer()
+        {
+            return View("management/archivecustomer");
+        }
+
         [HttpGet("admin/wijzigen/{id}")]
         public async Task<IActionResult> EditCustomer(int id)
         {
