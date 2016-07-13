@@ -52,13 +52,13 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
                 setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
             }
         }, function errorCallback(response) {
-            swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
+            swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
         });
     };
     um.archiveUser = function (user) {
         swal({
             title: "Weet u zeker dat u " + user.Name + " wilt archiveren?",
-            text: "Hierdoor zal de account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
+            text: "Hierdoor zal het account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
             type: "warning",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -333,3 +333,36 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
         });
     };
 });
+
+agroApp.controller('CustomerManagement', function ($window, $scope, machineManagement, tableService) {
+    um.getAllCustomers = function () {
+        CustomerManagement.getAllCustomers().then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.getAllCustomers = response.data;
+                tableService.data = um.AllCustomers;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    }
+
+    um.customerDetails = {};
+    um.allCustomers = {};
+
+    um.registerCustomer = function () {
+        customerManagement.registerCustomer(this.customerDetails)
+        .then(function successCallback(response) {
+            if (response.data != "succes") {
+                swal("", response.data, "error");
+            }
+            else {
+                swal({ title: "Gebruiker is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
+            }
+        }, function errorCallback(response) {
+            swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
+        });
+    };
+
+})
