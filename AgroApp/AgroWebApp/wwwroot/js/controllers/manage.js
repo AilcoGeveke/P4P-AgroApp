@@ -215,10 +215,11 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     };
 });
 
-agroApp.controller('TimesheetController', function (userManagement) {
+agroApp.controller('TimesheetController', function ($scope, userManagement) {
     var um = this;
 
     um.allUsers = [];
+    um.allCustomers = [];
     um.selectedCoworkers = [];
 
     um.getAllUsers = function () {
@@ -230,6 +231,16 @@ agroApp.controller('TimesheetController', function (userManagement) {
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
+    };
+
+    //=======================
+    // Datepicker
+    //=======================
+    $scope.open = function ($event, opened) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope[opened] = true;
     };
 });
 
