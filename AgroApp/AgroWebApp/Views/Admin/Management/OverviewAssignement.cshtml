@@ -12,55 +12,57 @@
     <section id="content" ng-controller="TimesheetController as am">
         <div class="container">
 
-            <div class="card" ng-show="showNewAssignementCard">
-                <div class="card-header ch-alt m-b-15">
-                    <h2>Nieuwe Opdracht</h2>
-                </div>
+            <div slider="showNewAssignementCard">
+                <div class="card">
+                    <div class="card-header ch-alt m-b-15">
+                        <h2>Nieuwe Opdracht</h2>
+                    </div>
 
-                <div class="card-body card-padding container-fluid">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-sm-6 m-b-15" ng-init="am.getAllCustomers()">
+                    <div class="card-body card-padding container-fluid">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-sm-6" ng-init="am.getAllCustomers()">
 
-                                <div class="form-group fg-line">
-                                    <label>Klant</label>
-                                    <select chosen data-placeholder="Selecteer een klant" class="w-100" width="'100%'"
-                                            ng-model="am.selectedCoworkers"
-                                            ng-options="x.IdCustomer as x.Name for x in am.allCustomers"></select>
+                                    <div class="form-group fg-line">
+                                        <label>Klant</label>
+                                        <select chosen data-placeholder="Selecteer een klant" class="w-100" width="'100%'"
+                                                ng-model="am.selectedCoworkers"
+                                                ng-options="x.IdCustomer as x.Name for x in am.allCustomers"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened == true }">
+                                        <div class="fg-line" ng-class="{ 'fg-toggled': opened == true }">
+
+                                            <label>Datum</label>
+                                            <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="{{format}}" show-weeks="false" ng-model="dtPopup" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Select Date" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-sm-6 m-b-15">
-                                <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened == true }">
-                                    <div class="fg-line" ng-class="{ 'fg-toggled': opened == true }">
-
-                                        <label>Datum</label>
-                                        <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="{{format}}" show-weeks="false" ng-model="dtPopup" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Select Date" />
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group fg-line">
+                                        <label>Locatie</label>
+                                        <input type="text" class="form-control ng-isolate-scope" placeholder="Locatie">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group fg-line">
-                                    <label>Locatie</label>
-                                    <input type="text" class="form-control ng-isolate-scope" placeholder="Locatie">
-                                </div>
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group fg-line">
+                                <label>Beschrijving</label>
+                                <textarea class="form-control" rows="6" placeholder="Beschrijving..."></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-6 m-b-15">
-                        <div class="form-group fg-line">
-                            <label>Beschrijving</label>
-                            <textarea class="form-control" rows="6" placeholder="Beschrijving..."></textarea>
-                        </div>
+                    <div class="card-body bgm-gray card-padding">
+                        <button class="btn btn-primary m-r-15">Toevoegen</button>
+                        <button class="btn btn-default" ng-click="showNewAssignementCard = false" slide-toggle="#newAssignementCard">Annuleren</button>
                     </div>
-                </div>
-
-                <div class="card-body bgm-gray card-padding">
-                    <button class="btn btn-primary m-r-15">Toevoegen</button>
-                    <button class="btn btn-default" ng-click="showNewAssignementCard = false">Annuleren</button>
                 </div>
             </div>
 
@@ -106,6 +108,8 @@
     <script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
     <script src="~/lib/moment/min/moment.min.js"></script>
     <script src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/lib/angularslideables-master/angularslideables.js"></script>
 
     <script>angular.module('materialAdmin').requires.push('localytics.directives');</script>
+    <script>angular.module('materialAdmin').requires.push('angularSlideables');</script>
 }

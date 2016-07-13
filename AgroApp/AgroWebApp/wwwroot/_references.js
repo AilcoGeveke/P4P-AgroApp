@@ -4,6 +4,7 @@
 /// <reference path="js/app.js" />
 /// <reference path="js/controllers/login.js" />
 /// <reference path="js/controllers/main.js" />
+/// <reference path="js/controllers/manage.js" />
 /// <reference path="js/controllers/table.js" />
 /// <reference path="js/controllers/ui-bootstrap.js" />
 /// <reference path="js/modules/calendar.js" />

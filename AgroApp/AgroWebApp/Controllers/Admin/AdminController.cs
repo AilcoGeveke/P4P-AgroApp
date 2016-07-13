@@ -55,8 +55,7 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/archiveUser");
         }
-
-
+        
         //Customer
         [HttpGet("admin/klanten/overzicht")]
         public IActionResult OverviewCustomers()
@@ -109,10 +108,10 @@ namespace AgroApp.Controllers.Admin
         }
 
         // Assignment
-        [HttpGet("admin/opdrachtenoverzicht")]
+        [HttpGet("admin/opdrachten")]
         public IActionResult OverviewAssignments()
         {
-            return View("assignments");
+            return View("management/OverviewAssignement");
         }
 
         // Cargo
