@@ -366,3 +366,9 @@ agroApp.controller('CustomerManagement', function ($window, $scope, machineManag
     };
 
 })
+
+agroApp.controller('CargoManagement', function ($window, $scope, userManagement, machineManagement,tableService) {
+    var um = this;
+
+
+});

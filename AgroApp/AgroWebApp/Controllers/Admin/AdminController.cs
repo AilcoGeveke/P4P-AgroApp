@@ -28,45 +28,11 @@ namespace AgroApp.Controllers.Admin
             return View("timesheet");
         }
 
+        //User
         [HttpGet("admin/gebruikers/overzicht")]
         public IActionResult OverviewUsers()
         {
             return View("management/overviewUser");
-        }
-
-        [HttpGet("~/admin/opdrachtenoverzicht")]
-        public IActionResult OverviewCargo()
-        {
-            return View("assignments");
-        }
-
-        [HttpGet("admin/gewichtenoverzicht")]
-        public IActionResult OverviewAssigments()
-        {
-            return View("cargo");
-        }
-
-        [HttpGet("admin/klanten/overzicht")]
-        public IActionResult OverviewCustomers()
-        {
-            return View("management/overviewcustomer");
-        }
-
-        [HttpGet("admin/klanten/toevoegen")]
-        public IActionResult AddCustomers()
-        {
-            return View("management/addcustomer");
-        }
-
-
-        [HttpGet("admin/wijzigen/{id}")]
-        public IActionResult EditCustomers()
-        {
-
-            Customer customer = await CustomerController.GetCustomer(id);
-            ViewData["userData"] = JsonConvert.SerializeObject(customer);
-
-            return View("management/editcustomer");
         }
 
         [HttpGet("admin/gebruikers/toevoegen")]
@@ -90,25 +56,70 @@ namespace AgroApp.Controllers.Admin
             return View("management/archiveUser");
         }
 
+
+        //Customer
+        [HttpGet("admin/klanten/overzicht")]
+        public IActionResult OverviewCustomers()
+        {
+            return View("management/overviewcustomer");
+        }
+
+        [HttpGet("admin/klanten/toevoegen")]
+        public IActionResult AddCustomer()
+        {
+            return View("management/addcustomer");
+        }
+
+        [HttpGet("admin/wijzigen/{id}")]
+        public async Task<IActionResult> EditCustomer(int id)
+        {
+
+            Customer customer = await CustomerController.GetCustomer(id);
+            ViewData["userData"] = JsonConvert.SerializeObject(customer);
+
+            return View("management/editcustomer");
+        }
+
+        // Machine
         [HttpGet("admin/machines/overzicht")]
-        public IActionResult OverzichtMachines()
+        public IActionResult OverviewMachines()
         {
             return View("management/overviewMachine");
         }
 
         [HttpGet("admin/machines/toevoegen")]
-        public IActionResult MachineToevoegen()
+        public IActionResult AddMachine()
         {
             return View("management/addMachine");
         }
 
         [HttpGet("admin/machines/wijzigen/{id}")]
-        public async Task<IActionResult> EditVehicle(int id)
+        public async Task<IActionResult> EditMachine(int id)
         {
             Machine machine = await MachineController.GetMachine(id);
             ViewData["machineData"] = JsonConvert.SerializeObject(machine); ;
 
             return View("management/editUser");
+        }
+
+        // Assignment
+        [HttpGet("admin/opdrachtenoverzicht")]
+        public IActionResult OverviewAssigments()
+        {
+            return View("assignments");
+        }
+
+        // Cargo
+        [HttpGet("admin/vrachten/overzicht")]
+        public IActionResult OverviewCargo()
+        {
+            return View("management/overviewcargo");
+        }
+
+        [HttpGet("admin/vrachten/toevoegen")]
+        public IActionResult AddCargo()
+        {
+            return View("management/addcargo");
         }
     }
 }

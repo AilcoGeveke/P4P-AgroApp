@@ -66,6 +66,7 @@ namespace AgroApp.Controllers.Api
                 }
             }
             catch { return "Er is iets misgegaan, neem contact op met een ontwikkelaar!"; }
+        }
 
             public static async Task<Customer> GetCustomer(int id)
         {
@@ -83,4 +84,4 @@ namespace AgroApp.Controllers.Api
         }
     }
     }
-}
+
