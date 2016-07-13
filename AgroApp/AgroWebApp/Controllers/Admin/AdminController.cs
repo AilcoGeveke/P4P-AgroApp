@@ -22,7 +22,7 @@ namespace AgroApp.Controllers.Admin
             return View();
         }
 
-        [HttpGet("admin/werkbon")]
+        [HttpGet("admin/urenoverzicht")]
         public IActionResult WorkOrderView()
         {
             return View("timesheet");
@@ -33,6 +33,49 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/overviewUser");
         }
+
+        [HttpGet("~/admin/opdrachtenoverzicht")]
+        public IActionResult OverviewCargo()
+        {
+            return View("assignments");
+        }
+
+        [HttpGet("admin/gewichtenoverzicht")]
+        public IActionResult OverviewAssigments()
+        {
+            return View("cargo");
+        }
+
+        [HttpGet("admin/klanten/overzicht")]
+        public IActionResult OverviewCustomers()
+        {
+            return View("management/overviewcustomer");
+        }
+
+        [HttpGet("admin/klanten/toevoegen")]
+        public IActionResult AddCustomers()
+        {
+            return View("management/addcustomer");
+        }
+
+
+        [HttpGet("admin/klanten/wijzigen/{id}")]
+        public async Task<IActionResult> EditCustomers(int id)
+        {
+
+            Customer customer = await CustomerController.GetCustomer(id);
+            ViewData["userData"] = JsonConvert.SerializeObject(customer);
+
+            return View("management/editcustomer");
+        }
+
+        
+         [HttpGet("admin/klanten/archief")]
+        public IActionResult ArchiveCustomer()
+        {
+            return View("management/archivecustomer");
+        }
+
 
         [HttpGet("admin/gebruikers/toevoegen")]
         public IActionResult AddUser()

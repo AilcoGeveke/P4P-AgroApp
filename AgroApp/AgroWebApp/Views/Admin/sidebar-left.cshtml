@@ -16,14 +16,23 @@
                 <a href=""><i class="zmdi zmdi-settings"></i> Gegevens Veranderen</a>
             </li>
             <li>
-                <a href=""><i class="zmdi zmdi-time-restore"></i> Uitloggen</a>
+               ]<form class="form-logout" role="form">
+   <input type="submit" value="Logout" id="logout" class="btn btn-primary btn-lg">
+</form>
             </li>
         </ul>
     </div>
 
     <ul class="main-menu">
         <li data-ui-sref-active="active">
-            <a data-ui-sref="home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i> Home</a>
+            <a data-ui-sref="home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i>Planning</a>
+        </li>
+
+        <li class="menu">
+            <a href="~/admin/opdrachtenoverzicht">
+                <i class="zmdi zmdi-menu">
+                </i>Opdrachten weergeven
+            </a>
         </li>
 
         <li class="sub-menu">
@@ -33,10 +42,10 @@
             </a>
             <ul style="display: none;">
                 <li>
-                    <a href="">Uren registratie</a>
+                    <a href="~/admin/urenoverzicht">Uren registratie</a>
                 </li>
                 <li>
-                    <a href="">Gewichten</a>
+                    <a href="~/admin/gewichtenoverzicht">Gewichten</a>
                 </li>
             </ul>
         </li>
@@ -75,13 +84,13 @@
                     </a>
                     <ul style="display: none;">
                         <li>
-                            <a href="">
+                            <a href="~/admin/klanten/overzicht">
                                 Overzicht
                             </a>
                         </li>
-                        <li><a href="">Archief</a></li>
+                        <li><a href="~/admin/klanten/archief">Archief</a></li>
                         <li>
-                            <a href="">Klant Toevoegen</a>
+                            <a href="~/admin/klanten/toevoegen">Klant Toevoegen</a>
                         </li>
                     </ul>
                 </li>
@@ -110,6 +119,13 @@
                     </ul>
                 </li>
             </ul>
+        </li>
+
+        <li class="menu">
+            <a href="">
+                <i class="zmdi zmdi-menu"></i>
+                Statistieken
+            </a>
         </li>
     </ul>
 </div>

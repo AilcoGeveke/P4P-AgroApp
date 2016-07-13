@@ -11265,6 +11265,11 @@ fieldset[disabled] .btn-inverse:active {
   border-radius: 50%;
   line-height: 45px !important;
 }
+
+.header-background {
+    background: url("http://www.nagtegaalameland.nl/uploads/images/site/header.jpg") center no-repeat;
+}
+
 .btn-float:not(.m-btn) {
   position: absolute !important;
 }
