@@ -220,6 +220,19 @@ agroApp.controller('TimesheetController', function (userManagement) {
 
     um.allUsers = [];
     um.selectedCoworkers = [];
+    um.selectedMachines = [];
+    um.machines = [];
+    um.hulpstukken = [];
+
+    um.increaseSelectedMachineList = function () {
+        var m = machines[0];
+        m.hulpstuk = {};
+        um.selectedMachines.push(m);
+    }
+    um.decreaseSelectedMachineList = function () {
+        um.selectedMachines.pop();
+    }
+
 
     um.getAllUsers = function () {
         userManagement.getAllUsers().then(
