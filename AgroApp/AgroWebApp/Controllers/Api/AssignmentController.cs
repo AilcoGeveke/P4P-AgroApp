@@ -102,10 +102,10 @@ namespace AgroApp.Controllers.Api
                 if (fillEmployees)
                     foreach (Assignment a in assignments)
                         using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn,
-                            "SELECT EmployeeAssignment.idEmployeeAssignment FROM EmployeeAssignment LEFT JOIN Assignment on EmployeeAssignment.IdAssignment = @0",
+                            "SELECT idEmployee FROM EmployeeAssignment WHERE IdAssignment = @0",
                             new MySqlParameter("@0", a.IdAssignment)))
                             while (await reader.ReadAsync())
-                                a.Employees.Add(new Models.User() { IdEmployee = reader["idEmployeeAssignment"] as int? ?? -1 });
+                                a.Employees.Add(new Models.User() { IdEmployee = reader["idEmployee"] as int? ?? -1 });
 
             }
 
