@@ -34,59 +34,69 @@
 
                         <p class="f-500 c-black m-b-5">Werktype</p>
                         <small class="c-gray">Selecteer hier op welke manier u heeft gewerkt</small>
-                        <small class="c-gray">Geselecteerd - {{typeOfWork2 || 'geen'}}</small>
 
                         <br />
                         <br />
 
                         <div class="btn-group btn-group-justified m-b-20" role="group" aria-label="...">
                             <div class="btn-group" role="group">
-                                <label class="btn btn-primary" ng-model="typeOfWork2" uib-btn-radio="'Man'">Man</label>
+                                <label class="btn btn-primary" ng-model="typeOfWork"  ng-change="showWorkType = value; showMachine = !value;" uib-btn-radio="'Man'">Man</label>
                             </div>
                             <div class="btn-group" role="group">
-                                <label class="btn btn-primary" ng-model="typeOfWork2" uib-btn-radio="'Machinist'">Machinist</label>
+                                <label class="btn btn-primary active" ng-model="typeOfWork" ng-change="showWorkType = !value; showMachine = value;" uib-btn-radio="'Machinist'">Machinist</label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4 m-b-15">
-                                <p class="f-500 c-black m-b-15">Mankeuze</p>
-                                <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
-                                    <option ng-repeat="type in worktypes">
-                                        {{type}}
-                                    </option>
-                                </select>
+                            <div class="col-sm-12" uib-collapse="showWorkType" ng-init="">
+                                <p class="f-500 c-gray m-b-15">Man </p>
+                                <div class="col-sm-4 m-b-15">
+                                    <p class="f-500 c-black m-b-15">Mankeuze</p>
+                                    <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
+                                        <option ng-repeat="type in tc.allWorkTypes">
+                                            {{type}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-sm-4 m-b-15">
-                                <p class="f-500 c-black m-b-15">Voertuig</p>
-                                <select chosen ng-model="taskMachine" data-placeholder="Voertuig" class="w-100">
-                                    <option ng-repeat="machine in machines">
-                                        {{machine.Name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-sm-4 m-b-15">
-                                <p class="f-500 c-black m-b-15">Hulpstuk </p>
-                                <select chosen ng-model="taskAttachment" data-placeholder="Hulpstuk" class="w-100">
-                                    <option ng-repeat="attachment in attachments">
-                                        {{attachment.Name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group fg-line">
-                                    <input ng-model="taskStart" type="text" class="form-control" placeholder="Van">
+                            <div class="col-sm-12" uib-collapse="showMachine">
+                                <p class="f-500 c-gray m-b-15">Machinist </p>
+                                <div class="col-sm-4 m-b-15" ng-init="tc.getAllMachines()">
+                                    <p class="f-500 c-black m-b-15">Voertuig</p>
+                                    <select chosen multiple class="w-100"
+                                            data-placeholder="Selecteer uw collega's"
+                                            ng-model="tc.selectedMachines"
+                                            ng-options="x as x.Name for x in tc.allMachines">
+                                    </select>
+                                </div>
+                                <div class="col-sm-4 m-b-15">
+                                    <p class="f-500 c-black m-b-15">Hulpstuk </p>
+                                    <select chosen multiple class="w-100"
+                                            data-placeholder="Selecteer uw collega's"
+                                            ng-model="tc.selectedCoworkers"
+                                            ng-options="x as x.Name for x in tc.allAttachments">
+
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="col-sm-2">
-                                <div class="form-group fg-line">
-                                    <input ng-model="taskEnd" type="text" class="form-control" placeholder="Tot">
+                            <div class="col-sm-12">
+                                <p class="f-500 c-black m-b-15">Tijden </p>
+                                <div class="col-sm-2">
+                                    <div class="form-group fg-line">
+                                        <input ng-model="taskStart" type="text" class="form-control" placeholder="Van">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-2">
-                                <div class="form-group fg-line">
-                                    <input ng-model="taskTotal" type="text" class="form-control" placeholder="Totaal">
+                                <div class="col-sm-2">
+                                    <div class="form-group fg-line">
+                                        <input ng-model="taskEnd" type="text" class="form-control" placeholder="Tot">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <div class="form-group fg-line">
+                                        <input ng-model="taskTotal" type="text" class="form-control" placeholder="Totaal">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-xs-12">
@@ -98,14 +108,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body bgm-gray card-padding">
+                    
+                    <div class="card-body card-padding">
                         <button class="btn btn-primary m-r-15" ng-click="hoi()">Toevoegen</button>
                         <button class="btn btn-default" ng-click="showNewTaskCard = false; showTaskOverview= true" slide-toggle="#showNewTaskCard">Annuleren</button>
                     </div>
                 </div>
             </div>
 
-           @*Overzicht Taken*@
+            @*Overzicht Taken*@
             <div slider="showTaskOverview" enabled="true">
                 <div class="card">
                     <div class="card-header ch-alt m-b-20">
@@ -151,7 +162,6 @@
 @section scripts{
 <script src="~/lib/chosen/chosen.js"></script>
 <script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
-<script src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="~/lib/angularslideables-master/angularslideables.js"></script>
 <script src="~/lib/angular-nouislider/src/nouislider.js"></script>
 

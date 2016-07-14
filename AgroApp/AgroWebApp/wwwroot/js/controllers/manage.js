@@ -215,7 +215,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     };
 });
 
-agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement) {
+agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, workTypeList) {
     var um = this;
 
     $scope.showMainView = true;
@@ -228,18 +228,23 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
 
     um.selectedCoworkers = [];
     um.selectedMachines = [];
-    um.machines = [];
-    um.hulpstukken = [];
+    um.selectedAttachments = [];
+    um.allMachines = [];
+    um.allAttachments = [];
 
-    um.increaseSelectedMachineList = function () {
-        var m = machines[0];
-        m.hulpstuk = {};
-        um.selectedMachines.push(m);
-    }
-    um.decreaseSelectedMachineList = function () {
-        um.selectedMachines.pop();
-    }
+    um.allWorkTypes = workTypeList.data;
 
+
+    um.getAllMachines = function () {
+        machineManagement.getAll().then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.allMachines = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
 
     um.showConfirmDeleteAll = function (ev) {
         // Appending dialog to document.body to cover sidenav in docs app
