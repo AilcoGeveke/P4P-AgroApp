@@ -36,19 +36,6 @@ define([
     };
 
     /**
-     * returns style object from node
-     *
-     * @param {jQuery} $node
-     * @return {Object}
-     */
-    this.fromNode = function ($node) {
-      var properties = ['font-family', 'font-size', 'text-align', 'list-style-type', 'line-height'];
-      var styleInfo = jQueryCSS($node, properties) || {};
-      styleInfo['font-size'] = parseInt(styleInfo['font-size'], 10);
-      return styleInfo;
-    };
-
-    /**
      * paragraph level style
      *
      * @param {WrappedRange} rng
@@ -84,9 +71,9 @@ define([
       }
 
       var pred = dom.makePredByNodeName(nodeName);
-      var nodes = rng.nodes(dom.isText, {
+      var nodes = $.map(rng.nodes(dom.isText, {
         fullyContains: true
-      }).map(function (text) {
+      }), function (text) {
         return dom.singleChildAncestor(text, pred) || dom.wrap(text, nodeName);
       });
 
@@ -99,7 +86,7 @@ define([
           });
         }
 
-        return nodes.map(function (node) {
+        return $.map(nodes, function (node) {
           var siblings = dom.withClosestSiblings(node, pred);
           var head = list.head(siblings);
           var tails = list.tail(siblings);
@@ -118,11 +105,15 @@ define([
      * get current style on cursor
      *
      * @param {WrappedRange} rng
+     * @param {Node} target - target element on event
      * @return {Object} - object contains style properties.
      */
-    this.current = function (rng) {
+    this.current = function (rng, target) {
       var $cont = $(dom.isText(rng.sc) ? rng.sc.parentNode : rng.sc);
-      var styleInfo = this.fromNode($cont);
+      var properties = ['font-family', 'font-size', 'text-align', 'list-style-type', 'line-height'];
+      var styleInfo = jQueryCSS($cont, properties) || {};
+
+      styleInfo['font-size'] = parseInt(styleInfo['font-size'], 10);
 
       // document.queryCommandState for toggle state
       styleInfo['font-bold'] = document.queryCommandState('bold') ? 'bold' : 'normal';
@@ -149,6 +140,7 @@ define([
         styleInfo['line-height'] = lineHeight.toFixed(1);
       }
 
+      styleInfo.image = dom.isImg(target) && target;
       styleInfo.anchor = rng.isOnAnchor() && dom.ancestor(rng.sc, dom.isAnchor);
       styleInfo.ancestors = dom.listAncestor(rng.sc, dom.isEditable);
       styleInfo.range = rng;

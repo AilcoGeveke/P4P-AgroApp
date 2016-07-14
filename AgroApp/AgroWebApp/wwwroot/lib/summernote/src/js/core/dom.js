@@ -77,14 +77,9 @@ define([
 
         // frame mode
       } else {
-        makeFinder = function (className, $base) {
-          $base = $base || $editor;
-          return function () { return $base.find(className); };
+        makeFinder = function (sClassName) {
+          return function () { return $editor.find(sClassName); };
         };
-
-        var options = $editor.data('options');
-        var $dialogHolder = (options && options.dialogsInBody) ? $(document.body) : null;
-
         return {
           editor: function () { return $editor; },
           holder : function () { return $editor.data('holder'); },
@@ -95,7 +90,7 @@ define([
           statusbar: makeFinder('.note-statusbar'),
           popover: makeFinder('.note-popover'),
           handle: makeFinder('.note-handle'),
-          dialog: makeFinder('.note-dialog', $dialogHolder)
+          dialog: makeFinder('.note-dialog')
         };
       }
     };
@@ -156,7 +151,7 @@ define([
      * @see http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements
      */
     var isVoid = function (node) {
-      return node && /^BR|^IMG|^HR|^IFRAME|^BUTTON/.test(node.nodeName.toUpperCase());
+      return node && /^BR|^IMG|^HR/.test(node.nodeName.toUpperCase());
     };
 
     var isPara = function (node) {
@@ -179,7 +174,6 @@ define([
     var isInline = function (node) {
       return !isBodyContainer(node) &&
              !isList(node) &&
-             !isHr(node) &&
              !isPara(node) &&
              !isTable(node) &&
              !isBlockquote(node);
@@ -188,8 +182,6 @@ define([
     var isList = function (node) {
       return node && /^UL|^OL/.test(node.nodeName.toUpperCase());
     };
-
-    var isHr = makePredByNodeName('HR');
 
     var isCell = function (node) {
       return node && /^TD|^TH/.test(node.nodeName.toUpperCase());
@@ -248,10 +240,9 @@ define([
 
     /**
      * blank HTML for cursor position
-     * - [workaround] old IE only works with &nbsp;
-     * - [workaround] IE11 and other browser works with bogus br
+     * - [workaround] for MSIE IE doesn't works with bogus br
      */
-    var blankHTML = agent.isMSIE && agent.browserVersion < 11 ? '&nbsp;' : '<br>';
+    var blankHTML = agent.isMSIE ? '&nbsp;' : '<br>';
 
     /**
      * @method nodeLength
@@ -548,26 +539,6 @@ define([
     };
 
     /**
-     * returns whether point is left edge of ancestor or not.
-     * @param {BoundaryPoint} point
-     * @param {Node} ancestor
-     * @return {Boolean}
-     */
-    var isLeftEdgePointOf = function (point, ancestor) {
-      return isLeftEdgePoint(point) && isLeftEdgeOf(point.node, ancestor);
-    };
-
-    /**
-     * returns whether point is right edge of ancestor or not.
-     * @param {BoundaryPoint} point
-     * @param {Node} ancestor
-     * @return {Boolean}
-     */
-    var isRightEdgePointOf = function (point, ancestor) {
-      return isRightEdgePoint(point) && isRightEdgeOf(point.node, ancestor);
-    };
-
-    /**
      * returns offset from parent.
      *
      * @param {Node} node
@@ -765,7 +736,7 @@ define([
      */
     var makeOffsetPath = function (ancestor, node) {
       var ancestors = listAncestor(node, func.eq(ancestor));
-      return ancestors.map(position).reverse();
+      return $.map(ancestors, position).reverse();
     };
 
     /**
@@ -1075,8 +1046,6 @@ define([
       isEdgePoint: isEdgePoint,
       isLeftEdgeOf: isLeftEdgeOf,
       isRightEdgeOf: isRightEdgeOf,
-      isLeftEdgePointOf: isLeftEdgePointOf,
-      isRightEdgePointOf: isRightEdgePointOf,
       prevPoint: prevPoint,
       nextPoint: nextPoint,
       isSamePoint: isSamePoint,

@@ -10,11 +10,15 @@ namespace AgroApp.Models
         public int IdAssignment { set; get; }
         public string Location { set; get; }
         public string Description { set; get; }
-        public DateTime Date { set; get; }
+        public long Date { set; get; }
+
+        public Customer Customer { set; get; }
+        public List<User> Employees { set; get; }
+        public int EmployeeCount { set; get; }
 
         public Assignment() { }
 
-        public Assignment(DateTime date, int idAssignment = -1, string location = "", string description = "")
+        public Assignment(long date, int idAssignment = -1, string location = "", string description = "")
 
         {
             IdAssignment = idAssignment;

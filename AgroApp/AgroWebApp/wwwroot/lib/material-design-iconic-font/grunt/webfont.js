@@ -5,8 +5,6 @@ module.exports = {
         destCss: 'less/temp',
         options: {
             font: 'Material-Design-Iconic-Font',
-            types: 'ttf,woff',
-            autohint: false,
             syntax: 'bootstrap',
             stylesheet: 'less',
             centerHorizontally : true,
@@ -27,8 +25,6 @@ module.exports = {
         destCss: 'less/temp',
         options: {
             font: 'Material-Design-Iconic-Font',
-            types: 'ttf,woff',
-            autoHint: false,
             syntax: 'bootstrap',
             styles: 'icon',
             stylesheet: 'less',

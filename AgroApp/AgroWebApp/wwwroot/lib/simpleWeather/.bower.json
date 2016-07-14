@@ -31,7 +31,8 @@
     "tag": "3.0.2",
     "commit": "fdb15924753c72813fc45874452b57a3fe93f78b"
   },
-  "_source": "https://github.com/monkeecreate/jquery.simpleWeather.git",
+  "_source": "git://github.com/monkeecreate/jquery.simpleWeather.git",
   "_target": "~3.0.2",
-  "_originalSource": "simpleWeather"
+  "_originalSource": "simpleWeather",
+  "_direct": true
 }

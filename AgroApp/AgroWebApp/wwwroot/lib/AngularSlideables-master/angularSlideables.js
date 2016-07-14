@@ -5,13 +5,13 @@ angular.module('angularSlideables', [])
          compile: function (element) {
              // wrap tag
              var contents = element.html();
-             element.html('<div class="slideable_content" style=" margin:0 !important; padding:0 !important" >' + contents + '</div>');
+             element.html('<div class="slideable_content" style=" position="relative" margin:0 !important; padding:0 !important" >' + contents + '</div>');
 
              return function postLink(scope, element, attrs) {
                  var i = 0;
                  // default properties
                  scope.$watch(attrs.slider, (n, o) => {
-                     if (n !== o) {
+                     if (n !== o || attrs.enabled) {
                          i++;
                          var target = element[0],
                              content = target.querySelector('.slideable_content');

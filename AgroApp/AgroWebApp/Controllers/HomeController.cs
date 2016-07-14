@@ -22,5 +22,12 @@ namespace AgroApp.Controllers
             }
             return View();
         }
+
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await UserController.Logout(HttpContext);
+            return RedirectToAction("Index");
+        }
     }
 }

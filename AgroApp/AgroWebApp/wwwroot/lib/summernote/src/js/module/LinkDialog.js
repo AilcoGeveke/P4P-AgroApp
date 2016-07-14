@@ -59,7 +59,7 @@ define([
 
           // if no url was given, copy text to url
           if (!linkInfo.url) {
-            linkInfo.url = linkInfo.text || 'http://';
+            linkInfo.url = linkInfo.text;
             toggleBtn($linkBtn, linkInfo.text);
           }
 
@@ -75,7 +75,7 @@ define([
           bindEnterKey($linkUrl, $linkBtn);
           bindEnterKey($linkText, $linkBtn);
 
-          $openInNewWindow.prop('checked', linkInfo.isNewWindow);
+          $openInNewWindow.prop('checked', linkInfo.newWindow);
 
           $linkBtn.one('click', function (event) {
             event.preventDefault();
@@ -84,7 +84,7 @@ define([
               range: linkInfo.range,
               url: $linkUrl.val(),
               text: $linkText.val(),
-              isNewWindow: $openInNewWindow.is(':checked')
+              newWindow: $openInNewWindow.is(':checked')
             });
             $linkDialog.modal('hide');
           });

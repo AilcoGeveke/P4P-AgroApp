@@ -22,7 +22,6 @@ define([
    */
   var Editor = function (handler) {
 
-    var self = this;
     var style = new Style();
     var table = new Table();
     var typing = new Typing();
@@ -102,32 +101,17 @@ define([
         $editable[0].appendChild(child[index]);
       }
     };
-
     /**
      * @method currentStyle
      *
      * current style
      *
      * @param {Node} target
-     * @return {Object|Boolean} unfocus
+     * @return {Boolean} false if range is no
      */
     this.currentStyle = function (target) {
       var rng = range.create();
-      var styleInfo =  rng && rng.isOnEditable() ? style.current(rng.normalize()) : {};
-      if (dom.isImg(target)) {
-        styleInfo.image = target;
-      }
-      return styleInfo;
-    };
-
-    /**
-     * style from node
-     *
-     * @param {jQuery} $node
-     * @return {Object}
-     */
-    this.styleFromNode = function ($node) {
-      return style.fromNode($node);
+      return rng ? rng.isOnEditable() && style.current(rng, target) : false;
     };
 
     var triggerOnBeforeChange = function ($editable) {
@@ -166,6 +150,7 @@ define([
       triggerOnChange($editable);
     };
 
+    var self = this;
     /**
      * @method beforeCommand
      * before command
@@ -300,7 +285,7 @@ define([
     var commands = ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript',
                     'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull',
                     'formatBlock', 'removeFormat',
-                    'backColor', 'foreColor', 'fontName'];
+                    'backColor', 'foreColor', 'insertHorizontalRule', 'fontName'];
 
     for (var idx = 0, len = commands.length; idx < len; idx ++) {
       this[commands[idx]] = (function (sCmd) {
@@ -497,8 +482,9 @@ define([
      */
     this.fontSize = function ($editable, value) {
       var rng = range.create();
+      var isCollapsed = rng.isCollapsed();
 
-      if (rng.isCollapsed()) {
+      if (isCollapsed) {
         var spans = style.styleNodes(rng);
         var firstSpan = list.head(spans);
 
@@ -520,22 +506,6 @@ define([
         });
         afterCommand($editable);
       }
-    };
-
-    /**
-     * insert horizontal rule
-     * @param {jQuery} $editable
-     */
-    this.insertHorizontalRule = function ($editable) {
-      beforeCommand($editable);
-
-      var rng = range.create();
-      var hrNode = rng.insertNode($('<HR/>')[0]);
-      if (hrNode.nextSibling) {
-        range.create(hrNode.nextSibling, 0).normalize().select();
-      }
-
-      afterCommand($editable);
     };
 
     /**
@@ -582,7 +552,7 @@ define([
      * @param {jQuery} $editable
      */
     this.unlink = function ($editable) {
-      var rng = this.createRange($editable);
+      var rng = this.createRange();
       if (rng.isOnAnchor()) {
         var anchor = dom.ancestor(rng.sc, dom.isAnchor);
         rng = range.createFromNode(anchor);
@@ -604,11 +574,9 @@ define([
     this.createLink = function ($editable, linkInfo, options) {
       var linkUrl = linkInfo.url;
       var linkText = linkInfo.text;
-      var isNewWindow = linkInfo.isNewWindow;
-      var rng = linkInfo.range || this.createRange($editable);
+      var isNewWindow = linkInfo.newWindow;
+      var rng = linkInfo.range;
       var isTextChanged = rng.toString() !== linkText;
-
-      options = options || dom.makeLayoutInfo($editable).editor().data('options');
 
       beforeCommand($editable);
 
@@ -722,13 +690,6 @@ define([
      */
     this.floatMe = function ($editable, value, $target) {
       beforeCommand($editable);
-      // bootstrap
-      $target.removeClass('pull-left pull-right');
-      if (value && value !== 'none') {
-        $target.addClass('pull-' + value);
-      }
-
-      // fallback for non-bootstrap
       $target.css('float', value);
       afterCommand($editable);
     };
@@ -826,16 +787,6 @@ define([
              .collapse()
              .select();
       }
-    };
-
-    /**
-     * returns whether contents is empty or not.
-     *
-     * @param {jQuery} $editable
-     * @return {Boolean}
-     */
-    this.isEmpty = function ($editable) {
-      return dom.isEmpty($editable[0]) || dom.emptyPara === $editable.html();
     };
   };
 

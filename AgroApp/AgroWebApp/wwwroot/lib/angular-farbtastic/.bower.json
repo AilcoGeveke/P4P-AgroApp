@@ -9,7 +9,8 @@
     "branch": "master",
     "commit": "2a675375f1d65175c0ebbeb49432f5c041ad4428"
   },
-  "_source": "https://github.com/schartier/angular-farbtastic.git",
+  "_source": "git://github.com/schartier/angular-farbtastic.git",
   "_target": "*",
-  "_originalSource": "angular-farbtastic"
+  "_originalSource": "angular-farbtastic",
+  "_direct": true
 }

@@ -7,11 +7,8 @@
         underline: '底線',
         clear: '清除格式',
         height: '行高',
-        name: '字體',
         strikethrough: '刪除線',
-        subscript: '下標',
-        superscript: '上標',
-        size: '字號'
+        size: '字體大小'
       },
       image: {
         image: '圖片',
@@ -22,16 +19,9 @@
         floatLeft: '靠左浮動',
         floatRight: '靠右浮動',
         floatNone: '取消浮動',
-        shapeRounded: '形狀: 圓角',
-        shapeCircle: '形狀: 圓',
-        shapeThumbnail: '形狀: 縮略圖',
-        shapeNone: '形狀: 無',
         dragImageHere: '將圖片拖曳至此處',
         selectFromFiles: '從本機上傳',
-        maximumFileSize: '文件大小最大值',
-        maximumFileSizeError: '文件大小超出最大值。',
-        url: '圖片網址',
-        remove: '移除圖片'
+        url: '圖片網址'
       },
       link: {
         link: '連結',
@@ -94,8 +84,7 @@
         textFormatting: '文字格式',
         action: '動作',
         paragraphFormatting: '段落格式',
-        documentStyle: '文件格式',
-        extraKeys: '額外按鍵'
+        documentStyle: '文件格式'
       },
       history: {
         undo: '復原',

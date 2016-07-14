@@ -536,11 +536,11 @@
       return true;
     };
 
-    AbstractChosen.default_multiple_text = "";
+    AbstractChosen.default_multiple_text = "Select Some Options";
 
-    AbstractChosen.default_single_text = "";
+    AbstractChosen.default_single_text = "Select an Option";
 
-    AbstractChosen.default_no_result_text = "Geen resultaten";
+    AbstractChosen.default_no_result_text = "No results match";
 
     return AbstractChosen;
 
