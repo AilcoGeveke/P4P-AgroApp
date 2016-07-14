@@ -133,15 +133,6 @@ namespace AgroApp.Controllers.Admin
             return View("management/addMachine");
         }
 
-        [HttpGet("admin/werkbon/{idAssignment}")]
-        public IActionResult AddTimesheet(int id)
-        {
-            ViewData["idAssignment"] = id;
-
-            return View("timesheet");
-        }
-
-
         [HttpGet("admin/machines/wijzigen/{id}")]
         public async Task<IActionResult> EditMachine(int id)
         {

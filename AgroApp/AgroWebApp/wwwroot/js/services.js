@@ -172,11 +172,12 @@ materialAdmin
 
     .service('timesheetManagement', function ($http) {
         this.add = function (data) {
-            return $http.post('/api/timesheet/add', data)
+            console.log(data);
+            return $http.post('/api/timesheet/add', data);
         }
 
         this.getAll = function (data) {
-            return $http.post('/api/timesheet/add', data)
+            return $http.get('/api/timesheet/get/' + data);
         }
     })
 

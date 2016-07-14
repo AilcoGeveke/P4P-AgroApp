@@ -56,35 +56,33 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", idAssignment),
                 new MySqlParameter("@1", user.IdEmployee)))
             {
-                int idEmployeeAssignment = reader.GetInt32(0);
+                await reader.ReadAsync();
+                int idEmployeeAssignment = reader["idEmployeeAssignment"] as int? ?? 0;
                 return idEmployeeAssignment;
             }
         }
 
-        //[HttpGet("getall/{idAssignment}")]
-        //public async Task<IEnumerable<Assignment>> GetAssignment(int idAssignment)
-        //{
-        //    string query = "SELECT Assignment.*, COUNT(EmployeeAssignment.idEmployeeAssignment) as count FROM Assignment LEFT JOIN EmployeeAssignment ON Assignment.idAssignment = EmployeeAssignment.idAssignment WHERE Assignment.Date >= DATE(@1) AND Assignment.Date < DATE(@2) GROUP BY Assignment.idAssignment";
-        //    List<Assignment> assignments = new List<Assignment>();
-        //    using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-        //    {
-        //        using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-        //            new MySqlParameter("@0", 1),
-        //            new MySqlParameter("@1", startDate.ToString("yyyy-MM-dd")),
-        //            new MySqlParameter("@2", endDate.ToString("yyyy-MM-dd"))))
-        //            while (await reader.ReadAsync())
-        //                assignments.Add(new Assignment(
-        //                    idAssignment: reader["idAssignment"] as int? ?? -1,
-        //                    location: reader["location"] as string,
-        //                    description: reader["description"] as string,
-        //                    date: reader["date"] as long? ?? 0)
-        //                {
-        //                    Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1),
-        //                    EmployeeCount = (int)(reader["count"] as long? ?? (long)0)
-        //                });
-        //        return assignments;
-        //    }
-        //}
+        [HttpGet("get/{idAssignment}")]
+        public async Task<Assignment> GetAssignment(int idAssignment)
+        {
+            string query = "SELECT Assignment.* FROM Assignment WHERE Assignment.idAssignment = @0";
+            Assignment assignment = default(Assignment);
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            {
+                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                    new MySqlParameter("@0", idAssignment)))
+                    while (await reader.ReadAsync())
+                        assignment = (new Assignment(
+                            idAssignment: reader["idAssignment"] as int? ?? -1,
+                            location: reader["location"] as string,
+                            description: reader["description"] as string,
+                            date: reader["date"] as long? ?? 0)
+                        {
+                            Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1),
+                        });
+                return assignment;
+            }
+        }
 
         [HttpGet("getall/{datelong}")]
         [HttpGet("getall/{datelong}/{fillEmployees}")]

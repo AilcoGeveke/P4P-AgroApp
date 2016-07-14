@@ -233,17 +233,25 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     um.selectedAttachments = [];
     um.selectedAssignment = {};
 
-    um.timesheetDetails = [];
+    um.timesheetDetails = {};
+    um.timesheetDetails.WorkType = 'Machinist';
 
     um.addTimesheet = function () {
+        swal({
+            title: "",
+            text: "Taak word toegevoegd!",
+            showConfirmButton: false
+        });
         timesheetManagement.add(um.timesheetDetails)
         .then(function successCallback(response) {
-            if (response.data != "succes") {
+            if (response.data != true) {
                 swal("", response.data, "error");
             }
             else {
-                swal({ title: "Taak is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
+                um.timesheetDetails = {};
+                $scope.showTaskOverview = true;
+                $scope.showNewTaskCard = false;
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");

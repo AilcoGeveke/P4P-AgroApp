@@ -116,7 +116,7 @@
                                 </td>
                                 <td>
                                     <button class="button btn btn-default" ng-click="am.changeAssignment()"><i class="zmdi zmdi-edit"></i></button>
-                                    <button class="btn btn-default" href="admin/werkbon/{{w.IdAssignment}}"><i class="zmdi zmdi-case"></i></button>
+                                    <a class="btn btn-default" href="~/admin/urenoverzicht/{{w.IdAssignment}}"><i class="zmdi zmdi-case"></i></a>
                                 </td>
                             </tr>
                         </table>
@@ -135,7 +135,6 @@
 @section scripts{
     <script src="~/lib/chosen/chosen.js"></script>
     <script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
-    <script src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/lib/angularslideables-master/angularslideables.js"></script>
     <script src="~/lib/angular-nouislider/src/nouislider.js"></script>
 

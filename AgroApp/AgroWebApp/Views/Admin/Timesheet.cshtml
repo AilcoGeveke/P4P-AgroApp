@@ -8,19 +8,17 @@
 <section id="main" ng-controller="TimesheetController as tc">
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
-    <section id="content" ng-init="tc.getAssignment('@ViewData["IdAssignment"])'">
+    <section id="content" ng-init="tc.getAssignment('@ViewData["IdAssignment"]'); tc.timesheetDetails.IdEmployeeAssignment = @ViewData["IdEmployeeAssignment"]">
         <div class="container">
 
             <div class="card">
                 <div class="card-header ch-alt">
-                    <div class="media">
                         <div class="media-body">
                             <h2>{{tc.selectedAssignment.Customer.Name}} <small>{{tc.selectedAssignment.Date}}</small></h2>
                         </div>
-                    </div>
                 </div>
                 <div class="card-body card-padding">
-                    <h3>{{tc.selectedAssignment.Location}}</h3>
+                    <p class="lead">{{tc.selectedAssignment.Location}}</p>
                     <p>{{tc.selectedAssignment.Description}}</p>
                 </div>
             </div>
@@ -30,76 +28,57 @@
                     <div class="card-header ch-alt">
                         <h2>Taak Toevoegen<small>Hier kunt u uw gewerkte uren invullen</small></h2>
                     </div>
-                    <div class="card-body card-padding container-fluid">
-
-                        <p class="f-500 c-black m-b-5">Werktype</p>
-                        <small class="c-gray">Selecteer hier op welke manier u heeft gewerkt</small>
-
-                        <br />
-                        <br />
-
-                        <div class="btn-group btn-group-justified m-b-20" role="group" aria-label="...">
-                            <div class="btn-group" role="group">
-                                <label class="btn btn-primary" ng-model="typeOfWork"  ng-change="showWorkType = value; showMachine = !value;" uib-btn-radio="'Man'">Man</label>
+                    <div class="card-body card-padding">
+                        <div class="row">
+                            <div class="col-xs-12 m-b-15" ng-init="">
+                                <label>Type Werk</label>
+                                <small class="c-gray">Selecteer hier op welke manier u heeft gewerkt</small>
+                                <select chosen ng-model="tc.timesheetDetails.WorkType" data-placeholder="Mankeuze" width="'100%'" class="w-100">
+                                    <option value="{{type}}" ng-repeat="type in tc.allWorkTypes">
+                                        {{type}}
+                                    </option>
+                                </select>
                             </div>
-                            <div class="btn-group" role="group">
-                                <label class="btn btn-primary active" ng-model="typeOfWork" ng-change="showWorkType = !value; showMachine = value;" uib-btn-radio="'Machinist'">Machinist</label>
+                            <div uib-collapse="tc.timesheetDetails.WorkType != 'Machinist'">
+                                <div class="col-sm-6 m-b-15" ng-init="tc.getAllMachines()">
+                                    <label>Voertuig</label>
+                                    <select chosen multiple width="'100%'" class="w-100"
+                                            data-placeholder="Selecteer uw collega's"
+                                            ng-model="tc.timesheetDetails.Machines"
+                                            ng-options="x as x.Name for x in tc.allMachines"></select>
+                                </div>
+                                <div class="col-sm-6 m-b-15">
+                                    <label>Hulpstuk</label>
+                                    <select chosen multiple width="'100%'" class="w-100"
+                                            data-placeholder="Hulpstuk"
+                                            ng-model="tc.timesheetDetails.Attachments"
+                                            ng-options="x as x.Name for x in tc.allAttachments"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label>Tijden</label>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group fg-line">
+                                    <input ng-model="tc.timesheetDetails.StartTime" type="text" class="form-control" placeholder="Van">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group fg-line">
+                                    <input ng-model="tc.timesheetDetails.EndTime" type="text" class="form-control" placeholder="Tot">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group fg-line">
+                                    <input ng-model="tc.timesheetDetails.TotalTIme" type="text" class="form-control" placeholder="Totaal">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12" uib-collapse="showWorkType" ng-init="">
-                                <p class="f-500 c-gray m-b-15">Man </p>
-                                <div class="col-sm-4 m-b-15">
-                                    <p class="f-500 c-black m-b-15">Mankeuze</p>
-                                    <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
-                                        <option ng-repeat="type in tc.allWorkTypes">
-                                            {{type}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-12" uib-collapse="showMachine">
-                                <p class="f-500 c-gray m-b-15">Machinist </p>
-                                <div class="col-sm-4 m-b-15" ng-init="tc.getAllMachines()">
-                                    <p class="f-500 c-black m-b-15">Voertuig</p>
-                                    <select chosen multiple class="w-100"
-                                            data-placeholder="Selecteer uw collega's"
-                                            ng-model="tc.timesheetDetails.Machines"
-                                            ng-options="x as x.Name for x in tc.allMachines">
-                                    </select>
-                                </div>
-                                <div class="col-sm-4 m-b-15">
-                                    <p class="f-500 c-black m-b-15">Hulpstuk </p>
-                                    <select chosen multiple class="w-100"
-                                            data-placeholder="Hulpstuk"
-                                            ng-model="tc.timesheetDetails.Attachments"
-                                            ng-options="x as x.Name for x in tc.allAttachments">
-
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <p class="f-500 c-black m-b-15">Tijden </p>
-                                <div class="col-sm-2">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="tc.timesheetDetails.StartTime" type="text" class="form-control" placeholder="Van">
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="tc.timesheetDetails.EndTime" type="text" class="form-control" placeholder="Tot">
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="tc.timesheetDetails.TotalTIme" type="text" class="form-control" placeholder="Totaal">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-xs-12">
                                 <div class="form-group fg-line">
                                     <label>Beschrijving</label>
                                     <textarea class="form-control" rows="6" placeholder="Beschrijving..."
@@ -108,9 +87,8 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="card-body card-padding">
-                        <button class="btn btn-primary m-r-15" ng-click="um.()">Toevoegen</button>
+                    <div class="card-body card-padding bgm-gray">
+                        <button class="btn btn-primary m-r-15" ng-click="tc.addTimesheet()">Toevoegen</button>
                         <button class="btn btn-default" ng-click="showNewTaskCard = false; showTaskOverview= true" slide-toggle="#showNewTaskCard">Annuleren</button>
                     </div>
                 </div>
@@ -155,16 +133,16 @@
 </section>
 
 @section styles{
-<link href="~/lib/chosen/chosen.css" rel="stylesheet" />
-<link href="~/lib/chosen/chosen-sprite.png" rel="image_src" />
+    <link href="~/lib/chosen/chosen.css" rel="stylesheet" />
+    <link href="~/lib/chosen/chosen-sprite.png" rel="image_src" />
 }
 
 @section scripts{
-<script src="~/lib/chosen/chosen.js"></script>
-<script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
-<script src="~/lib/angularslideables-master/angularslideables.js"></script>
-<script src="~/lib/angular-nouislider/src/nouislider.js"></script>
+    <script src="~/lib/chosen/chosen.js"></script>
+    <script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
+    <script src="~/lib/angularslideables-master/angularslideables.js"></script>
+    <script src="~/lib/angular-nouislider/src/nouislider.js"></script>
 
-<script>angular.module('materialAdmin').requires.push('localytics.directives');</script>
-<script>angular.module('materialAdmin').requires.push('angularSlideables');</script>
+    <script>angular.module('materialAdmin').requires.push('localytics.directives');</script>
+    <script>angular.module('materialAdmin').requires.push('angularSlideables');</script>
 }
