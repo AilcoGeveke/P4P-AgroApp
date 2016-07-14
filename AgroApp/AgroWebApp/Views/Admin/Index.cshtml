@@ -23,11 +23,19 @@
 
                         <div class="listview lv-bordered lv-lg" ng-init="am.getAllAssignmentsPeriod(true)">
                             <div class="lv-body">
-                                <div class="lv-item media" ng-repeat="x in am.allAssignments">
-                                    <div class="media-body">
-                                        <div class="lv-title">{{x.Customer.Name}}</div>
-                                        <div class="lv-actions">
-                                            <button class="btn btn-primary"><i class="zmdi zmdi-chevron-down"></i></button>
+                                <div ng-repeat="x in am.allAssignments">
+                                    <div class="lv-item media">
+                                        <div class="media-body">
+                                            <div class="lv-title">{{x.Name}}</div>
+                                            <div class="lv-actions">
+                                                <button class="btn btn-primary" ng-click="x.opened = !x.opened"><i class="zmdi zmdi-chevron-down"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div uib-collapse="x.opened">
+                                        <div class="lv-item media bgm-teal c-white" ng-repeat="user in x.Assignments[0].Employees">
+                                            {{user.Name}}
                                         </div>
                                     </div>
                                 </div>

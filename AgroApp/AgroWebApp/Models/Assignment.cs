@@ -13,7 +13,7 @@ namespace AgroApp.Models
         public long Date { set; get; }
 
         public Customer Customer { set; get; }
-        public List<User> Employees { set; get; }
+        public List<User> Employees { set; get; } = new List<User>();
         public int EmployeeCount { set; get; }
 
         public Assignment() { }
