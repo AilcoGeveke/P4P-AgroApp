@@ -337,21 +337,31 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                     um.allAssignments = [];
                     for(val of response.data)
                     {
-                        if (um.allAssignments.indexOf(val.Customer) == -1) {
+                        var containsCus = false;
+                        var customerIndex = -1;
+                        for(cus of um.allAssignments) {
+                            if (cus.Name == val.Customer.Name) {
+                                containsCus = true;
+                                customerIndex = um.allAssignments.indexOf(cus);
+                            }
+                        }
+
+                        if (!containsCus) {
                             um.allAssignments.push(val.Customer);
-                            um.allAssignments[um.allAssignments.indexOf(val.Customer)].Assignments = [];
+                            customerIndex = um.allAssignments.indexOf(val.Customer);
+                            um.allAssignments[customerIndex].Assignments = [];
                         }
 
                         var Customer = val.Customer;
                         val.Customer = {};
                         val.opened = false;
-                        um.allAssignments[um.allAssignments.indexOf(Customer)].Assignments.push(val);
+                        um.allAssignments[customerIndex].Assignments.push(val);
                     }
 
                     console.log(um.allAssignments);
                 }
                 else
-                um.allAssignments = response.data;
+                    um.allAssignments = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");

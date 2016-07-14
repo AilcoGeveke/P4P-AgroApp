@@ -28,15 +28,20 @@
                                         <div class="media-body">
                                             <div class="lv-title">{{x.Name}}</div>
                                             <div class="lv-actions">
-                                                <button class="btn btn-primary" ng-click="x.opened = !x.opened"><i class="zmdi zmdi-chevron-down"></i></button>
+                                                <button class="btn btn-primary" ng-click="x.opened = !x.opened"><i class="zmdi zmdi-menu"></i></button>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div uib-collapse="x.opened">
-                                        <div class="lv-item media bgm-teal c-white" ng-repeat="user in x.Assignments[0].Employees">
-                                            {{user.Name}}
+                                    <div uib-collapse="!x.opened">
+                                        <div class="bgm-amber p-b-15"></div>
+                                        <div class="lv-item media" ng-repeat="ass in x.Assignments">
+                                            <div class="lv-title">{{ass.Location}}</div>
+                                            <small class="c-bluegray">{{ass.Description}}</small>
+                                            <ul class="lv-attrs">
+                                                <li class="p-0" ng-repeat="user in ass.Employees"><a class="card listbutton" href="">{{user.Name}}</a></li>
+                                            </ul>
                                         </div>
+                                        <div class="bgm-amber p-b-15"></div>
                                     </div>
                                 </div>
                             </div>
@@ -51,14 +56,7 @@
 
                         <div class="listview lv-bordered lv-lg">
                             <div class="lv-body">
-                                <div class="lv-item media" ng-repeat="x in am.allAssignments">
-                                    <div class="media-body">
-                                        <div class="lv-title">{{x.Customer.Name}}</div>
-                                        <div class="lv-actions">
-                                            <button class="btn btn-primary"><i class="zmdi zmdi-chevron-down"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
