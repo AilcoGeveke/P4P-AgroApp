@@ -296,15 +296,9 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                     timer: 3500,
                     showConfirmButton: false,
                     type: "success"
-<<<<<<< HEAD
                 });
                 um.newAssignment = {};
                 $scope.showNewAssignmentCard = false;
-=======
-});
-                um.newAssignement = {};
-                $scope.showNewAssignementCard = false;
->>>>>>> origin/master
                 $scope.showMainView = true;
             },
             function errorCallback(response) {
