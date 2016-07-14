@@ -103,7 +103,7 @@
                             </colgroup>
                             <tr ng-repeat="w in am.allAssignments">
                                 <td data-title="'Taaknummer'" sortable="'id'">
-                                    {{ w.IdAssignment }}
+                                    {{ w.IdAssignment / 10 | number:0 }}
                                 </td>
                                 <td data-title="'Locatie'" sortable="'locatie'">
                                     {{ w.Location }}
