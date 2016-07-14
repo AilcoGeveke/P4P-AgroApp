@@ -26,29 +26,29 @@
      * @property {Function} buttons.helloImage   function to make button
      */
     buttons: { // buttons
-      hello: function (lang, options) {
+      hello: function () {
 
-        return tmpl.iconButton(options.iconPrefix + 'header', {
+        return tmpl.iconButton('fa fa-header', {
           event : 'hello',
           title: 'hello',
           hide: true
         });
       },
-      helloDropdown: function (lang, options) {
+      helloDropdown: function () {
 
 
         var list = '<li><a data-event="helloDropdown" href="#" data-value="summernote">summernote</a></li>';
         list += '<li><a data-event="helloDropdown" href="#" data-value="codemirror">Code Mirror</a></li>';
         var dropdown = '<ul class="dropdown-menu">' + list + '</ul>';
 
-        return tmpl.iconButton(options.iconPrefix + 'header', {
+        return tmpl.iconButton('fa fa-header', {
           title: 'hello',
           hide: true,
           dropdown : dropdown
         });
       },
-      helloImage : function (lang, options) {
-        return tmpl.iconButton(options.iconPrefix + 'file-image-o', {
+      helloImage : function () {
+        return tmpl.iconButton('fa fa-file-image-o', {
           event : 'helloImage',
           title: 'helloImage',
           hide: true

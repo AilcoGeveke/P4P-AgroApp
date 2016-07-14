@@ -9,8 +9,8 @@
         height: 'Satır yüksekliği',
         name: 'Yazı Tipi',
         strikethrough: 'Üstü çizili',
-        subscript: 'Alt Simge',
-        superscript: 'Üst Simge',
+        subscript: 'Subscript',
+        superscript: 'Superscript',
         size: 'Yazı tipi boyutu'
       },
       image: {

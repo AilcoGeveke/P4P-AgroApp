@@ -31,5 +31,6 @@
   },
   "_source": "git://github.com/johndyer/mediaelement.git",
   "_target": "~2.16.4",
-  "_originalSource": "johndyer/mediaelement"
+  "_originalSource": "johndyer/mediaelement",
+  "_direct": true
 }

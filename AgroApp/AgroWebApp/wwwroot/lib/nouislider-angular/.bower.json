@@ -31,5 +31,6 @@
   },
   "_source": "git://github.com/Yankovsky/nouislider-angular.git",
   "_target": "~1.0.8",
-  "_originalSource": "Yankovsky/nouislider-angular"
+  "_originalSource": "Yankovsky/nouislider-angular",
+  "_direct": true
 }

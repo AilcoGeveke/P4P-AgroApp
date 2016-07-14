@@ -17,17 +17,15 @@ define([
      *
      * @private
      * @param {Node} placeholder
-     * @param {Object} options
-     * @param {Boolean} options.isAirMode
-     * @return {Position}
+     * @param {Boolean} isAirMode
+     * @return {Object}
+     * @return {Number} return.left
+     * @return {Number} return.top
      */
-    var posFromPlaceholder = function (placeholder, options) {
-      var isAirMode = options && options.isAirMode;
-      var isLeftTop = options && options.isLeftTop;
-
+    var posFromPlaceholder = function (placeholder, isAirMode) {
       var $placeholder = $(placeholder);
       var pos = isAirMode ? $placeholder.offset() : $placeholder.position();
-      var height = isLeftTop ? 0 : $placeholder.outerHeight(true); // include margin
+      var height = $placeholder.outerHeight(true); // include margin
 
       // popover below placeholder.
       return {
@@ -73,25 +71,20 @@ define([
         } else {
           $anchor.attr('target', '_blank');
         }
-        showPopover($linkPopover, posFromPlaceholder(styleInfo.anchor, {
-          isAirMode: isAirMode
-        }));
+        showPopover($linkPopover, posFromPlaceholder(styleInfo.anchor, isAirMode));
       } else {
         $linkPopover.hide();
       }
 
       var $imagePopover = $popover.find('.note-image-popover');
       if (styleInfo.image) {
-        showPopover($imagePopover, posFromPlaceholder(styleInfo.image, {
-          isAirMode: isAirMode,
-          isLeftTop: true
-        }));
+        showPopover($imagePopover, posFromPlaceholder(styleInfo.image, isAirMode));
       } else {
         $imagePopover.hide();
       }
 
       var $airPopover = $popover.find('.note-air-popover');
-      if (isAirMode && styleInfo.range && !styleInfo.range.isCollapsed()) {
+      if (isAirMode && !styleInfo.range.isCollapsed()) {
         var rect = list.last(styleInfo.range.getClientRects());
         if (rect) {
           var bnd = func.rect2bnd(rect);

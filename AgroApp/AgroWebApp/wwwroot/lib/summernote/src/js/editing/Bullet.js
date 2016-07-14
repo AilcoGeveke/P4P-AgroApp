@@ -153,7 +153,7 @@ define([
       var listNode = prevList || dom.insertAfter(dom.create(listName || 'UL'), last);
 
       // P to LI
-      paras = paras.map(function (para) {
+      paras = $.map(paras, function (para) {
         return dom.isPurePara(para) ? dom.replace(para, 'LI') : para;
       });
 
@@ -203,7 +203,7 @@ define([
 
         // LI to P
         if (isEscapseToBody || !dom.isList(headList.parentNode)) {
-          paras = paras.map(function (para) {
+          paras = $.map(paras, function (para) {
             return dom.replace(para, 'P');
           });
         }

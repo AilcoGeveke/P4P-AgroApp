@@ -47,14 +47,10 @@ namespace AgroApp.Controllers.Api
             //return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "employee/menu"; // auth succeed 
 
         }
-
-        // GET: api/values
-        [HttpGet("logout")]
-        [Authorize]
-        public async Task<string> Logout(string username, string password)
+        
+        public static async Task Logout(HttpContext context)
         {
-            await HttpContext.Authentication.SignOutAsync("AgroAppCookie");
-            return "succes";
+            await context.Authentication.SignOutAsync("AgroAppCookie");
         }
 
         public static async Task<bool> IsValid(string username, string password)

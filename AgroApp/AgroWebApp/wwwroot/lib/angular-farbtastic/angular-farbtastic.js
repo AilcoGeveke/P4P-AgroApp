@@ -11,8 +11,8 @@
         var self = this;
 
         this.options = $.extend({
-            width: 300,
-            wheelWidth: (options.width || 300) / 10,
+            width: 200,
+            wheelWidth: (options.width || 200) / 10,
             color: '#808080'
         }, options);
 

@@ -1,5 +1,5 @@
 /*!
-	Autosize 3.0.15
+	Autosize 3.0.5
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -18,35 +18,6 @@
 })(this, function (exports, module) {
 	'use strict';
 
-	var set = typeof Set === 'function' ? new Set() : (function () {
-		var list = [];
-
-		return {
-			has: function has(key) {
-				return Boolean(list.indexOf(key) > -1);
-			},
-			add: function add(key) {
-				list.push(key);
-			},
-			'delete': function _delete(key) {
-				list.splice(list.indexOf(key), 1);
-			} };
-	})();
-
-	var createEvent = function createEvent(name) {
-		return new Event(name);
-	};
-	try {
-		new Event('test');
-	} catch (e) {
-		// IE does not support `new Event()`
-		createEvent = function (name) {
-			var evt = document.createEvent('Event');
-			evt.initEvent(name, true, false);
-			return evt;
-		};
-	}
-
 	function assign(ta) {
 		var _ref = arguments[1] === undefined ? {} : arguments[1];
 
@@ -55,16 +26,13 @@
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
 
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
 
 		var heightOffset = null;
-		var overflowY = null;
-		var clientWidth = ta.clientWidth;
+		var overflowY = 'hidden';
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
-
-			overflowY = style.overflowY;
 
 			if (style.resize === 'vertical') {
 				ta.style.resize = 'none';
@@ -76,10 +44,6 @@
 				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
 			} else {
 				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
-			}
-			// Fix when a textarea is not on document body and heightOffset is Not a Number
-			if (isNaN(heightOffset)) {
-				heightOffset = 0;
 			}
 
 			update();
@@ -105,11 +69,12 @@
 				ta.style.overflowY = value;
 			}
 
-			resize();
+			update();
 		}
 
-		function resize() {
-			var htmlTop = window.pageYOffset;
+		function update() {
+			var startHeight = ta.style.height;
+			var htmlTop = document.documentElement.scrollTop;
 			var bodyTop = document.body.scrollTop;
 			var originalHeight = ta.style.height;
 
@@ -125,50 +90,37 @@
 
 			ta.style.height = endHeight + 'px';
 
-			// used to check if an update is actually necessary on window.resize
-			clientWidth = ta.clientWidth;
-
 			// prevents scroll-position jumping
 			document.documentElement.scrollTop = htmlTop;
 			document.body.scrollTop = bodyTop;
-		}
-
-		function update() {
-			var startHeight = ta.style.height;
-
-			resize();
 
 			var style = window.getComputedStyle(ta, null);
 
 			if (style.height !== ta.style.height) {
 				if (overflowY !== 'visible') {
 					changeOverflow('visible');
+					return;
 				}
 			} else {
 				if (overflowY !== 'hidden') {
 					changeOverflow('hidden');
+					return;
 				}
 			}
 
 			if (startHeight !== ta.style.height) {
-				var evt = createEvent('autosize:resized');
+				var evt = document.createEvent('Event');
+				evt.initEvent('autosize:resized', true, false);
 				ta.dispatchEvent(evt);
 			}
 		}
 
-		var pageResize = function pageResize() {
-			if (ta.clientWidth !== clientWidth) {
-				update();
-			}
-		};
-
 		var destroy = (function (style) {
-			window.removeEventListener('resize', pageResize, false);
-			ta.removeEventListener('input', update, false);
-			ta.removeEventListener('keyup', update, false);
-			ta.removeEventListener('autosize:destroy', destroy, false);
-			ta.removeEventListener('autosize:update', update, false);
-			set['delete'](ta);
+			window.removeEventListener('resize', update);
+			ta.removeEventListener('input', update);
+			ta.removeEventListener('keyup', update);
+			ta.removeAttribute('data-autosize-on');
+			ta.removeEventListener('autosize:destroy', destroy);
 
 			Object.keys(style).forEach(function (key) {
 				ta.style[key] = style[key];
@@ -180,20 +132,23 @@
 			overflowX: ta.style.overflowX,
 			wordWrap: ta.style.wordWrap });
 
-		ta.addEventListener('autosize:destroy', destroy, false);
+		ta.addEventListener('autosize:destroy', destroy);
 
 		// IE9 does not fire onpropertychange or oninput for deletions,
 		// so binding to onkeyup to catch most of those events.
 		// There is no way that I know of to detect something like 'cut' in IE9.
 		if ('onpropertychange' in ta && 'oninput' in ta) {
-			ta.addEventListener('keyup', update, false);
+			ta.addEventListener('keyup', update);
 		}
 
-		window.addEventListener('resize', pageResize, false);
-		ta.addEventListener('input', update, false);
-		ta.addEventListener('autosize:update', update, false);
-		set.add(ta);
+		window.addEventListener('resize', update);
+		ta.addEventListener('input', update);
+		ta.addEventListener('autosize:update', update);
+		ta.setAttribute('data-autosize-on', true);
 
+		if (setOverflowY) {
+			ta.style.overflowY = 'hidden';
+		}
 		if (setOverflowX) {
 			ta.style.overflowX = 'hidden';
 			ta.style.wordWrap = 'break-word';
@@ -204,13 +159,15 @@
 
 	function destroy(ta) {
 		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:destroy');
+		var evt = document.createEvent('Event');
+		evt.initEvent('autosize:destroy', true, false);
 		ta.dispatchEvent(evt);
 	}
 
 	function update(ta) {
 		if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-		var evt = createEvent('autosize:update');
+		var evt = document.createEvent('Event');
+		evt.initEvent('autosize:update', true, false);
 		ta.dispatchEvent(evt);
 	}
 

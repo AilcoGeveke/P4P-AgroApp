@@ -1,42 +1,11 @@
-const set = (typeof Set === "function") ? new Set() : (function () {
-	const list = [];
-
-	return {
-		has(key) {
-			return Boolean(list.indexOf(key) > -1);
-		},
-		add(key) {
-			list.push(key);
-		},
-		delete(key) {
-			list.splice(list.indexOf(key), 1);
-		},
-	}
-})();
-
-let createEvent = (name)=> new Event(name);
-try {
-	new Event('test');
-} catch(e) {
-	// IE does not support `new Event()`
-	createEvent = (name)=> {
-		const evt = document.createEvent('Event');
-		evt.initEvent(name, true, false);
-		return evt;
-	};
-}
-
 function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
-	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
+	if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
 
 	let heightOffset = null;
-	let overflowY = null;
-	let clientWidth = ta.clientWidth;
+	let overflowY = 'hidden';
 
 	function init() {
 		const style = window.getComputedStyle(ta, null);
-
-		overflowY = style.overflowY;
 
 		if (style.resize === 'vertical') {
 			ta.style.resize = 'none';
@@ -48,10 +17,6 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			heightOffset = -(parseFloat(style.paddingTop)+parseFloat(style.paddingBottom));
 		} else {
 			heightOffset = parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
-		}
-		// Fix when a textarea is not on document body and heightOffset is Not a Number
-		if (isNaN(heightOffset)) {
-			heightOffset = 0;
 		}
 
 		update();
@@ -77,11 +42,12 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 			ta.style.overflowY = value;
 		}
 
-		resize();
+		update();
 	}
 
-	function resize() {
-		const htmlTop = window.pageYOffset;
+	function update() {
+		const startHeight = ta.style.height;
+		const htmlTop = document.documentElement.scrollTop;
 		const bodyTop = document.body.scrollTop;
 		const originalHeight = ta.style.height;
 
@@ -97,50 +63,37 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 		ta.style.height = endHeight+'px';
 
-		// used to check if an update is actually necessary on window.resize
-		clientWidth = ta.clientWidth;
-
 		// prevents scroll-position jumping
 		document.documentElement.scrollTop = htmlTop;
 		document.body.scrollTop = bodyTop;
-	}
-
-	function update() {
-		const startHeight = ta.style.height;
-
-		resize();
 
 		const style = window.getComputedStyle(ta, null);
 
 		if (style.height !== ta.style.height) {
 			if (overflowY !== 'visible') {
 				changeOverflow('visible');
+				return;
 			}
 		} else {
 			if (overflowY !== 'hidden') {
 				changeOverflow('hidden');
+				return;
 			}
 		}
 
 		if (startHeight !== ta.style.height) {
-			const evt = createEvent('autosize:resized');
+			const evt = document.createEvent('Event');
+			evt.initEvent('autosize:resized', true, false);
 			ta.dispatchEvent(evt);
 		}
 	}
 
-	const pageResize = () => {
-		if (ta.clientWidth !== clientWidth) {
-			update();
-		}
-	};
-
 	const destroy = style => {
-		window.removeEventListener('resize', pageResize, false);
-		ta.removeEventListener('input', update, false);
-		ta.removeEventListener('keyup', update, false);
-		ta.removeEventListener('autosize:destroy', destroy, false);
-		ta.removeEventListener('autosize:update', update, false);
-		set.delete(ta);
+		window.removeEventListener('resize', update);
+		ta.removeEventListener('input', update);
+		ta.removeEventListener('keyup', update);
+		ta.removeAttribute('data-autosize-on');
+		ta.removeEventListener('autosize:destroy', destroy);
 
 		Object.keys(style).forEach(key => {
 			ta.style[key] = style[key];
@@ -153,20 +106,23 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 		wordWrap: ta.style.wordWrap,
 	});
 
-	ta.addEventListener('autosize:destroy', destroy, false);
+	ta.addEventListener('autosize:destroy', destroy);
 
 	// IE9 does not fire onpropertychange or oninput for deletions,
 	// so binding to onkeyup to catch most of those events.
 	// There is no way that I know of to detect something like 'cut' in IE9.
 	if ('onpropertychange' in ta && 'oninput' in ta) {
-		ta.addEventListener('keyup', update, false);
+		ta.addEventListener('keyup', update);
 	}
 
-	window.addEventListener('resize', pageResize, false);
-	ta.addEventListener('input', update, false);
-	ta.addEventListener('autosize:update', update, false);
-	set.add(ta);
-
+	window.addEventListener('resize', update);
+	ta.addEventListener('input', update);
+	ta.addEventListener('autosize:update', update);
+	ta.setAttribute('data-autosize-on', true);
+	
+	if (setOverflowY) {
+		ta.style.overflowY = 'hidden';
+	}
 	if (setOverflowX) {
 		ta.style.overflowX = 'hidden';
 		ta.style.wordWrap = 'break-word';
@@ -177,13 +133,15 @@ function assign(ta, {setOverflowX = true, setOverflowY = true} = {}) {
 
 function destroy(ta) {
 	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = createEvent('autosize:destroy');
+	const evt = document.createEvent('Event');
+	evt.initEvent('autosize:destroy', true, false);
 	ta.dispatchEvent(evt);
 }
 
 function update(ta) {
 	if (!(ta && ta.nodeName && ta.nodeName === 'TEXTAREA')) return;
-	const evt = createEvent('autosize:update');
+	const evt = document.createEvent('Event');
+	evt.initEvent('autosize:update', true, false);
 	ta.dispatchEvent(evt);
 }
 

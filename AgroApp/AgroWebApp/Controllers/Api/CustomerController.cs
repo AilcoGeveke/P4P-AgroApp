@@ -27,7 +27,7 @@ namespace AgroApp.Controllers.Api
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", false)))
                 while (reader.Read())
-                    data.Add(new Customer(idCustomer: reader.GetInt32(3), name: reader["name"] as string, address: reader.GetString(0)));
+                    data.Add(new Customer(idCustomer: reader["IdCustomer"] as int? ?? -1, name: reader["name"] as string, address: reader["Address"] as string));
             return data;
         }
 
@@ -37,13 +37,13 @@ namespace AgroApp.Controllers.Api
         /// </summary>
         /// <param name="Customer"></param>
         /// <returns></returns>
-        [HttpPost("register")]
+        [HttpPost("add")]
         public async Task<string> AddCustomer([FromBody]Customer Customer)
         {
             if (string.IsNullOrWhiteSpace(Customer.Name) || string.IsNullOrWhiteSpace(Customer.Address))
                 return "Een van de opgegeven velden is leeg";
 
-            string query = "INSERT INTO Customer (`name`, `username`) VALUES (@0, @1,);";
+            string query = "INSERT INTO Customer (`name`, `address`) VALUES (@0, @1);";
             try
             {
                 using (MySqlConnection conn = await DatabaseConnection.GetConnection())

@@ -91,6 +91,7 @@ materialAdmin
             return $http.get('/api/customer/restore/' + id);
         }
     })
+
     // =========================================================================
     // Service for handling cargo data
     // =========================================================================
@@ -116,6 +117,25 @@ materialAdmin
             return $http.get('/api/machine/restore/' + id);
         }
     })
+
+    // =========================================================================
+    // Service for handling assignments data
+    // =========================================================================
+
+    .service('assignementManagement', function ($http) {
+        this.add = function (data) {
+            return $http.post('/api/assignment/add', data);
+        }
+
+        this.getAll = function (date) {
+            return $http.get('/api/assignment/getall/false/' + date);
+        }
+
+        this.applyChanges = function (data) {
+            return $http.post('/api/assignment/change', data);
+        }
+    })
+
     // =========================================================================
     // Data Table
     // =========================================================================
