@@ -35,6 +35,7 @@ namespace AgroApp.Controllers.Employee
         {
             ViewData["idAssignment"] = id;
 
+            return View("timesheet");
         }
     }
 }

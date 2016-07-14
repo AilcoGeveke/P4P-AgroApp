@@ -628,6 +628,114 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
 
 })
 
+agroApp.controller('AttachmentManagement', function ($window, $scope, attachmentManagement, tableService) {
+    var um = this;
+
+    um.attachmentDetails = {};
+    um.allAttachment = [];
+
+    um.addAttachment = function () {
+        attachmentManagement.register(um.attachmentDetails)
+        .then(function successCallback(response) {
+            if (response.data != "succes") {
+                swal("", response.data, "error");
+            }
+            else {
+                swal({ title: "Hulpstuk is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                setTimeout(function () { $window.location.href = '/admin/hulpstuk/overzicht'; }, 3500);
+            }
+        }, function errorCallback(response) {
+            swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
+        });
+    };
+    um.getAllAttachments = function () {
+        attachmentManagement.getAll().then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.allAttachments = response.data;
+                tableService.data = um.allAttachments;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.getAllArchivedAttachments = function () {
+        attachmentManagement.getAllArchivedAttachments().then(
+            function successCallback(response) {
+                um.allAttachments = response.data;
+                tableService.data = um.allAttachments;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.applyChangesToAttachment = function () {
+        attachmentManagement.applyChangesToAttachment(this.attachmentDetails)
+        .then(function successCallback(response) {
+            if (response.data != true) {
+                swal("", response.data, "error");
+            }
+            else {
+                swal({ title: "Hulpstuk is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                setTimeout(function () { $window.location.href = '/admin/hulpstuk/overzicht'; }, 3500);
+            }
+        }, function errorCallback(response) {
+            swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
+        });
+    };
+    um.archiveAttachment = function (attachment) {
+        swal({
+            title: "Weet u zeker dat u " + attachment.Name + " wilt archiveren?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function () {
+            archiveAttachment(attachment.idattachment).then(
+                function successCallback(response) {
+                    if (response.data == true) {
+                        swal({ title: "Gelukt!", type: "success", text: attachment.Name + " is gearchiveerd.", timer: 3000, showConfirmButton: false });
+                        um.getAllAttachments();
+                    }
+                    else
+                        swal({ title: "Fout!", type: "error", text: attachment.Name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
+                }, function errorCallback(response) {
+                    swal({ title: "Fout!", type: "error", text: attachment.Name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
+                });
+            //setTimeout(function () {
+            //    swal({ title: "Gelukt!", type: "success", text: Attachment.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 4000, showConfirmButton: false });
+            //}, 3000);
+        });
+    };
+    um.restoreAttachment = function (attachment) {
+        swal({
+            title: "Weet u zeker dat u " + attachment.Name + " wilt dearchiveren?",
+            text: "Hierdoor zal het hulpstuk geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function () {
+            attachmentManagement.restoreAttachment(attachment.IdAttachment).then(
+                function successCallback(response) {
+                    if (response.data == true) {
+                        swal({ title: "Gelukt!", type: "success", text: attachment.Name + " is gedearchiveerd. Het hulpstuk kan weer gebruikt worden!", timer: 3000, showConfirmButton: false });
+                        setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                    }
+                    else
+                        swal({ title: "Fout!", type: "error", text: attachment.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
+                }, function errorCallback(response) {
+                    swal({ title: "Fout!", type: "error", text: attachment.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
+                });
+            //setTimeout(function () {
+            //    swal({ title: "Gelukt!", type: "success", text: Attachment.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 4000, showConfirmButton: false });
+            //}, 3000);
+        });
+    };
+
+})
+
 agroApp.controller('CargoManagement', function ($window, $scope, userManagement, machineManagement, tableService) {
     var um = this;
 
