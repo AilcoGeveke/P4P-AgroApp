@@ -28,6 +28,12 @@ namespace AgroApp.Controllers.Admin
             return View("timesheet");
         }
 
+        [HttpGet("~/admin/verwijderen")]
+        public IActionResult DeleteDatabase()
+        {
+            return View("management/truncatealldata");
+        }
+        
         //User
         [HttpGet("admin/gebruikers/overzicht")]
         public IActionResult OverviewUsers()
