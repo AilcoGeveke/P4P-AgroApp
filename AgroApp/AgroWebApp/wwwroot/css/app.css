@@ -15444,7 +15444,7 @@ a.thumbnail.active {
 
 .login-content {
     overflow: hidden;
-    height: 100%;
+    height: 100vh;
 }
 
 .lc-block {
@@ -15566,11 +15566,11 @@ a.thumbnail.active {
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.18);
 }
 
-body.login-content {
+.login-content {
     text-align: center;
 }
 
-    body.login-content:after {
+    .login-content:after {
         content: "";
         vertical-align: middle;
         display: inline-block;
@@ -15578,7 +15578,7 @@ body.login-content {
         height: 100%;
     }
 
-    body.login-content:before {
+    .login-content:before {
         height: 50%;
         width: 100%;
         position: absolute;

@@ -18,7 +18,7 @@ namespace AgroApp.Controllers
                 if (user.Role == Models.User.UserRole.Admin)
                     return RedirectToAction("Index", "Admin");
                 else
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "Employee");
             }
             return View();
         }

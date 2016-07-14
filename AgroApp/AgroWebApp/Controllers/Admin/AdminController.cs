@@ -28,6 +28,12 @@ namespace AgroApp.Controllers.Admin
             return View("timesheet");
         }
 
+        [HttpGet("~/admin/verwijderen")]
+        public IActionResult DeleteDatabase()
+        {
+            return View("management/truncatealldata");
+        }
+        
         //User
         [HttpGet("admin/gebruikers/overzicht")]
         public IActionResult OverviewUsers()
@@ -55,7 +61,7 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/archiveUser");
         }
-        
+
         //Customer
         [HttpGet("admin/klanten/overzicht")]
         public IActionResult OverviewCustomers()
@@ -75,7 +81,7 @@ namespace AgroApp.Controllers.Admin
             return View("management/archivecustomer");
         }
 
-        [HttpGet("admin/wijzigen/{id}")]
+        [HttpGet("admin/klanten/wijzigen/{id}")]
         public async Task<IActionResult> EditCustomer(int id)
         {
 
@@ -98,6 +104,13 @@ namespace AgroApp.Controllers.Admin
             return View("management/addMachine");
         }
 
+        [HttpGet("admin/werkbon/{idEmployeeAssignment}")]
+        public IActionResult AddTimesheet()
+        {
+            return View("timesheet");
+        }
+
+
         [HttpGet("admin/machines/wijzigen/{id}")]
         public async Task<IActionResult> EditMachine(int id)
         {
@@ -111,6 +124,15 @@ namespace AgroApp.Controllers.Admin
         [HttpGet("admin/opdrachten")]
         public IActionResult OverviewAssignments()
         {
+            ViewData["userAssignment"] = false;
+            return View("management/OverviewAssignment");
+        }
+
+        [HttpGet("admin/opdrachten/eigen")]
+        public async Task<IActionResult> OverviewUserAssignments()
+        {
+            ViewData["userAssignment"] = true;
+            ViewData["user"] = JsonConvert.SerializeObject(await UserController.GetUser(HttpContext));
             return View("management/OverviewAssignment");
         }
 

@@ -224,7 +224,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
 
     um.allUsers = [];
     um.allCustomers = [];
-    um.allAssignments = 
+    um.allAssignments = [];
 
     um.selectedCoworkers = [];
     um.selectedMachines = [];
@@ -303,6 +303,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     };
 
     um.selectedDate = new Date();
+    um.selectedEndDate = addDays(new Date(), 1);
 
     um.newAssignment = {};
 
@@ -326,9 +327,23 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllAssignments = function () {
-        assignmentManagement.getAll(um.selectedDate.getTime()).then(
+    um.getAllAssignments = function (user) {
+        assignmentManagement.getAll(um.selectedDate.getTime(), user).then(
             function successCallback(response) {
+                um.allAssignments = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.getAllAssignmentsPeriod = function (prepareForPlanning, user) {
+        assignmentManagement.getAllPeriod(um.selectedDate.getTime(), um.selectedEndDate.getTime(), user).then(
+            function successCallback(response) {
+                if(prepareForPlanning)
+                {
+
+                }
+                else
                 um.allAssignments = response.data;
             },
             function errorCallback(response) {
@@ -618,3 +633,9 @@ agroApp.controller('CargoManagement', function ($window, $scope, userManagement,
 
 
 });
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
