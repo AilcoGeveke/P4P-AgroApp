@@ -19,7 +19,7 @@ namespace AgroApp.Controllers.Api
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
-                DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(am.Date).AddDays(1).ToLocalTime();
+                DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(am.Date).ToLocalTime();
                 int idAssignment = -1;
                 string query = "INSERT INTO Assignment (Location, Description, IdCustomer, Date) VALUES (@0, @1, @2, @3); SELECT LAST_INSERT_ID()";
                 using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,

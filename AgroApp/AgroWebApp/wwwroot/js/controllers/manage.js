@@ -298,6 +298,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                     type: "success"
                 });
                 um.newAssignment = {};
+                um.getAllAssignments();
                 $scope.showNewAssignmentCard = false;
                 $scope.showMainView = true;
             },
