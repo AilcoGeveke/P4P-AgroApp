@@ -55,7 +55,7 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/archiveUser");
         }
-        
+
         //Customer
         [HttpGet("admin/klanten/overzicht")]
         public IActionResult OverviewCustomers()
@@ -111,6 +111,15 @@ namespace AgroApp.Controllers.Admin
         [HttpGet("admin/opdrachten")]
         public IActionResult OverviewAssignments()
         {
+            ViewData["userAssignment"] = false;
+            return View("management/OverviewAssignment");
+        }
+
+        [HttpGet("admin/opdrachten/eigen")]
+        public async Task<IActionResult> OverviewUserAssignments()
+        {
+            ViewData["userAssignment"] = true;
+            ViewData["user"] = JsonConvert.SerializeObject(await UserController.GetUser(HttpContext));
             return View("management/OverviewAssignment");
         }
 

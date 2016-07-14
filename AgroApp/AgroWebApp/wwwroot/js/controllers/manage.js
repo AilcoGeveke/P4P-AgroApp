@@ -224,7 +224,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
 
     um.allUsers = [];
     um.allCustomers = [];
-    um.allAssignments = 
+    um.allAssignments = [];
 
     um.selectedCoworkers = [];
     um.selectedMachines = [];
@@ -264,8 +264,9 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllAssignments = function () {
-        assignmentManagement.getAll(um.selectedDate.getTime()).then(
+    um.getAllAssignments = function (user) {
+        console.log(user);
+        assignmentManagement.getAll(um.selectedDate.getTime(), user).then(
             function successCallback(response) {
                 um.allAssignments = response.data;
             },

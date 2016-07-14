@@ -19,7 +19,6 @@ namespace AgroApp.Models
         public Assignment() { }
 
         public Assignment(long date, int idAssignment = -1, string location = "", string description = "")
-
         {
             IdAssignment = idAssignment;
             Location = location;

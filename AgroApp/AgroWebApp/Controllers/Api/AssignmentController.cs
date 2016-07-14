@@ -42,8 +42,8 @@ namespace AgroApp.Controllers.Api
             }
         }
 
-        [HttpGet("getall/{archive}/{datelong}")]
-        public async Task<IEnumerable<Assignment>> GetOpdrachten(bool archived, string datelong)
+        [HttpGet("getall/{datelong}")]
+        public async Task<IEnumerable<Assignment>> GetAllAssignments(string datelong)
         {
             DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(long.Parse(datelong)).ToLocalTime();
             string query = "SELECT Assignment.*, COUNT(EmployeeAssignment.idEmployeeAssignment) as count FROM Assignment LEFT JOIN EmployeeAssignment ON Assignment.idAssignment = EmployeeAssignment.idAssignment WHERE Assignment.Date >= DATE(@1) AND Assignment.Date < DATE(@2) GROUP BY Assignment.idAssignment";
@@ -67,18 +67,18 @@ namespace AgroApp.Controllers.Api
         }
 
         // GET: /<controller>/
-        [HttpGet("getassignments/{datelong}")]
-        public async Task<IEnumerable<Assignment>> GetAssignments(string datelong)
+        public async Task<IEnumerable<Assignment>> GetAssignmentsUserSpecific(string datelong)
         {
+            User user = await UserController.GetUser(HttpContext);
             DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(long.Parse(datelong)).ToLocalTime();
-            string query = "SELECT assignment.* customer.name FROM assignment JOIN customer ON assignment.idCustomer = customer.idCustomer" +
-            "JOIN employeeassignment ON employeeassignment.idAssignment = assignment.idAssignment WHERE Assignment.Date >= DATE(@0) AND Assignment.Date < DATE(@1) AND employeeassignment.idEmployee = @2; ";
+            string query = "SELECT assignment.*, customer.name FROM assignment LEFT JOIN customer ON assignment.idCustomer = customer.idCustomer" +
+            " LEFT JOIN employeeassignment ON employeeassignment.idAssignment = assignment.idAssignment WHERE Assignment.Date >= DATE(@0) AND Assignment.Date < DATE(@1) AND employeeassignment.idEmployee = @2; ";
             List<Assignment> assignments = new List<Assignment>();
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
                 new MySqlParameter("@0", date.ToString("yyyy-MM-dd")),
                 new MySqlParameter("@1", date.AddDays(1).ToString("yyyy-MM-dd")),
-                new MySqlParameter("@2", ViewData["idEmployee"])))
+                new MySqlParameter("@2", user.IdEmployee)))
                 while (await reader.ReadAsync())
                     assignments.Add(new Assignment(
                         idAssignment: reader["idAssignment"] as int? ?? -1,
@@ -89,6 +89,15 @@ namespace AgroApp.Controllers.Api
                         Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1)
                     });
             return assignments;
+        }
+
+        [HttpGet("getall/{datelong}/{userid}")]
+        public async Task<IEnumerable<Assignment>> GetAssignments(string datelong, bool userSpecific)
+        {
+            if (userSpecific)
+                return await GetAllAssignments(datelong);
+            else
+                return await GetAssignmentsUserSpecific(datelong);
         }
     }
 

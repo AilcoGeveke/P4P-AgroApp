@@ -127,8 +127,14 @@ materialAdmin
             return $http.post('/api/assignment/add', data);
         }
 
-        this.getAll = function (date) {
-            return $http.get('/api/assignment/getall/false/' + date);
+        this.getAll = function (date, user) {
+            var api = '/api/assignment/getall/' + date;
+
+            console.log(user);
+            if (!angular.isUndefined(user) && user == 'True')
+                api += "/true";
+
+            return $http.get(api);
         }
 
         this.applyChanges = function (data) {
