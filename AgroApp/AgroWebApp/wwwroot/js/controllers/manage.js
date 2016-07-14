@@ -7,7 +7,7 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
     um.allUsers = {};
 
     um.registerUser = function () {
-        userManagement.registerUser(this.userDetails)
+        userManagement.registerUser(um.userDetails)
         .then(function successCallback(response) {
             if (response.data != "succes") {
                 swal("", response.data, "error");
@@ -215,7 +215,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     };
 });
 
-agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, workTypeList) {
+agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
     var um = this;
 
     $scope.showMainView = true;
@@ -226,13 +226,30 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     um.allCustomers = [];
     um.allAssignments = [];
 
+    
     um.selectedCoworkers = [];
     um.selectedMachines = [];
     um.selectedAttachments = [];
     um.allMachines = [];
     um.allAttachments = [];
-
     um.allWorkTypes = workTypeList.data;
+
+    um.timesheetDetails = [];
+
+    um.addTimesheet = function () {
+        timesheetManagement.add(um.timesheetDetails)
+        .then(function successCallback(response) {
+            if (response.data != "succes") {
+                swal("", response.data, "error");
+            }
+            else {
+                swal({ title: "Taak is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+            }
+        }, function errorCallback(response) {
+            swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
+        });
+    };
 
 
     um.getAllMachines = function () {

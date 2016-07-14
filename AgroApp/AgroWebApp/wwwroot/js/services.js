@@ -153,13 +153,28 @@ materialAdmin
     })
 
     // =========================================================================
-    // Service for handling cargo data
+    // Service for handling worktype data
     // =========================================================================
 
     .service('workTypeList', function () {
         this.data = ['Man', 'Hovenier', 'Stratenmaker', 'Machinist', 'Onderhoud/Reparatie', 'Klaarzetten/omkoppelen/opbergen', 'Schoonmaken', 'Opruimen', 'Diverse werkzaamheden', 'Brandstof rondbrengen',
         'Compostering', 'Recycling', 'Terreinbeheer', 'Weegbonnen administratie', 'Groenonderhoud', 'Reistijd', 'Calculatie', 'Klantcontact/werving/service', 'Uitvoering', 'Werkvoorbereiding', 'Kantoor algemeen', 'Administratie', 'Financi\xEBle administratie'];
     })
+
+        // =========================================================================
+    // Service for handling timesheet data
+    // =========================================================================
+
+    .service('timesheetManagement', function ($http) {
+        this.add = function (data) {
+            return $http.post('/api/timesheet/add', data)
+        }
+
+        this.getAll = function (data) {
+            return $http.post('/api/timesheet/add', data)
+        }
+    })
+
 
     // =========================================================================
     // Data Table
