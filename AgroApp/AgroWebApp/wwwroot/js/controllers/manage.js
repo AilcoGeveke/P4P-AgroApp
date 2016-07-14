@@ -320,7 +320,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     };
 
     um.selectedDate = new Date();
-    um.selectedEndDate = addDays(new Date(), 1);
+    um.selectedEndDate = addDays(new Date(), 2);
 
     um.newAssignment = {};
 
@@ -354,11 +354,26 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
             });
     };
     um.getAllAssignmentsPeriod = function (prepareForPlanning, user) {
-        assignmentManagement.getAllPeriod(um.selectedDate.getTime(), um.selectedEndDate.getTime(), user).then(
+        assignmentManagement.getAllPeriod(um.selectedDate.getTime(), um.selectedEndDate.getTime(), user, prepareForPlanning).then(
             function successCallback(response) {
-                if(prepareForPlanning)
-                {
+                if (prepareForPlanning) {
+                    console.log(response);
 
+                    um.allAssignments = [];
+                    for(val of response.data)
+                    {
+                        if (um.allAssignments.indexOf(val.Customer) == -1) {
+                            um.allAssignments.push(val.Customer);
+                            um.allAssignments[um.allAssignments.indexOf(val.Customer)].Assignments = [];
+                        }
+
+                        var Customer = val.Customer;
+                        val.Customer = {};
+                        val.opened = false;
+                        um.allAssignments[um.allAssignments.indexOf(Customer)].Assignments.push(val);
+                    }
+
+                    console.log(um.allAssignments);
                 }
                 else
                 um.allAssignments = response.data;
@@ -634,7 +649,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
-        }, function errorCallback(response) {
+                }, function errorCallback(response) {
                     swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
                 });
             //setTimeout(function () {

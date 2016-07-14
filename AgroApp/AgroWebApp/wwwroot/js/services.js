@@ -131,18 +131,19 @@ materialAdmin
             var api = '/api/assignment/getall/' + date;
 
             console.log(user);
-            if (!angular.isUndefined(user) && user == 'True')
-                api += "/true";
+            if (!angular.isUndefined(user))
+                api += "/" + user;
 
             return $http.get(api);
         }
 
-        this.getAllPeriod = function (date1, date2, user) {
-            var api = '/api/assignment/getall/' + date1 + "/" + date2;
+        this.getAllPeriod = function (date1, date2, user, includeEmployees) {
+            var api = '/api/assignment/getallperiod/' + date1 + "/" + date2;
 
-            console.log(user);
-            if (!angular.isUndefined(user) && user == 'True')
-                api += "/true";
+            if (!angular.isUndefined(user))
+                api += "/" + user;
+            if (!angular.isUndefined(includeEmployees))
+                api += "/" + includeEmployees;
 
             return $http.get(api);
         }
