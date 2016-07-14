@@ -49,6 +49,14 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4 m-b-15">
+                                <p class="f-500 c-black m-b-15">Mankeuze</p>
+                                <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
+                                    <option ng-repeat="type in worktypes">
+                                        {{type}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 m-b-15">
                                 <p class="f-500 c-black m-b-15">Voertuig</p>
                                 <select chosen ng-model="taskMachine" data-placeholder="Voertuig" class="w-100">
                                     <option ng-repeat="machine in machines">
@@ -57,10 +65,10 @@
                                 </select>
                             </div>
                             <div class="col-sm-4 m-b-15">
-                                <p class="f-500 c-black m-b-15">Mankeuze</p>
-                                <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
-                                    <option ng-repeat="type in worktypes">
-                                        {{type}}
+                                <p class="f-500 c-black m-b-15">Hulpstuk </p>
+                                <select chosen ng-model="taskAttachment" data-placeholder="Hulpstuk" class="w-100">
+                                    <option ng-repeat="attachment in attachments">
+                                        {{attachment.Name}}
                                     </option>
                                 </select>
                             </div>
