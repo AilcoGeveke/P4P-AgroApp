@@ -64,15 +64,15 @@
                                     <p class="f-500 c-black m-b-15">Voertuig</p>
                                     <select chosen multiple class="w-100"
                                             data-placeholder="Selecteer uw collega's"
-                                            ng-model="tc.selectedMachines"
+                                            ng-model="tc.timesheetDetails.Machines"
                                             ng-options="x as x.Name for x in tc.allMachines">
                                     </select>
                                 </div>
                                 <div class="col-sm-4 m-b-15">
                                     <p class="f-500 c-black m-b-15">Hulpstuk </p>
                                     <select chosen multiple class="w-100"
-                                            data-placeholder="Selecteer uw collega's"
-                                            ng-model="tc.selectedCoworkers"
+                                            data-placeholder="Hulpstuk"
+                                            ng-model="tc.timesheetDetails.Attachments"
                                             ng-options="x as x.Name for x in tc.allAttachments">
 
                                     </select>
@@ -83,19 +83,19 @@
                                 <p class="f-500 c-black m-b-15">Tijden </p>
                                 <div class="col-sm-2">
                                     <div class="form-group fg-line">
-                                        <input ng-model="taskStart" type="text" class="form-control" placeholder="Van">
+                                        <input ng-model="tc.timesheetDetails.StartTime" type="text" class="form-control" placeholder="Van">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <div class="form-group fg-line">
-                                        <input ng-model="taskEnd" type="text" class="form-control" placeholder="Tot">
+                                        <input ng-model="tc.timesheetDetails.EndTime" type="text" class="form-control" placeholder="Tot">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <div class="form-group fg-line">
-                                        <input ng-model="taskTotal" type="text" class="form-control" placeholder="Totaal">
+                                        <input ng-model="tc.timesheetDetails.TotalTIme" type="text" class="form-control" placeholder="Totaal">
                                     </div>
                                 </div>
                             </div>
@@ -103,14 +103,14 @@
                                 <div class="form-group fg-line">
                                     <label>Beschrijving</label>
                                     <textarea class="form-control" rows="6" placeholder="Beschrijving..."
-                                              ng-model="taskDescription"></textarea>
+                                              ng-model="tc.timesheetDetails.Description"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="card-body card-padding">
-                        <button class="btn btn-primary m-r-15" ng-click="hoi()">Toevoegen</button>
+                        <button class="btn btn-primary m-r-15" ng-click="um.()">Toevoegen</button>
                         <button class="btn btn-default" ng-click="showNewTaskCard = false; showTaskOverview= true" slide-toggle="#showNewTaskCard">Annuleren</button>
                     </div>
                 </div>

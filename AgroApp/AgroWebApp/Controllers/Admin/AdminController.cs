@@ -22,9 +22,10 @@ namespace AgroApp.Controllers.Admin
             return View();
         }
 
-        [HttpGet("admin/urenoverzicht")]
-        public IActionResult TimesheetView()
+        [HttpGet("admin/urenoverzicht/{IdAssignment}")]
+        public IActionResult TimesheetView(int IdEmployeeAssignment)
         {
+            ViewData["IdEmployeeAssignment"] = 
             return View("timesheet");
         }
 
