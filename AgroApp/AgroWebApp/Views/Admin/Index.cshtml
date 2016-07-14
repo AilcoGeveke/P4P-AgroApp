@@ -8,13 +8,54 @@
 <section id="main">
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
-    <section id="content">
+    <section id="content" ng-controller="TimesheetController as am">
+        <div class="container">
+            <div class="block-header">
+                <h2>Planning</h2>
+            </div>
 
-        <div class="block-header">
-            <h2>Planning | Nog niks om weer te geven</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bgm-blue">
+                            <h2>Opdrachten Vandaag <small>Alle opdrachten, werknemers en opgeslagen werkbonnen worden hier getoond.</small></h2>
+                        </div>
+
+                        <div class="listview lv-bordered lv-lg" ng-init="am.getAllAssignmentsPeriod(true)">
+                            <div class="lv-body">
+                                <div class="lv-item media" ng-repeat="x in am.allAssignments">
+                                    <div class="media-body">
+                                        <div class="lv-title">{{x.Customer.Name}}</div>
+                                        <div class="lv-actions">
+                                            <button class="btn btn-primary"><i class="zmdi zmdi-chevron-down"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bgm-deeporange">
+                            <h2>Opdrachten Morgen<small>Alle opdrachten die voor morgen gepland staan worden hier getoond.</small></h2>
+                        </div>
+
+                        <div class="listview lv-bordered lv-lg">
+                            <div class="lv-body">
+                                <div class="lv-item media" ng-repeat="x in am.allAssignments">
+                                    <div class="media-body">
+                                        <div class="lv-title">{{x.Customer.Name}}</div>
+                                        <div class="lv-actions">
+                                            <button class="btn btn-primary"><i class="zmdi zmdi-chevron-down"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-
     </section>
 </section>

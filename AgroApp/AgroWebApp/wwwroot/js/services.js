@@ -137,6 +137,16 @@ materialAdmin
             return $http.get(api);
         }
 
+        this.getAllPeriod = function (date1, date2, user) {
+            var api = '/api/assignment/getall/' + date1 + "/" + date2;
+
+            console.log(user);
+            if (!angular.isUndefined(user) && user == 'True')
+                api += "/true";
+
+            return $http.get(api);
+        }
+
         this.applyChanges = function (data) {
             return $http.post('/api/assignment/change', data);
         }

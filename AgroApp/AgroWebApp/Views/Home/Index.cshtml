@@ -1,4 +1,8 @@
-﻿<div class="login-content" ng-controller="loginCtrl">
+﻿@{
+    Layout = "~/views/shared/_adminlayout.cshtml";
+}
+
+<div class="login-content" ng-controller="loginCtrl">
     <form name="loginForm" class="lc-block toggled" ng-submit="Login()">
         <div class="input-group">
             <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
