@@ -55,7 +55,7 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/archiveUser");
         }
-        
+
         //Customer
         [HttpGet("admin/klanten/overzicht")]
         public IActionResult OverviewCustomers()
@@ -75,7 +75,7 @@ namespace AgroApp.Controllers.Admin
             return View("management/archivecustomer");
         }
 
-        [HttpGet("admin/wijzigen/{id}")]
+        [HttpGet("admin/klanten/wijzigen/{id}")]
         public async Task<IActionResult> EditCustomer(int id)
         {
 
@@ -97,6 +97,13 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/addMachine");
         }
+
+        [HttpGet("admin/werkbon/{idEmployeeAssignment}")]
+        public IActionResult AddTimesheet()
+        {
+            return View("timesheet");
+        }
+
 
         [HttpGet("admin/machines/wijzigen/{id}")]
         public async Task<IActionResult> EditMachine(int id)

@@ -103,7 +103,7 @@
                             </colgroup>
                             <tr ng-repeat="w in am.allAssignments">
                                 <td data-title="'Taaknummer'" sortable="'id'">
-                                    {{ w.IdAssignment / 10 | number:0 }}
+                                    {{ (w.IdAssignment / 10) + 1 | number:0 }}
                                 </td>
                                 <td data-title="'Locatie'" sortable="'locatie'">
                                     {{ w.Location }}
@@ -113,7 +113,7 @@
                                 </td>
                                 <td>
                                     <button class="button btn btn-default" ng-click="am.changeAssignment()"><i class="zmdi zmdi-edit"></i></button>
-                                    <button class="btn btn-default" ng-click="am.archiveMachine(w)"><i class="zmdi zmdi-delete"></i></button>
+                                    <button class="btn btn-default" href="admin/werkboninvullen/{{w.idEmployeeAssignment}}"><i class="zmdi zmdi-case"></i></button>
                                 </td>
                             </tr>
                         </table>
@@ -128,9 +128,9 @@
                 </div>
                 <div class="card-body  bgm-gray card-padding">
                     <button class="btn btn-primary m-r-15" ng-click="showConfirmDeleteAll()"><i class="zmdi"></i>Verwijder alles</button>
+                    <button class="btn btn-info waves-effect" data-swal-warning="">Verwijder alles</button>
                 </div>
             </div>
-
         </div>
     </section>
 </section>
