@@ -31,6 +31,19 @@ namespace AgroApp.Controllers.Api
             return data;
         }
 
+        [HttpGet("getallarchived")]
+        public async Task<List<Customer>> GetAllArchivedCustomers()
+        {
+            string query = "SELECT idCustomer, name, address FROM Customer WHERE isDeleted=@0";
+            List<Customer> data = new List<Customer>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (reader.Read())
+                    data.Add(new Customer(idCustomer: reader["IdCustomer"] as int? ?? -1, name: reader["name"] as string, address: reader["Address"] as string));
+            return data;
+        }
+
 
         /// <summary>
         /// voegt een customer toe
@@ -63,7 +76,7 @@ namespace AgroApp.Controllers.Api
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-            public static async Task<Customer> GetCustomer(int id)
+        public static async Task<Customer> GetCustomer(int id)
         {
             if (id < 0)
                 return null;
@@ -77,6 +90,34 @@ namespace AgroApp.Controllers.Api
                 return reader.HasRows ? new Customer(reader["idCustomer"] as int? ?? -1, reader["name"] as string, reader["address"] as string) : null;
             }
         }
+
+        [HttpGet("archive/{id}")]
+        public async Task<bool> ArchiveCustomer(int id)
+        {
+            if (GetCustomer(id) == null)
+                return false;
+
+            string query = "UPDATE Customer SET isDeleted=@0 WHERE idCustomer=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
+
+        [HttpGet("restorecustomer/{id}")]
+        public async Task<bool> RestoreCustomer(int id)
+        {
+            if (GetCustomer(id) == null)
+                return false;
+
+            string query = "UPDATE Customer SET isDeleted=@0 WHERE idCustomer=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
     }
-    }
+}
 

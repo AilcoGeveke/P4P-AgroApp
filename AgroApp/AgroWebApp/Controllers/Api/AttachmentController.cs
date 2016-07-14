@@ -31,6 +31,19 @@ namespace AgroApp.Controllers.Api
             return data;
         }
 
+        [HttpGet("getallarchived")]
+        public async Task<List<Attachment>> GetAllArchivedAttachments()
+        {
+            string query = "SELECT idAttachment, name, number FROM Attachment WHERE isDeleted=@0";
+            List<Attachment> data = new List<Attachment>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (reader.Read())
+                    data.Add(new Attachment(idAttachment: reader["IdAttachment"] as int? ?? -1, name: reader["name"] as string, number: reader["number"] as int? ?? -1));
+            return data;
+        }
+
 
         /// <summary>
         /// voegt een Attachment toe
@@ -57,6 +70,33 @@ namespace AgroApp.Controllers.Api
             catch { return "Er is iets misgegaan, neem contact op met een ontwikkelaar!"; }
         }
 
+        [HttpGet("archive/{id}")]
+        public async Task<bool> ArchiveAttachment(int id)
+        {
+            if (GetAttachment(id) == null)
+                return false;
+
+            string query = "UPDATE Attachment SET isDeleted=@0 WHERE idAttachment=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
+
+        [HttpGet("restoreattachment/{id}")]
+        public async Task<bool> RestoreAttachment(int id)
+        {
+            if (GetAttachment(id) == null)
+                return false;
+
+            string query = "UPDATE Attachment SET isDeleted=@0 WHERE idAttachment=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
 
         /// <summary>
         /// geeft 1 Attachment weer om deze te bewerken.
@@ -74,9 +114,9 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new Attachment(reader["idAttachment"] as int? ?? -1, reader["number"] as int? ?? - 1, reader["name"] as string) : null;
+                return reader.HasRows ? new Attachment(reader["idAttachment"] as int? ?? -1, reader["number"] as int? ?? -1, reader["name"] as string) : null;
             }
         }
     }
-    }
+}
 

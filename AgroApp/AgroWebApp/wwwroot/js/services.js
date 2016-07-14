@@ -63,7 +63,7 @@ materialAdmin
 
 
     // =========================================================================
-    // Service for handling user data
+    // Service for handling customer data
     // =========================================================================
 
     .service('customerManagement', function ($http) {
@@ -75,15 +75,19 @@ materialAdmin
             return $http.get('/api/customer/getall');
         }
 
-        this.getAllArchived = function () {
+        this.getAllArchivedCustomers = function () {
             return $http.get('/api/customer/getallarchived');
+        }
+
+        this.restoreCustomer = function (id) {
+            return $http.get('/api/customer/restorecustomer/' + id)
         }
 
         this.applyChanges = function (customer) {
             return $http.post('/api/customer/change', customer);
         }
 
-        this.archive = function (id) {
+        this.archiveCustomer = function (id) {
             return $http.get('/api/customer/archive/' + id);
         }
 
@@ -92,6 +96,43 @@ materialAdmin
         }
     })
 
+        // =========================================================================
+    // Service for handling user data
+    // =========================================================================
+
+    .service('attachmentManagement', function ($http) {
+        this.register = function (attachment) {
+            return $http.post('/api/attachment/add', attachment);
+        }
+
+        this.getAll = function () {
+            return $http.get('/api/attachment/getall');
+        }
+
+        this.getAllArchivedAttachments = function () {
+            return $http.get('/api/attachment/getallarchived');
+        }
+
+        this.restoreAttachment = function (id) {
+            return $http.get('/api/attachment/restoreattachment/' + id)
+        }
+
+        this.archiveAttachment = function (id) {
+            return $http.get('/api/attachment/archive/' + id);
+        }
+
+        this.applyChanges = function (attachment) {
+            return $http.post('/api/attachment/change', attachment);
+        }
+
+        this.archive = function (id) {
+            return $http.get('/api/attachment/archive/' + id);
+        }
+
+        this.restore = function (id) {
+            return $http.get('/api/attachment/restore/' + id);
+        }
+    })
     // =========================================================================
     // Service for handling cargo data
     // =========================================================================
