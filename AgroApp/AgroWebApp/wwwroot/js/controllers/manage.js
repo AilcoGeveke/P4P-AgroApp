@@ -14,7 +14,7 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
             }
             else {
                 swal({ title: "Gebruiker is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -215,14 +215,14 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     };
 });
 
-agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignementManagement) {
+agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement) {
     var um = this;
 
     $scope.showMainView = true;
 
     um.allUsers = [];
     um.allCustomers = [];
-    um.allAssignements = 
+    um.allAssignments = 
 
     um.selectedCoworkers = [];
     um.selectedMachines = [];
@@ -240,7 +240,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
 
     um.selectedDate = new Date();
 
-    um.newAssignement = {};
+    um.newAssignment = {};
 
     um.getAllUsers = function () {
         userManagement.getAllUsers().then(
@@ -262,23 +262,33 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllAssignements = function () {
-        assignementManagement.getAll(um.selectedDate.getTime()).then(
+    um.getAllAssignments = function () {
+        assignmentManagement.getAll(um.selectedDate.getTime()).then(
             function successCallback(response) {
-                um.allAssignements = response.data;
+                um.allAssignments = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.addAssignement = function () {
+
+    um.getAllEmployeeAssignments = function () {
+        assignmentManagement.getAssignment(um.selectedDate.getTime()).then(
+            function successCallback(response) {
+                um.allAssignments = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.addAssignment = function () {
         swal({
             title: "",
             text: "Opdracht word toegevoegd!",
             showConfirmButton: false
         });
-        um.newAssignement.Date = um.newAssignement.Date.getTime();
-        assignementManagement.add(um.newAssignement).then(
+        um.newAssignment.Date = um.newAssignment.Date.getTime();
+        assignmentManagement.add(um.newAssignment).then(
             function successCallback(response) {
                 swal({
                     title: "Gelukt",
@@ -286,9 +296,15 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                     timer: 3500,
                     showConfirmButton: false,
                     type: "success"
+<<<<<<< HEAD
+                });
+                um.newAssignment = {};
+                $scope.showNewAssignmentCard = false;
+=======
 });
                 um.newAssignement = {};
                 $scope.showNewAssignementCard = false;
+>>>>>>> origin/master
                 $scope.showMainView = true;
             },
             function errorCallback(response) {

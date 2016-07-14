@@ -15,7 +15,7 @@ namespace AgroApp.Controllers.Api
     {
 
         [HttpPost("add")]
-        public async Task<string> AddAssignement([FromBody]Assignment am)
+        public async Task<string> AddAssignment([FromBody]Assignment am)
         {
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
@@ -62,6 +62,31 @@ namespace AgroApp.Controllers.Api
                     {
                         Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1),
                         EmployeeCount = (int)(reader["count"] as long? ?? (long)0)
+                    });
+            return assignments;
+        }
+
+        // GET: /<controller>/
+        [HttpGet("getassignments/{datelong}")]
+        public async Task<IEnumerable<Assignment>> GetAssignments(string datelong)
+        {
+            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(long.Parse(datelong)).ToLocalTime();
+            string query = "SELECT assignment.* customer.name FROM assignment JOIN customer ON assignment.idCustomer = customer.idCustomer" +
+            "JOIN employeeassignment ON employeeassignment.idAssignment = assignment.idAssignment WHERE Assignment.Date >= DATE(@0) AND Assignment.Date < DATE(@1) AND employeeassignment.idEmployee = @2; ";
+            List<Assignment> assignments = new List<Assignment>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", date.ToString("yyyy-MM-dd")),
+                new MySqlParameter("@1", date.AddDays(1).ToString("yyyy-MM-dd")),
+                new MySqlParameter("@2", ViewData["idEmployee"])))
+                while (await reader.ReadAsync())
+                    assignments.Add(new Assignment(
+                        idAssignment: reader["idAssignment"] as int? ?? -1,
+                        location: reader["location"] as string,
+                        description: reader["description"] as string,
+                        date: reader["date"] as long? ?? 0)
+                    {
+                        Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1)
                     });
             return assignments;
         }

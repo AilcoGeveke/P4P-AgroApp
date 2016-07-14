@@ -44,10 +44,11 @@ namespace AgroApp.Controllers.Api
             HttpContext.Response.Cookies.Append("idUser", user.IdEmployee.ToString());
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection, IdentityCookieOptions.ApplicationCookieAuthenticationType)));
             return "true";
-            //return user?.Rol == Models.User.UserRol.Admin ? "admin/main" : "employee/menu"; // auth succeed 
+            //return user?.Role == Models.User.UserRole.Admin ? "admin" : "werknemer"; // auth succeed 
+            
 
         }
-        
+
         public static async Task Logout(HttpContext context)
         {
             await context.Authentication.SignOutAsync("AgroAppCookie");

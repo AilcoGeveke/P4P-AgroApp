@@ -122,7 +122,7 @@ materialAdmin
     // Service for handling assignments data
     // =========================================================================
 
-    .service('assignementManagement', function ($http) {
+    .service('assignmentManagement', function ($http) {
         this.add = function (data) {
             return $http.post('/api/assignment/add', data);
         }

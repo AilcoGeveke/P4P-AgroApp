@@ -111,7 +111,7 @@ namespace AgroApp.Controllers.Admin
         [HttpGet("admin/opdrachten")]
         public IActionResult OverviewAssignments()
         {
-            return View("management/OverviewAssignement");
+            return View("management/OverviewAssignment");
         }
 
         // Cargo
