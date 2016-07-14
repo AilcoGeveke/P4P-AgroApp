@@ -127,6 +127,10 @@ materialAdmin
             return $http.post('/api/assignment/add', data);
         }
 
+        this.get = function (id) {
+            return $http.get('/api/assignment/get/' + id);
+        }
+
         this.getAll = function (date, user) {
             var api = '/api/assignment/getall/' + date;
 

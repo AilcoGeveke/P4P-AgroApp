@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using AgroApp.Models;
+using Microsoft.AspNet.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -42,24 +43,48 @@ namespace AgroApp.Controllers.Api
             }
         }
         
-        [HttpGet("get/{idAssignment}")]
-        public async Task<int> GetEmployeeAssignment(int id)
+        public static async Task<int> GetEmployeeAssignment(HttpContext context, int idAssignment)
         {
-            if (id < 0)
+            if (idAssignment < 0)
                 return -1;
 
-            User user = await UserController.GetUser(HttpContext);
+            User user = await UserController.GetUser(context);
             string query = "SELECT idEmployeeAssignment FROM EmployeeAssignment WHERE idAssignment = @0 AND idEmployee = @1";
 
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-                new MySqlParameter("@0", id),
+                new MySqlParameter("@0", idAssignment),
                 new MySqlParameter("@1", user.IdEmployee)))
             {
-                int idEmployeeAssignment = reader.GetInt32(0); 
+                int idEmployeeAssignment = reader.GetInt32(0);
                 return idEmployeeAssignment;
             }
         }
+
+        //[HttpGet("getall/{idAssignment}")]
+        //public async Task<IEnumerable<Assignment>> GetAssignment(int idAssignment)
+        //{
+        //    string query = "SELECT Assignment.*, COUNT(EmployeeAssignment.idEmployeeAssignment) as count FROM Assignment LEFT JOIN EmployeeAssignment ON Assignment.idAssignment = EmployeeAssignment.idAssignment WHERE Assignment.Date >= DATE(@1) AND Assignment.Date < DATE(@2) GROUP BY Assignment.idAssignment";
+        //    List<Assignment> assignments = new List<Assignment>();
+        //    using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+        //    {
+        //        using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+        //            new MySqlParameter("@0", 1),
+        //            new MySqlParameter("@1", startDate.ToString("yyyy-MM-dd")),
+        //            new MySqlParameter("@2", endDate.ToString("yyyy-MM-dd"))))
+        //            while (await reader.ReadAsync())
+        //                assignments.Add(new Assignment(
+        //                    idAssignment: reader["idAssignment"] as int? ?? -1,
+        //                    location: reader["location"] as string,
+        //                    description: reader["description"] as string,
+        //                    date: reader["date"] as long? ?? 0)
+        //                {
+        //                    Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1),
+        //                    EmployeeCount = (int)(reader["count"] as long? ?? (long)0)
+        //                });
+        //        return assignments;
+        //    }
+        //}
 
         [HttpGet("getall/{datelong}")]
         [HttpGet("getall/{datelong}/{fillEmployees}")]

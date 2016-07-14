@@ -8,20 +8,20 @@
 <section id="main" ng-controller="TimesheetController as tc">
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
-    <section id="content">
+    <section id="content" ng-init="tc.getAssignment('@ViewData["IdAssignment"])'">
         <div class="container">
 
             <div class="card">
                 <div class="card-header ch-alt">
                     <div class="media">
                         <div class="media-body">
-                            <h2>{{tc.assignment.Customer.Name}} <small>{{tc.assignment.Date}}</small></h2>
+                            <h2>{{tc.selectedAssignment.Customer.Name}} <small>{{tc.selectedAssignment.Date}}</small></h2>
                         </div>
                     </div>
                 </div>
                 <div class="card-body card-padding">
-                    <h3>{{tc.assignment.Location}}</h3>
-                    <p>{{tc.assignment.Description}}</p>
+                    <h3>{{tc.selectedAssignment.Location}}</h3>
+                    <p>{{tc.selectedAssignment.Description}}</p>
                 </div>
             </div>
 

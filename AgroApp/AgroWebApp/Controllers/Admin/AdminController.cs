@@ -23,9 +23,10 @@ namespace AgroApp.Controllers.Admin
         }
 
         [HttpGet("admin/urenoverzicht/{IdAssignment}")]
-        public IActionResult TimesheetView(int IdEmployeeAssignment)
+        public async Task<IActionResult> TimesheetView(int idAssignment)
         {
-            ViewData["IdEmployeeAssignment"] = 
+            ViewData["IdAssignment"] = idAssignment;
+            ViewData["IdEmployeeAssignment"] = await AssignmentController.GetEmployeeAssignment(HttpContext, idAssignment);
             return View("timesheet");
         }
 

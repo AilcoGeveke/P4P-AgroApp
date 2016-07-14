@@ -225,14 +225,13 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     um.allUsers = [];
     um.allCustomers = [];
     um.allAssignments = [];
-
-    
-    um.selectedCoworkers = [];
-    um.selectedMachines = [];
-    um.selectedAttachments = [];
     um.allMachines = [];
     um.allAttachments = [];
     um.allWorkTypes = workTypeList.data;
+    um.selectedCoworkers = [];
+    um.selectedMachines = [];
+    um.selectedAttachments = [];
+    um.selectedAssignment = {};
 
     um.timesheetDetails = [];
 
@@ -262,39 +261,6 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-
-    um.showConfirmDeleteAll = function (ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading++;
-        var confirm = $mdDialog.confirm()
-              .title('Weet u zeker dat u alle opdrachten en werkbonnen wilt verwijderen?')
-              .textContent('LET OP: Het is niet mogelijk om de verijderde data hierna nog terug te halen!!')
-              .targetEvent(ev)
-              .ok('Verwijderen')
-              .cancel('Annuleer');
-        $mdDialog.show(confirm).then(function () {
-            um.showConfirmPermanentDelete();
-        }, function () {
-            $rootScope.showLoading--;
-        });
-    };
-
-    um.showConfirmPermanentDelete = function (ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        $rootScope.showLoading++;
-        var confirm = $mdDialog.confirm()
-              .title('Verwijdering bevestigen')
-              .textContent('Alle opdrachten en werkbonnen zullen worden verwijderd!!')
-              .targetEvent(ev)
-              .ok('Definitief verwijderen')
-              .cancel('Annuleer');
-        $mdDialog.show(confirm).then(function () {
-            DeleteAllData();
-        }, function () {
-            $rootScope.showLoading--;
-        });
-    }
-
 
     var DeleteAllData = function () {
         $rootScope.showLoading++;
@@ -339,6 +305,15 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
             function successCallback(response) {
                 console.log(response.data);
                 um.allCustomers = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    um.getAssignment = function (id) {
+        assignmentManagement.get(id).then(
+            function successCallback(response) {
+                um.selectedAssignment = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
