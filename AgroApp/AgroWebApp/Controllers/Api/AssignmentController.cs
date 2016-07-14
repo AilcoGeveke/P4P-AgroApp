@@ -41,6 +41,25 @@ namespace AgroApp.Controllers.Api
                 return "true";
             }
         }
+        
+        [HttpGet("get/{idAssignment}")]
+        public async Task<int> GetEmployeeAssignment(int id)
+        {
+            if (id < 0)
+                return -1;
+
+            User user = await UserController.GetUser(HttpContext);
+            string query = "SELECT idEmployeeAssignment FROM EmployeeAssignment WHERE idAssignment = @0 AND idEmployee = @1";
+
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", id),
+                new MySqlParameter("@1", user.IdEmployee)))
+            {
+                int idEmployeeAssignment = reader.GetInt32(0); 
+                return idEmployeeAssignment;
+            }
+        }
 
         [HttpGet("getall/{datelong}")]
         public async Task<IEnumerable<Assignment>> GetAllAssignments(string datelong)
@@ -65,6 +84,7 @@ namespace AgroApp.Controllers.Api
                     });
             return assignments;
         }
+
 
         // GET: /<controller>/
         public async Task<IEnumerable<Assignment>> GetAssignmentsUserSpecific(string datelong)
@@ -108,10 +128,9 @@ namespace AgroApp.Controllers.Api
                     + "TRUNCATE TABLE RoadPlate ; "
                     + "TRUNCATE TABLE EmployeeAssignment; "
                     + "TRUNCATE TABLE Assignment; "
-                    + "TRUNCATE TABLE WorkOrderAttachment; "
-                    + "TRUNCATE TABLE WorkOrderMachine; "
-                    + "TRUNCATE TABLE TimesheetPart;"
-                    + "TRUNCATE TABLE WorkOrderWorkType;"
+                    + "TRUNCATE TABLE TimesheetAttachment; "
+                    + "TRUNCATE TABLE Timesheet;"
+                    + "TRUNCATE TABLE TimesheetWorkType;"
                     + "SET FOREIGN_KEY_CHECKS = 1;";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
