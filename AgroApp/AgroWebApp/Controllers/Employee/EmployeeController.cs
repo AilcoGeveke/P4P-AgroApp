@@ -17,23 +17,23 @@ namespace AgroApp.Controllers.Employee
         /// Returns main page of the Employee
         /// </summary>
         /// <returns></returns>
+        [HttpGet("werknemer")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet("werknemer")]
-        public IActionResult EmployeeView()
-        {
-            return View("Employee");
-        }
-
         [HttpGet("werknemer/opdrachten")]
-        public IActionResult EmployeeAssignmentView()
+        public IActionResult AssignmentView()
         {
-            return View("OverviewEmployeeAssignment");
+            ViewData["userAssignment"] = true;
+            return View("~/views/Admin/Management/OverviewAssignment");
         }
 
-
+        [HttpGet("werknemer/werkboninvullen/{idEmployeeAssignment}")]
+        public IActionResult EmployeeAddTimesheet()
+        {
+            return View("Timesheet");
+        }
     }
 }

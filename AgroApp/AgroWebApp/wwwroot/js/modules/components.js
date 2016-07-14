@@ -85,20 +85,31 @@ materialAdmin
             link: function(scope, element, attrs) {
                 element.click(function(){
                     swal({   
-                        title: "Are you sure?",   
-                        text: "You will not be able to recover this imaginary file!",   
-                        type: "warning",   
+                        title: "Waarschuwing!",   
+                        text: "Weet u zeker dat alle gegevens gewist moeten worden? DIT KAN NIET ONGEDAAN WORDEN GEMAAKT!",
+                        type: "info",   
                         showCancelButton: true,   
                         confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "Yes, delete it!",   
+                        confirmButtonText: "Ja",   
                         closeOnConfirm: false 
-                    }, function(){   
-                        swal("Deleted!", "Your imaginary file has been deleted.", "success"); 
+                    }, function () {
+                        swal({
+                            title: "Laatste Waarschuwing!",
+                            text: "Door op Ja te drukken wordt alles verwijderd. DIT KAN NIET ONGEDAAN WORDEN GEMAAKT!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Ja, verwijder alles!",
+                            closeOnConfirm: false
+                        }, function () {
+                            swal("Gelukt!", "De database is leeg gemaakt.", "success");
+                        });
                     });
                 });
             }
         }
     })
+
 
     //Parameter
     .directive('swalParams', function(){

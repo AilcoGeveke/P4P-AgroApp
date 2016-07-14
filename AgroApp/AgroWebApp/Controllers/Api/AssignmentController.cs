@@ -99,6 +99,24 @@ namespace AgroApp.Controllers.Api
             else
                 return await GetAssignmentsUserSpecific(datelong);
         }
+
+        [HttpGet("deleteall")]
+        public async Task<bool> DeleteAllData()
+        {
+            string query = "SET FOREIGN_KEY_CHECKS = 0; "
+                    + "TRUNCATE TABLE Cargo; "
+                    + "TRUNCATE TABLE RoadPlate ; "
+                    + "TRUNCATE TABLE EmployeeAssignment; "
+                    + "TRUNCATE TABLE Assignment; "
+                    + "TRUNCATE TABLE WorkOrderAttachment; "
+                    + "TRUNCATE TABLE WorkOrderMachine; "
+                    + "TRUNCATE TABLE TimesheetPart;"
+                    + "TRUNCATE TABLE WorkOrderWorkType;"
+                    + "SET FOREIGN_KEY_CHECKS = 1;";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
+                return reader.RecordsAffected >= 1; ;
+        }
     }
 
     //public class AssignmentController : Controller

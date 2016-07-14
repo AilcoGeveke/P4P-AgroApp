@@ -240,6 +240,63 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
         um.selectedMachines.pop();
     }
 
+
+    um.showConfirmDeleteAll = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading++;
+        var confirm = $mdDialog.confirm()
+              .title('Weet u zeker dat u alle opdrachten en werkbonnen wilt verwijderen?')
+              .textContent('LET OP: Het is niet mogelijk om de verijderde data hierna nog terug te halen!!')
+              .targetEvent(ev)
+              .ok('Verwijderen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            um.showConfirmPermanentDelete();
+        }, function () {
+            $rootScope.showLoading--;
+        });
+    };
+
+    um.showConfirmPermanentDelete = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        $rootScope.showLoading++;
+        var confirm = $mdDialog.confirm()
+              .title('Verwijdering bevestigen')
+              .textContent('Alle opdrachten en werkbonnen zullen worden verwijderd!!')
+              .targetEvent(ev)
+              .ok('Definitief verwijderen')
+              .cancel('Annuleer');
+        $mdDialog.show(confirm).then(function () {
+            DeleteAllData();
+        }, function () {
+            $rootScope.showLoading--;
+        });
+    }
+
+
+    var DeleteAllData = function () {
+        $rootScope.showLoading++;
+        $http({
+            method: 'GET',
+            url: '/api/werkbon/deleteall',
+            params: 'limit=10, sort_by=created:desc',
+            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+        }).success(function (data) {
+            // With the data succesfully returned, call our callback
+            if (data == true)
+                $rootScope.changeView('admin/overzicht');
+            else {
+                $rootScope.showLoading--;
+                $scope.showError = true;
+                $scope.errorMessage = "Er is niets om te verwijderen!";
+            }
+        }).error(function () {
+            $rootScope.showLoading--;
+            $scope.showError = true;
+            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
+        });
+    };
+
     um.selectedDate = new Date();
 
     um.newAssignment = {};
