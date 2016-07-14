@@ -10,6 +10,7 @@
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
     <section id="content">
         <div class="container">
+
             <div class="card">
                 <div class="card-header ch-alt">
                     <div class="media">
@@ -24,85 +25,91 @@
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header ch-alt m-b-20">
-                    <h2>Overzicht Uren <small>Overzicht ingevulde gegevens voor deze opdracht</small></h2>
-                    <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
-                </div>
-
+            <div slider="showNewTaskCard">
                 <div class="card">
-                    <div class="card-header">
-                        <h2>Taak Toevoegen<small></small></h2>
+                    <div class="card-header ch-alt">
+                        <h2>Taak Toevoegen<small>Hier kunt u uw gewerkte uren invullen</small></h2>
                     </div>
-                    <form name="taskForm" ng-submit="hoi()">
-                        <div class="card-body card-padding">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="taskEmployee" type="text" class="form-control" placeholder="Werknemer">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 m-b-15">
-                                    <p class="f-500 c-black m-b-15">Voertuig</p>
-                                    <select chosen ng-model="taskMachine" data-placeholder="Voertuig" class="w-100">
-                                        <option ng-repeat="machine in machines">
-                                            {{machine.Name}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4 m-b-15">
-                                    <p class="f-500 c-black m-b-15">Mankeuze</p>
-                                    <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
-                                        <option ng-repeat="type in worktypes">
-                                            {{type}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4 m-b-15">
-                                    <p class="f-500 c-black m-b-15">Soort Grondstof</p>
-                                    <select chosen ng-model="taskMaterialType" data-placeholder="Soort" class="w-100">
-                                        <option ng-repeat="soort in soorten">
-                                            {{soort}}
-                                        </option>
-                                    </select>
-                                </div>
+                    <div class="card-body card-padding container-fluid">
 
-                                <div class="col-sm-2">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="taskStart" type="text" class="form-control" placeholder="Van">
-                                    </div>
-                                </div>
+                        <p class="f-500 c-black m-b-5">Werktype</p>
+                        <small class="c-gray">Selecteer hier op welke manier u heeft gewerkt</small>
+                        <small class="c-gray">Geselecteerd - {{typeOfWork2 || 'geen'}}</small>
 
-                                <div class="col-sm-2">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="taskEnd" type="text" class="form-control" placeholder="Tot">
-                                    </div>
-                                </div>
+                        <br />
+                        <br />
 
-                                <div class="col-sm-2">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="taskTotal" type="text" class="form-control" placeholder="Totaal">
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group fg-line">
-                                        <input ng-model="taskDescription" type="text" class="form-control" placeholder="Omschrijving">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm m-t-10">Submit</button>
+                        <div class="btn-group btn-group-justified m-b-20" role="group" aria-label="...">
+                            <div class="btn-group" role="group">
+                                <label class="btn btn-primary" ng-model="typeOfWork2" uib-btn-radio="'Man'">Man</label>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <label class="btn btn-primary" ng-model="typeOfWork2" uib-btn-radio="'Machinist'">Machinist</label>
                             </div>
                         </div>
-                    </form>
+                        <div class="row">
+                            <div class="col-sm-4 m-b-15">
+                                <p class="f-500 c-black m-b-15">Voertuig</p>
+                                <select chosen ng-model="taskMachine" data-placeholder="Voertuig" class="w-100">
+                                    <option ng-repeat="machine in machines">
+                                        {{machine.Name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 m-b-15">
+                                <p class="f-500 c-black m-b-15">Mankeuze</p>
+                                <select chosen ng-model="taskWorktype" data-placeholder="Mankeuze" class="w-100">
+                                    <option ng-repeat="type in worktypes">
+                                        {{type}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group fg-line">
+                                    <input ng-model="taskStart" type="text" class="form-control" placeholder="Van">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group fg-line">
+                                    <input ng-model="taskEnd" type="text" class="form-control" placeholder="Tot">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group fg-line">
+                                    <input ng-model="taskTotal" type="text" class="form-control" placeholder="Totaal">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="form-group fg-line">
+                                    <label>Beschrijving</label>
+                                    <textarea class="form-control" rows="6" placeholder="Beschrijving..."
+                                              ng-model="taskDescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body bgm-gray card-padding">
+                        <button class="btn btn-primary m-r-15" ng-click="hoi()">Toevoegen</button>
+                        <button class="btn btn-default" ng-click="showNewTaskCard = false; showTaskOverview= true" slide-toggle="#showNewTaskCard">Annuleren</button>
+                    </div>
                 </div>
+            </div>
 
+           @*Overzicht Taken*@
+            <div slider="showTaskOverview" enabled="true">
+                <div class="card">
+                    <div class="card-header ch-alt m-b-20">
+                        <h2>Overzicht Uren <small>Overzicht ingevulde gegevens voor deze opdracht</small></h2>
+                        <button class="btn bgm-red btn-float waves-effect" ng-hide="showNewTaskCard" ng-click="showNewTaskCard = true; showTaskOverview = false"><i class="zmdi zmdi-plus"></i></button>
+                    </div>
+                    <div class="card-body card-padding">
+                    </div>
 
-                @*Overzicht*@
-                <div class="card-body card-padding">
-                </div>
-
-                <div class="lv-header card-body card-padding bgm-teal c-white">
-                    Totaal: 0 uur
+                    <div class="lv-header card-body card-padding bgm-teal c-white">
+                        Totaal: 0 uur
+                    </div>
                 </div>
             </div>
 
@@ -129,13 +136,17 @@
 </section>
 
 @section styles{
-    <link href="~/lib/chosen/chosen.css" rel="stylesheet" />
-    <link href="~/lib/chosen/chosen-sprite.png" rel="image_src" />
+<link href="~/lib/chosen/chosen.css" rel="stylesheet" />
+<link href="~/lib/chosen/chosen-sprite.png" rel="image_src" />
 }
 
 @section scripts{
-    <script src="~/lib/chosen/chosen.js"></script>
-    <script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
+<script src="~/lib/chosen/chosen.js"></script>
+<script src="~/lib/angular-chosen-localytics/dist/angular-chosen.min.js"></script>
+<script src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="~/lib/angularslideables-master/angularslideables.js"></script>
+<script src="~/lib/angular-nouislider/src/nouislider.js"></script>
 
-    <script>angular.module('materialAdmin').requires.push('localytics.directives');</script>
+<script>angular.module('materialAdmin').requires.push('localytics.directives');</script>
+<script>angular.module('materialAdmin').requires.push('angularSlideables');</script>
 }

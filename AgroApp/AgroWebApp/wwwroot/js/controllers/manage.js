@@ -219,6 +219,8 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     var um = this;
 
     $scope.showMainView = true;
+    $scope.showTaskOverview = true;
+    $scope.showNewTaskCard = false;
 
     um.allUsers = [];
     um.allCustomers = [];
