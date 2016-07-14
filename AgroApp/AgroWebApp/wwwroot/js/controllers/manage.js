@@ -225,6 +225,19 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     um.allAssignements = 
 
     um.selectedCoworkers = [];
+    um.selectedMachines = [];
+    um.machines = [];
+    um.hulpstukken = [];
+
+    um.increaseSelectedMachineList = function () {
+        var m = machines[0];
+        m.hulpstuk = {};
+        um.selectedMachines.push(m);
+    }
+    um.decreaseSelectedMachineList = function () {
+        um.selectedMachines.pop();
+    }
+
     um.selectedDate = new Date();
 
     um.newAssignement = {};
@@ -273,7 +286,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                     timer: 3500,
                     showConfirmButton: false,
                     type: "success"
-                });
+});
                 um.newAssignement = {};
                 $scope.showNewAssignementCard = false;
                 $scope.showMainView = true;
@@ -514,7 +527,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
-                }, function errorCallback(response) {
+        }, function errorCallback(response) {
                     swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
                 });
             //setTimeout(function () {
