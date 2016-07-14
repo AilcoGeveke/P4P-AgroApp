@@ -30,10 +30,12 @@ namespace AgroApp.Controllers.Employee
             return View("~/views/Admin/Management/OverviewAssignment");
         }
 
-        [HttpGet("werknemer/werkboninvullen/{idEmployeeAssignment}")]
-        public IActionResult EmployeeAddTimesheet()
+        [HttpGet("werkemer/werkbon/{idAssignment}")]
+        public IActionResult AddTimesheet(int id)
         {
-            return View("Timesheet");
+            ViewData["idAssignment"] = id;
+
+            return View("timesheet");
         }
     }
 }

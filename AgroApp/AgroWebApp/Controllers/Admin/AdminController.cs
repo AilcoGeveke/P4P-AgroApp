@@ -23,7 +23,7 @@ namespace AgroApp.Controllers.Admin
         }
 
         [HttpGet("admin/urenoverzicht")]
-        public IActionResult WorkOrderView()
+        public IActionResult TimesheetView()
         {
             return View("timesheet");
         }
@@ -33,7 +33,34 @@ namespace AgroApp.Controllers.Admin
         {
             return View("management/truncatealldata");
         }
-        
+        //Attachment
+        [HttpGet("admin/hulpstuk/overzicht")]
+        public IActionResult OverviewAttachment()
+        {
+            return View("management/overviewattachment");
+        }
+
+        [HttpGet("admin/hulpstuk/toevoegen")]
+        public IActionResult AddAttachment()
+        {
+            return View("management/addattachment");
+        }
+
+        [HttpGet("admin/hulpstuk/archief")]
+        public IActionResult ArchiveAttachment()
+        {
+            return View("management/archiveattachment");
+        }
+
+        [HttpGet("admin/hulpstuk/wijzigen/{id}")]
+        public async Task<IActionResult> EditAttachment(int id)
+        {
+
+            Attachment attachment = await AttachmentController.GetAttachment(id);
+            ViewData["userData"] = JsonConvert.SerializeObject(attachment);
+
+            return View("management/editattachment");
+        }
         //User
         [HttpGet("admin/gebruikers/overzicht")]
         public IActionResult OverviewUsers()
@@ -104,9 +131,11 @@ namespace AgroApp.Controllers.Admin
             return View("management/addMachine");
         }
 
-        [HttpGet("admin/werkbon/{idEmployeeAssignment}")]
-        public IActionResult AddTimesheet()
+        [HttpGet("admin/werkbon/{idAssignment}")]
+        public IActionResult AddTimesheet(int id)
         {
+            ViewData["idAssignment"] = id;
+
             return View("timesheet");
         }
 
@@ -117,7 +146,7 @@ namespace AgroApp.Controllers.Admin
             Machine machine = await MachineController.GetMachine(id);
             ViewData["machineData"] = JsonConvert.SerializeObject(machine); ;
 
-            return View("management/editUser");
+            return View("management/editmachine");
         }
 
         // Assignment

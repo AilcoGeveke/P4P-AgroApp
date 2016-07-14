@@ -5,20 +5,20 @@ using System.Threading.Tasks;
 
 namespace AgroApp.Models
 {
-    public class TimesheetPart
+    public class Timesheet
     {
-        public int IdTimesheetPart { set; get; }
+        public int IdTimesheet { set; get; }
         public long StartTime { set; get; }
         public long EndTime { set; get; }
         public long TotalTime{ set; get; }
         public string Description { set; get; }
 
-        public TimesheetPart() { }
+        public Timesheet() { }
 
-        public TimesheetPart(int idTimesheetPart, long startTime, long endTime, long totalTime, string description)
+        public Timesheet(int idTimesheet, long startTime, long endTime, long totalTime, string description)
 
         {
-            IdTimesheetPart = idTimesheetPart;
+            IdTimesheet = idTimesheet;
             StartTime = startTime;
             EndTime = endTime;
             TotalTime = totalTime;
