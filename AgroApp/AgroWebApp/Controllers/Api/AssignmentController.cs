@@ -215,7 +215,7 @@ namespace AgroApp.Controllers.Api
                     + "TRUNCATE TABLE Assignment; "
                     + "TRUNCATE TABLE TimesheetAttachment; "
                     + "TRUNCATE TABLE Timesheet;"
-                    + "TRUNCATE TABLE TimesheetWorkType;"
+                    + "TRUNCATE TABLE TimesheetMachine;"
                     + "SET FOREIGN_KEY_CHECKS = 1;";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))

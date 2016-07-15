@@ -22,7 +22,6 @@ namespace AgroApp.Controllers.Employee
         {
             return View();
         }
-
         [HttpGet("werknemer/opdrachten")]
         public async Task<IActionResult> AssignmentView()
         {

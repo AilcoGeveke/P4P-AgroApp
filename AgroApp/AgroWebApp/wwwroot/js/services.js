@@ -83,8 +83,8 @@ materialAdmin
             return $http.get('/api/customer/restorecustomer/' + id)
         }
 
-        this.applyChanges = function (customer) {
-            return $http.post('/api/customer/change', customer);
+        this.applyChanges = function (id) {
+            return $http.post('/api/customer/change', id);
         }
 
         this.archiveCustomer = function (id) {

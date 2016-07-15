@@ -27,9 +27,9 @@ namespace AgroApp.Controllers.Api
                             idTimesheet: reader["idTimesheet"] as int? ?? -1,
                             idEmployeeAssignment: idEmployeeAssignment,
                             workType: reader["workType"] as string,
-                            startTime: reader["startTime"] as long? ?? -1,
-                             endTime: reader["endTime"] as long? ?? -1,
-                              totalTime: reader["totalTime"] as long? ?? -1,
+                            startTime: reader["startTime"] as TimeSpan? ?? TimeSpan.Zero,
+                             endTime: reader["endTime"] as TimeSpan? ?? TimeSpan.Zero,
+                              totalTime: reader["totalTime"] as TimeSpan? ?? TimeSpan.Zero,
                             description: reader["description"] as string
                             ));
                 return timesheets;
