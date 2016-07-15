@@ -7,7 +7,7 @@ namespace AgroApp.Models
 {
     public class EmployeeAssignment
     {
-        public int IdEmployeeAssignement { get; set; }
+        public int IdEmployeeAssignment { get; set; }
         public User Employee { get; set; }
         public Assignment Assignment { get; set; }
         public bool IsVerified { get; set; } = false;

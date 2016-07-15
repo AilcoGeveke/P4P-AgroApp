@@ -71,7 +71,7 @@ namespace AgroApp.Controllers.Api
                 return new EmployeeAssignment() {
                     Assignment = new Assignment() { IdAssignment = idAssignment },
                     Employee = new User() { IdEmployee = user.IdEmployee },
-                    IdEmployeeAssignement = reader["idEmployeeAssignment"] as int? ?? -1,
+                    IdEmployeeAssignment = reader["idEmployeeAssignment"] as int? ?? -1,
                     IsVerified = reader["isVerified"] as bool? ?? false };
             }
         }

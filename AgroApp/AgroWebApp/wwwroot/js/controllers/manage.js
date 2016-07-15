@@ -264,6 +264,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 um.timesheetDetails = {};
                 $scope.showTaskOverview = true;
                 $scope.showNewTaskCard = false;
+                um.getAllTimesheets($scope.EmployeeAssignment.IdEmployeeAssignment);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
