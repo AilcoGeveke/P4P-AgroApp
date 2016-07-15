@@ -613,6 +613,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
         });
     };
+
     um.archiveCustomer = function (customer) {
         swal({
             title: "Weet u zeker dat u " + customer.Name + " wilt archiveren?",
@@ -622,7 +623,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
-            archiveCustomer(customer.idCustomer).then(
+            customerManagement.archiveCustomer(customer.IdCustomer).then(
                 function successCallback(response) {
                     if (response.data == true) {
                         swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gearchiveerd.", timer: 3000, showConfirmButton: false });
@@ -730,7 +731,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
-            archiveAttachment(attachment.idattachment).then(
+            attachmentManagement.archiveAttachment(attachment.IdAttachment).then(
                 function successCallback(response) {
                     if (response.data == true) {
                         swal({ title: "Gelukt!", type: "success", text: attachment.Name + " is gearchiveerd.", timer: 3000, showConfirmButton: false });
@@ -746,10 +747,11 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
             //}, 3000);
         });
     };
+
     um.restoreAttachment = function (attachment) {
         swal({
             title: "Weet u zeker dat u " + attachment.Name + " wilt dearchiveren?",
-            text: "Hierdoor zal het hulpstuk geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
+            text: "Hierdoor zal het hulpstuk geactiveerd worden. Het zal weer mogelijk zijn om deze te gebruiken.",
             type: "info",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -759,7 +761,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
                 function successCallback(response) {
                     if (response.data == true) {
                         swal({ title: "Gelukt!", type: "success", text: attachment.Name + " is gedearchiveerd. Het hulpstuk kan weer gebruikt worden!", timer: 3000, showConfirmButton: false });
-                        setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                        setTimeout(function () { $window.location.href = '/admin/hulpstuk/overzicht'; }, 3500);
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: attachment.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
