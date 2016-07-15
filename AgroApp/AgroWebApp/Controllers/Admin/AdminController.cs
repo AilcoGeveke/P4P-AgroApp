@@ -135,6 +135,12 @@ namespace AgroApp.Controllers.Admin
             return View("management/overviewMachine");
         }
 
+        [HttpGet("admin/machines/archief")]
+        public IActionResult ArchiveMachines()
+        {
+            return View("management/archivemachine");
+        }
+
         [HttpGet("admin/machines/toevoegen")]
         public IActionResult AddMachine()
         {

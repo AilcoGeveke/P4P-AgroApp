@@ -70,6 +70,21 @@ namespace AgroApp.Controllers.Api
             catch { return "Er is iets misgegaan, neem contact op met een ontwikkelaar!"; }
         }
 
+        [HttpPost("change")]
+        public async Task<bool> EditCustomer([FromBody]Customer Customer)
+        {
+            if (GetCustomer(Customer.IdCustomer) == null)
+                return false;
+
+            string query = "UPDATE Customer SET Name=@0, Address=@1 WHERE IdCustomer=@2";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", Customer.Name),
+                new MySqlParameter("@1", Customer.Address),
+                new MySqlParameter("@2", Customer.IdCustomer)))
+                return reader.RecordsAffected == 1;
+        }
+
 
         /// <summary>
         /// geeft 1 customer weer om deze te bewerken.

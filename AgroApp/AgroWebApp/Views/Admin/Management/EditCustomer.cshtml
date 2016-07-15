@@ -9,15 +9,15 @@
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
 
     <!-- Page Content -->
-    <section id="content" data-ng-controller="UserManagement as um">
+    <section id="content" data-ng-controller="CustomerManagement as um">
         <div class="container">
             <div class="card">
                 <div class="form-horizontal">
                     <div class="card-header ch-alt m-b-20">
-                        <h2>Klant '@ViewData["Name"]' wijzigen <small>Vul de gegevens hieronder in en druk vervolgens op verzenden</small></h2>
+                        <h2>Klant '{{um.customerDetails.Name}}' wijzigen <small>Vul de gegevens hieronder in en druk vervolgens op verzenden</small></h2>
                     </div>
 
-                    <div ng-init="um.customerDetails = @ViewData["customerData"]"></div>
+                    <div ng-init="um.customerDetails = @ViewData["userData"]"></div>
 
                     <div class="card-body card-padding">
                         <div class="form-group">
@@ -32,7 +32,7 @@
                             <label for="inputAdres" class="col-sm-2 control-label">Adres</label>
                             <div class="col-sm-10">
                                 <div class="fg-line">
-                                    <input required ng-model="um.customerDetails.Address" type="email" class="form-control input-sm" id="inputAdres" placeholder="Adres">
+                                    <input required ng-model="um.customerDetails.Address" type="text" class="form-control input-sm" id="inputAdres" placeholder="Adres">
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-primary btn-sm waves-effect" ng-click="um.applyChangesToCustomer+()">Wijzig gebruiker</button>
+                                <button class="btn btn-primary btn-sm waves-effect" ng-click="um.applyChangesToCustomer()">Wijzig gebruiker</button>
                             </div>
                         </div>
                     </div>

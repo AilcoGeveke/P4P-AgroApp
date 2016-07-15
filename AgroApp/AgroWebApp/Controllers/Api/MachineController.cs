@@ -62,5 +62,69 @@ namespace AgroApp.Controllers.Api
                 return reader.HasRows ? new Machine(reader["idMachine"] as int? ?? -1, reader["type"] as string, reader["number"] as int? ?? -1, reader["name"] as string, reader["tag"] as string, reader["status"] as string) : null;
             }
         }
+
+        [HttpPost("change")]
+        public async Task<bool> EditMachine([FromBody]Machine machine)
+        {
+            if (GetMachine(machine.IdMachine) == null)
+                return false;
+
+            string query = "UPDATE Machine SET name=@0, number=@1, tag=@2, type=@3, status=@4 WHERE idMachine=@5";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", machine.Name),
+                new MySqlParameter("@1", machine.Number),
+                new MySqlParameter("@2", machine.Tag),
+                new MySqlParameter("@3", machine.Type),
+                new MySqlParameter("@4", machine.Status),
+                new MySqlParameter("@5", machine.IdMachine)))
+                return reader.RecordsAffected == 1;
+        }
+
+        [HttpGet("archive/{id}")]
+        public async Task<bool> ArchiveMachine(int id)
+        {
+            if (GetMachine(id) == null)
+                return false;
+
+            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachine=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
+
+        [HttpGet("getallarchived")]
+        public async Task<IEnumerable<Machine>> GetArchivedMachines()
+        {
+            string query = "SELECT idMachine, name, number, type, status, isDeleted FROM Machine WHERE isDeleted=@0";
+            List<Machine> machines = new List<Machine>();
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", true)))
+                while (await reader.ReadAsync())
+                    machines.Add(new Machine(
+                        idMachine: reader["idMachine"] as int? ?? -1,
+                        name: reader["name"] as string,
+                        number: reader["number"] as int? ?? -1,
+                        type: reader["type"] as string, 
+                        status: reader["status"] as string));
+            return machines;
+        }
+
+        [HttpGet("restore/{id}")]
+        public async Task<bool> RestoreMachine(int id)
+        {
+            if (GetMachine(id) == null)
+                return false;
+
+            string query = "UPDATE Machine SET isDeleted=@0 WHERE idMachine=@1";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", false),
+                new MySqlParameter("@1", id)))
+                return reader.RecordsAffected == 1;
+        }
     }
 }

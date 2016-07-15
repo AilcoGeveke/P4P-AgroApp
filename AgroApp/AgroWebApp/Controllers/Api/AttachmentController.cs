@@ -70,6 +70,21 @@ namespace AgroApp.Controllers.Api
             catch { return "Er is iets misgegaan, neem contact op met een ontwikkelaar!"; }
         }
 
+        [HttpPost("change")]
+        public async Task<bool> EditAttachment([FromBody]Attachment attachment)
+        {
+            if (GetAttachment(attachment.IdAttachment) == null)
+                return false;
+
+            string query = "UPDATE Attachment SET number=@0, name=@1 WHERE IdAttachment=@2";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", attachment.Number),
+                new MySqlParameter("@1", attachment.Name),
+                new MySqlParameter("@2", attachment.IdAttachment)))
+                return reader.RecordsAffected == 1;
+        }
+
         [HttpGet("archive/{id}")]
         public async Task<bool> ArchiveAttachment(int id)
         {

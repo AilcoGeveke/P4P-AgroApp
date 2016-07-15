@@ -43,6 +43,32 @@ namespace AgroApp.Controllers.Api
             }
         }
 
+        [HttpPost("edit")]
+        public async Task<string> EditAssignment([FromBody]Assignment am)
+        {
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            {
+                DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(am.Date).ToLocalTime();
+                string query = "INSERT INTO Assignment (Location, Description, IdCustomer, Date) VALUES (@0, @1, @2, @3);";
+                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                    new MySqlParameter("@0", am.Location),
+                    new MySqlParameter("@1", am.Description),
+                    new MySqlParameter("@2", am.Customer.IdCustomer),
+                    new MySqlParameter("@3", date)))
+                {
+                    await reader.ReadAsync();
+                }
+
+                query = "INSERT INTO EmployeeAssignment (IdEmployee, idAssignment) VALUES (@0, @1)";
+                foreach (User user in am.Employees)
+                    await MySqlHelper.ExecuteNonQueryAsync(conn, query,
+                        new MySqlParameter("@1", am.IdAssignment),
+                        new MySqlParameter("@0", user.IdEmployee));
+
+                return "true";
+            }
+        }
+
         public static async Task<EmployeeAssignment> GetEmployeeAssignment(int idEmployee, int idAssignment)
         {
             User user = await UserController.GetUser(idEmployee);
@@ -189,7 +215,7 @@ namespace AgroApp.Controllers.Api
                     + "TRUNCATE TABLE Assignment; "
                     + "TRUNCATE TABLE TimesheetAttachment; "
                     + "TRUNCATE TABLE Timesheet;"
-                    + "TRUNCATE TABLE TimesheetWorkType;"
+                    + "TRUNCATE TABLE TimesheetMachine;"
                     + "SET FOREIGN_KEY_CHECKS = 1;";
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query))
