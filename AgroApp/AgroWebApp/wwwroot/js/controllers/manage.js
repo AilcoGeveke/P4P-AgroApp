@@ -118,7 +118,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     um.allMachines = {};
 
     um.registerMachine = function () {
-        machineManagement.register(this.machineDetails)
+        machineManagement.register(um.machineDetails)
         .then(function successCallback(response) {
             if (response.data != true) {
                 swal("", response.data, "error");
@@ -142,6 +142,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
+
     um.getAllArchivedMachines = function () {
         machineManagement.getAllArchived().then(
             function successCallback(response) {
@@ -152,8 +153,10 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
+
     um.applyChangesToMachine = function () {
-        machineManagement.applyChanges(this.machineDetails)
+        console.log(um.machineDetails);
+        machineManagement.applyChanges(um.machineDetails)
         .then(function successCallback(response) {
             if (response.data != true) {
                 swal("", response.data, "error");
@@ -175,11 +178,11 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
-            machineManagement.archiveMachine(machine.IdEmployee).then(
+            machineManagement.archive(machine.IdMachine).then(
                 function successCallback(response) {
                     if (response.data == true) {
                         swal({ title: "Gelukt!", type: "success", text: machine.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 3000, showConfirmButton: false });
-                        um.getAll();
+                        um.getAllMachines();
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: machine.Name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
@@ -200,7 +203,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
-            machineManagement.restore(machine.IdEmployee).then(
+            machineManagement.restore(machine.IdMachine).then(
                 function successCallback(response) {
                     if (response.data == true) {
                         swal({ title: "Gelukt!", type: "success", text: machine.Name + " is gedearchiveerd. De machine kan weer gebruikt worden!", timer: 3000, showConfirmButton: false });
