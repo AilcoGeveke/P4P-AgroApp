@@ -26,7 +26,7 @@ namespace AgroApp.Controllers.Admin
         public async Task<IActionResult> TimesheetView(int idAssignment)
         {
             ViewData["EnableControls"] = true;
-            ViewData["EmployeeAssignment"] = await AssignmentController.GetEmployeeAssignment(HttpContext, idAssignment);
+            ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(await AssignmentController.GetEmployeeAssignment(HttpContext, idAssignment));
             return View("timesheet");
         }
 
@@ -34,7 +34,7 @@ namespace AgroApp.Controllers.Admin
         public async Task<IActionResult> TimesheetView(int idAssignment, int idEmployee)
         {
             ViewData["EnableControls"] = false;
-            ViewData["EmployeeAssignment"] = await AssignmentController.GetEmployeeAssignment(idEmployee, idAssignment);
+            ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(await AssignmentController.GetEmployeeAssignment(idEmployee, idAssignment));
             return View("timesheet");
         }
 
