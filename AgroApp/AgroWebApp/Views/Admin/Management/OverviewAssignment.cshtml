@@ -4,7 +4,7 @@
 <!-- Header -->
 <header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
-<section id="main">
+<section id="main" ng-cloak>
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
 
@@ -12,10 +12,10 @@
     <section id="content" ng-controller="TimesheetController as am">
         <div class="container">
 
-            <div slider="showNewAssignmentCard">
+            <div slider="am.showNewAssignmentCard">
                 <div class="card">
                     <div class="card-header ch-alt m-b-15">
-                        <h2>Nieuwe Opdracht</h2>
+                        <h2>{{am.isAdding ? "Nieuwe Opdracht" : "Wijzig Opdracht"}}</h2>
                     </div>
                     <div class="card-body card-padding container-fluid">
                         <div class="col-md-6">
@@ -30,10 +30,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 m-b-15">
                                     <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened == true }">
                                         <div class="fg-line" ng-class="{ 'fg-toggled': opened == true }">
-
                                             <label>Datum</label>
                                             <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="{{format}}" show-weeks="false" ng-model="am.newAssignment.Date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Select Date" />
                                         </div>
@@ -76,17 +75,17 @@
                     </div>
 
                     <div class="card-body bgm-gray card-padding">
-                        <button class="btn btn-primary m-r-15" ng-click="am.addAssignment()">Toevoegen</button>
-                        <button class="btn btn-default" ng-click="showNewAssignmentCard = false; showMainView = true" slide-toggle="#newAssignmentCard">Annuleren</button>
+                        <button class="btn btn-primary m-r-15" ng-click="{{am.isAdding ? am.addAssignment() : am.editAssingment() }}">Toevoegen</button>
+                        <button class="btn btn-default" ng-click="am.showNewAssignmentCard = false; am.showMainView = true" slide-toggle="#newAssignmentCard">Annuleren</button>
                     </div>
                 </div>
             </div>
 
-            <div slider="showMainView" enabled="true">
+            <div slider="am.showMainView" enabled="true">
                 <div class="card">
                     <div class="card-header ch-alt">
                         <h2>Alle Opdrachten <small>Klik op de kolomkoppen om te sorteren</small></h2>
-                        <button class="button btn bgm-red btn-float waves-effect" ng-hide="showNewAssignmentCard" ng-click="showNewAssignmentCard = true; showMainView = false"><i class="zmdi zmdi-plus"></i></button>
+                        <button class="button btn bgm-red btn-float waves-effect" ng-click="am.showNewAssignmentCard = true; am.showMainView = false; am.isAdding = true; am.newAssignment = {};"><i class="zmdi zmdi-plus"></i></button>
                     </div>
                     <div class="card-body card-padding">
                         <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened2 == true }">
@@ -115,7 +114,7 @@
                                     {{ w.Description }}
                                 </td>
                                 <td>
-                                    <button class="button btn btn-default" ng-click="am.changeAssignment()"><i class="zmdi zmdi-edit"></i></button>
+                                    <button class="button btn btn-default" ng-click="am.showNewAssignmentCard = true; am.showMainView = false; am.isAdding = false; am.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
                                     <a class="btn btn-default" href="~/admin/urenoverzicht/{{w.IdAssignment}}"><i class="zmdi zmdi-case"></i></a>
                                 </td>
                             </tr>

@@ -218,9 +218,9 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
 agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
     var um = this;
 
-    $scope.showMainView = true;
-    $scope.showTaskOverview = true;
-    $scope.showNewTaskCard = false;
+    um.showMainView = true;
+    um.showTaskOverview = true;
+    um.showNewTaskCard = false;
 
     um.allTimesheets = [];
     um.allUsers = [];
