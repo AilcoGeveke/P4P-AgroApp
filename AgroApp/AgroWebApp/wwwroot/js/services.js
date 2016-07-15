@@ -132,11 +132,13 @@ materialAdmin
         }
 
         this.getAll = function (date, user) {
-            var api = '/api/assignment/getall/' + date;
+            var api = '/api/assignment/getall/';
 
             console.log(user);
-            if (!angular.isUndefined(user))
-                api += "/" + user;
+            if (!angular.isUndefined(user) && user == "True")
+                api += "userspecific/";
+
+            api += date;
 
             return $http.get(api);
         }

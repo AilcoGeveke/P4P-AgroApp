@@ -25,8 +25,16 @@ namespace AgroApp.Controllers.Admin
         [HttpGet("admin/urenoverzicht/{IdAssignment}")]
         public async Task<IActionResult> TimesheetView(int idAssignment)
         {
-            ViewData["IdAssignment"] = idAssignment;
-            ViewData["IdEmployeeAssignment"] = await AssignmentController.GetEmployeeAssignment(HttpContext, idAssignment);
+            ViewData["EnableControls"] = true;
+            ViewData["EmployeeAssignment"] = await AssignmentController.GetEmployeeAssignment(HttpContext, idAssignment);
+            return View("timesheet");
+        }
+
+        [HttpGet("admin/urenoverzicht/{IdAssignment}/{IdEmployee}")]
+        public async Task<IActionResult> TimesheetView(int idAssignment, int idEmployee)
+        {
+            ViewData["EnableControls"] = false;
+            ViewData["EmployeeAssignment"] = await AssignmentController.GetEmployeeAssignment(idEmployee, idAssignment);
             return View("timesheet");
         }
 
