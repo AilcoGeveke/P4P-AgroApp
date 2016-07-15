@@ -42,14 +42,25 @@ namespace AgroApp.Controllers.Api
                 return "true";
             }
         }
+
+        public static async Task<EmployeeAssignment> GetEmployeeAssignment(int idEmployee, int idAssignment)
+        {
+            User user = await UserController.GetUser(idEmployee);
+            return await GetEmployeeAssignment(user, idAssignment); 
+        }
+
+        public static async Task<EmployeeAssignment> GetEmployeeAssignment(HttpContext context, int idAssignment)
+        {
+            User user = await UserController.GetUser(context);
+            return await GetEmployeeAssignment(user, idAssignment);
+        }
         
-        public static async Task<int> GetEmployeeAssignment(HttpContext context, int idAssignment)
+        public static async Task<EmployeeAssignment> GetEmployeeAssignment(User user, int idAssignment)
         {
             if (idAssignment < 0)
-                return -1;
+                return null;
 
-            User user = await UserController.GetUser(context);
-            string query = "SELECT idEmployeeAssignment FROM EmployeeAssignment WHERE idAssignment = @0 AND idEmployee = @1";
+            string query = "SELECT * FROM EmployeeAssignment WHERE idAssignment = @0 AND idEmployee = @1";
 
             using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
@@ -57,8 +68,11 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@1", user.IdEmployee)))
             {
                 await reader.ReadAsync();
-                int idEmployeeAssignment = reader["idEmployeeAssignment"] as int? ?? 0;
-                return idEmployeeAssignment;
+                return new EmployeeAssignment() {
+                    Assignment = new Assignment() { IdAssignment = idAssignment },
+                    Employee = new User() { IdEmployee = user.IdEmployee },
+                    IdEmployeeAssignement = reader["idEmployeeAssignment"] as int? ?? -1,
+                    IsVerified = reader["isVerified"] as bool? ?? false };
             }
         }
 
@@ -140,8 +154,7 @@ namespace AgroApp.Controllers.Api
             return assignments;
         }
 
-
-        // GET: /<controller>/
+        [HttpGet("getall/userspecific/{datelong}")]
         public async Task<IEnumerable<Assignment>> GetAssignmentsUserSpecific(string datelong)
         {
             User user = await UserController.GetUser(HttpContext);
@@ -164,15 +177,6 @@ namespace AgroApp.Controllers.Api
                         Customer = await CustomerController.GetCustomer(reader["idCustomer"] as int? ?? -1)
                     });
             return assignments;
-        }
-
-        [HttpGet("getall/{datelong}/{userSpecific}")]
-        public async Task<IEnumerable<Assignment>> GetAssignments(string datelong, bool userSpecific)
-        {
-            if (userSpecific)
-                return await GetAllAssignments(datelong, false);
-            else
-                return await GetAssignmentsUserSpecific(datelong);
         }
 
         [HttpGet("deleteall")]

@@ -24,9 +24,10 @@ namespace AgroApp.Controllers.Employee
         }
 
         [HttpGet("werknemer/opdrachten")]
-        public IActionResult AssignmentView()
+        public async Task<IActionResult> AssignmentView()
         {
             ViewData["userAssignment"] = true;
+            ViewData["user"] = JsonConvert.SerializeObject(await UserController.GetUser(HttpContext));
             return View("~/views/Admin/Management/OverviewAssignment");
         }
 

@@ -327,8 +327,8 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllAssignments = function (user) {
-        assignmentManagement.getAll(um.selectedDate.getTime(), user).then(
+    um.getAllAssignments = function (userSpecific) {
+        assignmentManagement.getAll(um.selectedDate.getTime(), userSpecific).then(
             function successCallback(response) {
                 um.allAssignments = response.data;
             },
