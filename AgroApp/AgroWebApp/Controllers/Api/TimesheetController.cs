@@ -13,51 +13,28 @@ namespace AgroApp.Controllers.Api
     [Route("api/[controller]")]
     public class TimesheetController : Controller
     {
-        //[HttpPost("getall")]
-        //public async Task<bool> GetAllTimeSheets([FromBody]Timesheet timesheet)
-        //{
-        //    using (MySqlConnection conn = await DatabaseConnection.GetConnection())
-        //    {
-        //        int idTimeSheetPart = -1;
-        //        string query = "SELECT TimesheetPart.startTime, TimesheetPart.endTime, TimesheetPart.totalTime, "
-        //    + "TimesheetPart.description, Customer.name, Assignment.location, Employee.name "
-        //    + "FROM TimesheetPart "
-        //    + "JOIN EmployeeAssignment "
-        //    + "ON TimesheetPart.idEmployeeAssignment = EmployeeAssignment.idEmployeeAssignment "
-        //    + "JOIN Employee "
-        //    + "ON Employee.idEmployee = EmployeeAssignment.idEmployee "
-        //    + "JOIN Assignment "
-        //    + "ON Assignment.idAssignment = EmployeeAssignment.idAssignment "
-        //    + "JOIN Customer "
-        //    + "ON Customer.idCustomer = Assignment.idCustomer "
-        //    + "JOIN CoWorker "
-        //    + "ON CoWorker.idTimesheetPart = TimesheetPart.idTimesheetPart "
-        //    + "WHERE assignment.date = @0 AND Employee.idEmployee = @1; "
-        //    + "WHERE assignment.date = @0 AND Employee.idEmployee = @1; SELECT LAST_INSERT_ID();";
-        //        using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-        //           new MySqlParameter("@0", opdracht.Location),
-        //           new MySqlParameter("@1", opdracht.Description),
-        //           new MySqlParameter("@2", opdracht.Customer.IdCustomer),
-        //           new MySqlParameter("@3", opdracht.Date)))
-        //        {
-        //            await reader.ReadAsync();
-        //            idTimeSheetPart = reader.GetInt32(0);
-        //        }
-
-        //        query = "SELECT Machine.name, Machine.number FROM Machine "
-        //                    + "JOIN workordermachine "
-        //                    + "ON workordermachine.idMachine = workordermachine.idMachine "
-        //                    + "JOIN timesheetpart "
-        //                    + "ON workordermachine.idTimesheetPart = timesheetpart.idTimesheetPart "
-        //                    + "WHERE timesheetpart.idTimesheetPart = @3;";
-        //        foreach (User user in opdracht.Users)
-        //            await MySqlHelper.ExecuteNonQueryAsync(conn, query,
-        //                new MySqlParameter("@1", opdrachtId),
-        //                new MySqlParameter("@0", user.IdWerknemer));
-
-        //        return true;
-        //    }
-        //}
+        [HttpGet("getall/{idEmployeeAssignment}")]
+        public async Task<IEnumerable<Timesheet>> GetAllTimeSheets(int idEmployeeAssignment)
+        {
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            {
+                List<Timesheet> timesheets = new List<Timesheet>();
+                string query = "SELECT timesheet.* FROM timesheet WHERE idEmployeeAssignment = @0;";
+                using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                   new MySqlParameter("@0", idEmployeeAssignment)))
+                    while (await reader.ReadAsync())
+                        timesheets.Add(new Timesheet(
+                            idTimesheet: reader["idTimesheet"] as int? ?? -1,
+                            idEmployeeAssignment: idEmployeeAssignment,
+                            workType: reader["workType"] as string,
+                            startTime: reader["startTime"] as long? ?? -1,
+                             endTime: reader["endTime"] as long? ?? -1,
+                              totalTime: reader["totalTime"] as long? ?? -1,
+                            description: reader["description"] as string
+                            ));
+                return timesheets;
+            }
+        }
 
         [HttpPost("add")]
         public async Task<bool> AddTimeSheet([FromBody]Timesheet timesheet)

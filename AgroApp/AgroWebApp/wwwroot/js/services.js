@@ -176,8 +176,8 @@ materialAdmin
             return $http.post('/api/timesheet/add', data);
         }
 
-        this.getAll = function (data) {
-            return $http.get('/api/timesheet/get/' + data);
+        this.getAll = function (id) {
+            return $http.get('/api/timesheet/getall/' + id);
         }
     })
 

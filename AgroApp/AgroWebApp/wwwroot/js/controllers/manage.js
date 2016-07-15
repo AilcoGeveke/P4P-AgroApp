@@ -222,6 +222,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     $scope.showTaskOverview = true;
     $scope.showNewTaskCard = false;
 
+    um.allTimesheets = [];
     um.allUsers = [];
     um.allCustomers = [];
     um.allAssignments = [];
@@ -235,6 +236,17 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
 
     um.timesheetDetails = {};
     um.timesheetDetails.WorkType = 'Machinist';
+
+    um.getAllTimesheets = function (id) {
+        timesheetManagement.getAll(id).then(
+            function successCallback(response) {
+                console.log(response.data);
+                um.allTimesheets = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
 
     um.addTimesheet = function () {
         swal({
