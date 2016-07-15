@@ -172,7 +172,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     um.archiveMachine = function (machine) {
         swal({
             title: "Weet u zeker dat u " + machine.Name + " wilt archiveren?",
-            text: "Hierdoor zal het account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
+            text: "Hierdoor zal deze machine gedeactiveerd worden. Het zal niet meer mogelijk zijn om deze machine te gebruiken.",
             type: "warning",
             showCancelButton: true,
             closeOnConfirm: false,
@@ -181,7 +181,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
             machineManagement.archive(machine.IdMachine).then(
                 function successCallback(response) {
                     if (response.data == true) {
-                        swal({ title: "Gelukt!", type: "success", text: machine.Name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 3000, showConfirmButton: false });
+                        swal({ title: "Gelukt!", type: "success", text: machine.Name + " is gearchiveerd. De Machine kan niet meer worden gebruikt!", timer: 3000, showConfirmButton: false });
                         um.getAllMachines();
                     }
                     else
@@ -290,7 +290,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
         $rootScope.showLoading++;
         $http({
             method: 'GET',
-            url: '/api/werkbon/deleteall',
+            url: '/api/assignment/deleteall',
             params: 'limit=10, sort_by=created:desc',
             headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
         }).success(function (data) {
@@ -602,8 +602,9 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
+
     um.applyChangesToCustomer = function () {
-        customerManagement.applyChangesToCustomer(this.customerDetails)
+        customerManagement.applyChanges(um.customerDetails)
         .then(function successCallback(response) {
             if (response.data != true) {
                 swal("", response.data, "error");
@@ -645,8 +646,8 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
     um.restoreCustomer = function (customer) {
         swal({
             title: "Weet u zeker dat u " + customer.Name + " wilt dearchiveren?",
-            text: "Hierdoor zal het account geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
-            type: "info",
+            text: "Hierdoor zal deze klant geactiveerd worden. Het zal weer mogelijk zijn om deze klant te gebruiken.",
+            type: "info", 
             showCancelButton: true,
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
@@ -654,8 +655,8 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
             customerManagement.restoreCustomer(customer.IdCustomer).then(
                 function successCallback(response) {
                     if (response.data == true) {
-                        swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gedearchiveerd. De gebruiker kan weer inloggen!", timer: 3000, showConfirmButton: false });
-                        setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                        swal({ title: "Gelukt!", type: "success", text: customer.Name + " is gedearchiveerd. De klant kan weer worden gebruikt!", timer: 3000, showConfirmButton: false });
+                        setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: customer.Name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
@@ -712,7 +713,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
             });
     };
     um.applyChangesToAttachment = function () {
-        attachmentManagement.applyChangesToAttachment(this.attachmentDetails)
+        attachmentManagement.applyChanges(this.attachmentDetails)
         .then(function successCallback(response) {
             if (response.data != true) {
                 swal("", response.data, "error");

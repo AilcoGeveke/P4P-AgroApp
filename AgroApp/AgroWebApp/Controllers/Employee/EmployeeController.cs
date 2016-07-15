@@ -17,11 +17,6 @@ namespace AgroApp.Controllers.Employee
         /// Returns main page of the Employee
         /// </summary>
         /// <returns></returns>
-        [HttpGet("werknemer")]
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet("werknemer/opdrachten")]
         public async Task<IActionResult> AssignmentView()
