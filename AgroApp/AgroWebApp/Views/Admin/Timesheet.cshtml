@@ -5,7 +5,7 @@
 <!-- Header -->
 <header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
-<section id="main" ng-controller="TimesheetController as tc">
+<section id="main" ng-controller="TimesheetController as tc" ng-cloak>
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
     <section id="content" ng-init="EmployeeAssignment = @ViewData["EmployeeAssignment"]; tc.getAssignment(EmployeeAssignment.Assignment.IdAssignment); tc.timesheetDetails.IdEmployeeAssignment = EmployeeAssignment.IdEmployeeAssignment">
@@ -61,20 +61,23 @@
                             <label>Tijden</label>
                             <div class="row">
                                 <div class="col-sm-4">
+                                    <small>Van</small>
                                     <div class="form-group fg-line">
                                         <input ng-model="tc.timesheetDetails.StartTime" type="time" class="form-control" placeholder="bv. 07:00">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4">
+                                    <small>Tot</small>
                                     <div class="form-group fg-line">
                                         <input ng-model="tc.timesheetDetails.EndTime" type="time" class="form-control" placeholder="bv. 15:00">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4">
+                                    <small>Totaal</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="tc.timesheetDetails.TotalTIme" type="time" class="form-control" placeholder="bv. 05:00">
+                                        <input ng-model="tc.timesheetDetails.TotalTime" type="time" class="form-control" ng-change="">
                                     </div>
                                 </div>
                             </div>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using AgroApp.Models;
+using Newtonsoft.Json;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,7 +40,7 @@ namespace AgroApp.Controllers.Api
         [HttpPost("add")]
         public async Task<bool> AddTimeSheet([FromBody]Timesheet timesheet)
         {
-            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using ( MySqlConnection conn = await DatabaseConnection.GetConnection())
             {
                 int idTimesheet = -1;
                 string query = "INSERT INTO Timesheet (timesheet.idEmployeeAssignment, timesheet.workType, timesheet.startTime, timesheet.endTime, timesheet.totalTime, timesheet.description) "
