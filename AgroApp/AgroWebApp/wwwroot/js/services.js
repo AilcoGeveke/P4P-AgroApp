@@ -215,11 +215,17 @@ materialAdmin
 
     .service('timesheetManagement', function ($http) {
         this.add = function (data) {
-            console.log(data);
-            return $http.post('/api/timesheet/add', data);
+            var copy = angular.copy(data);
+
+            copy.StartTime = data.StartTime.toLocaleTimeString();
+            copy.EndTime = data.EndTime.toLocaleTimeString();
+            copy.TotalTime = data.TotalTime.toLocaleTimeString();
+
+            return $http.post('/api/timesheet/add', copy);
         }
 
         this.getAll = function (id) {
+
             return $http.get('/api/timesheet/getall/' + id);
         }
     })
