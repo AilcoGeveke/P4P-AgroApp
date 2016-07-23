@@ -3,26 +3,32 @@
 }
 
 <div class="login-content" ng-controller="loginCtrl">
-    <form name="loginForm" class="lc-block toggled" ng-submit="Login()">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
-            <div class="fg-line">
-                <input ng-model="userDetails.email" type="email" class="form-control" placeholder="Email Address">
-            </div>
+
+    <form name="loginForm" class="lc-block toggled p-0" ng-submit="Login()">
+        <div class="card-header ch-alt bgm-blue">
+            <img src="~/img/logo.png" />
         </div>
-        <br />
-        <div class="input-group">
-            <span class="input-group-addon"><i class="zmdi zmdi-account-o"></i></span>
-            <div class="fg-line">
-                <input ng-model="userDetails.password" type="password" class="form-control" placeholder="Password">
+        <div class="p-25">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
+                <div class="fg-line">
+                    <input ng-model="userDetails.email" type="email" class="form-control" placeholder="Email Address">
+                </div>
             </div>
+            <br />
+            <div class="input-group">
+                <span class="input-group-addon"><i class="zmdi zmdi-account-o"></i></span>
+                <div class="fg-line">
+                    <input ng-model="userDetails.password" type="password" class="form-control" placeholder="Password">
+                </div>
+            </div>
+            <br />
+            <button class="btn btn-primary btn-icon-text waves-effect" type="submit">
+                <i class="zmdi zmdi-check"></i>
+                Login
+            </button>
         </div>
-        <br />
-        <button class="btn btn-primary btn-icon-text waves-effect" type="submit">
-            <i class="zmdi zmdi-check"></i>
-            Login
-        </button>
-    </form> 
+    </form>
 </div>
 
 @section scripts{

@@ -125,6 +125,8 @@ namespace AgroApp.Controllers.Api
             if (string.IsNullOrWhiteSpace(user.Name) || string.IsNullOrWhiteSpace(user.Password))
                 return "Een van de opgegeven velden is leeg";
 
+            user.Username.ToLower();
+
             user.Password = GetEncodedHash(user.Password, "123");
             if (await Exist(user.Username))
                 return "Gebruiker bestaat al";
