@@ -25,6 +25,14 @@ namespace AgroApp.Models
             Role = finalRol;
         }
 
+        public User(int idWerknemer, string name, string username, int rol)
+        {
+            IdEmployee = idWerknemer;
+            Name = name;
+            Username = username;
+            Role = (UserRole)rol;
+        }
+
         public override string ToString()
         {
             return Name;

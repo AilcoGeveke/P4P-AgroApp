@@ -3,8 +3,9 @@
 agroApp.controller('UserManagement', function ($window, $scope, userManagement, tableService) {
     var um = this;
 
-    um.userDetails = {};
+    um.userDetails = { Role: 0 };
     um.allUsers = {};
+    um.availableRoles = [{ id: 0, name: "Gebruiker" }, { id: 1, name: "Admin" }];
 
     um.registerUser = function () {
         userManagement.registerUser(um.userDetails)
@@ -661,7 +662,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
         swal({
             title: "Weet u zeker dat u " + customer.Name + " wilt dearchiveren?",
             text: "Hierdoor zal deze klant geactiveerd worden. Het zal weer mogelijk zijn om deze klant te gebruiken.",
-            type: "info", 
+            type: "info",
             showCancelButton: true,
             closeOnConfirm: false,
             showLoaderOnConfirm: true,

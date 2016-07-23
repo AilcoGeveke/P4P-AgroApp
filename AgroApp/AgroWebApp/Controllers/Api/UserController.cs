@@ -38,15 +38,10 @@ namespace AgroApp.Controllers.Api
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Email, username),
                     new Claim(ClaimTypes.Role, "Admin") };
-
-
             
             HttpContext.Response.Cookies.Append("idUser", user.IdEmployee.ToString());
             await HttpContext.Authentication.SignInAsync("AgroAppCookie", new ClaimsPrincipal(new ClaimsIdentity(claimCollection, IdentityCookieOptions.ApplicationCookieAuthenticationType)));
             return "true";
-            //return user?.Role == Models.User.UserRole.Admin ? "admin" : "werknemer"; // auth succeed 
-            
-
         }
 
         public static async Task Logout(HttpContext context)
@@ -68,6 +63,21 @@ namespace AgroApp.Controllers.Api
             {
                 await reader.ReadAsync();
                 return reader.GetInt32(0) == 1;
+            }
+        }
+
+        public static async Task<bool> Exist(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                throw new ArgumentException();
+
+            string query = "SELECT COUNT(*) as count FROM employee WHERE username=@0;";
+            using (MySqlConnection conn = await DatabaseConnection.GetConnection())
+            using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
+                new MySqlParameter("@0", username)))
+            {
+                await reader.ReadAsync();
+                return (reader["count"] as int? ?? 0) > 0;
             }
         }
 
@@ -105,7 +115,7 @@ namespace AgroApp.Controllers.Api
                 new MySqlParameter("@0", id)))
             {
                 await reader.ReadAsync();
-                return reader.HasRows ? new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)) : null;
+                return reader.HasRows ? new User(reader["idEmployee"] as int? ?? -1, reader["name"] as string, reader["username"] as string, reader["role"] as int? ?? -1) : null;
             }
         }
 
@@ -116,7 +126,7 @@ namespace AgroApp.Controllers.Api
                 return "Een van de opgegeven velden is leeg";
 
             user.Password = GetEncodedHash(user.Password, "123");
-            if (await IsValid(user.Username, user.Password))//GAAT NIET WERKEN, ALS NAAM OF WACHTWOORD MAAR IETS ANDERS IS RETURNED IE FALSE
+            if (await Exist(user.Username))
                 return "Gebruiker bestaat al";
 
             string query = "INSERT INTO employee (`name`, `username`, `password`, `role`) VALUES (@0, @1, @2, @3);";

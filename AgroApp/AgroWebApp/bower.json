@@ -3,17 +3,17 @@
   "private": true,
   "dependencies": {
     "angular-animate": "*",
-    "angular-chosen-localytics": "*",
     "angular-bootstrap": "*",
     "angular-farbtastic": "*",
     "angular-loading-bar": "*",
     "angular-nouislider": "*",
     "angular-resource": "*",
+    "angular-ui-select": "*",
     "angular-ui-router": "*",
+    "angular-sanitize": "*",
     "animate.css": "daneden/animate.css#~3.3.0",
     "autosize": "~3.0.6",
     "bootstrap-sweetalert": "*",
-    "bower": "*",
     "br-validations": "~0.2.4",
     "eonasdan-bootstrap-datetimepicker": "Eonasdan/bootstrap-datetimepicker#~4.7.14",
     "flot-orderBars": "emmerich/flot-orderBars",
@@ -30,16 +30,15 @@
     "material-shadows": "~2.0.1",
     "mediaelement": "johndyer/mediaelement#~2.16.4",
     "nouislider-angular": "Yankovsky/nouislider-angular#~1.0.8",
-    "oclazyload": "~1.0.9",
     "simpleWeather": "~3.0.2",
     "string-mask": "~0.2.0",
     "summernote": "~0.6.7",
     "sweetalert": "~1.0.1",
+    "select2": "*",
     "Waves": "fians/Waves#0.7.5",
     "angular": "^1.5.7"
   },
   "resolutions": {
-    "angular": "1.5.7",
-    "chosen": "^1.5.1"
+    "angular": "1.5.7"
   }
 }
