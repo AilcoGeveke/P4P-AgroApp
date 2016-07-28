@@ -20,15 +20,19 @@
                     <div class="card-body card-padding container-fluid">
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-sm-6" ng-init="am.getAllCustomers()">
+                                <div class="col-sm-6" ng-init="am.getCustomers()">
 
                                     <div class="form-group fg-line">
                                         <label>Klant</label>
-                                        <select chosen data-placeholder="Selecteer een klant" class="w-100" width="'100%'"
-                                                ng-model="am.newAssignment.Customer"
-                                                ng-options="x as x.Name for x in am.allCustomers"></select>
-
-
+                                        <ui-select ng-model="am.newAssignment.customer"
+                                                   style="width: 100%;"
+                                                   title="Selecteer een klant"
+                                                   class="form-control">
+                                            <ui-select-match placeholder="Selecteer een klant...">{{$select.selected.name}}</ui-select-match>
+                                            <ui-select-choices repeat="customer in am.allCustomers | filter: $select.search">
+                                                <div ng-bind-html="customer.name | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
                                     </div>
                                 </div>
 
@@ -46,7 +50,7 @@
                                     <div class="form-group fg-line">
                                         <label>Locatie</label>
                                         <input type="text" class="form-control ng-isolate-scope" placeholder="Locatie"
-                                               ng-model="am.newAssignment.Location">
+                                               ng-model="am.newAssignment.location">
                                     </div>
                                 </div>
                             </div>
@@ -56,20 +60,26 @@
                             <div class="form-group fg-line">
                                 <label>Beschrijving</label>
                                 <textarea class="form-control" rows="6" placeholder="Beschrijving..."
-                                          ng-model="am.newAssignment.Description"></textarea>
+                                          ng-model="am.newAssignment.description"></textarea>
                             </div>
                         </div>
 
                         @if ((ViewData["userAssignment"] as bool?) == false)
                         {
-                            <div ng-init="am.getAllUsers()">
+                            <div ng-init="am.getUsers(false)">
                                 <div class="col-xs-12">
                                     <div class="form-group fg-line">
                                         <label>Werknemers</label>
-                                        <select chosen multiple class="w-100"
-                                                data-placeholder="Selecteer de werknemers"
-                                                ng-model="am.newAssignment.Employees"
-                                                ng-options="x as x.Name for x in am.allUsers"></select>
+                                        <ui-select multiple ng-model="am.newAssignment.employees"
+                                                   style="width: 100%;"
+                                                   title="Werknemers"
+                                                   class="form-control">
+                                            <ui-select-match placeholder="Werknemers">{{$item.name}}</ui-select-match>
+                                            <ui-select-choices repeat="user in am.allUsers | filter: $select.search">
+                                                <div ng-bind-html="user.name | highlight: $select.search"></div>
+                                                <small>{{user.username}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
                                     </div>
                                 </div>
                             </div>

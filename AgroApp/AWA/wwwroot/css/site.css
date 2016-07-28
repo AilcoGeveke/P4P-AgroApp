@@ -14,3 +14,27 @@
         width: 326px;
     }
 }
+
+.ui-select-match-item {
+    box-shadow: none !important;    border-radius: 2px;
+    margin: 4px 4px 4px 0 !important;
+    background: #eaeaea;
+    padding: 5px 8px;
+    border: 0;
+    box-shadow: none;
+    font-size: 12px;
+    text-transform: none;
+}
+
+.ui-select-match-close {
+    margin-top: 2px;
+    margin-left: 6px;
+}
+
+.ui-select-multiple {
+    min-height: 37px;
+}
+
+.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+    height: 35px;
+}

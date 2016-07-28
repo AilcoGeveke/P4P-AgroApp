@@ -24,7 +24,7 @@ namespace AWA.Controllers
             if (!UserController.IsLoggedIn(HttpContext)) return View();
             try
             {
-                User user = UserController.GetUser(_context, int.Parse(HttpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value));
+                User user = UserController.GetUser(_context, HttpContext);
                 return RedirectToAction("Index", user.Role == Models.User.UserRole.Admin ? "Admin" : "Employee");
             }
             catch (Exception)

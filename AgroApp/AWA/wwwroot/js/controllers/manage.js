@@ -1,6 +1,6 @@
-﻿var agroApp = angular.module('materialAdmin');
+﻿var agroApp = angular.module("materialAdmin");
 
-agroApp.controller('UserManagement', function ($window, $scope, userManagement, tableService) {
+agroApp.controller("UserManagement", function ($window, $scope, userManagement, tableService) {
     var um = this;
 
     um.userDetails = { Role: 0 };
@@ -93,7 +93,7 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: user.name + " is gedearchiveerd. De gebruiker kan weer inloggen!", timer: 3000, showConfirmButton: false });
-                        setTimeout(function () { $window.location.href = '/admin/gebruikers/overzicht'; }, 3500);
+                        setTimeout(function () { $window.location.href = "/admin/gebruikers/overzicht"; }, 3500);
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: user.name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
@@ -107,12 +107,12 @@ agroApp.controller('UserManagement', function ($window, $scope, userManagement, 
     };
 });
 
-agroApp.controller('MachineManagement', function ($window, $scope, machineManagement, tableService) {
+agroApp.controller("MachineManagement", function ($window, $scope, machineManagement, tableService) {
     var um = this;
 
-    um.types = ['Kraan', 'Shovel', 'Trekker', 'Dumper', 'Wagen', 'Tank', 'Ladewagen',
-        'Strandreiniging', 'Gladheid', 'Auto', 'Apparaat', 'Trilplaat',
-        'Meetapparatuur', 'Aanhanger', 'Hulpstuk', 'Overige'];
+    um.types = ["Kraan", "Shovel", "Trekker", "Dumper", "Wagen", "Tank", "Ladewagen",
+        "Strandreiniging", "Gladheid", "Auto", "Apparaat", "Trilplaat",
+        "Meetapparatuur", "Aanhanger", "Hulpstuk", "Overige"];
 
     um.machineDetails = {};
     um.allMachines = {};
@@ -125,7 +125,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
             }
             else {
                 swal({ title: "Machine is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/machines/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = "/admin/machines/overzicht"; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -163,7 +163,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
             }
             else {
                 swal({ title: "Machine is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/machines/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = "/admin/machines/overzicht"; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -207,7 +207,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: machine.name + " is gedearchiveerd. De machine kan weer gebruikt worden!", timer: 3000, showConfirmButton: false });
-                        setTimeout(function () { $window.location.href = '/admin/machines/overzicht'; }, 3500);
+                        setTimeout(function () { $window.location.href = "/admin/machines/overzicht"; }, 3500);
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: machine.name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
@@ -218,7 +218,7 @@ agroApp.controller('MachineManagement', function ($window, $scope, machineManage
     };
 });
 
-agroApp.controller('TimesheetController', function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
+agroApp.controller("TimesheetController", function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
     var um = this;
 
     um.showMainView = true;
@@ -302,14 +302,14 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     var DeleteAllData = function () {
         $rootScope.showLoading++;
         $http({
-            method: 'GET',
-            url: '/api/assignment/deleteall',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+            method: "GET",
+            url: "/api/assignment/deleteall",
+            params: "limit=10, sort_by=created:desc",
+            headers: { 'Authorization': "Token token=xxxxYYYYZzzz" }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data === true)
-                $rootScope.changeView('admin/overzicht');
+                $rootScope.changeView("admin/overzicht");
             else {
                 $rootScope.showLoading--;
                 $scope.showError = true;
@@ -327,8 +327,8 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
 
     um.newAssignment = {};
 
-    um.getAllUsers = function () {
-        userManagement.getAllUsers().then(
+    um.getUsers = function () {
+        userManagement.getUsers(false).then(
             function successCallback(response) {
                 console.log(response.data);
                 um.allUsers = response.data;
@@ -337,7 +337,7 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllCustomers = function () {
+    um.getCustomers = function () {
         customerManagement.getAll().then(
             function successCallback(response) {
                 console.log(response.data);
@@ -455,13 +455,13 @@ agroApp.controller('TimesheetController', function ($scope, userManagement, cust
     };
 });
 
-agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog) {
-    $scope.rollen = ['Gebruiker', 'Admin'];
+agroApp.controller("ManageUser2", function ($scope, $http, $rootScope, $mdDialog) {
+    $scope.rollen = ["Gebruiker", "Admin"];
 
     $scope.selectedUsers = [];
     $scope.users = [];
     $scope.getAllUserData = function () {
-        $http.get('/api/user/getall').success(function (data) {
+        $http.get("/api/user/getall").success(function (data) {
             $scope.users = data;
         }).error(function (data) {
         })
@@ -471,10 +471,10 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
     $scope.getArchiefUserData = function () {
         $rootScope.showLoading++;
         $http({
-            method: 'GET',
-            url: '/api/account/getarchiefusers',
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+            method: "GET",
+            url: "/api/account/getarchiefusers",
+            params: "limit=10, sort_by=created:desc",
+            headers: { 'Authorization': "Token token=xxxxYYYYZzzz" }
         }).success(function (data) {
             $scope.ArchiefGebruikers = data;
             $rootScope.showLoading--;
@@ -491,11 +491,11 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
         // Appending dialog to document.body to cover sidenav in docs app
         $rootScope.showLoading++;
         var confirm = $mdDialog.confirm()
-              .title('Gebruiker dearchiveren')
-              .textContent('Als u doorgaat zal deze gebruiker gedearchiveerd worden!')
+              .title("Gebruiker dearchiveren")
+              .textContent("Als u doorgaat zal deze gebruiker gedearchiveerd worden!")
               .targetEvent(ev)
-              .ok('Dearchiveren')
-              .cancel('Annuleer');
+              .ok("Dearchiveren")
+              .cancel("Annuleer");
         $mdDialog.show(confirm).then(function () {
             ReAddUser();
         }, function () {
@@ -507,14 +507,14 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
         $rootScope.showLoading++;
 
         $http({
-            method: 'GET',
-            url: '/api/user/wijzigen/' + $scope.userDetails.id + '/' + $scope.userDetails.naam + '/' + $scope.userDetails.email + '/' + $scope.userDetails.rol,
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+            method: "GET",
+            url: "/api/user/wijzigen/" + $scope.userDetails.id + "/" + $scope.userDetails.naam + "/" + $scope.userDetails.email + "/" + $scope.userDetails.rol,
+            params: "limit=10, sort_by=created:desc",
+            headers: { 'Authorization': "Token token=xxxxYYYYZzzz" }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data === true)
-                $rootScope.changeView('admin/gebruikerbeheer');
+                $rootScope.changeView("admin/gebruikerbeheer");
             else {
                 $rootScope.showLoading--;
                 $scope.showError = true;
@@ -531,14 +531,14 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
         $rootScope.showLoading++;
 
         $http({
-            method: 'GET',
-            url: '/api/user/archiveren/' + $scope.userDetails.id,
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+            method: "GET",
+            url: "/api/user/archiveren/" + $scope.userDetails.id,
+            params: "limit=10, sort_by=created:desc",
+            headers: { 'Authorization': "Token token=xxxxYYYYZzzz" }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data === true)
-                $rootScope.changeView('admin/gebruikerbeheer');
+                $rootScope.changeView("admin/gebruikerbeheer");
             else {
                 $rootScope.showLoading--;
                 $scope.showError = true;
@@ -553,14 +553,14 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
 
     var ReAddUser = function () {
         $http({
-            method: 'GET',
-            url: '/api/user/gebruikerbeheer/terughalen/' + $scope.gebruikerid,
-            params: 'limit=10, sort_by=created:desc',
-            headers: { 'Authorization': 'Token token=xxxxYYYYZzzz' }
+            method: "GET",
+            url: "/api/user/gebruikerbeheer/terughalen/" + $scope.gebruikerid,
+            params: "limit=10, sort_by=created:desc",
+            headers: { 'Authorization': "Token token=xxxxYYYYZzzz" }
         }).success(function (data) {
             // With the data succesfully returned, call our callback
             if (data === true)
-                $rootScope.changeView('admin/gebruikerbeheer');
+                $rootScope.changeView("admin/gebruikerbeheer");
             else {
                 $rootScope.showLoading--;
                 $scope.showError = true;
@@ -574,7 +574,7 @@ agroApp.controller('ManageUser2', function ($scope, $http, $rootScope, $mdDialog
     };
 });
 
-agroApp.controller('CustomerManagement', function ($window, $scope, customerManagement, tableService) {
+agroApp.controller("CustomerManagement", function ($window, $scope, customerManagement, tableService) {
     var um = this;
 
     um.customerDetails = {};
@@ -588,7 +588,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
             }
             else {
                 swal({ title: "Klant is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = "/admin/klanten/overzicht"; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -624,7 +624,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
             }
             else {
                 swal({ title: "Klant is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = "/admin/klanten/overzicht"; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
@@ -669,7 +669,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: customer.name + " is gedearchiveerd. De klant kan weer worden gebruikt!", timer: 3000, showConfirmButton: false });
-                        setTimeout(function () { $window.location.href = '/admin/klanten/overzicht'; }, 3500);
+                        setTimeout(function () { $window.location.href = "/admin/klanten/overzicht"; }, 3500);
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: customer.name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
@@ -684,7 +684,7 @@ agroApp.controller('CustomerManagement', function ($window, $scope, customerMana
 
 })
 
-agroApp.controller('AttachmentManagement', function ($window, $scope, attachmentManagement, tableService) {
+agroApp.controller("AttachmentManagement", function ($window, $scope, attachmentManagement, tableService) {
     var um = this;
 
     um.attachmentDetails = {};
@@ -698,7 +698,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
             }
             else {
                 swal({ title: "Hulpstuk is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/hulpstuk/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = "/admin/hulpstuk/overzicht"; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -733,7 +733,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
             }
             else {
                 swal({ title: "Hulpstuk is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = '/admin/hulpstuk/overzicht'; }, 3500);
+                setTimeout(function () { $window.location.href = "/admin/hulpstuk/overzicht"; }, 3500);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
@@ -778,7 +778,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: attachment.name + " is gedearchiveerd. Het hulpstuk kan weer gebruikt worden!", timer: 3000, showConfirmButton: false });
-                        setTimeout(function () { $window.location.href = '/admin/hulpstuk/overzicht'; }, 3500);
+                        setTimeout(function () { $window.location.href = "/admin/hulpstuk/overzicht"; }, 3500);
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: attachment.name + " is niet gedearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
@@ -793,7 +793,7 @@ agroApp.controller('AttachmentManagement', function ($window, $scope, attachment
 
 })
 
-agroApp.controller('CargoManagement', function ($window, $scope, userManagement, machineManagement, tableService) {
+agroApp.controller("CargoManagement", function ($window, $scope, userManagement, machineManagement, tableService) {
     var um = this;
 
 

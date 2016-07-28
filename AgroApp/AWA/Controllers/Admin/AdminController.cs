@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using AWA.Controllers.Api;
+using AWA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -8,6 +10,12 @@ namespace AWA.Controllers.Admin
 {
     public class AdminController : Controller
     {
+        private AgroContext _context;
+
+        public AdminController(AgroContext context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Returns main page of the admins
         /// </summary>
@@ -76,15 +84,6 @@ namespace AWA.Controllers.Admin
         public IActionResult AddUser()
         {
             return View("management/addUser");
-        }
-
-        [HttpGet("admin/gebruikers/wijzigen/{id}")]
-        public async Task<IActionResult> EditUser(int id)
-        {
-            //User user = await UserController.GetUser(id);
-            //ViewData["userData"] = JsonConvert.SerializeObject(user);
-
-            return View("management/editUser");
         }
 
         [HttpGet("admin/gebruikers/archief")]
@@ -158,10 +157,10 @@ namespace AWA.Controllers.Admin
         }
 
         [HttpGet("admin/opdrachten/eigen")]
-        public async Task<IActionResult> OverviewUserAssignments()
+        public IActionResult OverviewUserAssignments()
         {
-            //ViewData["userAssignment"] = true;
-            //ViewData["user"] = JsonConvert.SerializeObject(await UserController.GetUser(HttpContext));
+            ViewData["userAssignment"] = true;
+            ViewData["user"] = UserController.GetUser(_context, HttpContext);
             return View("management/OverviewAssignment");
         }
 

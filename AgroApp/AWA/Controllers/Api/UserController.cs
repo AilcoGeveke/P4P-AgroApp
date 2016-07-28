@@ -148,6 +148,12 @@ namespace AWA.Controllers.Api
             return context.Users.First(x => x.UserId == userId);
         }
 
+        public static User GetUser(AgroContext dbContext, HttpContext httpContext)
+        {
+            return GetUser(dbContext,
+                int.Parse(httpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value));
+        }
+
         /// <param name="context"></param>
         /// <param name="archived"></param>
         /// <returns>Returns list with all users, if archived is true it returns all archived users</returns>

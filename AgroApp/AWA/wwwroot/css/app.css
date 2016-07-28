@@ -16857,7 +16857,7 @@ a.thumbnail.active {
         width: 28px;
         height: 28px;
         margin: 0;
-        float: left;
+        /*float: left;*/
         background: transparent !important;
         border: 2px solid #00bcd4;
         border-bottom-color: transparent !important;
@@ -19314,10 +19314,14 @@ select.chosen {
     }
 
     .sweet-alert .btn {
-        padding: 6px 12px;
+        /*padding: 6px 12px;*/
         font-size: 13px;
-        margin: 20px 2px 0;
+        margin: 5px 2px 20px 2px;
     }
+
+.la-ball-fall {
+    margin-top: -16px !important;
+}
 
 .mCSB_scrollTools {
     width: 5px;
