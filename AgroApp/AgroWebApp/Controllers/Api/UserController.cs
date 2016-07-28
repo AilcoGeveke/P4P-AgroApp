@@ -19,7 +19,7 @@ namespace AgroApp.Controllers.Api
     {
         public static bool IsLoggedIn(HttpContext context)
         {
-            return context.User.Identity.IsAuthenticated;
+            return context.User.IsSignedIn();
         }
 
         // GET: api/values
