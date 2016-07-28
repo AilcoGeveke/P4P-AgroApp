@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html data-ng-app="materialAdmin" data-ng-controller="materialadminCtrl as mactrl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <title>@ViewData["Title"] - AgroApp</title>
+
+    @RenderSection("styles", required: false)
+
+    <!-- Vendor CSS -->
+    <link href="~/lib/animate.css/animate.min.css" rel="stylesheet">
+    <link href="~/lib/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="~/lib/bootstrap-sweetalert/dist/sweetalert.css" rel="stylesheet" />
+    <link href="~/lib/angular-loading-bar/src/loading-bar.css" rel="stylesheet">
+    <link href="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="~/lib/angular-ui-select/dist/select.css" rel="stylesheet" />
+
+    <!-- CSS -->
+    <link href="~/css/app.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body class="sw-toggled" ng-cloak>
+    <!-- Page -->
+    @RenderBody()
+
+    <!-- Core -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Angular -->
+    <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/lib/angular-resource/angular-resource.min.js"></script>
+    <script src="~/lib/angular-animate/angular-animate.min.js"></script>
+    <script src="~/lib/angular-resource/angular-resource.min.js"></script>
+    <script src="~/lib/angular-sanitize/angular-sanitize.js"></script>
+
+    <!-- Angular Modules -->
+    <script src="~/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="~/lib/angular-loading-bar/src/loading-bar.js"></script>
+    <script src="~/lib/oclazyload/dist/ocLazyLoad.min.js"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- Common Vendors -->
+    <script src="~/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/lib/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/lib/Waves/dist/waves.min.js"></script>
+    <script src="~/lib/bootstrap-growl/bootstrap-growl.min.js"></script>
+    <script src="~/lib/ng-table/dist/ng-table.min.js"></script>
+
+    <!-- Using below vendors in order to avoid misloading on resolve -->
+    <script src="~/lib/flot/jquery.flot.js"></script>
+    <script src="~/lib/flot.curvedlines/curvedLines.js"></script>
+    <script src="~/lib/flot/jquery.flot.resize.js"></script>
+    <script src="~/lib/moment/min/moment.min.js"></script>
+    <script src="~/lib/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="~/lib/flot-orderBars/js/jquery.flot.orderBars.js"></script>
+    <script src="~/lib/flot/jquery.flot.pie.js"></script>
+    <script src="~/lib/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="~/lib/angular-ui-select/dist/select.min.js"></script>
+    @*<script src="~/lib/angular-nouislider/src/nouislider.min.js"></script> DISABLED BECAUSE ITS CONFLICTING WITH SLIDEABLES IN SOME PAGES*@
+
+    <!-- App Level -->
+    <script src="~/js/app.js"></script>
+    <script src="~/js/controllers/main.js"></script>
+    <script src="~/js/services.js"></script>
+    <script src="~/js/templates.js"></script>
+    <script src="~/js/controllers/ui-bootstrap.js"></script>
+    <script src="~/js/controllers/table.js"></script>
+    <script src="~/js/controllers/manage.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    <!-- Template Modules -->
+    <script src="~/js/modules/template.js"></script>
+    <script src="~/js/modules/ui.js"></script>
+    <script src="~/js/modules/form.js"></script>
+
+    <script src="~/js/modules/components.js"></script>
+    <script src="~/js/modules/calendar.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = "~/views/shared/_employeelayout.cshtml";
+}
+
+<!-- Header -->
+<header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
+
+<section id="main">
+    <!-- Sidebar -->
+    <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
+    <section id="content">
+        <div class="container">
+            <div class="card">
+                <div class="card-header ch-alt m-b-20"><h2>Uren gewerkt deze week<small>Een overzicht van de gewerkte uren van de huidige week</small></h2></div>
+                <div class="card-body">
+                    <div class="lv-header card-body card-padding bgm-teal c-white">
+                        Totaal: 0 uur
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</section>
