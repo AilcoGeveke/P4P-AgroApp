@@ -1,8 +1,0 @@
-{
-  "name": "ASP.NET",
-  "private": true,
-  "dependencies": {
-    "angular-material": "1.1.0-rc4",
-    "angular-material-data-table": ""
-  }
-}
