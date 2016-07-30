@@ -1,109 +1,77 @@
-Material Design Shadows
-==============
+# Material Design Shadows
 
-The paper shadows, based on [Google's Material Design](http://www.google.com/design/spec/layout/layout-principles.html), for use in your project.
+> The paper shadows mixin-library for CSS pre-processors.
 
-Support
---------------
+![demo](https://cloud.githubusercontent.com/assets/7034281/17182925/1cfc8376-542e-11e6-96ea-a25138b9d32a.png)
 
-Support for all popular css preprocessors: [Less](http://lesscss.org/), [Sass](http://sass-lang.com/) and [Stylus](http://learnboost.github.io/stylus/).
+## Installation
 
-Installation
---------------
+  * git: `git clone git://github.com/mrmlnc/material-shadows.git`;
+  * bower: `bower install --save material-shadows`
+  * npm: `npm install --save material-shadows`;
 
- * Download the files you need from the this repository;
- * Bower: `$ bower install material-shadows --save`;
- * Git: `$ git clone git://github.com/mrmlnc/material-shadows.git`;
+## Supported languages
 
-How to use
---------------
+Support for all popular css preprocessors:
 
-Just import the file, which includes mixins in your project.
+  * [Less](http://lesscss.org/)
+  * [Sass](http://sass-lang.com/)
+  * [Stylus](http://learnboost.github.io/stylus/)
 
-**Less:**
+## Usage
 
-````Less
-  @import "lib/material-shadows";
-````
+```less
+// Less, SCSS, Stylus
+@import "lib/material-color";
 
-**Sass:**
+.my-selector {
+  .z-depth(); // equivalent to `.z-depth(2)` and `.z-depth-2dp()`
 
-````Sass
-  @import "lib/material-shadows"
-````
+  // Create class for `transition` property.
+  .z-depth-transition();
 
-**Stylus:**
+  // Creating a class to an element in the focused state.
+  .z-depth-focus();
+}
 
-````Stylus
-  @import "lib/material-shadows";
-````
+// Class generator
+.shadow {
+  .z-depth-classes();
+}
+```
 
-If you use Bower, the path would be:
+## Supported options
 
-````
-  bower_components/material-shadows/..
-````
+#### z-depth
 
-**The build variable:**
+**dp**
 
-`(. | @include | none)(prefix)-z-depth-(depth)-(orientation)`
+  * Type: `Number`
+  * Default: `2`
+  * Available values: 2, 3, 4, 6, 8, 16, 24
 
-  - **(. | @include | none)** - Sign of the variable in the preprocessor.
-  - **(prefix)** - The prefix variable. Namespace of your variables and variables of the library. (With `material-shadows-prefixed` and without `material-shadows`)
-  - **(depth)** - Depth 1..5.
-  - **(orientation)** - None, Top or Bottom.
+Depth shadow.
 
-**Simple example (Less):**
+#### z-depth-classes
 
-````Less
-  @import "lib/material-color";
+**transition**
 
-  .example-1 {
-    .z-depth();
-    .z-depth-animation(3);
-  }
+  * Type: `Boolean`
+  * Default: `false`
 
-  .example-2 {
-    .z-depth-top(1);
-    .z-depth-animation(5, top);
-  }
-````
+Create class for `transition` property.
 
-HTML for `.z-depth-animation()`:
+**focus**
 
-````HTML
-  <div class="z-depth-animation">
-    <div class="z-depth-2">.z-depth-2</div>
-  </div>
-````
+  * Type: `Boolean`
+  * Default: `false`
 
-**Class generator example (less):**
+Creating a class to an element in the focused state.
 
-Options for animation:
+## Changelog
 
- - @animation: [true (default) | false];
- - @time: .28s;
- - @function: cubic-bezier(.4, 0, .2, 1);
+See the [Releases section of our GitHub project](https://github.com/mrmlnc/material-shadows/releases) for changelogs for each release version.
 
-````Less
-  @import "lib/material-color";
-  
-  // Class mixin
-  .z-depth {
-    .z-depth-class();
-  }
-  
-  // => (output)
-  .z-depth-1 {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
-  }
-  .z-depth-1-top {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-  }
-  .z-depth-1-bottom {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
-  }
-  // and more
-````
+## License
 
-More examples in the test directory.
+This software is released under the terms of the MIT license.

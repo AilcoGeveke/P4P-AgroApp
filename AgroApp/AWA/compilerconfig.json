@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap.es5.js",
     "inputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap.js"
+  },
+  {
+    "outputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.es5.js",
+    "inputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.js"
   }
 ]

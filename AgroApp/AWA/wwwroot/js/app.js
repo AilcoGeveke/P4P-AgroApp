@@ -7,7 +7,6 @@ var materialAdmin = angular.module('materialAdmin', [
     'ui.bootstrap',
     'angular-loading-bar',
     'oc.lazyLoad',
-    //'nouislider', DISABLED BECAUSE ITS CONFLICTING WITH SLIDEABLES IN SOME PAGES
     'ngTable'
 ])
  

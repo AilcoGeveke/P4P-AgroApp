@@ -29,6 +29,6 @@
     "commit": "278284924950474ecc3af62037f04d2cf219e13f"
   },
   "_source": "https://github.com/gdi2290/ngSanitize.git",
-  "_target": "*",
+  "_target": "0.0.2",
   "_originalSource": "ngSanitize"
 }
