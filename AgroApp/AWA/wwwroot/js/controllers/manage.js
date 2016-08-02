@@ -287,7 +287,7 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
 
 
     };
-    
+
     um.getAllMachines = function () {
         machineManagement.getAll().then(
             function successCallback(response) {
@@ -357,7 +357,8 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             });
     };
     um.getAllAssignments = function (userSpecific) {
-        assignmentManagement.getAll(um.selectedDate.getTime(), userSpecific).then(
+        resetTime(um.selectedDate);
+        assignmentManagement.getAll(getUTCTime(um.selectedDate), userSpecific).then(
             function successCallback(response) {
                 um.allAssignments = response.data;
             },
@@ -366,36 +367,34 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             });
     };
     um.getAllAssignmentsPeriod = function (prepareForPlanning, user) {
-        assignmentManagement.getAllPeriod(um.selectedDate.getTime(), um.selectedEndDate.getTime(), user, prepareForPlanning).then(
+        resetTime(um.selectedDate);
+        resetTime(um.selectedEndDate);
+        assignmentManagement.getAllPeriod(getUTCTime(um.selectedDate), getUTCTime(um.selectedEndDate), user).then(
             function successCallback(response) {
                 if (prepareForPlanning) {
-                    console.log(response);
-
                     um.allAssignments = [];
-                    for(val of response.data)
-                    {
+                    for (x in response.data) {
                         var containsCus = false;
                         var customerIndex = -1;
-                        for(cus of um.allAssignments) {
-                            if (cus.name === val.Customer.name) {
+
+                        for (cus in um.allAssignments) {
+                            if (um.allAssignments[cus].name === response.data[x].customer.name) {
                                 containsCus = true;
-                                customerIndex = um.allAssignments.indexOf(cus);
+                                customerIndex = cus;
                             }
                         }
 
                         if (!containsCus) {
-                            um.allAssignments.push(val.Customer);
-                            customerIndex = um.allAssignments.indexOf(val.Customer);
-                            um.allAssignments[customerIndex].Assignments = [];
+                            um.allAssignments.push(response.data[x].customer);
+                            customerIndex = um.allAssignments.indexOf(response.data[x].customer);
+                            um.allAssignments[customerIndex].assignments = [];
                         }
 
-                        var Customer = val.Customer;
-                        val.Customer = {};
-                        val.opened = false;
-                        um.allAssignments[customerIndex].Assignments.push(val);
+                        var customer = response.data[x].customer;
+                        delete response.data[x].customer;
+                        response.data[x].opened = false;
+                        um.allAssignments[customerIndex].assignments.push(response.data[x]);
                     }
-
-                    console.log(um.allAssignments);
                 }
                 else
                     um.allAssignments = response.data;
@@ -406,7 +405,8 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
     };
 
     um.getAllEmployeeAssignments = function () {
-        assignmentManagement.getAssignment(um.selectedDate.getTime()).then(
+        resetTime(um.selectedDate);
+        assignmentManagement.getAssignment(getUTCTime(um.selectedDate)).then(
             function successCallback(response) {
                 um.allAssignments = response.data;
             },
@@ -420,8 +420,19 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             text: "Opdracht word toegevoegd!",
             showConfirmButton: false
         });
-        um.newAssignment.Date = um.newAssignment.Date.getTime();
-        assignmentManagement.add(um.newAssignment).then(
+
+        var data = angular.copy(um.newAssignment);
+
+        //set date as unix ticks
+        data.date = um.newAssignment.date;
+        resetTime(data.date);
+        data.date = getUTCTime(data.date) + 86400000;
+
+        //only send the customer id
+        data.customerId = data.customer.customerId;
+        delete data.customer;
+
+        assignmentManagement.add(data).then(
             function successCallback(response) {
                 swal({
                     title: "Gelukt",
@@ -432,14 +443,14 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
                 });
                 um.newAssignment = {};
                 um.getAllAssignments();
-                $scope.showNewAssignmentCard = false;
-                $scope.showMainView = true;
+                um.showNewAssignmentCard = false;
+                um.showMainView = true;
             },
             function errorCallback(response) {
                 swal({
                     title: "Fout",
                     type: "error",
-                    text: response.data
+                    text: "Er is iets misgegaan met het opslaan van de opdracht, probeer het opnieuw of neem contact op met een administrator"
                 });
             });
     };
@@ -803,4 +814,13 @@ function addDays(date, days) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
+}
+
+function getUTCTime(nonUTCTime)
+{
+    return nonUTCTime.getTime() + (nonUTCTime.getTimezoneOffset() * 60000);
+}
+
+function resetTime(time) {
+    time.setUTCHours(0, 0, 0, 0);
 }

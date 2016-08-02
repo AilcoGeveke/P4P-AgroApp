@@ -27,8 +27,6 @@ namespace AWA.Models
 
         public bool IsArchived { set; get; }
 
-        public List<EmployeeAssignment> EmployeeAssignments { get; set; }
-
         public enum UserRole
         {
             User, Admin

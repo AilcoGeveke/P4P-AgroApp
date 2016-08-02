@@ -25,7 +25,7 @@ namespace AWA.Controllers.Api
             _context = context;
         }
 
-        #region Api Calls
+        #region Api Methods
 
         [HttpGet("login/{username}/{password}")]
         [AllowAnonymous]

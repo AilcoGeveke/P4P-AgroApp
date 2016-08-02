@@ -8,9 +8,10 @@ using AWA.Models;
 namespace AWA.Migrations
 {
     [DbContext(typeof(AgroContext))]
-    partial class AgroContextModelSnapshot : ModelSnapshot
+    [Migration("20160802034311_SaveDateTimeAsNullableLong")]
+    partial class SaveDateTimeAsNullableLong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -21,7 +22,8 @@ namespace AWA.Migrations
                     b.Property<int>("AssignmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CustomerId");
+                    b.Property<int?>("CustomerId")
+                        .IsRequired();
 
                     b.Property<long?>("Date");
 
@@ -95,11 +97,11 @@ namespace AWA.Migrations
                     b.Property<int>("EmployeeAssignmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AssignmentId");
+                    b.Property<int?>("AssignmentId");
 
                     b.Property<bool>("IsVerified");
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
                     b.HasKey("EmployeeAssignmentId");
 
@@ -220,13 +222,11 @@ namespace AWA.Migrations
                 {
                     b.HasOne("AWA.Models.Assignment", "Assignment")
                         .WithMany("EmployeeAssignments")
-                        .HasForeignKey("AssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AssignmentId");
 
                     b.HasOne("AWA.Models.User", "User")
                         .WithMany("EmployeeAssignments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("AWA.Models.Machine", b =>

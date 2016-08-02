@@ -171,7 +171,6 @@ materialAdmin
         this.getAll = function (date, user) {
             var api = '/api/assignment/getall/';
 
-            console.log(user);
             if (!angular.isUndefined(user) && user === "True")
                 api += "userspecific/";
 
@@ -180,13 +179,11 @@ materialAdmin
             return $http.get(api);
         }
 
-        this.getAllPeriod = function (date1, date2, user, includeEmployees) {
+        this.getAllPeriod = function (date1, date2, user) {
             var api = '/api/assignment/getallperiod/' + date1 + "/" + date2;
 
             if (!angular.isUndefined(user))
                 api += "/" + user;
-            if (!angular.isUndefined(includeEmployees))
-                api += "/" + includeEmployees;
 
             return $http.get(api);
         }

@@ -1,10 +1,17 @@
-﻿[
+[
   {
     "outputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap.es5.js",
-    "inputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap.js"
+    "inputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap.js",
+    "sourceMap": false
   },
   {
     "outputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.es5.js",
-    "inputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.js"
+    "inputFile": "wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.js",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "wwwroot/lib/AngularSlideables-master/angularSlideables.es5.js",
+    "inputFile": "wwwroot/lib/AngularSlideables-master/angularSlideables.js",
+    "sourceMap": false
   }
 ]
