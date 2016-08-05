@@ -112,7 +112,10 @@
                             <tr ng-repeat="w in ctrl.allAssignments">
                                 <td data-title="'Acties'" class="col-fit">
                                     <button class="btn btn-default" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = false; ctrl.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
-                                    <a class="btn btn-default" href="~/admin/urenoverzicht/{{w.assignmentId}}"><i class="zmdi zmdi-arrow-forward"></i></a>
+                                    @if ((ViewData["userAssignment"] as bool?) == true)
+                                    {
+                                        <a ng-show="" class="btn btn-default" href="~/admin/urenoverzicht/{{w.assignmentId}}"><i class="zmdi zmdi-arrow-forward"></i></a>
+                                    }
                                 </td>
                                 <td data-title="'Taaknummer'" sortable="'id'" class="col-fit">
                                     {{ w.assignmentId }}

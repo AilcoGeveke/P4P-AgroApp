@@ -45,7 +45,7 @@
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
-    "define": [ "DEBUG", "TRACE" ]
+    "define": []
   },
 
   "runtimeOptions": {

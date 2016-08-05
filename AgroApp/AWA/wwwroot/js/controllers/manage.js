@@ -240,10 +240,10 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
     var nulDate = new Date(1970, 1, 1, 0, 0, 0, 0);
     console.log(nulDate);
     ctrl.timesheetDetails = {};
-    ctrl.timesheetDetails.WorkType = "Machinist";
-    ctrl.timesheetDetails.StartTime = nulDate;
-    ctrl.timesheetDetails.EndTime = nulDate;
-    ctrl.timesheetDetails.TotalTime = nulDate;
+    ctrl.timesheetDetails.workType = "Machinist";
+    ctrl.timesheetDetails.startTime = nulDate;
+    ctrl.timesheetDetails.endTime = nulDate;
+    ctrl.timesheetDetails.totalTime = nulDate;
 
     ctrl.updateTime = function () {
         ctrl.timesheetDetails.StartTime = nulDate;
@@ -297,29 +297,6 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
-    };
-
-    var DeleteAllData = function () {
-        $rootScope.showLoading++;
-        $http({
-            method: "GET",
-            url: "/api/assignment/deleteall",
-            params: "limit=10, sort_by=created:desc",
-            headers: { 'Authorization': "Token token=xxxxYYYYZzzz" }
-        }).success(function (data) {
-            // With the data succesfully returned, call our callback
-            if (data === true)
-                $rootScope.changeView("admin/overzicht");
-            else {
-                $rootScope.showLoading--;
-                $scope.showError = true;
-                $scope.errorMessage = "Er is niets om te verwijderen!";
-            }
-        }).error(function () {
-            $rootScope.showLoading--;
-            $scope.showError = true;
-            $scope.errorMessage = "Er is iets misgegaan! Probeer het opnieuw of neem contact op met een beheerder";
-        });
     };
 
     ctrl.selectedDate = new Date();

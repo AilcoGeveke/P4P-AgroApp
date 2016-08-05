@@ -3,6 +3,7 @@ using AWA.Controllers.Api;
 using AWA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,18 +27,26 @@ namespace AWA.Controllers.Admin
         }
 
         [HttpGet("admin/urenoverzicht/{IdAssignment}")]
-        public async Task<IActionResult> TimesheetView(int idAssignment)
+        public IActionResult TimesheetView(int idAssignment)
         {
             ViewData["EnableControls"] = true;
-            //ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(await AssignmentController.GetEmployeeAssignment(HttpContext, idAssignment));
+            ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(AssignmentController.GetEmployeeAssignment(_context, HttpContext, idAssignment), new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
             return View("timesheet");
         }
 
         [HttpGet("admin/urenoverzicht/{IdAssignment}/{IdEmployee}")]
-        public async Task<IActionResult> TimesheetView(int idAssignment, int idEmployee)
+        public IActionResult TimesheetView(int idAssignment, int idEmployee)
         {
             ViewData["EnableControls"] = false;
-            //ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(await AssignmentController.GetEmployeeAssignment(idEmployee, idAssignment));
+            ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(AssignmentController.GetEmployeeAssignment(_context, idEmployee, idAssignment), new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
             return View("timesheet");
         }
 

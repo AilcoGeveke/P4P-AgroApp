@@ -150,8 +150,12 @@ namespace AWA.Controllers.Api
 
         public static User GetUser(AgroContext dbContext, HttpContext httpContext)
         {
-            return GetUser(dbContext,
-                int.Parse(httpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value));
+            return GetUser(dbContext, GetLoggedInUserId(httpContext));
+        }
+
+        public static int GetLoggedInUserId(HttpContext httpContext)
+        {
+            return int.Parse(httpContext.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
         }
 
         /// <param name="context"></param>
