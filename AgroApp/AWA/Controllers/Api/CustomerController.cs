@@ -19,10 +19,52 @@ namespace AWA.Controllers.Api
             _context = context;
         }
 
+        #region Api Methods
+
         [HttpGet("getall")]
-        public List<Customer> GetAllCustomers()
+        [HttpGet("getall/{archived}")]
+        public List<Customer> GetAllCustomers(bool archived = false)
         {
-            return _context.Customers.ToList();
+            return _context.Customers.Where(x => x.IsArchived == archived).ToList();
         }
+
+        [HttpPost("add")]
+        public object AddCustomer([FromBody]Customer customer)
+        {
+            return AddCustomer(_context, customer); ;
+        }
+
+        [HttpPost("edit")]
+        public object EditCustomer([FromBody]Customer customer)
+        {
+            return EditCustomer(_context, customer);
+        }
+
+        #endregion
+
+        #region Static Methods
+
+        public static Customer GetCustomer(AgroContext context, int id)
+        {
+            return context.Customers.First(x => x.CustomerId == id);
+        }
+
+        public static object AddCustomer(AgroContext context, Customer customer)
+        {
+            context.Customers.Add(customer);
+            context.SaveChanges();
+            return true;
+        }
+
+        public static object EditCustomer(AgroContext context, Customer customer)
+        {
+            Customer c = GetCustomer(context, customer.CustomerId);
+            c.Name = customer.Name;
+            c.Address = customer.Address;
+            context.SaveChanges();
+            return true;
+        }
+
+        #endregion
     }
 }

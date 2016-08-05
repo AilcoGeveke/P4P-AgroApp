@@ -38,3 +38,8 @@
 .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
     height: 35px;
 }
+
+.col-fit {
+    width: 1px; 
+    white-space:nowrap;
+}

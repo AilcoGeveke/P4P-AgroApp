@@ -9,10 +9,10 @@
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
 
     <!-- Page Content -->
-    <section id="content" ng-controller="CustomerManagement as um">
+    <section id="content" ng-controller="CustomerManagement as ctrl">
         <div class="container">
             <div class="card">
-                <form class="form-horizontal" ng-submit="um.addCustomer();">
+                <form class="form-horizontal" ng-submit="ctrl.addCustomer();">
                     <div class="card-header ch-alt m-b-20">
                         <h2>Klant Toevoegen <small>Vul de gegevens hieronder in en druk vervolgens op verzenden</small></h2>
                     </div>
@@ -22,7 +22,7 @@
                             <label for="inputFullName" class="col-sm-2 control-label">Volledige Naam</label>
                             <div class="col-sm-10">
                                 <div class="fg-line">
-                                    <input required ng-model="um.customerDetails.Name" type="text" class="form-control input-sm" id="inputFullName" placeholder="Volledige Naam">
+                                    <input required ng-model="ctrl.customerDetails.Name" type="text" class="form-control input-sm" id="inputFullName" placeholder="Volledige Naam">
                                 </div>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                             <label for="inputAddress" class="col-sm-2 control-label">Adres</label>
                             <div class="col-sm-10">
                                 <div class="fg-line">
-                                    <input required ng-model="um.customerDetails.Address" type="text" class="form-control input-sm" id="inputAddress" placeholder="Adres">
+                                    <input required ng-model="ctrl.customerDetails.Address" type="text" class="form-control input-sm" id="inputAddress" placeholder="Adres">
                                 </div>
                             </div>
                         </div>

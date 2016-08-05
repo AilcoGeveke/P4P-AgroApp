@@ -9,27 +9,27 @@
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
 
     <!-- Page Content -->
-    <section id="content" ng-controller="TimesheetController as am">
+    <section id="content" ng-controller="TimesheetController as ctrl">
         <div class="container">
 
-            <div slider="am.showNewAssignmentCard">
+            <div slider="ctrl.showEditCard">
                 <div class="card">
                     <div class="card-header ch-alt m-b-15">
-                        <h2>{{am.isAdding ? "Nieuwe Opdracht" : "Wijzig Opdracht"}}</h2>
+                        <h2>{{ctrl.isAdding ? "Nieuwe Opdracht" : "Wijzig Opdracht"}}</h2>
                     </div>
                     <div class="card-body card-padding container-fluid">
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-sm-6" ng-init="am.getCustomers()">
+                                <div class="col-sm-6" ng-init="ctrl.getCustomers()">
 
                                     <div class="form-group fg-line">
                                         <label>Klant</label>
-                                        <ui-select ng-model="am.newAssignment.customer"
+                                        <ui-select ng-model="ctrl.newAssignment.customer"
                                                    style="width: 100%;"
                                                    title="Selecteer een klant"
                                                    class="form-control">
                                             <ui-select-match placeholder="Selecteer een klant...">{{$select.selected.name}}</ui-select-match>
-                                            <ui-select-choices repeat="customer in am.allCustomers | filter: $select.search">
+                                            <ui-select-choices repeat="customer in ctrl.allCustomers | filter: $select.search">
                                                 <div ng-bind-html="customer.name | highlight: $select.search"></div>
                                             </ui-select-choices>
                                         </ui-select>
@@ -40,7 +40,7 @@
                                     <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened == true }">
                                         <div class="fg-line" ng-class="{ 'fg-toggled': opened == true }">
                                             <label>Datum</label>
-                                            <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="am.newAssignment.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
+                                            <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.newAssignment.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="form-group fg-line">
                                         <label>Locatie</label>
                                         <input type="text" class="form-control ng-isolate-scope" placeholder="Locatie"
-                                               ng-model="am.newAssignment.location">
+                                               ng-model="ctrl.newAssignment.location">
                                     </div>
                                 </div>
                             </div>
@@ -60,22 +60,22 @@
                             <div class="form-group fg-line">
                                 <label>Beschrijving</label>
                                 <textarea class="form-control" rows="6" placeholder="Beschrijving..."
-                                          ng-model="am.newAssignment.description"></textarea>
+                                          ng-model="ctrl.newAssignment.description"></textarea>
                             </div>
                         </div>
 
                         @if ((ViewData["userAssignment"] as bool?) == false)
                         {
-                            <div ng-init="am.getUsers(false)">
+                            <div ng-init="ctrl.getUsers(false)">
                                 <div class="col-xs-12">
                                     <div class="form-group fg-line">
                                         <label>Werknemers</label>
-                                        <ui-select multiple ng-model="am.newAssignment.employees"
+                                        <ui-select multiple ng-model="ctrl.newAssignment.employees"
                                                    style="width: 100%;"
                                                    title="Werknemers"
                                                    class="form-control">
                                             <ui-select-match placeholder="Werknemers">{{$item.name}}</ui-select-match>
-                                            <ui-select-choices repeat="user in am.allUsers | filter: $select.search">
+                                            <ui-select-choices repeat="user in ctrl.allUsers | filter: $select.search">
                                                 <div ng-bind-html="user.name | highlight: $select.search"></div>
                                                 <small>{{user.username}}</small>
                                             </ui-select-choices>
@@ -87,40 +87,37 @@
                     </div>
 
                     <div class="card-body bgm-gray card-padding">
-                        <button class="btn btn-primary m-r-15" ng-click="am.isAdding ? am.addAssignment() : am.editAssingment()">Toevoegen</button>
-                        <button class="btn btn-default" ng-click="am.showNewAssignmentCard = false; am.showMainView = true" slide-toggle="#newAssignmentCard">Annuleren</button>
+                        <button class="btn btn-primary btn-icon-text waves-effect m-r-15" ng-click="ctrl.isAdding ? ctrl.addAssignment() : ctrl.editAssingment()"><i class="zmdi zmdi-check"></i>Toevoegen</button>
+                        <button class="btn btn-default btn-icon-text waves-effect" ng-click="ctrl.showEditCard = false; ctrl.showMainCard = true" slide-toggle="#newAssignmentCard"><i class="zmdi zmdi-close"></i>Annuleren</button>
                     </div>
                 </div>
             </div>
 
-            <div slider="am.showMainView" enabled="true">
+            <div slider="ctrl.showMainCard" enabled="true">
                 <div class="card">
                     <div class="card-header ch-alt">
                         <h2>Alle Opdrachten <small>Klik op de kolomkoppen om te sorteren</small></h2>
-                        <button class="button btn bgm-red btn-float waves-effect" ng-click="am.showNewAssignmentCard = true; am.showMainView = false; am.isAdding = true; am.newAssignment = {};"><i class="zmdi zmdi-plus"></i></button>
+                        <button class="button btn bgm-red btn-float waves-effect" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = true; ctrl.newAssignment = {};"><i class="zmdi zmdi-plus"></i></button>
                     </div>
                     <div class="card-body card-padding">
                         <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened2 == true }">
                             <div class="fg-line" ng-class="{ 'fg-toggled': opened2 == true }">
                                 <label>Datum</label>
-                                <input ng-click="open($event, 'opened2')" ng-change="am.getAllAssignments('@ViewData["userAssignment"]')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="am.selectedDate" is-open="opened2" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
+                                <input ng-click="open($event, 'opened2')" ng-change="ctrl.getAllAssignments('@ViewData["userAssignment"]')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.selectedDate" is-open="opened2" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
                             </div>
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table ng-table="am.Table" class="table table-striped table-vmiddle" ng-init="am.getAllAssignments('@ViewData["userAssignment"]')">
-                            <colgroup>
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="30%" />
-                                <col />
-                                <col width="125px" />
-                            </colgroup>
-                            <tr ng-repeat="w in am.allAssignments">
-                                <td data-title="'Taaknummer'" sortable="'id'">
+                        <table ng-table="ctrl.Table" class="table table-striped table-vmiddle" ng-init="ctrl.getAllAssignments('@ViewData["userAssignment"]')">
+                            <tr ng-repeat="w in ctrl.allAssignments">
+                                <td data-title="'Acties'" class="col-fit">
+                                    <button class="btn btn-default" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = false; ctrl.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
+                                    <a class="btn btn-default" href="~/admin/urenoverzicht/{{w.assignmentId}}"><i class="zmdi zmdi-arrow-forward"></i></a>
+                                </td>
+                                <td data-title="'Taaknummer'" sortable="'id'" class="col-fit">
                                     {{ w.assignmentId }}
                                 </td>
-                                <td data-title="'Klant'" sortable="'klant'">
+                                <td data-title="'Klant'" sortable="'klant'" class="col-fit">
                                     {{ w.customer.name }}
                                 </td>
                                 <td data-title="'Locatie'" sortable="'locatie'">
@@ -128,10 +125,6 @@
                                 </td>
                                 <td data-title="'Beschrijving'" sortable="'beschrijving'">
                                     {{ w.description }}
-                                </td>
-                                <td>
-                                    <button class="button btn btn-default" ng-click="am.showNewAssignmentCard = true; am.showMainView = false; am.isAdding = false; am.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
-                                    <a class="btn btn-default" href="~/admin/urenoverzicht/{{w.IdAssignment}}"><i class="zmdi zmdi-case"></i></a>
                                 </td>
                             </tr>
                         </table>

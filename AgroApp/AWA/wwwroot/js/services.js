@@ -67,28 +67,16 @@ materialAdmin
             return $http.post('/api/customer/add', customer);
         }
 
-        this.getAll = function () {
-            return $http.get('/api/customer/getall');
-        }
-
-        this.getAllArchivedCustomers = function () {
-            return $http.get('/api/customer/getallarchived');
-        }
-
-        this.restoreCustomer = function (id) {
-            return $http.get('/api/customer/restorecustomer/' + id)
+        this.getAll = function (archived) {
+            return $http.get('/api/customer/getall/' + archived);
         }
 
         this.applyChanges = function (id) {
-            return $http.post('/api/customer/change', id);
+            return $http.post('/api/customer/edit', id);
         }
 
-        this.archiveCustomer = function (id) {
-            return $http.get('/api/customer/archive/' + id);
-        }
-
-        this.restore = function (id) {
-            return $http.get('/api/customer/restore/' + id);
+        this.setArchiveState = function (id, state) {
+            return $http.get('/api/customer/setarchivestate/' + id + '/' + state);
         }
     })
 

@@ -1,23 +1,23 @@
 ﻿var agroApp = angular.module("materialAdmin");
 
 agroApp.controller("UserManagement", function ($window, $scope, userManagement, tableService) {
-    var um = this;
+    var ctrl = this;
 
-    um.userDetails = { Role: 0 };
-    um.allUsers = {};
-    um.availableRoles = [{ id: 0, name: "Gebruiker" }, { id: 1, name: "Admin" }];
+    ctrl.userDetails = { Role: 0 };
+    ctrl.allUsers = {};
+    ctrl.availableRoles = [{ id: 0, name: "Gebruiker" }, { id: 1, name: "Admin" }];
 
-    um.showEditCard = false;
-    um.showMainCard = true;
+    ctrl.showEditCard = false;
+    ctrl.showMainCard = true;
 
-    um.registerUser = function () {
-        userManagement.registerUser(um.userDetails)
+    ctrl.registerUser = function () {
+        userManagement.registerUser(ctrl.userDetails)
         .then(function successCallback(response) {
             if (response.data === true) {
-                um.showEditCard = false;
-                um.showMainCard = true;
-                um.userDetails = {};
-                um.getUsers(false);
+                ctrl.showEditCard = false;
+                ctrl.showMainCard = true;
+                ctrl.userDetails = {};
+                ctrl.getUsers(false);
                 swal({ title: "Gebruiker is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
             }
             else {
@@ -27,35 +27,35 @@ agroApp.controller("UserManagement", function ($window, $scope, userManagement, 
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
         });
     };
-    um.getUsers = function (archived) {
+    ctrl.getUsers = function (archived) {
         userManagement.getUsers(archived).then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allUsers = response.data;
-                tableService.data = um.allUsers;
+                ctrl.allUsers = response.data;
+                tableService.data = ctrl.allUsers;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.applyChangesToUser = function () {
+    ctrl.applyChangesToUser = function () {
         userManagement.applyChangesToUser(this.userDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
                 swal("", response.data, "error");
             }
             else {
-                um.showEditCard = false;
-                um.showMainCard = true;
-                um.userDetails = {};
-                um.getUsers(false);
+                ctrl.showEditCard = false;
+                ctrl.showMainCard = true;
+                ctrl.userDetails = {};
+                ctrl.getUsers(false);
                 swal({ title: "Gebruiker is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
         });
     };
-    um.archiveUser = function (user) {
+    ctrl.archiveUser = function (user) {
         swal({
             title: "Weet u zeker dat u " + user.name + " wilt archiveren?",
             text: "Hierdoor zal het account gedeactiveerd worden. Het zal niet meer mogelijk zijn voor de gebruiker om in te loggen.",
@@ -68,7 +68,7 @@ agroApp.controller("UserManagement", function ($window, $scope, userManagement, 
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: user.name + " is gearchiveerd. De gebruiker kan niet meer inloggen!", timer: 3000, showConfirmButton: false });
-                        um.getUsers();
+                        ctrl.getUsers();
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: user.name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 3000, showConfirmButton: false });
@@ -80,7 +80,7 @@ agroApp.controller("UserManagement", function ($window, $scope, userManagement, 
             //}, 3000);
         });
     };
-    um.restoreUser = function (user) {
+    ctrl.restoreUser = function (user) {
         swal({
             title: "Weet u zeker dat u " + user.name + " wilt dearchiveren?",
             text: "Hierdoor zal het account geactiveerd worden. Het zal weer mogelijk zijn voor de gebruiker om in te loggen.",
@@ -108,17 +108,17 @@ agroApp.controller("UserManagement", function ($window, $scope, userManagement, 
 });
 
 agroApp.controller("MachineManagement", function ($window, $scope, machineManagement, tableService) {
-    var um = this;
+    var ctrl = this;
 
-    um.types = ["Kraan", "Shovel", "Trekker", "Dumper", "Wagen", "Tank", "Ladewagen",
+    ctrl.types = ["Kraan", "Shovel", "Trekker", "Dumper", "Wagen", "Tank", "Ladewagen",
         "Strandreiniging", "Gladheid", "Auto", "Apparaat", "Trilplaat",
         "Meetapparatuur", "Aanhanger", "Hulpstuk", "Overige"];
 
-    um.machineDetails = {};
-    um.allMachines = {};
+    ctrl.machineDetails = {};
+    ctrl.allMachines = {};
 
-    um.registerMachine = function () {
-        machineManagement.register(um.machineDetails)
+    ctrl.registerMachine = function () {
+        machineManagement.register(ctrl.machineDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
                 swal("", response.data, "error");
@@ -131,32 +131,32 @@ agroApp.controller("MachineManagement", function ($window, $scope, machineManage
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
         });
     };
-    um.getAllMachines = function () {
+    ctrl.getAllMachines = function () {
         machineManagement.getAll().then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allMachines = response.data;
-                tableService.data = um.allMachines;
+                ctrl.allMachines = response.data;
+                tableService.data = ctrl.allMachines;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
 
-    um.getAllArchivedMachines = function () {
+    ctrl.getAllArchivedMachines = function () {
         machineManagement.getAllArchived().then(
             function successCallback(response) {
-                um.allMachines = response.data;
-                tableService.data = um.allMachines;
+                ctrl.allMachines = response.data;
+                tableService.data = ctrl.allMachines;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
 
-    um.applyChangesToMachine = function () {
-        console.log(um.machineDetails);
-        machineManagement.applyChanges(um.machineDetails)
+    ctrl.applyChangesToMachine = function () {
+        console.log(ctrl.machineDetails);
+        machineManagement.applyChanges(ctrl.machineDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
                 swal("", response.data, "error");
@@ -169,7 +169,7 @@ agroApp.controller("MachineManagement", function ($window, $scope, machineManage
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
         });
     };
-    um.archiveMachine = function (machine) {
+    ctrl.archiveMachine = function (machine) {
         swal({
             title: "Weet u zeker dat u " + machine.name + " wilt archiveren?",
             text: "Hierdoor zal deze machine gedeactiveerd worden. Het zal niet meer mogelijk zijn om deze machine te gebruiken.",
@@ -182,7 +182,7 @@ agroApp.controller("MachineManagement", function ($window, $scope, machineManage
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: machine.name + " is gearchiveerd. De Machine kan niet meer worden gebruikt!", timer: 3000, showConfirmButton: false });
-                        um.getAllMachines();
+                        ctrl.getAllMachines();
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: machine.name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
@@ -194,7 +194,7 @@ agroApp.controller("MachineManagement", function ($window, $scope, machineManage
             //}, 3000);
         });
     };
-    um.restoreMachine = function (machine) {
+    ctrl.restoreMachine = function (machine) {
         swal({
             title: "Weet u zeker dat u " + machine.name + " wilt dearchiveren?",
             text: "Hierdoor zal de machine geactiveerd worden. Het zal weer mogelijk worden om de machine te gebruiken.",
@@ -219,67 +219,67 @@ agroApp.controller("MachineManagement", function ($window, $scope, machineManage
 });
 
 agroApp.controller("TimesheetController", function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
-    var um = this;
+    var ctrl = this;
 
-    um.showMainView = true;
-    um.showTaskOverview = true;
-    um.showNewTaskCard = false;
+    ctrl.showMainCard = true;
+    ctrl.showTaskOverview = true;
+    ctrl.showNewTaskCard = false;
 
-    um.allTimesheets = [];
-    um.allUsers = [];
-    um.allCustomers = [];
-    um.allAssignments = [];
-    um.allMachines = [];
-    um.allAttachments = [];
-    um.allWorkTypes = workTypeList.data;
-    um.selectedCoworkers = [];
-    um.selectedMachines = [];
-    um.selectedAttachments = [];
-    um.selectedAssignment = {};
+    ctrl.allTimesheets = [];
+    ctrl.allUsers = [];
+    ctrl.allCustomers = [];
+    ctrl.allAssignments = [];
+    ctrl.allMachines = [];
+    ctrl.allAttachments = [];
+    ctrl.allWorkTypes = workTypeList.data;
+    ctrl.selectedCoworkers = [];
+    ctrl.selectedMachines = [];
+    ctrl.selectedAttachments = [];
+    ctrl.selectedAssignment = {};
 
     var nulDate = new Date(1970, 1, 1, 0, 0, 0, 0);
     console.log(nulDate);
-    um.timesheetDetails = {};
-    um.timesheetDetails.WorkType = "Machinist";
-    um.timesheetDetails.StartTime = nulDate;
-    um.timesheetDetails.EndTime = nulDate;
-    um.timesheetDetails.TotalTime = nulDate;
+    ctrl.timesheetDetails = {};
+    ctrl.timesheetDetails.WorkType = "Machinist";
+    ctrl.timesheetDetails.StartTime = nulDate;
+    ctrl.timesheetDetails.EndTime = nulDate;
+    ctrl.timesheetDetails.TotalTime = nulDate;
 
-    um.updateTime = function () {
-        um.timesheetDetails.StartTime = nulDate;
-        um.timesheetDetails.EndTime = nulDate;
-        um.timesheetDetails.TotalTime = nulDate;
+    ctrl.updateTime = function () {
+        ctrl.timesheetDetails.StartTime = nulDate;
+        ctrl.timesheetDetails.EndTime = nulDate;
+        ctrl.timesheetDetails.TotalTime = nulDate;
     }
 
-    um.getAllTimesheets = function (id) {
+    ctrl.getAllTimesheets = function (id) {
         timesheetManagement.getAll(id).then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allTimesheets = response.data;
+                ctrl.allTimesheets = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
 
-    um.addTimesheet = function () {
+    ctrl.addTimesheet = function () {
         swal({
             title: "",
             text: "Taak word toegevoegd!",
             showConfirmButton: false
         });
 
-        timesheetManagement.add(um.timesheetDetails)
+        timesheetManagement.add(ctrl.timesheetDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
                 swal("", response.data, "error");
             }
             else {
                 swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
-                um.timesheetDetails = {};
-                um.showTaskOverview = true;
-                um.showNewTaskCard = false;
-                um.getAllTimesheets($scope.EmployeeAssignment.IdEmployeeAssignment);
+                ctrl.timesheetDetails = {};
+                ctrl.showTaskOverview = true;
+                ctrl.showNewTaskCard = false;
+                ctrl.getAllTimesheets($scope.EmployeeAssignment.IdEmployeeAssignment);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -288,11 +288,11 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
 
     };
 
-    um.getAllMachines = function () {
+    ctrl.getAllMachines = function () {
         machineManagement.getAll().then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allMachines = response.data;
+                ctrl.allMachines = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
@@ -322,109 +322,109 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
         });
     };
 
-    um.selectedDate = new Date();
-    um.selectedEndDate = addDays(new Date(), 2);
+    ctrl.selectedDate = new Date();
+    ctrl.selectedEndDate = addDays(new Date(), 2);
 
-    um.newAssignment = {};
+    ctrl.newAssignment = {};
 
-    um.getUsers = function () {
+    ctrl.getUsers = function () {
         userManagement.getUsers(false).then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allUsers = response.data;
+                ctrl.allUsers = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getCustomers = function () {
+    ctrl.getCustomers = function () {
         customerManagement.getAll().then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allCustomers = response.data;
+                ctrl.allCustomers = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAssignment = function (id) {
+    ctrl.getAssignment = function (id) {
         assignmentManagement.get(id).then(
             function successCallback(response) {
-                um.selectedAssignment = response.data;
+                ctrl.selectedAssignment = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllAssignments = function (userSpecific) {
-        resetTime(um.selectedDate);
-        assignmentManagement.getAll(getUTCTime(um.selectedDate), userSpecific).then(
+    ctrl.getAllAssignments = function (userSpecific) {
+        resetTime(ctrl.selectedDate);
+        assignmentManagement.getAll(getUTCTime(ctrl.selectedDate), userSpecific).then(
             function successCallback(response) {
-                um.allAssignments = response.data;
+                ctrl.allAssignments = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllAssignmentsPeriod = function (prepareForPlanning, user) {
-        resetTime(um.selectedDate);
-        resetTime(um.selectedEndDate);
-        assignmentManagement.getAllPeriod(getUTCTime(um.selectedDate), getUTCTime(um.selectedEndDate), user).then(
+    ctrl.getAllAssignmentsPeriod = function (prepareForPlanning, user) {
+        resetTime(ctrl.selectedDate);
+        resetTime(ctrl.selectedEndDate);
+        assignmentManagement.getAllPeriod(getUTCTime(ctrl.selectedDate), getUTCTime(ctrl.selectedEndDate), user).then(
             function successCallback(response) {
                 if (prepareForPlanning) {
-                    um.allAssignments = [];
+                    ctrl.allAssignments = [];
                     for (x in response.data) {
                         var containsCus = false;
                         var customerIndex = -1;
 
-                        for (cus in um.allAssignments) {
-                            if (um.allAssignments[cus].name === response.data[x].customer.name) {
+                        for (cus in ctrl.allAssignments) {
+                            if (ctrl.allAssignments[cus].name === response.data[x].customer.name) {
                                 containsCus = true;
                                 customerIndex = cus;
                             }
                         }
 
                         if (!containsCus) {
-                            um.allAssignments.push(response.data[x].customer);
-                            customerIndex = um.allAssignments.indexOf(response.data[x].customer);
-                            um.allAssignments[customerIndex].assignments = [];
+                            ctrl.allAssignments.push(response.data[x].customer);
+                            customerIndex = ctrl.allAssignments.indexOf(response.data[x].customer);
+                            ctrl.allAssignments[customerIndex].assignments = [];
                         }
 
                         var customer = response.data[x].customer;
                         delete response.data[x].customer;
                         response.data[x].opened = false;
-                        um.allAssignments[customerIndex].assignments.push(response.data[x]);
+                        ctrl.allAssignments[customerIndex].assignments.push(response.data[x]);
                     }
                 }
                 else
-                    um.allAssignments = response.data;
+                    ctrl.allAssignments = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
 
-    um.getAllEmployeeAssignments = function () {
-        resetTime(um.selectedDate);
-        assignmentManagement.getAssignment(getUTCTime(um.selectedDate)).then(
+    ctrl.getAllEmployeeAssignments = function () {
+        resetTime(ctrl.selectedDate);
+        assignmentManagement.getAssignment(getUTCTime(ctrl.selectedDate)).then(
             function successCallback(response) {
-                um.allAssignments = response.data;
+                ctrl.allAssignments = response.data;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.addAssignment = function () {
+    ctrl.addAssignment = function () {
         swal({
             title: "",
             text: "Opdracht word toegevoegd!",
             showConfirmButton: false
         });
 
-        var data = angular.copy(um.newAssignment);
+        var data = angular.copy(ctrl.newAssignment);
 
         //set date as unix ticks
-        data.date = um.newAssignment.date;
+        data.date = ctrl.newAssignment.date;
         resetTime(data.date);
         data.date = getUTCTime(data.date) + 86400000;
 
@@ -441,10 +441,10 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
                     showConfirmButton: false,
                     type: "success"
                 });
-                um.newAssignment = {};
-                um.getAllAssignments();
-                um.showNewAssignmentCard = false;
-                um.showMainView = true;
+                ctrl.newAssignment = {};
+                ctrl.getAllAssignments();
+                ctrl.showEditCard = false;
+                ctrl.showMainCard = true;
             },
             function errorCallback(response) {
                 swal({
@@ -586,63 +586,70 @@ agroApp.controller("ManageUser2", function ($scope, $http, $rootScope, $mdDialog
 });
 
 agroApp.controller("CustomerManagement", function ($window, $scope, customerManagement, tableService) {
-    var um = this;
+    var ctrl = this;
 
-    um.customerDetails = {};
-    um.allCustomers = [];
+    ctrl.customerDetails = {};
+    ctrl.allCustomers = [];
 
-    um.addCustomer = function () {
-        customerManagement.register(um.customerDetails)
+    ctrl.showEditCard = false;
+    ctrl.showMainCard = true;
+
+    ctrl.addCustomer = function () {
+        customerManagement.register(ctrl.customerDetails)
         .then(function successCallback(response) {
-            if (response.data !== "succes") {
+            if (response.data !== true) {
                 swal("", response.data, "error");
             }
             else {
                 swal({ title: "Klant is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = "/admin/klanten/overzicht"; }, 3500);
+                ctrl.showEditCard = false;
+                ctrl.showMainCard = true;
+                ctrl.customerDetails = {};
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
         });
     };
-    um.getAllCustomers = function () {
-        customerManagement.getAll().then(
+    ctrl.getAllCustomers = function () {
+        customerManagement.getAll(false).then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allCustomers = response.data;
-                tableService.data = um.allCustomers;
+                ctrl.allCustomers = response.data;
+                tableService.data = ctrl.allCustomers;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllArchivedCustomers = function () {
-        customerManagement.getAllArchivedCustomers().then(
+    ctrl.getAllArchivedCustomers = function () {
+        customerManagement.getall(true).then(
             function successCallback(response) {
-                um.allCustomers = response.data;
-                tableService.data = um.allCustomers;
+                ctrl.allCustomers = response.data;
+                tableService.data = ctrl.allCustomers;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
 
-    um.applyChangesToCustomer = function () {
-        customerManagement.applyChanges(um.customerDetails)
+    ctrl.applyChangesToCustomer = function () {
+        customerManagement.applyChanges(ctrl.customerDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
                 swal("", response.data, "error");
             }
             else {
                 swal({ title: "Klant is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
-                setTimeout(function () { $window.location.href = "/admin/klanten/overzicht"; }, 3500);
+                ctrl.showEditCard = false;
+                ctrl.showMainCard = true;
+                ctrl.customerDetails = {};
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
         });
     };
 
-    um.archiveCustomer = function (customer) {
+    ctrl.archiveCustomer = function (customer) {
         swal({
             title: "Weet u zeker dat u " + customer.name + " wilt archiveren?",
             text: "",
@@ -651,11 +658,11 @@ agroApp.controller("CustomerManagement", function ($window, $scope, customerMana
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
-            customerManagement.archiveCustomer(customer.IdCustomer).then(
+            customerManagement.setArchiveState(customer.IdCustomer, true).then(
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: customer.name + " is gearchiveerd.", timer: 3000, showConfirmButton: false });
-                        um.getAllCustomers();
+                        ctrl.getAllCustomers();
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: customer.name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
@@ -667,7 +674,7 @@ agroApp.controller("CustomerManagement", function ($window, $scope, customerMana
             //}, 3000);
         });
     };
-    um.restoreCustomer = function (customer) {
+    ctrl.restoreCustomer = function (customer) {
         swal({
             title: "Weet u zeker dat u " + customer.name + " wilt dearchiveren?",
             text: "Hierdoor zal deze klant geactiveerd worden. Het zal weer mogelijk zijn om deze klant te gebruiken.",
@@ -676,7 +683,7 @@ agroApp.controller("CustomerManagement", function ($window, $scope, customerMana
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
-            customerManagement.restoreCustomer(customer.IdCustomer).then(
+            customerManagement.setArchiveState(customer.IdCustomer, false).then(
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: customer.name + " is gedearchiveerd. De klant kan weer worden gebruikt!", timer: 3000, showConfirmButton: false });
@@ -696,13 +703,13 @@ agroApp.controller("CustomerManagement", function ($window, $scope, customerMana
 })
 
 agroApp.controller("AttachmentManagement", function ($window, $scope, attachmentManagement, tableService) {
-    var um = this;
+    var ctrl = this;
 
-    um.attachmentDetails = {};
-    um.allAttachment = [];
+    ctrl.attachmentDetails = {};
+    ctrl.allAttachment = [];
 
-    um.addAttachment = function () {
-        attachmentManagement.register(um.attachmentDetails)
+    ctrl.addAttachment = function () {
+        attachmentManagement.register(ctrl.attachmentDetails)
         .then(function successCallback(response) {
             if (response.data !== "succes") {
                 swal("", response.data, "error");
@@ -715,28 +722,28 @@ agroApp.controller("AttachmentManagement", function ($window, $scope, attachment
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
         });
     };
-    um.getAllAttachments = function () {
+    ctrl.getAllAttachments = function () {
         attachmentManagement.getAll().then(
             function successCallback(response) {
                 console.log(response.data);
-                um.allAttachments = response.data;
-                tableService.data = um.allAttachments;
+                ctrl.allAttachments = response.data;
+                tableService.data = ctrl.allAttachments;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.getAllArchivedAttachments = function () {
+    ctrl.getAllArchivedAttachments = function () {
         attachmentManagement.getAllArchivedAttachments().then(
             function successCallback(response) {
-                um.allAttachments = response.data;
-                tableService.data = um.allAttachments;
+                ctrl.allAttachments = response.data;
+                tableService.data = ctrl.allAttachments;
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
             });
     };
-    um.applyChangesToAttachment = function () {
+    ctrl.applyChangesToAttachment = function () {
         attachmentManagement.applyChanges(this.attachmentDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
@@ -750,7 +757,7 @@ agroApp.controller("AttachmentManagement", function ($window, $scope, attachment
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");
         });
     };
-    um.archiveAttachment = function (attachment) {
+    ctrl.archiveAttachment = function (attachment) {
         swal({
             title: "Weet u zeker dat u " + attachment.name + " wilt archiveren?",
             text: "",
@@ -763,7 +770,7 @@ agroApp.controller("AttachmentManagement", function ($window, $scope, attachment
                 function successCallback(response) {
                     if (response.data === true) {
                         swal({ title: "Gelukt!", type: "success", text: attachment.name + " is gearchiveerd.", timer: 3000, showConfirmButton: false });
-                        um.getAllAttachments();
+                        ctrl.getAllAttachments();
                     }
                     else
                         swal({ title: "Fout!", type: "error", text: attachment.name + " is niet gearchiveerd. Er is iets misgegaan!", timer: 4000, showConfirmButton: false });
@@ -776,7 +783,7 @@ agroApp.controller("AttachmentManagement", function ($window, $scope, attachment
         });
     };
 
-    um.restoreAttachment = function (attachment) {
+    ctrl.restoreAttachment = function (attachment) {
         swal({
             title: "Weet u zeker dat u " + attachment.name + " wilt dearchiveren?",
             text: "Hierdoor zal het hulpstuk geactiveerd worden. Het zal weer mogelijk zijn om deze te gebruiken.",
@@ -805,7 +812,7 @@ agroApp.controller("AttachmentManagement", function ($window, $scope, attachment
 })
 
 agroApp.controller("CargoManagement", function ($window, $scope, userManagement, machineManagement, tableService) {
-    var um = this;
+    var ctrl = this;
 
 
 });
