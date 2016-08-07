@@ -75,7 +75,7 @@ namespace AWA.Controllers.Admin
         }
 
         [HttpGet("admin/hulpstuk/wijzigen/{id}")]
-        public async Task<IActionResult> EditAttachment(int id)
+        public IActionResult EditAttachment(int id)
         {
             //Attachment attachment = await AttachmentController.GetAttachment(id);
             //ViewData["userData"] = JsonConvert.SerializeObject(attachment);
@@ -121,7 +121,7 @@ namespace AWA.Controllers.Admin
         }
 
         [HttpGet("admin/klanten/wijzigen/{id}")]
-        public async Task<IActionResult> EditCustomer(int id)
+        public IActionResult EditCustomer(int id)
         {
             //Customer customer = await CustomerController.GetCustomer(id);
             //ViewData["userData"] = JsonConvert.SerializeObject(customer);
@@ -149,7 +149,7 @@ namespace AWA.Controllers.Admin
         }
 
         [HttpGet("admin/machines/wijzigen/{id}")]
-        public async Task<IActionResult> EditMachine(int id)
+        public IActionResult EditMachine(int id)
         {
             //Machine machine = await MachineController.GetMachine(id);
             //ViewData["machineData"] = JsonConvert.SerializeObject(machine); ;

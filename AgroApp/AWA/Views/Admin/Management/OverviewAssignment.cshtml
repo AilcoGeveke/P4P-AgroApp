@@ -35,12 +35,13 @@
                                         </ui-select>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-6 m-b-15">
                                     <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened == true }">
                                         <div class="fg-line" ng-class="{ 'fg-toggled': opened == true }">
                                             <label>Datum</label>
-                                            <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.newAssignment.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
+                                            <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" 
+                                                   show-weeks="false" ng-model="ctrl.newAssignment.date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" 
+                                                   ng-required="true" close-text="Close" placeholder="Selecteer een datum"/>
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +104,9 @@
                         <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened2 == true }">
                             <div class="fg-line" ng-class="{ 'fg-toggled': opened2 == true }">
                                 <label>Datum</label>
-                                <input ng-click="open($event, 'opened2')" ng-change="ctrl.getAllAssignments('@ViewData["userAssignment"]')" type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.selectedDate" is-open="opened2" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
+                                <input ng-click="open($event, 'opened2')" ng-change="ctrl.getAllAssignments('@ViewData["userAssignment"]')" type="text" 
+                                       class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.selectedDate" is-open="opened2" 
+                                       min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
                             </div>
                         </div>
                     </div>
@@ -111,10 +114,13 @@
                         <table ng-table="ctrl.Table" class="table table-striped table-vmiddle" ng-init="ctrl.getAllAssignments('@ViewData["userAssignment"]')">
                             <tr ng-repeat="w in ctrl.allAssignments">
                                 <td data-title="'Acties'" class="col-fit">
-                                    <button class="btn btn-default" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = false; ctrl.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
                                     @if ((ViewData["userAssignment"] as bool?) == true)
                                     {
-                                        <a ng-show="" class="btn btn-default" href="~/admin/urenoverzicht/{{w.assignmentId}}"><i class="zmdi zmdi-arrow-forward"></i></a>
+                                        <a class="btn btn-default btn-sm p-l-15 p-r-15" href="~/admin/urenoverzicht/{{w.assignmentId}}"><i class="zmdi zmdi-arrow-forward"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-default btn-sm p-l-15 p-r-15" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = false; ctrl.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
                                     }
                                 </td>
                                 <td data-title="'Taaknummer'" sortable="'id'" class="col-fit">

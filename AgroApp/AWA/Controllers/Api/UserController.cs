@@ -148,6 +148,12 @@ namespace AWA.Controllers.Api
             return context.Users.First(x => x.UserId == userId);
         }
 
+        /// <summary>
+        /// Returns the user that is currently logged in
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
         public static User GetUser(AgroContext dbContext, HttpContext httpContext)
         {
             return GetUser(dbContext, GetLoggedInUserId(httpContext));

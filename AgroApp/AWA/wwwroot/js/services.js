@@ -198,9 +198,9 @@ materialAdmin
         this.add = function (data) {
             var copy = angular.copy(data);
 
-            copy.StartTime = data.StartTime.toLocaleTimeString();
-            copy.EndTime = data.EndTime.toLocaleTimeString();
-            copy.TotalTime = data.TotalTime.toLocaleTimeString();
+            copy.startTime = data.startTime;
+            copy.endTime = data.endTime;
+            copy.totalTime = data.totalTime;
 
             return $http.post('/api/timesheet/add', copy);
         }

@@ -8,7 +8,7 @@
 <section id="main" ng-controller="TimesheetController as ctrl" ng-cloak>
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
-    <section id="content" ng-init="ctrl.employeeAssignment = @ViewData["EmployeeAssignment"]; ctrl.selectedAssignment = ctrl.employeeAssignment.assignment; ctrl.timesheetDetails.employeeAssignmentId = ctrl.employeeAssignment.employeeAssignmentId">
+    <section id="content" ng-init="ctrl.employeeAssignment = @ViewData["EmployeeAssignment"]; ctrl.selectedAssignment = ctrl.employeeAssignment.assignment">
         <div class="container">
             <div class="card">
                 <div class="card-header ch-alt">
@@ -81,21 +81,20 @@
                                 <div class="col-sm-4">
                                     <small>Van</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="ctrl.timesheetDetails.startTime" type="time" class="form-control" placeholder="bv. 07:00">
+                                        <input ng-model="ctrl.timesheetDetails.startTime" type="time" class="form-control" placeholder="bv. 07:00" ng-change="ctrl.updateTime(true)">
                                     </div>
                                 </div>
-
                                 <div class="col-sm-4">
                                     <small>Tot</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="ctrl.timesheetDetails.endTime" type="time" class="form-control" placeholder="bv. 15:00">
+                                        <input ng-model="ctrl.timesheetDetails.endTime" type="time" class="form-control" placeholder="bv. 15:00" ng-change="ctrl.updateTime(true)">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4">
                                     <small>Totaal</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="ctrl.timesheetDetails.totalTime" type="time" class="form-control" ng-change="">
+                                        <input ng-model="ctrl.timesheetDetails.totalTime" type="time" class="form-control" ng-change="ctrl.updateTime(false)">
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +153,7 @@
                     </div>
 
                     <div class="lv-header card-body card-padding bgm-teal c-white">
-                        Totaal: 0 uur
+                        Totaal: {{ctrl.getTotalTime()}} uur
                     </div>
                 </div>
             </div>

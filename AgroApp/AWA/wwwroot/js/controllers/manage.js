@@ -1,4 +1,5 @@
-﻿var agroApp = angular.module("materialAdmin");
+﻿"use strict";
+var agroApp = angular.module("materialAdmin");
 
 agroApp.controller("UserManagement", function ($window, $scope, userManagement, tableService) {
     var ctrl = this;
@@ -236,20 +237,30 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
     ctrl.selectedMachines = [];
     ctrl.selectedAttachments = [];
     ctrl.selectedAssignment = {};
+    ctrl.employeeAssignment = {};
 
-    var nulDate = new Date(1970, 1, 1, 0, 0, 0, 0);
-    console.log(nulDate);
     ctrl.timesheetDetails = {};
     ctrl.timesheetDetails.workType = "Machinist";
-    ctrl.timesheetDetails.startTime = nulDate;
-    ctrl.timesheetDetails.endTime = nulDate;
-    ctrl.timesheetDetails.totalTime = nulDate;
+    ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
+    ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
 
-    ctrl.updateTime = function () {
-        ctrl.timesheetDetails.StartTime = nulDate;
-        ctrl.timesheetDetails.EndTime = nulDate;
-        ctrl.timesheetDetails.TotalTime = nulDate;
+    ctrl.updateTime = function (calcTotal)
+    {
+        if(calcTotal)
+        {
+            if (ctrl.timesheetDetails.endTime < ctrl.timesheetDetails.startTime)
+                ctrl.timesheetDetails.endTime = angular.copy(ctrl.timesheetDetails.startTime);
+
+            var hours = ctrl.timesheetDetails.endTime - ctrl.timesheetDetails.startTime;
+            ctrl.timesheetDetails.totalTime = new Date(hours);
+        }
+        else
+        {
+            ctrl.timesheetDetails.startTime = moment().startOf('d').toDate();
+            ctrl.timesheetDetails.endTime = moment().startOf('d').toDate();
+        }
     }
+    ctrl.updateTime(true);
 
     ctrl.getAllTimesheets = function (id) {
         timesheetManagement.getAll(id).then(
@@ -268,7 +279,8 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             text: "Taak word toegevoegd!",
             showConfirmButton: false
         });
-
+        console.log(ctrl.timesheetDetails);
+        ctrl.timesheetDetails.employeeAssignmentId = ctrl.employeeAssignment.employeeAssignmentId;
         timesheetManagement.add(ctrl.timesheetDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
@@ -276,10 +288,14 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             }
             else {
                 swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
-                ctrl.timesheetDetails = {};
                 ctrl.showTaskOverview = true;
                 ctrl.showNewTaskCard = false;
-                ctrl.getAllTimesheets($scope.EmployeeAssignment.IdEmployeeAssignment);
+                ctrl.getAllTimesheets(ctrl.employeeAssignment.employeeAssignmentId);
+
+                ctrl.timesheetDetails = {};
+                ctrl.timesheetDetails.workType = "Machinist";
+                ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
+                ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -299,9 +315,8 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             });
     };
 
-    ctrl.selectedDate = new Date();
-    ctrl.selectedEndDate = addDays(new Date(), 2);
-
+    ctrl.selectedDate = moment().startOf('day').valueOf();
+    ctrl.selectedEndDate = moment().add(2, 'days').startOf('day').valueOf();
     ctrl.newAssignment = {};
 
     ctrl.getUsers = function () {
@@ -334,8 +349,7 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             });
     };
     ctrl.getAllAssignments = function (userSpecific) {
-        resetTime(ctrl.selectedDate);
-        assignmentManagement.getAll(getUTCTime(ctrl.selectedDate), userSpecific).then(
+        assignmentManagement.getAll(ctrl.selectedDate.valueOf(), userSpecific).then(
             function successCallback(response) {
                 ctrl.allAssignments = response.data;
             },
@@ -344,17 +358,15 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             });
     };
     ctrl.getAllAssignmentsPeriod = function (prepareForPlanning, user) {
-        resetTime(ctrl.selectedDate);
-        resetTime(ctrl.selectedEndDate);
-        assignmentManagement.getAllPeriod(getUTCTime(ctrl.selectedDate), getUTCTime(ctrl.selectedEndDate), user).then(
+        assignmentManagement.getAllPeriod(ctrl.selectedDate.valueOf(), ctrl.selectedEndDate.valueOf(), user).then(
             function successCallback(response) {
                 if (prepareForPlanning) {
                     ctrl.allAssignments = [];
-                    for (x in response.data) {
+                    for (var x in response.data) {
                         var containsCus = false;
                         var customerIndex = -1;
 
-                        for (cus in ctrl.allAssignments) {
+                        for (var cus in ctrl.allAssignments) {
                             if (ctrl.allAssignments[cus].name === response.data[x].customer.name) {
                                 containsCus = true;
                                 customerIndex = cus;
@@ -382,8 +394,7 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
     };
 
     ctrl.getAllEmployeeAssignments = function () {
-        resetTime(ctrl.selectedDate);
-        assignmentManagement.getAssignment(getUTCTime(ctrl.selectedDate)).then(
+        assignmentManagement.getAssignment(ctrl.selectedDate.valueOf()).then(
             function successCallback(response) {
                 ctrl.allAssignments = response.data;
             },
@@ -400,10 +411,7 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
 
         var data = angular.copy(ctrl.newAssignment);
 
-        //set date as unix ticks
-        data.date = ctrl.newAssignment.date;
-        resetTime(data.date);
-        data.date = getUTCTime(data.date) + 86400000;
+        data.date = data.date.getTime();
 
         //only send the customer id
         data.customerId = data.customer.customerId;
@@ -794,17 +802,8 @@ agroApp.controller("CargoManagement", function ($window, $scope, userManagement,
 
 });
 
-function addDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-}
-
-function getUTCTime(nonUTCTime)
-{
-    return nonUTCTime.getTime() + (nonUTCTime.getTimezoneOffset() * 60000);
-}
-
-function resetTime(time) {
-    time.setUTCHours(0, 0, 0, 0);
-}
+agroApp.directive('assignmentItem', function () {
+    return {
+        templateUrl: 'template/assignmentitem.html'
+    };
+});

@@ -8,9 +8,10 @@ using AWA.Models;
 namespace AWA.Migrations
 {
     [DbContext(typeof(AgroContext))]
-    partial class AgroContextModelSnapshot : ModelSnapshot
+    [Migration("20160807163007_TimespanToDateTimeInTimesheets")]
+    partial class TimespanToDateTimeInTimesheets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

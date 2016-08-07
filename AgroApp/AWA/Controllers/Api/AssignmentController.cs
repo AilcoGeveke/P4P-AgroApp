@@ -7,6 +7,7 @@ using AWA.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Query;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,26 +53,55 @@ namespace AWA.Controllers.Api
 
         public object GetAllAssignments(long startDate, long endDate, bool fillEmployees)
         {
-            object assignments = _context.Assignments.Where(x => x.Date >= startDate && x.Date < endDate)
+            var assignments = _context.Assignments.Where(x => x.Date >= startDate && x.Date < endDate)
                 .Include(x => x.Customer)
                 .Include(x => x.EmployeeAssignments)
-                .ThenInclude(x => x.User)
-                .Select(x => new
-                {
-                    x.Customer,
-                    x.Date,
-                    x.Description,
-                    x.AssignmentId,
-                    EmployeeAssignments = x.EmployeeAssignments.Select(s => new
-                    {
-                        s.IsVerified,
-                        s.UserId,
-                        User = new { s.User.Name, s.User.Username }
-                    })
-                })
-                .ToList();
+                .ThenInclude(x => x.User);
 
-            return assignments;
+            var list = assignments.Select(x => new
+            {
+                x.Customer,
+                x.Date,
+                x.Description,
+                x.AssignmentId,
+
+                EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                {
+                    s.IsVerified,
+                    s.UserId,
+                    User = new { s.User.Name, s.User.Username }
+                })
+            });
+
+            return list.ToList();
+        }
+
+        [HttpGet("getall/userspecific/{datelong}")]
+        public object GetAssignmentsUserSpecific(string datelong)
+        {
+            long startDate = long.Parse(datelong);
+            long endDate = startDate + 86400000;
+            User user = UserController.GetUser(_context, HttpContext);
+
+            var list = from x in _context.Assignments
+                       join ea in _context.EmployeeAssignments
+                       on x.AssignmentId equals ea.AssignmentId
+                       where x.Date >= startDate && x.Date < endDate && ea.UserId == user.UserId
+                       select new
+                       {
+                           x.Customer,
+                           x.Date,
+                           x.Description,
+                           x.AssignmentId,
+
+                           EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                           {
+                               s.IsVerified,
+                               s.UserId
+                           })
+                       };
+
+            return list.ToList();
         }
 
         #endregion
@@ -110,10 +140,13 @@ namespace AWA.Controllers.Api
                 .ThenInclude(x => x.Customer)
                 .Select(x => new
                 {
+                    x.EmployeeAssignmentId,
+
                     Assignment = new
                     {
                         x.Assignment.Customer,
                         x.Assignment.Date,
+                        x.Assignment.Location,
                         x.Assignment.Description,
                         x.Assignment.Employees
                     }
