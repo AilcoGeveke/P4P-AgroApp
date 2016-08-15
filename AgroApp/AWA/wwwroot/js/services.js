@@ -217,7 +217,7 @@ materialAdmin
     // =========================================================================
 
     .service('tableService', [function () {
-        this.data = {};
+        this.data = [];
     }])
 
 

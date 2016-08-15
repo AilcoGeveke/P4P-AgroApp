@@ -126,7 +126,7 @@ namespace AWA.Controllers.Api
                 throw new ArgumentException();
 
             string hash = GetEncodedHash(password, "123");
-            return context.Users.First(x => x.Username == username && x.PasswordEncrypted == hash) != null;
+            return context.Users.FirstOrDefault(x => x.Username == username && x.PasswordEncrypted == hash) != null;
         }
 
         /// <param name="context"></param>
@@ -137,7 +137,7 @@ namespace AWA.Controllers.Api
             if (string.IsNullOrWhiteSpace(username))
                 throw new ArgumentException();
 
-            return context.Users.First(x => x.Username == username);
+            return context.Users.FirstOrDefault(x => x.Username == username);
         }
 
         /// <param name="context"></param>
@@ -145,7 +145,7 @@ namespace AWA.Controllers.Api
         /// <returns>Returns User with given UserId</returns>
         public static User GetUser(AgroContext context, int userId)
         {
-            return context.Users.First(x => x.UserId == userId);
+            return context.Users.FirstOrDefault(x => x.UserId == userId);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace AWA.Controllers.Api
         /// <param name="context"></param>
         /// <param name="archived"></param>
         /// <returns>Returns list with all users, if archived is true it returns all archived users</returns>
-        public static IQueryable<User> GetUsers(AgroContext context, bool archived = false)
+        public static IEnumerable<User> GetUsers(AgroContext context, bool archived = false)
         {
             return context.Users.Where(x => x.IsArchived == archived);
         }

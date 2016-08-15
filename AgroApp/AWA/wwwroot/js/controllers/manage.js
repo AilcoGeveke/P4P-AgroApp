@@ -5,7 +5,7 @@ agroApp.controller("UserManagement", function ($window, $scope, userManagement, 
     var ctrl = this;
 
     ctrl.userDetails = { Role: 0 };
-    ctrl.allUsers = {};
+    ctrl.allUsers = [];
     ctrl.availableRoles = [{ id: 0, name: "Gebruiker" }, { id: 1, name: "Admin" }];
 
     ctrl.showEditCard = false;
