@@ -21,11 +21,13 @@ namespace AWA.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (!UserController.IsLoggedIn(HttpContext)) return View();
+            if (!UserController.IsLoggedIn(HttpContext))
+                return View();
+
             try
             {
                 User user = UserController.GetUser(_context, HttpContext);
-                return RedirectToAction("Index", user.Role == Models.User.UserRole.Admin ? "Admin" : "Employee");
+                return RedirectToAction("Index", user.Role == Models.User.UserRole.Admin ? "admin" : "employee");
             }
             catch (Exception)
             {

@@ -55,6 +55,7 @@ namespace AWA.Controllers.Admin
         {
             return View("management/truncatealldata");
         }
+
         //Attachment
         [HttpGet("admin/hulpstuk/overzicht")]
         public IActionResult OverviewAttachment()

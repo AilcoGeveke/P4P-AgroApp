@@ -25,12 +25,14 @@ angular.module('angularSlideables', []).directive('slider', function () {
                             setTimeout(function () {
                                 if (z === i) {
                                     target.style.height = 'auto';
+                                    target.style.overflow = 'visible';
                                 }
                             }, 500);
                         } else {
                             target.style.height = target.clientHeight + 'px';
                             setTimeout(function () {
                                 target.style.height = '0px';
+                                target.style.overflow = 'hidden';
                             });
                         }
                     }

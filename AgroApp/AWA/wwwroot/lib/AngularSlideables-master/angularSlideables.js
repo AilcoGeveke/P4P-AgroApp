@@ -23,12 +23,14 @@ angular.module('angularSlideables', [])
                              setTimeout(() => {
                                  if (z === i) {
                                      target.style.height = 'auto';
+                                     target.style.overflow = 'visible';
                                  }
                              }, 500);
                          } else {
                              target.style.height = target.clientHeight + 'px';
                              setTimeout(() => {
                                  target.style.height = '0px';
+                                 target.style.overflow = 'hidden';
                              });
                          }
                      }
