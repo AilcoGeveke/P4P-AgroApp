@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AWA.Models
 {
@@ -10,5 +12,7 @@ namespace AWA.Models
         [Required, MinLength(3)]
         public string Address { set; get; }
         public bool IsArchived { get; set; }
+
+        public ICollection<Assignment> Assignments { get; set; }
     }
 }

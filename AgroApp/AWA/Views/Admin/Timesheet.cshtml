@@ -3,13 +3,13 @@
 }
 
 <!-- Header -->
-<header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
+<header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
 <section id="main" ng-controller="TimesheetController as ctrl" ng-cloak>
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
     <section id="content" ng-init="ctrl.employeeAssignment = @ViewData["EmployeeAssignment"]; ctrl.selectedAssignment = ctrl.employeeAssignment.assignment">
-        <div class="container">
+        <div class="container c-alt">
             <div class="card">
                 <div class="card-header ch-alt">
                     <div class="media-body">
@@ -17,8 +17,10 @@
                     </div>
                 </div>
                 <div class="card-body card-padding">
-                    <p class="lead">{{ctrl.selectedAssignment.location}}</p>
-                    <p>{{ctrl.selectedAssignment.description}}</p>
+                    <p class="c-black m-b-0">locatie</p>
+                    <p>{{ctrl.selectedAssignment.location}}</p>
+                    <p class="c-black m-b-0">beschrijving</p>
+                    <p class="m-b-0">{{ctrl.selectedAssignment.description}}</p>
                 </div>
             </div>
 

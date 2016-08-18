@@ -57,6 +57,7 @@ namespace AWA.Controllers.Api
 
             var list = assignments.Select(x => new
             {
+                x.Location,
                 x.Customer,
                 x.Date,
                 x.Description,
@@ -110,9 +111,11 @@ namespace AWA.Controllers.Api
             if (am == null)
                 throw new ArgumentException("Assignment is null");
 
+            //am.Customer = CustomerController.GetCustomer(context, am.CustomerId);
             am.EmployeeAssignments = new List<EmployeeAssignment>();
-            foreach (User user in am.Employees)
-                am.EmployeeAssignments.Add(new EmployeeAssignment() { UserId = user.UserId });
+            if(am.Employees != null)
+                foreach (User user in am.Employees)
+                    am.EmployeeAssignments.Add(new EmployeeAssignment() {UserId = user.UserId});
 
             context.Assignments.Add(am);
             context.SaveChanges();
@@ -122,7 +125,7 @@ namespace AWA.Controllers.Api
 
         public static Assignment GetAssignment(AgroContext context, int assignmentId)
         {
-            return context.Assignments.First(x => x.AssignmentId == assignmentId);
+            return context.Assignments.FirstOrDefault(x => x.AssignmentId == assignmentId);
         }
 
         public static object GetEmployeeAssignment(AgroContext context, HttpContext httpContext, int assignmentId)

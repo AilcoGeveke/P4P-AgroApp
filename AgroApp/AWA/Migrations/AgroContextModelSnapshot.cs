@@ -96,18 +96,21 @@ namespace AWA.Migrations
 
             modelBuilder.Entity("AWA.Models.EmployeeAssignment", b =>
                 {
-                    b.Property<int>("EmployeeAssignmentId")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("AssignmentId");
-
-                    b.Property<bool>("IsVerified");
 
                     b.Property<int>("UserId");
 
-                    b.HasKey("EmployeeAssignmentId");
+                    b.Property<int>("EmployeeAssignmentId");
+
+                    b.Property<bool>("IsVerified");
+
+                    b.Property<int?>("TimesheetId");
+
+                    b.HasKey("AssignmentId", "UserId");
 
                     b.HasIndex("AssignmentId");
+
+                    b.HasIndex("TimesheetId");
 
                     b.HasIndex("UserId");
 
@@ -206,7 +209,7 @@ namespace AWA.Migrations
             modelBuilder.Entity("AWA.Models.Assignment", b =>
                 {
                     b.HasOne("AWA.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Assignments")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -225,8 +228,12 @@ namespace AWA.Migrations
                         .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("AWA.Models.Timesheet")
+                        .WithMany("EmployeeAssignments")
+                        .HasForeignKey("TimesheetId");
+
                     b.HasOne("AWA.Models.User", "User")
-                        .WithMany()
+                        .WithMany("EmployeeAssignments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

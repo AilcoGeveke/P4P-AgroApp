@@ -8,8 +8,8 @@ using AWA.Models;
 namespace AWA.Migrations
 {
     [DbContext(typeof(AgroContext))]
-    [Migration("20160805001244_ArchivedStateAndFormValidationForCustomer")]
-    partial class ArchivedStateAndFormValidationForCustomer
+    [Migration("20160817223936_databaseinit")]
+    partial class databaseinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,18 +97,21 @@ namespace AWA.Migrations
 
             modelBuilder.Entity("AWA.Models.EmployeeAssignment", b =>
                 {
-                    b.Property<int>("EmployeeAssignmentId")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("AssignmentId");
-
-                    b.Property<bool>("IsVerified");
 
                     b.Property<int>("UserId");
 
-                    b.HasKey("EmployeeAssignmentId");
+                    b.Property<int>("EmployeeAssignmentId");
+
+                    b.Property<bool>("IsVerified");
+
+                    b.Property<int?>("TimesheetId");
+
+                    b.HasKey("AssignmentId", "UserId");
 
                     b.HasIndex("AssignmentId");
+
+                    b.HasIndex("TimesheetId");
 
                     b.HasIndex("UserId");
 
@@ -166,17 +169,15 @@ namespace AWA.Migrations
 
                     b.Property<int>("EmployeeAssignmentId");
 
-                    b.Property<TimeSpan>("EndTime");
+                    b.Property<DateTime>("EndTime");
 
-                    b.Property<TimeSpan>("StartTime");
+                    b.Property<DateTime>("StartTime");
 
-                    b.Property<TimeSpan>("TotalTime");
+                    b.Property<DateTime>("TotalTime");
 
                     b.Property<string>("WorkType");
 
                     b.HasKey("TimesheetId");
-
-                    b.HasIndex("EmployeeAssignmentId");
 
                     b.ToTable("Timesheets");
                 });
@@ -209,7 +210,7 @@ namespace AWA.Migrations
             modelBuilder.Entity("AWA.Models.Assignment", b =>
                 {
                     b.HasOne("AWA.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Assignments")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -228,8 +229,12 @@ namespace AWA.Migrations
                         .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("AWA.Models.Timesheet")
+                        .WithMany("EmployeeAssignments")
+                        .HasForeignKey("TimesheetId");
+
                     b.HasOne("AWA.Models.User", "User")
-                        .WithMany()
+                        .WithMany("EmployeeAssignments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -239,14 +244,6 @@ namespace AWA.Migrations
                     b.HasOne("AWA.Models.Timesheet")
                         .WithMany("Machines")
                         .HasForeignKey("TimesheetId");
-                });
-
-            modelBuilder.Entity("AWA.Models.Timesheet", b =>
-                {
-                    b.HasOne("AWA.Models.EmployeeAssignment", "EmployeeAssignment")
-                        .WithMany()
-                        .HasForeignKey("EmployeeAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

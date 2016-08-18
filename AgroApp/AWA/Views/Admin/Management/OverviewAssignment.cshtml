@@ -2,7 +2,7 @@
     Layout = "~/views/shared/_adminlayout.cshtml";
 }
 <!-- Header -->
-<header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
+<header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
 <section id="main" ng-cloak>
     <!-- Sidebar -->
@@ -12,7 +12,7 @@
     <section id="content" ng-controller="TimesheetController as ctrl">
         <div class="container c-alt">
 
-            <div slider="ctrl.showEditCard">
+            <form slider="ctrl.showEditCard">
                 <div class="card">
                     <div class="card-header ch-alt m-b-15">
                         <h2>{{ctrl.isAdding ? "Nieuwe Opdracht" : "Wijzig Opdracht"}}</h2>
@@ -88,11 +88,14 @@
                     </div>
 
                     <div class="card-body bgm-gray card-padding">
-                        <button class="btn btn-primary btn-icon-text waves-effect m-r-15" ng-click="ctrl.isAdding ? ctrl.addAssignment() : ctrl.editAssingment()"><i class="zmdi zmdi-check"></i>Toevoegen</button>
+                        <button class="btn btn-primary btn-icon-text waves-effect m-r-15" type="submit" ng-disabled="form.$invalid"
+                                ng-click="ctrl.isAdding ? ctrl.addAssignment() : ctrl.editAssingment()">
+                            <i class="zmdi zmdi-check"></i>{{ctrl.isAdding ? "Toevoegen" : "Wijzigen"}}
+                        </button>
                         <button class="btn btn-default btn-icon-text waves-effect" ng-click="ctrl.showEditCard = false; ctrl.showMainCard = true" slide-toggle="#newAssignmentCard"><i class="zmdi zmdi-close"></i>Annuleren</button>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div slider="ctrl.showMainCard" enabled="true">
                 <div class="card">
@@ -116,11 +119,18 @@
                                 <td data-title="'Acties'" class="col-fit">
                                     @if ((ViewData["userAssignment"] as bool?) == true)
                                     {
-                                        <a class="btn btn-default btn-sm p-l-15 p-r-15" href="~/admin/urenoverzicht/{{w.assignmentId}}"><i class="zmdi zmdi-arrow-forward"></i></a>
+                                        <a class="btn btn-default btn-sm p-l-15 p-r-15" href="~/admin/urenoverzicht/{{w.assignmentId}}">
+                                            <i class="zmdi zmdi-arrow-forward"></i>
+                                        </a>
                                     }
                                     else
                                     {
-                                        <button class="btn btn-default btn-sm p-l-15 p-r-15" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = false; ctrl.newAssignment = w;"><i class="zmdi zmdi-edit"></i></button>
+                                        <button class="btn btn-default btn-sm p-l-15 p-r-15" ng-disabled=""
+                                                popover-placement="right" popover-trigger="mouseenter" popover="Het wijzigen van opdrachten is nog niet ondersteund">
+                                            <i class="zmdi zmdi-edit"></i>
+                                        </button>
+
+                                        //ng - click = "ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = false; ctrl.newAssignment = w;"
                                     }
                                 </td>
                                 <td data-title="'Taaknummer'" sortable="'id'" class="col-fit">

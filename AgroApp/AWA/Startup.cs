@@ -33,16 +33,13 @@ namespace AWA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = @"Server=tcp:agrodatabase.database.windows.net,1433;Initial Catalog=agrodatabase;Persist Security Info=False;User ID=agrouser;Password=AgroPass01;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            services.AddDbContext<AgroContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<AgroContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add framework services.
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
-
-            // Add framework services.
-            //services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

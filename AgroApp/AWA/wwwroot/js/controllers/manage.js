@@ -1,5 +1,4 @@
-﻿"use strict";
-var agroApp = angular.module("materialAdmin");
+﻿var agroApp = angular.module("materialAdmin");
 
 agroApp.controller("UserManagement", function ($window, $scope, userManagement, tableService) {
     var ctrl = this;
@@ -802,8 +801,8 @@ agroApp.controller("CargoManagement", function ($window, $scope, userManagement,
 
 });
 
-agroApp.directive('assignmentItem', function () {
+agroApp.directive("assignmentItem", function () {
     return {
-        templateUrl: 'template/assignmentitem.html'
+        templateUrl: "template/assignmentitem.html"
     };
 });

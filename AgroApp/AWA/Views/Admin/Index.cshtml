@@ -3,29 +3,33 @@
 }
 
 <!-- Header -->
-<header id="header" data-current-skin="blue" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
+<header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
 <section id="main">
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
-    <section id="content" ng-controller="TimesheetController as am">
-        <div class="container">
+    <section id="content" ng-controller="TimesheetController as ctrl">
+        <div class="container c-alt">
             <div class="block-header">
                 <h2>Planning</h2>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
+                <div class="col-md-6 m-b-15">
+                    <div class="card m-b-0" ng-init="ctrl.getAllAssignmentsPeriod(true, true)">
                         <div class="card-header bgm-blue">
-                            <h2>Opdrachten Vandaag <small>Alle opdrachten, werknemers en opgeslagen werkbonnen worden hier getoond.</small></h2>
+                            <h2>
+                                Opdrachten Vandaag <small>Alle opdrachten, werknemers en opgeslagen werkbonnen worden hier getoond.</small>
+                            </h2>
                         </div>
-                        <div class="listview lv-bordered lv-lg" ng-init="am.getAllAssignmentsPeriod(true, true)">
-                            <div class="lv-body">
-                                <assignment-item ng-repeat="x in am.allAssignments"></assignment-item>
-                                <div class="lv-item media" ng-show="am.allAssignments.length === 0">
-                                    <small class="c-bluegray">Geen opdrachten gevonden</small>
-                                </div>
-                            </div>
+                        <div class="card-body card-padding" ng-show="ctrl.allAssignments.length === 0">
+                            <small class="c-bluegray">Geen opdrachten gevonden</small>
+                        </div>
+                    </div>
+
+                    <div class="listview lv-bordered lv-lg bgm-white card m-b-0" ng-repeat="x in ctrl.allAssignments"
+                         ng-class="{ 'expansion-card': x.opened }">
+                        <div class="lv-body">
+                            <assignment-item></assignment-item>
                         </div>
                     </div>
                 </div>

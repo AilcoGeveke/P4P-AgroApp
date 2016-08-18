@@ -1,21 +1,22 @@
-﻿<div class="lv-item media" ng-class="{ 'bgm-indigo': x.opened }">
-    <div class="media-body">
-        <div class="lv-title" ng-class="{ 'c-white': x.opened }">{{x.name}}</div>
-        <div class="lv-actions">
-            <button class="btn btn-primary" ng-class="{ 'bgm-green': x.opened }" ng-click="x.opened = !x.opened"><i class="zmdi zmdi-menu"></i></button>
+﻿<div class="listview lv-body">
+    <div class="lv-item lv-upper"  ng-click="x.opened = !x.opened">
+        <div class="media-body">
+            <div class="lv-title">{{x.name}} <small class="m-l-5">{{x.assignments.length == 1 ? "1 opdracht" : x.assignments.length + " opdrachten"}}</small></div>
+            <div class="lv-actions">
+                <div><i class="zmdi zmdi-chevron-down zmdi-bis"></i></div>
+            </div>
         </div>
     </div>
-</div>
-<div uib-collapse="!x.opened">
-    <div class="lv-item media" ng-repeat="ass in x.assignments">
-        <div class="lv-title">{{ass.location}}</div>
-        <small class="c-bluegray">{{ass.description}}</small>
-        <ul class="lv-attrs">
-            <li class="p-0" ng-repeat="xs in ass.employeeAssignments">
-                <a class="card listbutton" ng-class="{ 'bgm-green': xs.isVerified, 'c-white': xs.isVerified }"
-                   href="admin/urenoverzicht/{{ass.assignmentId}}/{{xs.userId}}">{{xs.user.name}}</a>
-            </li>
-        </ul>
+    <div uib-collapse="!x.opened">
+        <div class="lv-item" ng-repeat="ass in x.assignments">
+            <div class="lv-title">{{ass.location}}</div>
+            <small class="c-bluegray small-text">{{ass.description}}</small>
+            <ul class="lv-attrs">
+                <li class="p-0" ng-repeat="xs in ass.employeeAssignments">
+                    <a class="card listbutton" ng-class="{ 'bgm-green': xs.isVerified, 'c-white': xs.isVerified }"
+                       href="admin/urenoverzicht/{{ass.assignmentId}}/{{xs.userId}}">{{xs.user.name}}</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="bgm-blue p-b-15"></div>
 </div>

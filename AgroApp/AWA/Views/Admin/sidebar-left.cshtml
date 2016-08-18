@@ -1,23 +1,7 @@
 <div class="sidebar-inner c-overflow">
-    <div class="profile-menu">
-        <a href="" toggle-submenu>
-            <div class="profile-pic">
-            </div>
-
-            <div class="profile-info" style="top: 42%">
-                @Context.User.Identity.Name
-                <i class="zmdi zmdi-caret-down"></i>
-            </div>
-        </a>
-
-        <ul class="main-menu">
-            <li>
-                <a href=""><i class="zmdi zmdi-settings"></i> Gegevens Veranderen</a>
-            </li>
-            <li>
-                <a href="~/logout"><i class="zmdi zmdi-arrow-back"></i> Uitloggen</a>
-            </li>
-        </ul>
+    
+    <div class="smm-header">
+        <i class="zmdi zmdi-long-arrow-left" data-ma-action="sidebar-close" ng-click="mactrl.sidebarToggle.left = false"></i>
     </div>
 
     <ul class="main-menu">

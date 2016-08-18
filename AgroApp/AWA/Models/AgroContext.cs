@@ -20,6 +20,22 @@ namespace AWA.Models
         {
             modelBuilder.Entity<User>()
                 .HasIndex(user => user.Username).IsUnique();
+            
+            //Many on Many relation for the EmployeeAssignment class
+            modelBuilder.Entity<EmployeeAssignment>()
+                .HasKey(t => new { t.AssignmentId, t.UserId });
+
+            modelBuilder.Entity<EmployeeAssignment>()
+                .HasOne(pt => pt.User)
+                .WithMany(p => p.EmployeeAssignments)
+                .HasForeignKey(pt => pt.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<EmployeeAssignment>()
+                .HasOne(pt => pt.Assignment)
+                .WithMany(p => p.EmployeeAssignments)
+                .HasForeignKey(pt => pt.AssignmentId)
+                .IsRequired();
         }
     }
 }
