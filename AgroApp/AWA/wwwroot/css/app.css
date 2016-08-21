@@ -1401,7 +1401,7 @@ body {
     font-size: 13px;
     line-height: 1.42857143;
     color: #5e5e5e;
-    background-color: #fafafa;
+    background-color: #f9f9f9;
 }
 
 input,
@@ -11407,14 +11407,14 @@ a.lv-footer:hover {
 .card {
     position: relative;
     background: #fff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     margin-bottom: 30px;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 .card-header {
     position: relative;
-    border-radius: 2px 2px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 @media screen and (min-width: 768px) {

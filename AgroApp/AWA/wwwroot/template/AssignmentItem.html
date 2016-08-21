@@ -11,9 +11,9 @@
         <div class="lv-item" ng-repeat="ass in x.assignments">
             <div class="lv-title">{{ass.location}}</div>
             <small class="c-bluegray small-text">{{ass.description}}</small>
-            <ul class="lv-attrs">
+            <ul class="lv-attrs m-b-5">
                 <li class="p-0" ng-repeat="xs in ass.employeeAssignments">
-                    <a class="card listbutton" ng-class="{ 'bgm-green': xs.isVerified, 'c-white': xs.isVerified }"
+                    <a class="btn btn-default btn-sm listbutton" ng-class="{ 'bgm-green': xs.isVerified, 'c-white': xs.isVerified }"
                        href="admin/urenoverzicht/{{ass.assignmentId}}/{{xs.userId}}">{{xs.user.name}}</a>
                 </li>
             </ul>

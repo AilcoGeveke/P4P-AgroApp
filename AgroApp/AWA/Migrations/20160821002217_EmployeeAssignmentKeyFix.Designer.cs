@@ -8,9 +8,10 @@ using AWA.Models;
 namespace AWA.Migrations
 {
     [DbContext(typeof(AgroContext))]
-    partial class AgroContextModelSnapshot : ModelSnapshot
+    [Migration("20160821002217_EmployeeAssignmentKeyFix")]
+    partial class EmployeeAssignmentKeyFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -96,18 +97,18 @@ namespace AWA.Migrations
 
             modelBuilder.Entity("AWA.Models.EmployeeAssignment", b =>
                 {
+                    b.Property<int>("AssignmentId");
+
+                    b.Property<int>("UserId");
+
                     b.Property<int>("EmployeeAssignmentId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AssignmentId");
 
                     b.Property<bool>("IsVerified");
 
                     b.Property<int?>("TimesheetId");
 
-                    b.Property<int>("UserId");
-
-                    b.HasKey("EmployeeAssignmentId");
+                    b.HasKey("AssignmentId", "UserId");
 
                     b.HasIndex("AssignmentId");
 

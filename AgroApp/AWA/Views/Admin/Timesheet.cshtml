@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="card" ng-show="ctrl.employeeAssignment.IsVerified">
+            <div class="card" ng-show="ctrl.employeeAssignment.isVerified">
                 <div class="card-header bgm-green">
                     <div class="media-body">
                         <h2>Deze werkbon is gecontroleerd en definitief <small>De werkbon kan niet meer worden aangepast</small></h2>
@@ -110,6 +110,7 @@
                                 </div>
                             </div>
                         </div>
+                        {{ctrl.employeeAssignment}}
                         <div class="card-body card-padding bgm-gray">
                             <button class="btn btn-primary m-r-15" ng-click="ctrl.addTimesheet()">Toevoegen</button>
                             <button class="btn btn-default" ng-click="ctrl.showNewTaskCard = false; ctrl.showTaskOverview= true" slide-toggle="#showNewTaskCard">Annuleren</button>

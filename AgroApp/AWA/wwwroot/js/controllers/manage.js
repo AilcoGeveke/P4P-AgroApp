@@ -250,8 +250,14 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             if (ctrl.timesheetDetails.endTime < ctrl.timesheetDetails.startTime)
                 ctrl.timesheetDetails.endTime = angular.copy(ctrl.timesheetDetails.startTime);
 
-            var hours = ctrl.timesheetDetails.endTime - ctrl.timesheetDetails.startTime;
-            ctrl.timesheetDetails.totalTime = new Date(hours);
+            var hours = ctrl.timesheetDetails.endTime.getHours() - ctrl.timesheetDetails.startTime.getHours();
+            var minutes = ctrl.timesheetDetails.endTime.getMinutes() - ctrl.timesheetDetails.startTime.getMinutes();
+
+            var dateNow = moment().startOf('d').toDate();
+            dateNow.setHours(hours);
+            dateNow.setMinutes(minutes);
+
+            ctrl.timesheetDetails.totalTime = dateNow;
         }
         else
         {
@@ -295,6 +301,7 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
                 ctrl.timesheetDetails.workType = "Machinist";
                 ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
                 ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
+                ctrl.updateTime(true);
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
