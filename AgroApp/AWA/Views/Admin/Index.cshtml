@@ -14,15 +14,15 @@
                 <h2>Planning</h2>
             </div>
             <div class="row">
-                <div class="col-md-6 m-b-15">
-                    <div class="card m-b-0 bgm-none" ng-init="ctrl.getAllAssignmentsPeriod(true, true)">
+                <div class="col-md-12 m-b-15">
+                    <div class="card m-b-0 bgm-none" ng-init="ctrl.getAllUnverifiedAssignments()">
                         <div class="card-header bgm-blue">
                             <h2>
-                                Opdrachten Vandaag <small>Alle opdrachten, werknemers en opgeslagen werkbonnen worden hier getoond.</small>
+                                Open Opdrachten <small>Hier worden alle opdrachten die nog niet gecontroleerd zijn weergegeven</small>
                             </h2>
                         </div>
-                        <div class="card-body card-padding" ng-show="ctrl.allAssignments.length === 0">
-                            <small class="c-bluegray">Geen opdrachten gevonden</small>
+                        <div class="card-body card-padding bgm-green" ng-show="ctrl.allAssignments.length === 0">
+                            <p class="m-0"><i class="zmdi zmdi-check zmdi-hc-fw"></i><small class="c-white">Alle opdrachten zijn gecontroleerd</small></p>
                         </div>
                     </div>
 
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                @*<div class="col-md-6">
                     <div class="card bgm-none">
                         <div class="card-header bgm-deeporange">
                             <h2>Controle<small>Alle opdrachten die nog niet gecontroleerd zijn voor vandaag en eerder staan hier weergegeven</small></h2>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </section>

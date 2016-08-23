@@ -83,20 +83,20 @@
                                 <div class="col-sm-4">
                                     <small>Van</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="ctrl.timesheetDetails.startTime" type="time" class="form-control" placeholder="bv. 07:00" ng-change="ctrl.updateTime(true)">
+                                        <input ng-model="ctrl.timesheetDetails.startTime" type="time" class="form-control" placeholder="bv. 07:00" ng-change="ctrl.updateTime(true)">{{ctrl.timesheetDetails.startTime}}
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <small>Tot</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="ctrl.timesheetDetails.endTime" type="time" class="form-control" placeholder="bv. 15:00" ng-change="ctrl.updateTime(true)">
+                                        <input ng-model="ctrl.timesheetDetails.endTime" type="time" class="form-control" placeholder="bv. 15:00" ng-change="ctrl.updateTime(true)">{{ctrl.timesheetDetails.endTime}}
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4">
                                     <small>Totaal</small>
                                     <div class="form-group fg-line">
-                                        <input ng-model="ctrl.timesheetDetails.totalTime" type="time" class="form-control" ng-change="ctrl.updateTime(false)">
+                                        <input ng-model="ctrl.timesheetDetails.totalTime" type="time" class="form-control" ng-change="ctrl.updateTime(false)">{{ctrl.timesheetDetails.totalTime}}
                                     </div>
                                 </div>
                             </div>

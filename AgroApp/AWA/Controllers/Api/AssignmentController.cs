@@ -31,7 +31,35 @@ namespace AWA.Controllers.Api
         [HttpGet("get/{assignmentId}")]
         public object GetAllAssignments(int assignmentId)
         {
-            return GetAssignment(_context, assignmentId);
+            return _context.Assignments.Where(x => x.AssignmentId == assignmentId);
+        }
+
+        [HttpGet("getallunverified/{dateToday}")]
+        public object GetAllUnverfiedAssignments(string dateToday)
+        {
+            long date = long.Parse(dateToday);
+
+            var list = from x in _context.Assignments
+                       join ea in _context.EmployeeAssignments
+                       on x.AssignmentId equals ea.AssignmentId
+                       where x.Date <= date && ea.IsVerified == false
+                       select new
+                       {
+                           x.Customer,
+                           x.Date,
+                           x.Description,
+                           x.AssignmentId,
+                           x.Location,
+
+                           EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                           {
+                               s.IsVerified,
+                               s.UserId,
+                               User = new { s.User.Name }
+                           })
+                       };
+
+            return list;
         }
 
         [HttpGet("getall/{datelong}")]

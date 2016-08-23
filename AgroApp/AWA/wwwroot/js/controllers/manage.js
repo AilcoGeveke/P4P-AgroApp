@@ -218,7 +218,7 @@ agroApp.controller("MachineManagement", function ($window, $scope, machineManage
     };
 });
 
-agroApp.controller("TimesheetController", function ($scope, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
+agroApp.controller("TimesheetController", function ($scope, $http, userManagement, customerManagement, assignmentManagement, machineManagement, timesheetManagement, workTypeList) {
     var ctrl = this;
 
     ctrl.showMainCard = true;
@@ -243,10 +243,8 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
     ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
     ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
 
-    ctrl.updateTime = function (calcTotal)
-    {
-        if(calcTotal)
-        {
+    ctrl.updateTime = function (calcTotal) {
+        if (calcTotal) {
             if (ctrl.timesheetDetails.endTime < ctrl.timesheetDetails.startTime)
                 ctrl.timesheetDetails.endTime = angular.copy(ctrl.timesheetDetails.startTime);
 
@@ -259,8 +257,7 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
 
             ctrl.timesheetDetails.totalTime = dateNow;
         }
-        else
-        {
+        else {
             ctrl.timesheetDetails.startTime = moment().startOf('d').toDate();
             ctrl.timesheetDetails.endTime = moment().startOf('d').toDate();
         }
@@ -285,7 +282,12 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
             showConfirmButton: false
         });
         console.log(ctrl.timesheetDetails);
+        ctrl.timesheetDetails.startTime = fixTime(ctrl.timesheetDetails.startTime);
+        ctrl.timesheetDetails.endTime = fixTime(ctrl.timesheetDetails.endTime);
+        ctrl.timesheetDetails.totalTime = fixTime(ctrl.timesheetDetails.totalTime);
+
         ctrl.timesheetDetails.employeeAssignmentId = ctrl.employeeAssignment.employeeAssignmentId;
+
         timesheetManagement.add(ctrl.timesheetDetails)
         .then(function successCallback(response) {
             if (response.data !== true) {
@@ -393,6 +395,37 @@ agroApp.controller("TimesheetController", function ($scope, userManagement, cust
                 }
                 else
                     ctrl.allAssignments = response.data;
+            },
+            function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
+            });
+    };
+    ctrl.getAllUnverifiedAssignments = function () {
+        $http.get("/api/assignment/getallunverified/" + moment().startOf('d').toDate().getTime()).then(
+            function successCallback(response) {
+                ctrl.allAssignments = [];
+                for (var x in response.data) {
+                    var containsCus = false;
+                    var customerIndex = -1;
+
+                    for (var cus in ctrl.allAssignments) {
+                        if (ctrl.allAssignments[cus].name === response.data[x].customer.name) {
+                            containsCus = true;
+                            customerIndex = cus;
+                        }
+                    }
+
+                    if (!containsCus) {
+                        ctrl.allAssignments.push(response.data[x].customer);
+                        customerIndex = ctrl.allAssignments.indexOf(response.data[x].customer);
+                        ctrl.allAssignments[customerIndex].assignments = [];
+                    }
+
+                    var customer = response.data[x].customer;
+                    delete response.data[x].customer;
+                    response.data[x].opened = false;
+                    ctrl.allAssignments[customerIndex].assignments.push(response.data[x]);
+                }
             },
             function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan bij het ophalen van de lijst. Ververs de pagina en probeer het opnieuw.", "error");
@@ -813,3 +846,7 @@ agroApp.directive("assignmentItem", function () {
         templateUrl: "template/assignmentitem.html"
     };
 });
+
+function fixTime(now) {
+    return new Date(now.getTime() + (now.getTimezoneOffset() * -60000));
+}

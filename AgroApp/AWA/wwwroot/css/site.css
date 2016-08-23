@@ -55,6 +55,13 @@
     font-size: 24px;
 }
 
+.zmdi-hc-fw {
+    font-size: 23px;
+    vertical-align: middle;
+    color: #333;
+    margin-right: 10px;
+}
+
 .listview .lv-attrs > li {
     border: 0 !important;
 }

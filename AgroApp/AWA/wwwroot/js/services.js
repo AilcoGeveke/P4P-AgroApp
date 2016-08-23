@@ -196,17 +196,10 @@ materialAdmin
 
     .service('timesheetManagement', function ($http) {
         this.add = function (data) {
-            var copy = angular.copy(data);
-
-            copy.startTime = data.startTime;
-            copy.endTime = data.endTime;
-            copy.totalTime = data.totalTime;
-
-            return $http.post('/api/timesheet/add', copy);
+            return $http.post('/api/timesheet/add', data);
         }
 
         this.getAll = function (id) {
-
             return $http.get('/api/timesheet/getall/' + id);
         }
     })
