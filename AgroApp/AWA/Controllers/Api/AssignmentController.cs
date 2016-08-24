@@ -39,27 +39,27 @@ namespace AWA.Controllers.Api
         {
             long date = long.Parse(dateToday);
 
-            var list = from x in _context.Assignments
-                       join ea in _context.EmployeeAssignments
-                       on x.AssignmentId equals ea.AssignmentId
-                       where x.Date <= date && ea.IsVerified == false
-                       select new
-                       {
-                           x.Customer,
-                           x.Date,
-                           x.Description,
-                           x.AssignmentId,
-                           x.Location,
+            var list = (from x in _context.Assignments
+                         join ea in _context.EmployeeAssignments
+                         on x.AssignmentId equals ea.AssignmentId
+                         where x.Date <= date && ea.IsVerified == false
+                         select new
+                         {
+                             x.Customer,
+                             x.Date,
+                             x.Description,
+                             x.AssignmentId,
+                             x.Location,
 
-                           EmployeeAssignments = x.EmployeeAssignments.Select(s => new
-                           {
-                               s.IsVerified,
-                               s.UserId,
-                               User = new { s.User.Name }
-                           })
-                       };
+                             EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                             {
+                                 s.IsVerified,
+                                 s.UserId,
+                                 User = new { s.User.Name }
+                             })
+                         }).Distinct();
 
-            return list;
+            return list.ToList();
         }
 
         [HttpGet("getall/{datelong}")]
@@ -97,9 +97,9 @@ namespace AWA.Controllers.Api
                     s.UserId,
                     User = new { s.User.Name, s.User.Username }
                 })
-            });
+            }).ToList();
 
-            return list.ToList();
+            return list;
         }
 
         [HttpGet("getall/userspecific/{datelong}")]
@@ -141,9 +141,9 @@ namespace AWA.Controllers.Api
 
             //am.Customer = CustomerController.GetCustomer(context, am.CustomerId);
             am.EmployeeAssignments = new List<EmployeeAssignment>();
-            if(am.Employees != null)
+            if (am.Employees != null)
                 foreach (User user in am.Employees)
-                    am.EmployeeAssignments.Add(new EmployeeAssignment() {UserId = user.UserId});
+                    am.EmployeeAssignments.Add(new EmployeeAssignment() { UserId = user.UserId });
 
             context.Assignments.Add(am);
             context.SaveChanges();
