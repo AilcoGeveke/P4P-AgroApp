@@ -308,24 +308,24 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
 
         $http.patch("/api/assignment/").then(
             function successCallback(response) {
-            if (response.data !== true) {
-                swal("", response.data, "error");
-            }
-            else {
-                swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
-                ctrl.showTaskOverview = true;
-                ctrl.showNewTaskCard = false;
-                ctrl.getAllTimesheets(ctrl.employeeAssignment.employeeAssignmentId);
+                if (response.data !== true) {
+                    swal("", response.data, "error");
+                }
+                else {
+                    swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
+                    ctrl.showTaskOverview = true;
+                    ctrl.showNewTaskCard = false;
+                    ctrl.getAllTimesheets(ctrl.employeeAssignment.employeeAssignmentId);
 
-                ctrl.timesheetDetails = {};
-                ctrl.timesheetDetails.workType = "Machinist";
-                ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
-                ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
-                ctrl.updateTime(true);
-            }
-        }, function errorCallback(response) {
-            swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
-        });
+                    ctrl.timesheetDetails = {};
+                    ctrl.timesheetDetails.workType = "Machinist";
+                    ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
+                    ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
+                    ctrl.updateTime(true);
+                }
+            }, function errorCallback(response) {
+                swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
+            });
     };
 
     ctrl.getAllMachines = function () {
@@ -868,3 +868,9 @@ agroApp.directive("assignmentItem", function () {
 function fixTime(now) {
     return new Date(now.getTime() + (now.getTimezoneOffset() * -60000));
 }
+
+function scrollTo(div) {
+    $('html, body').animate({
+        scrollTop: $("#" + div).offset().top - 15
+    }, 500);
+};

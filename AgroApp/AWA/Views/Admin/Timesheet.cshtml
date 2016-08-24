@@ -5,11 +5,11 @@
 <!-- Header -->
 <header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
-<section id="main" ng-controller="TimesheetController as ctrl" ng-cloak>
+<section id="main" ng-controller="TimesheetController as ctrl" ng-cloak >
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
     <section id="content" ng-init="ctrl.employeeAssignment = @ViewData["EmployeeAssignment"]; ctrl.selectedAssignment = ctrl.employeeAssignment.assignment">
-        <div class="container c-alt">
+        <div class="container c-alt"id="anchor2">
             <div class="card bgm-none">
                 <div class="card-header ch-dark palette-Teal-400 bg">
                     <h2>{{ctrl.selectedAssignment.customer.name}} <small>{{ctrl.selectedAssignment.date | date: 'dd/MM/yyyy'}}</small></h2>
@@ -33,13 +33,13 @@
             @if (ViewData["EnableControls"] as bool? ?? false)
             {
                 <div slider="ctrl.showNewTaskCard">
-                    <div class="card">
+                    <div class="card" id="anchor1">
                         <div class="card-header ch-dark palette-Blue-Grey-400 bg">
                             <h2>Taak Toevoegen<small>Hier kunt u uw gewerkte uren invullen</small></h2>
                         </div>
                         <div class="card-body card-padding">
                             <div class="row">
-                                <div class="col-xs-12 m-b-15" ng-init="">
+                                <div class="container m-b-15" ng-init="">
                                     <label>Type Werk</label>
                                     <ui-select ng-model="ctrl.timesheetDetails.workType"
                                                style="width: 100%;"
@@ -50,7 +50,7 @@
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>
-                                <div uib-collapse="ctrl.timesheetDetails.workType != 'Machinist'">
+                                <div slider="ctrl.timesheetDetails.workType == 'Machinist'" enabled="true">
                                     <div class="col-sm-6 m-b-15" ng-init="ctrl.getAllMachines()">
                                         <label>Voertuig</label>
                                         <ui-select ng-model="ctrl.timesheetDetails.machine"
@@ -110,7 +110,7 @@
                         </div>
                         <div class="card-body card-padding ch-dark palette-Blue-Grey-400 bg">
                             <button class="btn btn-primary m-r-15" ng-click="ctrl.addTimesheetRecord()">Toevoegen</button>
-                            <button class="btn btn-default" ng-click="ctrl.showNewTaskCard = false; ctrl.showTaskOverview= true" slide-toggle="#showNewTaskCard">Annuleren</button>
+                            <button class="btn btn-default" ng-click="ctrl.showNewTaskCard = false; ctrl.showTaskOverview= true" onclick="scrollTo('anchor1')">Annuleren</button>
                         </div>
                     </div>
                 </div>
@@ -118,10 +118,10 @@
 
             @*Overzicht Taken*@
             <div slider="ctrl.showTaskOverview" enabled="true">
-                <div class="card bgm-none">
+                <div class="card bgm-none" >
                     <div class="card-header ch-dark palette-Blue-400 bg">
                         <h2>Overzicht Uren <small>Overzicht ingevulde gegevens voor deze opdracht</small></h2>
-                        <button class="btn bgm-red btn-float waves-effect" ng-show="'@ViewData["EnableControls"]' == 'True'" ng-click="ctrl.showNewTaskCard = true; ctrl.showTaskOverview = false"><i class="zmdi zmdi-plus"></i></button>
+                        <button class="btn bgm-red btn-float waves-effect" ng-show="'@ViewData["EnableControls"]' == 'True'" ng-click="ctrl.showNewTaskCard = true; ctrl.showTaskOverview = false" onclick="scrollTo('anchor1')"><i class="zmdi zmdi-plus"></i></button>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -170,10 +170,20 @@
                     </div>
 
                     <div class="card-body card-padding">
-                        <select chosen multiple class="w-100"
-                                data-placeholder="Selecteer uw collega's"
-                                ng-model="ctrl.selectedCoworkers"
-                                ng-options="x.IdEmployee as x.Name for x in ctrl.allUsers"></select>
+                        <div ng-init="ctrl.getUsers(false)">
+                            <div class="form-group fg-line">
+                                <ui-select multiple ng-model="ctrl.newAssignment.employees"
+                                           style="width: 100%;"
+                                           title="Werknemers"
+                                           class="form-control">
+                                    <ui-select-match placeholder="Collegas">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="user in ctrl.allUsers | filter: $select.search">
+                                        <div ng-bind-html="user.name | highlight: $select.search"></div>
+                                        <small>{{user.username}}</small>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
                     </div>
                 }
                 else
