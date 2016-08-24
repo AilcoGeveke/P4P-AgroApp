@@ -5,10 +5,24 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AWA.Migrations
 {
-    public partial class databaseinit : Migration
+    public partial class DatabaseInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Attachments",
+                columns: table => new
+                {
+                    AttachmentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Number = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attachments", x => x.AttachmentId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Cargos",
                 columns: table => new
@@ -43,6 +57,23 @@ namespace AWA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Machines",
+                columns: table => new
+                {
+                    MachineId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Number = table.Column<int>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
+                    Tag = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Machines", x => x.MachineId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoadPlates",
                 columns: table => new
                 {
@@ -56,24 +87,6 @@ namespace AWA.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RoadPlates", x => x.RoadplateId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Timesheets",
-                columns: table => new
-                {
-                    TimesheetId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: true),
-                    EmployeeAssignmentId = table.Column<int>(nullable: false),
-                    EndTime = table.Column<DateTime>(nullable: false),
-                    StartTime = table.Column<DateTime>(nullable: false),
-                    TotalTime = table.Column<DateTime>(nullable: false),
-                    WorkType = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Timesheets", x => x.TimesheetId);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,63 +129,18 @@ namespace AWA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Attachments",
-                columns: table => new
-                {
-                    AttachmentId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Number = table.Column<int>(nullable: false),
-                    TimesheetId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Attachments", x => x.AttachmentId);
-                    table.ForeignKey(
-                        name: "FK_Attachments_Timesheets_TimesheetId",
-                        column: x => x.TimesheetId,
-                        principalTable: "Timesheets",
-                        principalColumn: "TimesheetId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Machines",
-                columns: table => new
-                {
-                    MachineId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Number = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: true),
-                    Tag = table.Column<string>(nullable: true),
-                    TimesheetId = table.Column<int>(nullable: true),
-                    Type = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Machines", x => x.MachineId);
-                    table.ForeignKey(
-                        name: "FK_Machines_Timesheets_TimesheetId",
-                        column: x => x.TimesheetId,
-                        principalTable: "Timesheets",
-                        principalColumn: "TimesheetId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EmployeeAssignments",
                 columns: table => new
                 {
+                    EmployeeAssignmentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AssignmentId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    EmployeeAssignmentId = table.Column<int>(nullable: false),
                     IsVerified = table.Column<bool>(nullable: false),
-                    TimesheetId = table.Column<int>(nullable: true)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeAssignments", x => new { x.AssignmentId, x.UserId });
+                    table.PrimaryKey("PK_EmployeeAssignments", x => x.EmployeeAssignmentId);
                     table.ForeignKey(
                         name: "FK_EmployeeAssignments_Assignments_AssignmentId",
                         column: x => x.AssignmentId,
@@ -180,16 +148,48 @@ namespace AWA.Migrations
                         principalColumn: "AssignmentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeAssignments_Timesheets_TimesheetId",
-                        column: x => x.TimesheetId,
-                        principalTable: "Timesheets",
-                        principalColumn: "TimesheetId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_EmployeeAssignments_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimesheetRecords",
+                columns: table => new
+                {
+                    TimesheetRecordId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AttachmentId = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    EmployeeAssignmentId = table.Column<int>(nullable: false),
+                    EndTime = table.Column<DateTime>(nullable: false),
+                    MachineId = table.Column<int>(nullable: false),
+                    StartTime = table.Column<DateTime>(nullable: false),
+                    TotalTime = table.Column<DateTime>(nullable: false),
+                    WorkType = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimesheetRecords", x => x.TimesheetRecordId);
+                    table.ForeignKey(
+                        name: "FK_TimesheetRecords_Attachments_AttachmentId",
+                        column: x => x.AttachmentId,
+                        principalTable: "Attachments",
+                        principalColumn: "AttachmentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TimesheetRecords_EmployeeAssignments_EmployeeAssignmentId",
+                        column: x => x.EmployeeAssignmentId,
+                        principalTable: "EmployeeAssignments",
+                        principalColumn: "EmployeeAssignmentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TimesheetRecords_Machines_MachineId",
+                        column: x => x.MachineId,
+                        principalTable: "Machines",
+                        principalColumn: "MachineId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -199,19 +199,9 @@ namespace AWA.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Attachments_TimesheetId",
-                table: "Attachments",
-                column: "TimesheetId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeAssignments_AssignmentId",
                 table: "EmployeeAssignments",
                 column: "AssignmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmployeeAssignments_TimesheetId",
-                table: "EmployeeAssignments",
-                column: "TimesheetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeAssignments_UserId",
@@ -219,9 +209,19 @@ namespace AWA.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Machines_TimesheetId",
-                table: "Machines",
-                column: "TimesheetId");
+                name: "IX_TimesheetRecords_AttachmentId",
+                table: "TimesheetRecords",
+                column: "AttachmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimesheetRecords_EmployeeAssignmentId",
+                table: "TimesheetRecords",
+                column: "EmployeeAssignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimesheetRecords_MachineId",
+                table: "TimesheetRecords",
+                column: "MachineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",
@@ -233,10 +233,16 @@ namespace AWA.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Attachments");
+                name: "Cargos");
 
             migrationBuilder.DropTable(
-                name: "Cargos");
+                name: "RoadPlates");
+
+            migrationBuilder.DropTable(
+                name: "TimesheetRecords");
+
+            migrationBuilder.DropTable(
+                name: "Attachments");
 
             migrationBuilder.DropTable(
                 name: "EmployeeAssignments");
@@ -245,16 +251,10 @@ namespace AWA.Migrations
                 name: "Machines");
 
             migrationBuilder.DropTable(
-                name: "RoadPlates");
-
-            migrationBuilder.DropTable(
                 name: "Assignments");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Timesheets");
 
             migrationBuilder.DropTable(
                 name: "Customers");

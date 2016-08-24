@@ -225,7 +225,6 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
     ctrl.showTaskOverview = true;
     ctrl.showNewTaskCard = false;
 
-    ctrl.allTimesheets = [];
     ctrl.allUsers = [];
     ctrl.allCustomers = [];
     ctrl.allAssignments = [];
@@ -275,21 +274,40 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
             });
     };
 
-    ctrl.addTimesheet = function () {
+    ctrl.addTimesheetRecord = function () {
+        ctrl.timesheetDetails.startTime = fixTime(ctrl.timesheetDetails.startTime).getTime();
+        ctrl.timesheetDetails.endTime = fixTime(ctrl.timesheetDetails.endTime).getTime();
+        ctrl.timesheetDetails.totalTime = fixTime(ctrl.timesheetDetails.totalTime).getTime();
+        console.log(ctrl.timesheetDetails);
+
+        //if the list doesn't exist, create empty list
+        if (ctrl.employeeAssignment.records === undefined)
+            ctrl.employeeAssignment.records = [];
+
+        //add task to list
+        ctrl.employeeAssignment.records.push(ctrl.timesheetDetails);
+
+        //switch view
+        ctrl.showTaskOverview = true;
+        ctrl.showNewTaskCard = false;
+
+        //reset timesheetDetails
+        ctrl.timesheetDetails = {};
+        ctrl.timesheetDetails.workType = "Machinist";
+        ctrl.timesheetDetails.startTime = moment().startOf('d').add(7, 'h').toDate();
+        ctrl.timesheetDetails.endTime = moment().startOf('h').toDate();
+        ctrl.updateTime(true);
+    };
+
+    ctrl.saveTimesheet = function () {
         swal({
             title: "",
-            text: "Taak word toegevoegd!",
+            text: "Bezig met opslaan!",
             showConfirmButton: false
         });
-        console.log(ctrl.timesheetDetails);
-        ctrl.timesheetDetails.startTime = fixTime(ctrl.timesheetDetails.startTime);
-        ctrl.timesheetDetails.endTime = fixTime(ctrl.timesheetDetails.endTime);
-        ctrl.timesheetDetails.totalTime = fixTime(ctrl.timesheetDetails.totalTime);
 
-        ctrl.timesheetDetails.employeeAssignmentId = ctrl.employeeAssignment.employeeAssignmentId;
-
-        timesheetManagement.add(ctrl.timesheetDetails)
-        .then(function successCallback(response) {
+        $http.patch("/api/assignment/").then(
+            function successCallback(response) {
             if (response.data !== true) {
                 swal("", response.data, "error");
             }
@@ -308,8 +326,6 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
         });
-
-
     };
 
     ctrl.getAllMachines = function () {
@@ -625,10 +641,11 @@ agroApp.controller("CustomerManagement", function ($window, $scope, customerMana
                 swal("", response.data, "error");
             }
             else {
-                swal({ title: "Klant is aangemaakt", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                swal({ title: "Klant is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
                 ctrl.showEditCard = false;
                 ctrl.showMainCard = true;
                 ctrl.customerDetails = {};
+                ctrl.getAllCustomers();
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
@@ -663,10 +680,11 @@ agroApp.controller("CustomerManagement", function ($window, $scope, customerMana
                 swal("", response.data, "error");
             }
             else {
-                swal({ title: "Klant is aangepast", text: "U wordt doorverwezen", timer: 3000, showConfirmButton: false, type: "success" });
+                swal({ title: "Klant is aangepast", text: "", timer: 3000, showConfirmButton: false, type: "success" });
                 ctrl.showEditCard = false;
                 ctrl.showMainCard = true;
                 ctrl.customerDetails = {};
+                ctrl.getAllCustomers();
             }
         }, function errorCallback(response) {
             swal("Fout", "Er is iets misgegaan, neem contact op met de ontwikkelaar!", "error");

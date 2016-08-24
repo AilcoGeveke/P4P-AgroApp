@@ -11498,7 +11498,7 @@ a.lv-footer:hover {
     padding: 15px;
 }
 
-.card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
+.card-header:not(.ch-alt):not([class*="bgm-"]):not([class*="palette-"]) + .card-padding {
     padding-top: 0;
 }
 

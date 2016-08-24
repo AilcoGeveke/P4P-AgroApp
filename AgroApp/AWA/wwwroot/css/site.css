@@ -108,6 +108,10 @@ body:before {
     background-color: #009688;
 }
 
+body {
+    background-color: #edecec;
+}
+
 .block-header > h2 {
     font-size: 15px;
     color: #fff;
@@ -168,4 +172,23 @@ body:before {
 
 .bgm-green a {
     color: white;
+}
+
+.card-header.ch-dark h2, .card-header.ch-dark small {
+    color: #fff;
+}
+
+.expansion-card .btn {
+    box-shadow: unset;
+    border-left: 1px solid blue;
+    border-radius: 0;
+} 
+
+.expansion-card .btn:hover {
+    background-color: #E3F2FD;
+    border-left: 1px solid blue;
+} 
+
+.bgm-none .card-body {
+    background-color: white;
 }

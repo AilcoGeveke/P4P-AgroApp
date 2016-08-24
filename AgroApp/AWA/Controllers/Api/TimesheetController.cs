@@ -20,15 +20,15 @@ namespace AWA.Controllers.Api
         }
 
         [HttpGet("getall/{idEmployeeAssignment}")]
-        public List<Timesheet> GetAllTimeSheets(int idEmployeeAssignment)
+        public List<Models.TimesheetRecord> GetAllTimeSheets(int idEmployeeAssignment)
         {
-            return _context.Timesheets.Where(x => x.EmployeeAssignmentId == idEmployeeAssignment).ToList();
+            return _context.TimesheetRecords.Where(x => x.EmployeeAssignmentId == idEmployeeAssignment).ToList();
         }
 
         [HttpPost("add")]
-        public bool AddTimeSheet([FromBody]Timesheet timesheet)
+        public bool AddTimeSheet([FromBody] Models.TimesheetRecord timesheet)
         {
-            _context.Timesheets.Add(timesheet);
+            _context.TimesheetRecords.Add(timesheet);
             _context.SaveChanges();
             return true;
 

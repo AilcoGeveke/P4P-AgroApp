@@ -45,11 +45,7 @@ namespace AWA.Migrations
 
                     b.Property<int>("Number");
 
-                    b.Property<int?>("TimesheetId");
-
                     b.HasKey("AttachmentId");
-
-                    b.HasIndex("TimesheetId");
 
                     b.ToTable("Attachments");
                 });
@@ -103,15 +99,11 @@ namespace AWA.Migrations
 
                     b.Property<bool>("IsVerified");
 
-                    b.Property<int?>("TimesheetId");
-
                     b.Property<int>("UserId");
 
                     b.HasKey("EmployeeAssignmentId");
 
                     b.HasIndex("AssignmentId");
-
-                    b.HasIndex("TimesheetId");
 
                     b.HasIndex("UserId");
 
@@ -131,13 +123,9 @@ namespace AWA.Migrations
 
                     b.Property<string>("Tag");
 
-                    b.Property<int?>("TimesheetId");
-
                     b.Property<string>("Type");
 
                     b.HasKey("MachineId");
-
-                    b.HasIndex("TimesheetId");
 
                     b.ToTable("Machines");
                 });
@@ -160,10 +148,12 @@ namespace AWA.Migrations
                     b.ToTable("RoadPlates");
                 });
 
-            modelBuilder.Entity("AWA.Models.Timesheet", b =>
+            modelBuilder.Entity("AWA.Models.TimesheetRecord", b =>
                 {
-                    b.Property<int>("TimesheetId")
+                    b.Property<int>("TimesheetRecordId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AttachmentId");
 
                     b.Property<string>("Description");
 
@@ -171,15 +161,23 @@ namespace AWA.Migrations
 
                     b.Property<DateTime>("EndTime");
 
+                    b.Property<int>("MachineId");
+
                     b.Property<DateTime>("StartTime");
 
                     b.Property<DateTime>("TotalTime");
 
                     b.Property<string>("WorkType");
 
-                    b.HasKey("TimesheetId");
+                    b.HasKey("TimesheetRecordId");
 
-                    b.ToTable("Timesheets");
+                    b.HasIndex("AttachmentId");
+
+                    b.HasIndex("EmployeeAssignmentId");
+
+                    b.HasIndex("MachineId");
+
+                    b.ToTable("TimesheetRecords");
                 });
 
             modelBuilder.Entity("AWA.Models.User", b =>
@@ -215,13 +213,6 @@ namespace AWA.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("AWA.Models.Attachment", b =>
-                {
-                    b.HasOne("AWA.Models.Timesheet")
-                        .WithMany("Attachments")
-                        .HasForeignKey("TimesheetId");
-                });
-
             modelBuilder.Entity("AWA.Models.EmployeeAssignment", b =>
                 {
                     b.HasOne("AWA.Models.Assignment", "Assignment")
@@ -229,21 +220,28 @@ namespace AWA.Migrations
                         .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AWA.Models.Timesheet")
-                        .WithMany("EmployeeAssignments")
-                        .HasForeignKey("TimesheetId");
-
                     b.HasOne("AWA.Models.User", "User")
                         .WithMany("EmployeeAssignments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("AWA.Models.Machine", b =>
+            modelBuilder.Entity("AWA.Models.TimesheetRecord", b =>
                 {
-                    b.HasOne("AWA.Models.Timesheet")
-                        .WithMany("Machines")
-                        .HasForeignKey("TimesheetId");
+                    b.HasOne("AWA.Models.Attachment", "Attachment")
+                        .WithMany()
+                        .HasForeignKey("AttachmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AWA.Models.EmployeeAssignment", "EmployeeAssignment")
+                        .WithMany("Records")
+                        .HasForeignKey("EmployeeAssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AWA.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

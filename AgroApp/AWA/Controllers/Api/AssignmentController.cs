@@ -29,7 +29,7 @@ namespace AWA.Controllers.Api
         }
 
         [HttpGet("get/{assignmentId}")]
-        public object GetAllAssignments(int assignmentId)
+        public object GetAllAssignment(int assignmentId)
         {
             return _context.Assignments.Where(x => x.AssignmentId == assignmentId);
         }
@@ -164,11 +164,14 @@ namespace AWA.Controllers.Api
         public static object GetEmployeeAssignment(AgroContext context, int employeeId, int assignmentId)
         {
             return context.EmployeeAssignments.Where(x => x.AssignmentId == assignmentId && x.UserId == employeeId)
+                .Include(x => x.Records)
                 .Include(x => x.Assignment)
                 .ThenInclude(x => x.Customer)
                 .Select(x => new
                 {
                     x.EmployeeAssignmentId,
+                    x.Records,
+                    User = new { x.User.Name },
 
                     Assignment = new
                     {

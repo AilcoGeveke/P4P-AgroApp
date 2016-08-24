@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AWA.Models
@@ -17,5 +18,7 @@ namespace AWA.Models
         [Required]
         public int AssignmentId { get; set; }
         public Assignment Assignment { get; set; }
+
+        public ICollection<TimesheetRecord> Records { get; set; }
     }
 }

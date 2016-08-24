@@ -13,7 +13,7 @@ namespace AWA.Models
         public DbSet<EmployeeAssignment> EmployeeAssignments { get; set; }
         public DbSet<Machine> Machines { get; set; }
         public DbSet<RoadPlate> RoadPlates { get; set; }
-        public DbSet<Timesheet> Timesheets { get; set; }
+        public DbSet<TimesheetRecord> TimesheetRecords { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
