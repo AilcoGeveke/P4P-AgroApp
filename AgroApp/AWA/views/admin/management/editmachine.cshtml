@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/views/shared/_adminlayout.cshtml";
+}
+<!-- Header -->
+<header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
+
+<section id="main">
+    <!-- Sidebar -->
+    <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
+
+    <!-- Page Content -->
+    <section id="content" data-ng-controller="MachineManagement as um">
+        <div class="container">
+            <div class="card">
+                <div class="form-horizontal">
+                    <div class="card-header ch-alt m-b-20">
+                        <h2>Voertuig '{{um.machineDetails.Name}}' wijzigen <small>Vul de gegevens hieronder in en druk vervolgens op Verzenden</small></h2>
+                    </div>
+
+                    <div ng-init="um.machineDetails = @ViewData["machineData"]"></div>
+
+                    <div class="card-body card-padding">
+                        <div class="form-group">
+                            <label for="inputFullName" class="col-sm-2 control-label">Volledige Naam</label>
+                            <div class="col-sm-10">
+                                <div class="fg-line">
+                                    <input required ng-model="um.machineDetails.Name" type="text" class="form-control input-sm" id="inputFullName" placeholder="Volledige Naam">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Nummer</label>
+                            <div class="col-sm-10">
+                                <div class="fg-line">
+                                    <input required ng-model="um.machineDetails.Number" type="number" class="form-control input-sm" id="inputEmail3" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Kenteken</label>
+                            <div class="col-sm-10">
+                                <div class="fg-line">
+                                    <input required ng-model="um.machineDetails.Tag" type="text" class="form-control input-sm" id="inputEmail3" placeholder="Kenteken">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputRole" class="col-sm-2 control-label">Type</label>
+                            <div class="col-sm-10 m-b-10">
+
+                                <div class="fg-line">
+                                    <select required ng-model="um.machineDetails.Type" ng-options="x for x in um.types" class="w-100" id="inputRole" ng-init="um.machineDetails.Type"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputRole" class="col-sm-2 control-label">Status</label>
+                            <div class="col-sm-10 m-b-10">
+                                <div class="fg-line">
+                                    <select required ng-model="um.machineDetails.Status" class="w-100 form-control" id="inputRole" ng-init="um.machineDetails.Status">
+                                        <option value="Operationeel">Operationeel</option>
+                                        <option value="In onderhoud">In onderhoud</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-primary btn-sm waves-effect" ng-click="um.applyChangesToMachine()">Wijzig Machine</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
