@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/views/shared/_adminlayout.cshtml";
+}
+<!-- Header -->
+<header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
+
+<section id="main">
+    <!-- Sidebar -->
+    <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
+
+    <!-- Page Content -->
+    <section id="content" ng-controller="AttachmentManagement as um">
+        <div class="container">
+            <div class="card">
+                <form class="form-horizontal" ng-submit="um.addAttachment()">
+                    <div class="card-header ch-alt m-b-20">
+                        <h2>Hulpstuk Toevoegen <small>Vul de gegevens hieronder in en druk vervolgens op toevoegen</small></h2>
+                    </div>
+
+                    <div class="card-body card-padding">
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label"> Naam hulpstuk</label>
+                            <div class="col-sm-10">
+                                <div class="fg-line">
+                                    <input required ng-model="um.attachmentDetails.Name" type="text" class="form-control input-sm" id="inputName" placeholder="Naam hulpstuk">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNumber" class="col-sm-2 control-label">Nummer</label>
+                            <div class="col-sm-10">
+                                <div class="fg-line">
+                                    <input required ng-model="um.attachmentDetails.Number" type="text" class="form-control input-sm" id="inputNumber" placeholder="Nummer">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Voeg toe</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</section>

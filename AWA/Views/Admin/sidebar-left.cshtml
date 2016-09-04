@@ -1,0 +1,129 @@
+<div class="sidebar-inner c-overflow">
+    
+    <div class="smm-header">
+        <i class="zmdi zmdi-long-arrow-left" data-ma-action="sidebar-close" ng-click="mactrl.sidebarToggle.left = false"></i>
+    </div>
+
+    <ul class="main-menu">
+        <li class="menu">
+            <a href="~/admin">
+                <i class="zmdi zmdi-home"></i>
+                Planning
+            </a>
+        </li>
+
+        <li class="menu">
+            <a href="~/admin/opdrachten">
+                <i class="zmdi zmdi-group-work"></i>
+                Overzicht Alle Opdrachten
+            </a>
+        </li>
+
+        <li class="sub-menu">
+            <a href="" toggle-submenu="">
+                <i class="zmdi zmdi-menu">
+                </i>Administratie
+            </a>
+            <ul style="display: none;">
+                <li>
+                    <a href="~/admin/opdrachten/eigen">Mijn Opdrachten</a>
+                </li>
+                <li>
+                    <a href="~/admin/urenoverzicht">Uren registratie</a>
+                </li>
+                <li class="sub-menu">
+                    <a href="" toggle-submenu="">
+                        Gewichten
+                    </a>
+                    <ul style="display: none;">
+                        <li>
+                            <a href="~/admin/vrachten/overzicht">
+                                Overzicht
+                            </a>
+                        </li>
+                        <li><a href="~/admin/vrachten/toevoegen">Vracht Toevoegen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li class="sub-menu">
+            <a href="" toggle-submenu="">
+                <i class="zmdi zmdi-menu"></i>
+                Beheer
+            </a>
+            <ul style="display: none;">
+                <li class="sub-menu">
+                    <a href="" toggle-submenu="">
+                        Gebruiker Beheer
+                    </a>
+                    <ul style="display: none;">
+                        <li>
+                            <a href="~/admin/gebruikers/overzicht">
+                                Overzicht
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/admin/gebruikers/archief">
+                                Archief
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="" toggle-submenu="">
+                        Klant Beheer
+                    </a>
+                    <ul style="display: none;">
+                        <li>
+                            <a href="~/admin/klanten/overzicht">
+                                Overzicht
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/admin/klanten/archief">Archief</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="" toggle-submenu="">Machine Beheer</a>
+                    <ul style="display: none;">
+                        <li>
+                            <a href="~/admin/machines/overzicht">Overzicht</a>
+                        </li>
+                        <li>
+                        <a href="~/admin/machines/archief">Archief</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="" toggle-submenu="">Hulpstuk Beheer</a>
+                    <ul style="display: none;">
+                        <li>
+                            <a href="~/admin/hulpstuk/overzicht">Overzicht</a>
+                        </li>
+                        <li>
+                        <a href="~/admin/hulpstuk/archief">Archief</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu">
+            <a href="">
+                <i class="zmdi zmdi-menu"></i>
+                Statistieken
+            </a>
+        </li>
+        <li class="sub-menu">
+            <a href="" toggle-submenu=""><i class="zmdi zmdi-menu"></i>Instellingen</a>
+            <ul style="display: none;">
+                <li>
+                    <a href="~/admin/verwijderen">Gegevens wissen</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
