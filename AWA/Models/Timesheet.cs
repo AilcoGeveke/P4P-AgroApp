@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AWA.Models
 {
-    public class TimesheetRecord
+    public class Timesheet
     {
-        public int TimesheetRecordId { set; get; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public int TimesheetId { get; set; }
+        public bool IsVerified { get; set; } = false;
 
-        public string WorkType { set; get; }
-        public DateTime StartTime { set; get; }
-        public DateTime EndTime { set; get; }
-        public DateTime TotalTime { set; get; }
-        public string Description { set; get; }
+        [Required]
+        public int UserId { get; set; }
+        public User User { get; set; }
+        
+        [Required]
+        public int AssignmentId { get; set; }
+        public Assignment Assignment { get; set; }
 
-        public int MachineId { get; set; }
-        public Machine Machine { set; get; }
-
-        public int AttachmentId { get; set; }
-        public Attachment Attachment { set; get; }
-
-        public int EmployeeAssignmentId { set; get; }
-        public EmployeeAssignment EmployeeAssignment { get; set; }
+        public ICollection<TimesheetRecord> Records { get; set; }
     }
 }

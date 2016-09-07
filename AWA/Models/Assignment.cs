@@ -16,7 +16,7 @@ namespace AWA.Models
         public int CustomerId { get; set; }
         public Customer Customer { set; get; }
 
-        public ICollection<EmployeeAssignment> EmployeeAssignments { set; get; }
+        public ICollection<Timesheet> Timesheets { set; get; }
 
         [NotMapped] public ICollection<User> Employees { get; set; }
     }

@@ -19,10 +19,10 @@ namespace AWA.Controllers.Api
             _context = context;
         }
 
-        [HttpGet("getall/{idEmployeeAssignment}")]
-        public List<Models.TimesheetRecord> GetAllTimeSheets(int idEmployeeAssignment)
+        [HttpGet("getall/{idTimesheet}")]
+        public List<Models.TimesheetRecord> GetAllTimeSheets(int idTimesheet)
         {
-            return _context.TimesheetRecords.Where(x => x.EmployeeAssignmentId == idEmployeeAssignment).ToList();
+            return _context.TimesheetRecords.Where(x => x.TimesheetId == idTimesheet).ToList();
         }
 
         [HttpPost("add")]
@@ -35,10 +35,10 @@ namespace AWA.Controllers.Api
             //using (MySqlConnection conn = await DatabaseConnection.GetConnection())
             //{
             //    int idTimesheet = -1;
-            //    string query = "INSERT INTO Timesheet (timesheet.idEmployeeAssignment, timesheet.workType, timesheet.startTime, timesheet.endTime, timesheet.totalTime, timesheet.description) "
+            //    string query = "INSERT INTO Timesheet (timesheet.idTimesheet, timesheet.workType, timesheet.startTime, timesheet.endTime, timesheet.totalTime, timesheet.description) "
             //                + "VALUES (@0, @1, @2, @3, @4, @5); SELECT LAST_INSERT_ID()";
             //    using (MySqlDataReader reader = await MySqlHelper.ExecuteReaderAsync(conn, query,
-            //        new MySqlParameter("@0", timesheet.IdEmployeeAssignment),
+            //        new MySqlParameter("@0", timesheet.IdTimesheet),
             //        new MySqlParameter("@1", timesheet.WorkType),
             //        new MySqlParameter("@2", timesheet.StartTime),
             //        new MySqlParameter("@3", timesheet.EndTime),

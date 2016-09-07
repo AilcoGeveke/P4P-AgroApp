@@ -10,7 +10,7 @@ namespace AWA.Models
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Cargo> Cargos { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<EmployeeAssignment> EmployeeAssignments { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
         public DbSet<Machine> Machines { get; set; }
         public DbSet<RoadPlate> RoadPlates { get; set; }
         public DbSet<TimesheetRecord> TimesheetRecords { get; set; }

@@ -27,7 +27,7 @@ namespace AWA.Models
 
         public bool IsArchived { set; get; }
 
-        public virtual List<EmployeeAssignment> EmployeeAssignments { get; set; }
+        public virtual List<Timesheet> Timesheets { get; set; }
 
         public enum UserRole
         {

@@ -40,7 +40,7 @@ namespace AWA.Controllers.Api
             long date = long.Parse(dateToday);
 
             var list = (from x in _context.Assignments
-                         join ea in _context.EmployeeAssignments
+                         join ea in _context.Timesheets
                          on x.AssignmentId equals ea.AssignmentId
                          where x.Date <= date && ea.IsVerified == false
                          select new
@@ -51,7 +51,7 @@ namespace AWA.Controllers.Api
                              x.AssignmentId,
                              x.Location,
 
-                             EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                             Timesheets = x.Timesheets.Select(s => new
                              {
                                  s.IsVerified,
                                  s.UserId,
@@ -80,7 +80,7 @@ namespace AWA.Controllers.Api
         {
             var assignments = _context.Assignments.Where(x => x.Date >= startDate && x.Date < endDate)
                 .Include(x => x.Customer)
-                .Include(x => x.EmployeeAssignments)
+                .Include(x => x.Timesheets)
                 .ThenInclude(x => x.User);
 
             var list = assignments.Select(x => new
@@ -91,7 +91,7 @@ namespace AWA.Controllers.Api
                 x.Description,
                 x.AssignmentId,
 
-                EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                Timesheets = x.Timesheets.Select(s => new
                 {
                     s.IsVerified,
                     s.UserId,
@@ -110,7 +110,7 @@ namespace AWA.Controllers.Api
             User user = UserController.GetUser(_context, HttpContext);
 
             var list = from x in _context.Assignments
-                       join ea in _context.EmployeeAssignments
+                       join ea in _context.Timesheets
                        on x.AssignmentId equals ea.AssignmentId
                        where x.Date >= startDate && x.Date < endDate && ea.UserId == user.UserId
                        select new
@@ -120,7 +120,7 @@ namespace AWA.Controllers.Api
                            x.Description,
                            x.AssignmentId,
 
-                           EmployeeAssignments = x.EmployeeAssignments.Select(s => new
+                           Timesheets = x.Timesheets.Select(s => new
                            {
                                s.IsVerified,
                                s.UserId
@@ -140,10 +140,10 @@ namespace AWA.Controllers.Api
                 throw new ArgumentException("Assignment is null");
 
             //am.Customer = CustomerController.GetCustomer(context, am.CustomerId);
-            am.EmployeeAssignments = new List<EmployeeAssignment>();
+            am.Timesheets = new List<Timesheet>();
             if (am.Employees != null)
                 foreach (User user in am.Employees)
-                    am.EmployeeAssignments.Add(new EmployeeAssignment() { UserId = user.UserId });
+                    am.Timesheets.Add(new Timesheet() { UserId = user.UserId });
 
             context.Assignments.Add(am);
             context.SaveChanges();
@@ -156,20 +156,20 @@ namespace AWA.Controllers.Api
             return context.Assignments.FirstOrDefault(x => x.AssignmentId == assignmentId);
         }
 
-        public static object GetEmployeeAssignment(AgroContext context, HttpContext httpContext, int assignmentId)
+        public static object GetTimesheet(AgroContext context, HttpContext httpContext, int assignmentId)
         {
-            return GetEmployeeAssignment(context, UserController.GetLoggedInUserId(httpContext), assignmentId);
+            return GetTimesheet(context, UserController.GetLoggedInUserId(httpContext), assignmentId);
         }
 
-        public static object GetEmployeeAssignment(AgroContext context, int employeeId, int assignmentId)
+        public static object GetTimesheet(AgroContext context, int employeeId, int assignmentId)
         {
-            return context.EmployeeAssignments.Where(x => x.AssignmentId == assignmentId && x.UserId == employeeId)
+            return context.Timesheets.Where(x => x.AssignmentId == assignmentId && x.UserId == employeeId)
                 .Include(x => x.Records)
                 .Include(x => x.Assignment)
                 .ThenInclude(x => x.Customer)
                 .Select(x => new
                 {
-                    x.EmployeeAssignmentId,
+                    x.TimesheetId,
                     x.Records,
                     User = new { x.User.Name },
 

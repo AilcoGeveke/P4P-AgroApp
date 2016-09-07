@@ -185,7 +185,7 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
     ctrl.selectedMachines = [];
     ctrl.selectedAttachments = [];
     ctrl.selectedAssignment = {};
-    ctrl.employeeAssignment = {};
+    ctrl.timesheet = {};
 
     ctrl.timesheetDetails = {};
     ctrl.timesheetDetails.workType = "Machinist";
@@ -231,11 +231,11 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
         console.log(ctrl.timesheetDetails);
 
         //if the list doesn't exist, create empty list
-        if (ctrl.employeeAssignment.records === undefined)
-            ctrl.employeeAssignment.records = [];
+        if (ctrl.timesheet.records === undefined)
+            ctrl.timesheet.records = [];
 
         //add task to list
-        ctrl.employeeAssignment.records.push(ctrl.timesheetDetails);
+        ctrl.timesheet.records.push(ctrl.timesheetDetails);
 
         //switch view
         ctrl.showTaskOverview = true;
@@ -265,7 +265,7 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
                     swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
                     ctrl.showTaskOverview = true;
                     ctrl.showNewTaskCard = false;
-                    ctrl.getAllTimesheets(ctrl.employeeAssignment.employeeAssignmentId);
+                    ctrl.getAllTimesheets(ctrl.timesheet.timesheetId);
 
                     ctrl.timesheetDetails = {};
                     ctrl.timesheetDetails.workType = "Machinist";
@@ -401,7 +401,7 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
             });
     };
 
-    ctrl.getAllEmployeeAssignments = function () {
+    ctrl.getAllTimesheets = function () {
         assignmentManagement.getAssignment(ctrl.selectedDate.valueOf()).then(
             function successCallback(response) {
                 ctrl.allAssignments = response.data;

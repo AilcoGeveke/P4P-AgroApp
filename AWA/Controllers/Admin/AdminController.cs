@@ -30,7 +30,7 @@ namespace AWA.Controllers.Admin
         public IActionResult TimesheetView(int idAssignment)
         {
             ViewData["EnableControls"] = true;
-            ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(AssignmentController.GetEmployeeAssignment(_context, HttpContext, idAssignment), new JsonSerializerSettings()
+            ViewData["Timesheet"] = JsonConvert.SerializeObject(AssignmentController.GetTimesheet(_context, HttpContext, idAssignment), new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -42,7 +42,7 @@ namespace AWA.Controllers.Admin
         public IActionResult TimesheetView(int idAssignment, int idEmployee)
         {
             ViewData["EnableControls"] = false;
-            ViewData["EmployeeAssignment"] = JsonConvert.SerializeObject(AssignmentController.GetEmployeeAssignment(_context, idEmployee, idAssignment), new JsonSerializerSettings()
+            ViewData["Timesheet"] = JsonConvert.SerializeObject(AssignmentController.GetTimesheet(_context, idEmployee, idAssignment), new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()

@@ -12,7 +12,7 @@
             <div class="lv-title"><small class="m-r-5">{{ass.date | date: 'dd/MM/yyyy'}}</small>{{ass.location}}</div>
             <small class="c-bluegray small-text">{{ass.description}}</small>
             <ul class="lv-attrs m-b-5">
-                <li class="p-0" ng-repeat="xs in ass.employeeAssignments">
+                <li class="p-0" ng-repeat="xs in ass.timesheets">
                     <a class="btn btn-default btn-sm listbutton" ng-class="{ 'bgm-green': xs.isVerified, 'c-white': xs.isVerified }"
                        href="admin/urenoverzicht/{{ass.assignmentId}}/{{xs.userId}}">{{xs.user.name}}</a>
                 </li>
