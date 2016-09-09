@@ -155,7 +155,7 @@ agroApp.controller("MachineManagement", function (tableService, MachineService) 
     }
 
     ctrl.putMachine = function () {
-        MachineService.update({ id:ctrl.machineDetails.machineId }, ctrl.machineDetails,
+        MachineService.update({ id: ctrl.machineDetails.machineId }, ctrl.machineDetails,
             function () {
                 swal({ title: "Voertuig is aangepast", text: "", timer: 3000, showConfirmButton: false, type: "success" });
                 ctrl.showEditCard = false;
@@ -256,23 +256,18 @@ agroApp.controller("TimesheetController", function ($scope, $http, userManagemen
             showConfirmButton: false
         });
 
-        $http.patch("/api/assignment/").then(
+        $http.put("/api/timesheets/" + ctrl.timesheet.timesheetId, { records: ctrl.timesheet.records }).then(
             function successCallback(response) {
-                if (response.data !== true) {
-                    swal("", response.data, "error");
-                }
-                else {
-                    swal({ title: "Taak is aangemaakt", text: "", timer: 3000, showConfirmButton: false, type: "success" });
-                    ctrl.showTaskOverview = true;
-                    ctrl.showNewTaskCard = false;
-                    ctrl.getAllTimesheets(ctrl.timesheet.timesheetId);
+                swal({ title: "Gegevens zijn opgeslagen", text: "", timer: 3000, showConfirmButton: false, type: "success" });
+                ctrl.showTaskOverview = true;
+                ctrl.showNewTaskCard = false;
+                ctrl.getAllTimesheets(ctrl.timesheet.timesheetId);
 
-                    ctrl.timesheetDetails = {};
-                    ctrl.timesheetDetails.workType = "Machinist";
-                    ctrl.timesheetDetails.startTime = moment().startOf("d").add(7, "h").toDate();
-                    ctrl.timesheetDetails.endTime = moment().startOf("h").toDate();
-                    ctrl.updateTime(true);
-                }
+                ctrl.timesheetDetails = {};
+                ctrl.timesheetDetails.workType = "Machinist";
+                ctrl.timesheetDetails.startTime = moment().startOf("d").add(7, "h").toDate();
+                ctrl.timesheetDetails.endTime = moment().startOf("h").toDate();
+                ctrl.updateTime(true);
             }, function errorCallback(response) {
                 swal("Fout", "Er is iets misgegaan, neem contact op met een ontwikkelaar!", "error");
             });

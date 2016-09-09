@@ -14,7 +14,7 @@
 
             <form slider="ctrl.showEditCard">
                 <div class="card">
-                    <div class="card-header ch-alt m-b-15">
+                    <div class="card-header">
                         <h2>{{ctrl.isAdding ? "Nieuwe Opdracht" : "Wijzig Opdracht"}}</h2>
                     </div>
                     <div class="card-body card-padding container-fluid">
@@ -92,14 +92,14 @@
                                 ng-click="ctrl.isAdding ? ctrl.addAssignment() : ctrl.editAssingment()">
                             <i class="zmdi zmdi-check"></i>{{ctrl.isAdding ? "Toevoegen" : "Wijzigen"}}
                         </button>
-                        <button class="btn btn-default btn-icon-text waves-effect" ng-click="ctrl.showEditCard = false; ctrl.showMainCard = true" slide-toggle="#newAssignmentCard"><i class="zmdi zmdi-close"></i>Annuleren</button>
+                        <button type="reset" class="btn btn-default btn-icon-text waves-effect" ng-click="ctrl.showEditCard = false; ctrl.showMainCard = true" slide-toggle="#newAssignmentCard"><i class="zmdi zmdi-close"></i>Annuleren</button>
                     </div>
                 </div>
             </form>
 
             <div slider="ctrl.showMainCard" enabled="true">
-                <div class="card">
-                    <div class="card-header ch-alt">
+                <div class="card bgm-none">
+                    <div class="card-header ch-dark palette-Teal-400 bg">
                         <h2>Alle Opdrachten <small>Klik op de kolomkoppen om te sorteren</small></h2>
                         <button class="button btn bgm-red btn-float waves-effect" ng-click="ctrl.showEditCard = true; ctrl.showMainCard = false; ctrl.isAdding = true; ctrl.newAssignment = {};"><i class="zmdi zmdi-plus"></i></button>
                     </div>
@@ -107,8 +107,8 @@
                         <div class="date-picker input-group w-100" ng-class="{ 'is-opened': opened2 == true }">
                             <div class="fg-line" ng-class="{ 'fg-toggled': opened2 == true }">
                                 <label>Datum</label>
-                                <input ng-click="open($event, 'opened2')" ng-change="ctrl.getAllAssignments('@ViewData["userAssignment"]')" type="text" 
-                                       class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.selectedDate" is-open="opened2" 
+                                <input ng-click="open($event, 'opened2')" ng-change="ctrl.getAllAssignments('@ViewData["userAssignment"]')" type="text"
+                                       class="form-control" uib-datepicker-popup="dd-MM-yyyy" show-weeks="false" ng-model="ctrl.selectedDate" is-open="opened2"
                                        min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Selecteer een datum" />
                             </div>
                         </div>

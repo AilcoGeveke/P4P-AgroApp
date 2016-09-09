@@ -171,6 +171,7 @@ namespace AWA.Controllers.Api
                 {
                     x.TimesheetId,
                     x.Records,
+                    x.IsVerified,
                     User = new { x.User.Name },
 
                     Assignment = new

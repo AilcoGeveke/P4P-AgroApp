@@ -5,11 +5,11 @@
 <!-- Header -->
 <header id="header" data-ng-controller="headerCtrl as hctrl">@{ await Html.RenderPartialAsync("header-image-logo");  }</header>
 
-<section id="main" ng-controller="TimesheetController as ctrl" ng-cloak >
+<section id="main" ng-controller="TimesheetController as ctrl" ng-cloak>
     <!-- Sidebar -->
     <aside id="sidebar" data-ng-class="{ 'toggled': mactrl.sidebarToggle.left === true }">@{ await Html.RenderPartialAsync("sidebar-left");  }</aside>
     <section id="content" ng-init="ctrl.timesheet = @ViewData["Timesheet"]; ctrl.selectedAssignment = ctrl.timesheet.assignment">
-        <div class="container c-alt"id="anchor2">
+        <div class="container c-alt" id="anchor2">
             <div class="card bgm-none">
                 <div class="card-header ch-dark palette-Teal-400 bg">
                     <h2>{{ctrl.selectedAssignment.customer.name}} <small>{{ctrl.selectedAssignment.date | date: 'dd/MM/yyyy'}}</small></h2>
@@ -22,10 +22,12 @@
                 </div>
             </div>
 
-            <div class="card" ng-show="ctrl.timesheet.isVerified">
-                <div class="card-header bgm-green">
-                    <div class="media-body">
-                        <h2>Deze werkbon is gecontroleerd en definitief <small>De werkbon kan niet meer worden aangepast</small></h2>
+            <div slider="ctrl.timesheet.isVerified">
+                <div class="card">
+                    <div class="card-header bgm-green">
+                        <div class="media-body">
+                            <h2>Deze werkbon is gecontroleerd en definitief <small>De werkbon kan niet meer worden aangepast</small></h2>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,10 +120,18 @@
 
             @*Overzicht Taken*@
             <div slider="ctrl.showTaskOverview" enabled="true">
-                <div class="card bgm-none" >
+                <div class="card bgm-none">
                     <div class="card-header ch-dark palette-Blue-400 bg">
                         <h2>Overzicht Uren <small>Overzicht ingevulde gegevens voor deze opdracht</small></h2>
-                        <button class="btn bgm-red btn-float waves-effect" ng-show="'@ViewData["EnableControls"]' == 'True'" ng-click="ctrl.showNewTaskCard = true; ctrl.showTaskOverview = false" onclick="scrollTo('anchor1')"><i class="zmdi zmdi-plus"></i></button>
+                        <ul class="actions actions-alt">
+                            <li>
+                                <a href="" ng-click="ctrl.timesheet.isVerified = !ctrl.timesheet.isVerified">
+                                    <i ng-hide="ctrl.timesheet.isVerified" class="zmdi zmdi-check"></i>
+                                    <i ng-show="ctrl.timesheet.isVerified" class="zmdi zmdi-edit"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <button class="btn bgm-red btn-float waves-effect" ng-hide="ctrl.timesheet.isVerified" ng-show="'@ViewData["EnableControls"]' == 'True'" ng-click="ctrl.showNewTaskCard = true; ctrl.showTaskOverview = false" onclick="scrollTo('anchor1')"><i class="zmdi zmdi-plus"></i></button>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -163,20 +173,14 @@
             </div>
 
             <div class="card" ng-init="ctrl.getAllUsers()">
-                @if (ViewData["EnableControls"] as bool? ?? false)
-                {
-                    <div class="card-header">
-                        <h2>Collegas <small>Met welke collegas heb je gewerkt</small></h2>
-                    </div>
-
-                    <div class="card-body card-padding">
+                <div class="card-body card-padding">
+                    @if (ViewData["EnableControls"] as bool? ?? false)
+                    {
+                        <label>Collegas</label>
                         <div ng-init="ctrl.getUsers(false)">
-                            <div class="form-group fg-line">
-                                <ui-select multiple ng-model="ctrl.newAssignment.employees"
-                                           style="width: 100%;"
-                                           title="Werknemers"
-                                           class="form-control">
-                                    <ui-select-match placeholder="Collegas">{{$item.name}}</ui-select-match>
+                            <div class="form-group fg-line m-b-20">
+                                <ui-select multiple ng-model="ctrl.newAssignment.employees">
+                                    <ui-select-match placeholder="Met welke collegas heb je gewerkt">{{$item.name}}</ui-select-match>
                                     <ui-select-choices repeat="user in ctrl.allUsers | filter: $select.search">
                                         <div ng-bind-html="user.name | highlight: $select.search"></div>
                                         <small>{{user.username}}</small>
@@ -184,20 +188,13 @@
                                 </ui-select>
                             </div>
                         </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="card-header">
+                    }
+                    else
+                    {
                         <h2>Collegas <small>Met welke collegas heeft {{ctrl.timesheet.user.name}} gewerkt</small></h2>
-                    </div>
-                }
-            </div>
-
-            <div class="card">
-                <div class="card-body card-padding">
-                    <button class="btn bgm-blue">Wijzigingen Opslaan</button>
-                    <button class="btn bgm-green">Wijzigingen Opslaan en Controleren</button>
+                    }
+                    <hr />
+                    <button class="btn bgm-blue" ng-click="ctrl.saveTimesheet(false)">Opslaan</button>
                 </div>
             </div>
         </div>
